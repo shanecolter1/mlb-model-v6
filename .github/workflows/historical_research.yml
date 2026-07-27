@@ -1,0 +1,78 @@
+name: MLB historical research build
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_date:
+        description: "YYYY-MM-DD"
+        required: true
+      end_date:
+        description: "YYYY-MM-DD"
+        required: true
+      venue_year:
+        description: "Savant ending year"
+        required: true
+        default: "2025"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Fetch MLB feeds
+        run: |
+          python src/ingestion/fetch_mlb_statsapi.py \
+            --start-date "${{ inputs.start_date }}" \
+            --end-date "${{ inputs.end_date }}" \
+            --output-dir data/raw/mlb_statsapi
+
+      - name: Normalize feeds
+        run: |
+          python src/ingestion/normalize_mlb_feeds.py \
+            --raw-dir data/raw/mlb_statsapi \
+            --output-dir data/processed/mlb
+
+      - name: Audit normalized data
+        run: |
+          python src/pipeline/audit_historical_data.py \
+            --processed-dir data/processed/mlb
+
+      - name: Build trailing rates
+        run: |
+          python src/ingestion/build_trailing_event_rates.py \
+            --input data/processed/mlb/plate_appearances.csv \
+            --output data/processed/event_rates.parquet \
+            --window-days 365 \
+            --min-pa 50
+
+      - name: Build Savant profiles
+        run: |
+          python src/build_savant_venue_profiles.py \
+            --year "${{ inputs.venue_year }}" \
+            --rolling 3 \
+            --output-dir data/processed/venue
+
+      - name: Build research snapshots
+        run: |
+          python src/pipeline/build_research_snapshots.py \
+            --processed-dir data/processed/mlb \
+            --event-rates data/processed/event_rates.parquet \
+            --venue-profiles "data/processed/venue/savant_venue_profiles_${{ inputs.venue_year }}_3yr.json" \
+            --output-dir data/processed/snapshots
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mlb-historical-research-${{ inputs.start_date }}-${{ inputs.end_date }}
+          path: |
+            data/processed/
+            data/raw/mlb_statsapi/fetch_manifest.json
+          retention-days: 14
