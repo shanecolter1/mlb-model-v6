@@ -1,0 +1,11 @@
+model_arm,feature,destination,operationally_applied,control
+legacy_control,park_score,legacy expected-runs adjustment,yes,Control arm only
+run_factor_only,venue_run_factor,expected runs,yes,Does not apply 1B/2B/3B/HR factors
+event_vector,venue_1b_factor,single probability,yes,Run factor is diagnostic only
+event_vector,venue_2b_factor,double probability,yes,Run factor is diagnostic only
+event_vector,venue_3b_factor,triple probability,yes,Run factor is diagnostic only
+event_vector,venue_hr_factor,home-run probability,yes,Run factor is diagnostic only
+event_vector,venue_run_factor,calibration diagnostic,no,Prevents double counting
+event_vector,venue_bb_factor,walk probability,no,Candidate pending validation
+event_vector,venue_so_factor,strikeout probability,no,Candidate pending validation
+all,weather_score,separate existing weather pathway,yes,No static weather embedded in park factors

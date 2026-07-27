@@ -1,0 +1,16 @@
+feature,source,source_field,destination,status,transformation,redundancy_rule,notes
+venue_run_factor,Baseball Savant Statcast Park Factors,R,expected_runs_engine,active_shadow,factor / 100,replaces generic park_score; never additive with park_score,Primary baseline scoring-environment multiplier.
+venue_hr_factor,Baseball Savant Statcast Park Factors,HR,"home_run_engine, run_distribution_tail",active_shadow,factor / 100,do not add directly to total runs after venue_run_factor,Adjusts HR event rate and scoring-tail shape.
+venue_1b_factor,Baseball Savant Statcast Park Factors,1B,offensive_event_engine,active_shadow,factor / 100,component-event adjustment only,Adjusts single-event probability.
+venue_2b_factor,Baseball Savant Statcast Park Factors,2B,"offensive_event_engine, margin_distribution",active_shadow,factor / 100,component-event adjustment only,Adjusts double-event probability.
+venue_3b_factor,Baseball Savant Statcast Park Factors,3B,"offensive_event_engine, margin_distribution",active_shadow,factor / 100,component-event adjustment only,Adjusts triple-event probability; shrink heavily when sample is unstable.
+venue_lhb_profile,Baseball Savant Statcast Park Factors,batSide=L,lineup_simulator,active_shadow,lineup-PA-weighted event multipliers,replaces generic park handedness adjustment only,Applied to projected LHB plate appearances.
+venue_rhb_profile,Baseball Savant Statcast Park Factors,batSide=R,lineup_simulator,active_shadow,lineup-PA-weighted event multipliers,replaces generic park handedness adjustment only,Applied to projected RHB plate appearances.
+venue_obp_factor,Baseball Savant Statcast Park Factors,OBP,validation_only,candidate,factor / 100,exclude until incremental value beyond 1B/BB/HBP components is proven,Composite and potentially redundant.
+venue_bb_factor,Baseball Savant Statcast Park Factors,BB,plate_discipline_engine,candidate,factor / 100,exclude until incremental value beyond batter/pitcher BB models is proven,Potentially useful but likely low incremental signal.
+venue_so_factor,Baseball Savant Statcast Park Factors,SO,batter_pitcher_interaction,candidate,factor / 100,exclude until incremental value beyond batter/pitcher K models is proven,Potential visibility/background effect; validate first.
+venue_wobacon_factor,Baseball Savant Statcast Park Factors,wOBAcon,diagnostics,diagnostic,factor / 100,not additive with event factors,Used to audit aggregate contact conversion.
+venue_xwobacon_factor,Baseball Savant Statcast Park Factors,xwOBAcon,diagnostics,diagnostic,factor / 100,not additive with event factors,Used to distinguish contact quality from observed conversion.
+venue_hardhit_factor,Baseball Savant Statcast Park Factors,HardHit,diagnostics,diagnostic,factor / 100,not additive with batter/pitcher hard-hit inputs,Quality-control diagnostic.
+weather_score,Existing weather feed,weather_score,environmental_context_layer,retained_separate,existing,do not embed into static Savant venue profile,Remains separate until Phase 2 park-weather interactions are validated.
+park_score,Legacy generic model,park_score,fallback_only,deprecated,none,disabled whenever a valid Savant venue profile exists,Retained temporarily only for graceful degradation and A/B comparison.

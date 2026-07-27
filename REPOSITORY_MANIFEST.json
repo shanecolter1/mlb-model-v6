@@ -1,0 +1,8 @@
+{
+  "repository": "mlb-model-v6",
+  "release": "Phase 1.5 consolidated",
+  "workflow": ".github/workflows/historical_research.yml",
+  "file_count": 51,
+  "production_model_changed": false,
+  "status": "Git-ready research repository"
+}

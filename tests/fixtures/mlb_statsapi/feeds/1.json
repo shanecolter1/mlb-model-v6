@@ -1,0 +1,119 @@
+{
+  "gamePk": 1,
+  "gameData": {
+    "datetime": {
+      "officialDate": "2025-04-01",
+      "dateTime": "2025-04-01T23:00:00Z"
+    },
+    "teams": {
+      "home": {
+        "id": 10,
+        "name": "Home"
+      },
+      "away": {
+        "id": 20,
+        "name": "Away"
+      }
+    },
+    "venue": {
+      "id": 30,
+      "name": "Example Park"
+    },
+    "status": {
+      "detailedState": "Final"
+    }
+  },
+  "liveData": {
+    "boxscore": {
+      "teams": {
+        "home": {
+          "battingOrder": [
+            101
+          ],
+          "pitchers": [
+            201
+          ],
+          "players": {
+            "ID101": {
+              "person": {
+                "fullName": "Home Batter"
+              },
+              "batting": {
+                "plateAppearances": 4
+              }
+            },
+            "ID201": {
+              "person": {
+                "fullName": "Home Pitcher"
+              }
+            }
+          }
+        },
+        "away": {
+          "battingOrder": [
+            102
+          ],
+          "pitchers": [
+            202
+          ],
+          "players": {
+            "ID102": {
+              "person": {
+                "fullName": "Away Batter"
+              },
+              "batting": {
+                "plateAppearances": 4
+              }
+            },
+            "ID202": {
+              "person": {
+                "fullName": "Away Pitcher"
+              }
+            }
+          }
+        }
+      }
+    },
+    "plays": {
+      "allPlays": [
+        {
+          "result": {
+            "eventType": "home_run",
+            "rbi": 1
+          },
+          "matchup": {
+            "batter": {
+              "id": 102,
+              "fullName": "Away Batter"
+            },
+            "pitcher": {
+              "id": 201,
+              "fullName": "Home Pitcher"
+            },
+            "batSide": {
+              "code": "L"
+            },
+            "pitchHand": {
+              "code": "R"
+            }
+          },
+          "about": {
+            "inning": 1,
+            "halfInning": "top",
+            "isComplete": true
+          }
+        }
+      ]
+    },
+    "linescore": {
+      "teams": {
+        "home": {
+          "runs": 3
+        },
+        "away": {
+          "runs": 4
+        }
+      }
+    }
+  }
+}

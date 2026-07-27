@@ -1,0 +1,9 @@
+feature,source_class,as_of_rule,status,leakage_control
+batter_event_rates,historical trailing snapshot,pre-game only,required,No current/future season leakage
+starter_allowed_event_rates,historical trailing snapshot,pre-game only,required,Opponent adjusted later
+bullpen_allowed_event_rates,historical trailing snapshot,pre-game only,required,Availability/fatigue planned Phase 2
+lineup_pa_share,confirmed/projected lineup,prediction timestamp,required,Must sum to 1
+venue_profile,Savant rolling profile,snapshot date,required,Must use profile available on prediction date
+weather_score,existing weather feed,prediction timestamp,retained,Separate from static venue profile
+observed_runs,final result,post-game,target,Never available to prediction code
+observed_margin,final result,post-game,target,Never available to prediction code

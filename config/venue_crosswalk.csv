@@ -1,0 +1,4 @@
+mlb_venue_id,canonical_venue_name,source_venue_name,team,physical_park_key,effective_start,effective_end,regime_break_reason,status,notes
+,Sutter Health Park,Sutter Health Park,Athletics,sutter_health_park,2025-01-01,,Temporary MLB venue; limited history,needs_venue_id,Do not inherit Oakland Coliseum factors.
+,Oracle Park,Oracle Park,San Francisco Giants,oracle_park,,,,needs_venue_id,Name changes alone do not create a new physical park regime.
+,LoanDepot park,loanDepot park,Miami Marlins,loandepot_park,,,,needs_venue_id,Normalize capitalization and historical naming.

@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EnvironmentalContext",
+  "type": "object",
+  "required": [
+    "venue_id",
+    "venue_name",
+    "window",
+    "confidence",
+    "source",
+    "multipliers"
+  ],
+  "properties": {
+    "venue_id": {
+      "type": [
+        "integer",
+        "string"
+      ]
+    },
+    "venue_name": {
+      "type": "string"
+    },
+    "window": {
+      "type": "string",
+      "examples": [
+        "2024-2026"
+      ]
+    },
+    "source": {
+      "const": "Baseball Savant Statcast Park Factors"
+    },
+    "plate_appearances": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "status": {
+      "enum": [
+        "validated",
+        "shadow",
+        "degraded",
+        "fallback"
+      ]
+    },
+    "multipliers": {
+      "type": "object",
+      "required": [
+        "run",
+        "hr",
+        "single",
+        "double",
+        "triple"
+      ],
+      "properties": {
+        "overall": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "run": {
+          "type": "number"
+        },
+        "hr": {
+          "type": "number"
+        },
+        "single": {
+          "type": "number"
+        },
+        "double": {
+          "type": "number"
+        },
+        "triple": {
+          "type": "number"
+        },
+        "obp": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "bb": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "so": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "wobacon": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "xwobacon": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "bacon": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "xbacon": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "hard_hit": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "handedness": {
+      "type": "object",
+      "properties": {
+        "L": {
+          "$ref": "#/$defs/splitProfile"
+        },
+        "R": {
+          "$ref": "#/$defs/splitProfile"
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "generic_park_score_disabled": {
+          "type": "boolean"
+        },
+        "fallback_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retrieved_at": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "splitProfile": {
+      "type": "object",
+      "properties": {
+        "run": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "hr": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "single": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "double": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "triple": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

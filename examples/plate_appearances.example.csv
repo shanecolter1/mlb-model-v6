@@ -1,0 +1,5 @@
+date,game_id,batter_id,pitcher_id,batting_team,pitching_team,event
+2026-04-01,g1,b1,p1,AAA,BBB,single
+2026-04-01,g1,b2,p1,AAA,BBB,strikeout
+2026-04-02,g2,b1,p2,AAA,CCC,home_run
+2026-04-02,g2,b3,p2,AAA,CCC,walk

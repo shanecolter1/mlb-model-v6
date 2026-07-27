@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PlateAppearanceEventVector",
+  "type": "object",
+  "required": [
+    "single",
+    "double",
+    "triple",
+    "home_run",
+    "walk",
+    "hit_by_pitch",
+    "strikeout",
+    "ball_in_play_out"
+  ],
+  "properties": {
+    "single": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "double": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "triple": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "home_run": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "walk": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "hit_by_pitch": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "strikeout": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "ball_in_play_out": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  },
+  "allOf": [
+    {
+      "description": "Application code must enforce that all event probabilities sum to 1 within tolerance."
+    }
+  ]
+}

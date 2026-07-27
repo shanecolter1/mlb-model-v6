@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PregameHistoricalSnapshot",
+  "type": "object",
+  "required": [
+    "game_id",
+    "game_date",
+    "prediction_timestamp",
+    "home_team",
+    "away_team",
+    "venue",
+    "lineup_status",
+    "starters",
+    "team_inputs",
+    "environmental_context"
+  ],
+  "properties": {
+    "game_id": {
+      "type": [
+        "string",
+        "integer"
+      ]
+    },
+    "game_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "prediction_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "home_team": {
+      "type": "string"
+    },
+    "away_team": {
+      "type": "string"
+    },
+    "venue": {
+      "type": "object",
+      "required": [
+        "venue_id",
+        "venue_name"
+      ],
+      "properties": {
+        "venue_id": {
+          "type": [
+            "string",
+            "integer"
+          ]
+        },
+        "venue_name": {
+          "type": "string"
+        }
+      }
+    },
+    "lineup_status": {
+      "enum": [
+        "projected",
+        "confirmed",
+        "partial",
+        "unavailable"
+      ]
+    },
+    "starters": {
+      "type": "object",
+      "required": [
+        "home",
+        "away"
+      ],
+      "properties": {
+        "home": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "away": {
+          "type": [
+            "object",
+            "null"
+          ]
+        }
+      }
+    },
+    "team_inputs": {
+      "type": "object",
+      "required": [
+        "home",
+        "away"
+      ],
+      "properties": {
+        "home": {
+          "$ref": "#/$defs/teamInput"
+        },
+        "away": {
+          "$ref": "#/$defs/teamInput"
+        }
+      }
+    },
+    "environmental_context": {
+      "type": "object"
+    },
+    "observed_result": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "audit": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "eventRates": {
+      "type": "object",
+      "required": [
+        "single",
+        "double",
+        "triple",
+        "home_run",
+        "walk",
+        "hit_by_pitch",
+        "strikeout",
+        "ball_in_play_out"
+      ],
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "teamInput": {
+      "type": "object",
+      "required": [
+        "lineup",
+        "starter_allowed_rates",
+        "bullpen_allowed_rates"
+      ],
+      "properties": {
+        "lineup": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "player_id",
+              "name",
+              "batter_side",
+              "projected_plate_appearance_share",
+              "event_rates"
+            ],
+            "properties": {
+              "player_id": {
+                "type": [
+                  "string",
+                  "integer"
+                ]
+              },
+              "name": {
+                "type": "string"
+              },
+              "batter_side": {
+                "enum": [
+                  "L",
+                  "R",
+                  "S"
+                ]
+              },
+              "projected_plate_appearance_share": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              },
+              "event_rates": {
+                "$ref": "#/$defs/eventRates"
+              }
+            }
+          }
+        },
+        "starter_allowed_rates": {
+          "$ref": "#/$defs/eventRates"
+        },
+        "bullpen_allowed_rates": {
+          "$ref": "#/$defs/eventRates"
+        },
+        "starter_expected_batters_faced": {
+          "type": "number",
+          "minimum": 0
+        },
+        "bullpen_expected_batters_faced": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

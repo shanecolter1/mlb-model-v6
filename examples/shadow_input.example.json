@@ -1,0 +1,44 @@
+{
+  "legacyExpectedRuns": 4.55,
+  "neutralExpectedRuns": 4.4,
+  "environmentalContext": {
+    "multipliers": {
+      "run": 1.04,
+      "single": 1.01,
+      "double": 1.07,
+      "triple": 0.94,
+      "hr": 1.1
+    },
+    "handedness": {
+      "L": {
+        "single": 1.01,
+        "double": 1.03,
+        "triple": 1.0,
+        "hr": 1.04
+      },
+      "R": {
+        "single": 0.99,
+        "double": 0.98,
+        "triple": 1.0,
+        "hr": 0.97
+      }
+    }
+  },
+  "batterEventVectors": [
+    {
+      "batterId": "example-1",
+      "batterSide": "L",
+      "projectedPlateAppearanceShare": 0.12,
+      "probabilities": {
+        "single": 0.15,
+        "double": 0.05,
+        "triple": 0.005,
+        "home_run": 0.04,
+        "walk": 0.09,
+        "hit_by_pitch": 0.01,
+        "strikeout": 0.23,
+        "ball_in_play_out": 0.425
+      }
+    }
+  ]
+}
