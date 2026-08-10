@@ -1,6 +1,13 @@
 {
   "deployment_id": "1TAP-1786330963981-2B803EF2",
-  "status": "IN_PROGRESS",
-  "started_at": "2026-08-10T03:02:44.393Z",
-  "manifest_hash": "2b803ef2b5f4288fd270d376533187871686ebb832272cc9f119cb13e7a34aa0"
+  "status": "COMPLETE",
+  "completed_at": "2026-08-10T03:02:52.238Z",
+  "manifest_hash": "2b803ef2b5f4288fd270d376533187871686ebb832272cc9f119cb13e7a34aa0",
+  "head_sha": "e06a51d7826c5a73d9b69a4638e99da10d6b0ba0",
+  "netlify": {
+    "site_id": "d980d26a-6c47-46ab-b2c3-20ce64390c31",
+    "site_name": "mlb-live-command-center",
+    "site_url": "https://mlb-live-command-center.netlify.app",
+    "admin_url": "https://app.netlify.com/projects/mlb-live-command-center"
+  }
 }
