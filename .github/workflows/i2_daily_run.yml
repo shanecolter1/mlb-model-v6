@@ -49,7 +49,7 @@ jobs:
           CUTOFF_INPUT='${{ inputs.cutoff }}'
           TRIALS_INPUT='${{ inputs.trials }}'
           if [ -z "$DATE_INPUT" ]; then DATE_INPUT='2026-08-15'; fi
-          if [ -z "$CUTOFF_INPUT" ]; then CUTOFF_INPUT='2026-08-15T21:41:00Z'; fi
+          if [ -z "$CUTOFF_INPUT" ]; then CUTOFF_INPUT='2026-08-15T21:50:00Z'; fi
           if [ -z "$TRIALS_INPUT" ]; then TRIALS_INPUT='50000'; fi
           echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
           echo "cutoff=$CUTOFF_INPUT" >> "$GITHUB_OUTPUT"
