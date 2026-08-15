@@ -1,0 +1,31 @@
+{
+  "dataset": "I2 state-transition compact training data",
+  "version": "2026-08-15-v1",
+  "seasons": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "regular_season_games": 12148,
+  "team_game_observations": 24296,
+  "i2_start_slot_missing": 0,
+  "same_pitcher_i2_rate": 0.9804082976621666,
+  "half_i2_score_rate": 0.25086433980902206,
+  "half_i2_mean_runs": 0.45810009878169244,
+  "start_slot_counts": {
+    "1": 189,
+    "2": 65,
+    "3": 33,
+    "4": 8957,
+    "5": 6952,
+    "6": 4246,
+    "7": 2370,
+    "8": 1038,
+    "9": 446
+  },
+  "source": "Retrosheet 2021-2025 season CSV packages (plays.csv)",
+  "derived_fields_note": "Observed I1 state is for training/calibration only; pregame model must simulate I1.",
+  "retrosheet_attribution": "The information used here was obtained free of charge from and is copyrighted by Retrosheet. Interested parties may contact Retrosheet at 20 Sunset Rd., Newark, DE 19711."
+}
