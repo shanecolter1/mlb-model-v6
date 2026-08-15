@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/i2_build.yml'
       - 'src/ingestion/build_i2_state_transitions.py'
+      - 'src/ingestion/build_i2_play_calibration.py'
       - 'src/model/i2_inning_model.js'
       - 'tests/i2_inning_model.test.mjs'
       - 'src/event_probability_engine.js'
@@ -48,12 +49,20 @@ jobs:
             --input-dir data/raw/retrosheet_i2 \
             --output-dir data/derived/i2
 
+      - name: Build empirical play and pitch-count calibration
+        run: |
+          python src/ingestion/build_i2_play_calibration.py \
+            --input-dir data/raw/retrosheet_i2 \
+            --output data/derived/i2/i2_play_calibration.json \
+            --summary data/derived/i2/i2_play_calibration_summary.csv
+
       - name: Verify expected outputs
         run: |
           set -euo pipefail
           test -f data/derived/i2/i2_state_compact_2021.csv
           test -f data/derived/i2/i2_state_compact_2025.csv
           test -f data/derived/i2/i2_state_benchmark.csv
+          test -f data/derived/i2/i2_play_calibration.json
           python - <<'PY'
           import csv, glob, json
           rows = 0
@@ -65,7 +74,16 @@ jobs:
               manifest = json.load(f)
           assert manifest['regular_season_games'] == 12148
           assert manifest['i2_start_slot_missing'] == 0
-          print({'rows': rows, 'games': manifest['regular_season_games']})
+          with open('data/derived/i2/i2_play_calibration.json', encoding='utf-8') as f:
+              calibration = json.load(f)
+          assert calibration['regular_season_plate_appearances'] == 913349
+          assert calibration['base_transition_states'] == 192
+          print({
+              'state_rows': rows,
+              'games': manifest['regular_season_games'],
+              'calibration_pa': calibration['regular_season_plate_appearances'],
+              'transition_states': calibration['base_transition_states'],
+          })
           PY
 
       - name: Commit derived datasets
@@ -78,5 +96,5 @@ jobs:
             echo "No I2 dataset changes to commit."
             exit 0
           fi
-          git commit -m "Build I2 state-transition datasets"
+          git commit -m "Build I2 calibrated state datasets"
           git push

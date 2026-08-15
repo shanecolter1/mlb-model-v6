@@ -36,7 +36,7 @@ function drawEvent(vector, random) {
   return "ball_in_play_out";
 }
 
-function advance(event, bases, random) {
+function fallbackAdvance(event, bases, random) {
   let runs = 0;
   const [first, second, third] = bases;
   switch (event) {
@@ -46,7 +46,7 @@ function advance(event, bases, random) {
       return {
         bases: [true, Boolean(first), Boolean(third || (first && second))],
         runs,
-        out: false,
+        outsAdded: 0,
       };
     }
     case "single": {
@@ -56,7 +56,7 @@ function advance(event, bases, random) {
       if (scoreSecond) runs += 1;
       const newThird = Boolean(second && !scoreSecond);
       const newSecond = Boolean(first);
-      return { bases: [true, newSecond, newThird], runs, out: false };
+      return { bases: [true, newSecond, newThird], runs, outsAdded: 0 };
     }
     case "double": {
       if (third) runs += 1;
@@ -67,23 +67,60 @@ function advance(event, bases, random) {
       return {
         bases: [false, true, Boolean(first && !scoreFirst)],
         runs,
-        out: false,
+        outsAdded: 0,
       };
     }
     case "triple":
       runs += Number(first) + Number(second) + Number(third);
-      return { bases: [false, false, true], runs, out: false };
+      return { bases: [false, false, true], runs, outsAdded: 0 };
     case "home_run":
       runs += 1 + Number(first) + Number(second) + Number(third);
-      return { bases: [false, false, false], runs, out: false };
+      return { bases: [false, false, false], runs, outsAdded: 0 };
     case "strikeout":
     case "ball_in_play_out":
-      return { bases, runs: 0, out: true };
+      return { bases, runs: 0, outsAdded: 1 };
     default:
       throw new Error(`Unknown event ${event}`);
   }
 }
 
+
+function basesToMask(bases) {
+  return Number(Boolean(bases[0])) + 2 * Number(Boolean(bases[1])) + 4 * Number(Boolean(bases[2]));
+}
+
+function maskToBases(mask) {
+  const m = Number(mask) || 0;
+  return [Boolean(m & 1), Boolean(m & 2), Boolean(m & 4)];
+}
+
+function samplePmf(items, random) {
+  if (!Array.isArray(items) || items.length === 0) return null;
+  let x = random();
+  for (const item of items) {
+    x -= Number(item.p ?? 0);
+    if (x <= 0) return item;
+  }
+  return items[items.length - 1];
+}
+
+function calibratedAdvance(event, bases, outs, random, playCalibration) {
+  const key = `${event}|${outs}|${basesToMask(bases)}`;
+  const options = playCalibration?.base_transitions?.[key];
+  const sampled = samplePmf(options, random);
+  if (!sampled) return fallbackAdvance(event, bases, random);
+  return {
+    bases: maskToBases(sampled.post_mask),
+    runs: Number(sampled.runs ?? 0),
+    outsAdded: Number(sampled.outs_added ?? 0),
+  };
+}
+
+function calibratedPitchCountDraw(event, random, playCalibration) {
+  const sampled = samplePmf(playCalibration?.pitch_count_pmf?.[event], random);
+  if (sampled) return Number(sampled.pitches ?? 1);
+  return defaultPitchCountDraw(event, random);
+}
 function defaultPitchCountDraw(event, random) {
   // Pregame-safe pitch count simulation. These are intentionally simple
   // starting distributions; the historical I2 state dataset is the calibration
@@ -140,7 +177,8 @@ export function simulateHalfInningWithLineup({
   environmentalContext = null,
   weights = { batter: 0.5, pitcher: 0.5 },
   random = Math.random,
-  pitchCountDraw = defaultPitchCountDraw,
+  pitchCountDraw = null,
+  playCalibration = null,
 }) {
   if (!Array.isArray(lineup) || lineup.length !== 9) {
     throw new RangeError("lineup must contain exactly nine hitters in batting-order sequence");
@@ -167,11 +205,14 @@ export function simulateHalfInningWithLineup({
       weights,
     });
     const event = drawEvent(vector, random);
-    pitches += Math.max(1, Number(pitchCountDraw(event, random)) || 1);
-    const result = advance(event, bases, random);
+    const pitchDraw = pitchCountDraw
+      ? pitchCountDraw(event, random)
+      : calibratedPitchCountDraw(event, random, playCalibration);
+    pitches += Math.max(0, Number(pitchDraw) || 0);
+    const result = calibratedAdvance(event, bases, outs, random, playCalibration);
     bases = result.bases;
     runs += result.runs;
-    if (result.out) outs += 1;
+    outs = Math.min(3, outs + Math.max(0, Number(result.outsAdded) || 0));
     plateAppearances += 1;
     slot = slot === 9 ? 1 : slot + 1;
 
@@ -190,7 +231,8 @@ export function simulateSideToI2({
   environmentalContext = null,
   weights = { batter: 0.5, pitcher: 0.5 },
   random = Math.random,
-  pitchCountDraw = defaultPitchCountDraw,
+  pitchCountDraw = null,
+  playCalibration = null,
 }) {
   const starterMixture = [{ weight: 1, pitcher: starter }];
   const i1 = simulateHalfInningWithLineup({
@@ -202,6 +244,7 @@ export function simulateSideToI2({
     weights,
     random,
     pitchCountDraw,
+    playCalibration,
   });
 
   // Conventional starter default. Opener/bulk games should supply an explicit
@@ -216,6 +259,7 @@ export function simulateSideToI2({
     weights,
     random,
     pitchCountDraw,
+    playCalibration,
   });
 
   return {
@@ -260,7 +304,8 @@ export function simulateFullSecondInning({
   weights = { batter: 0.5, pitcher: 0.5 },
   trials = 100000,
   random = Math.random,
-  pitchCountDraw = defaultPitchCountDraw,
+  pitchCountDraw = null,
+  playCalibration = null,
 }) {
   if (!Number.isInteger(trials) || trials <= 0) {
     throw new RangeError("trials must be a positive integer");
@@ -285,6 +330,7 @@ export function simulateFullSecondInning({
       weights,
       random,
       pitchCountDraw,
+      playCalibration,
     });
     const bottom = simulateSideToI2({
       lineup: home.lineup,
@@ -295,6 +341,7 @@ export function simulateFullSecondInning({
       weights,
       random,
       pitchCountDraw,
+      playCalibration,
     });
 
     topCounts[bucket(top.i2.runs)] += 1;
