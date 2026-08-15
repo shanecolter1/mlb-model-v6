@@ -6,6 +6,10 @@ on:
     paths:
       - '.github/workflows/i2_build.yml'
       - 'src/ingestion/build_i2_state_transitions.py'
+      - 'src/model/i2_inning_model.js'
+      - 'tests/i2_inning_model.test.mjs'
+      - 'src/event_probability_engine.js'
+      - 'src/model/seeded_random.js'
   workflow_dispatch:
 
 permissions:
@@ -20,6 +24,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Test I2 probability engine
+        run: node tests/i2_inning_model.test.mjs
 
       - name: Download Retrosheet season CSV packages
         run: |
