@@ -1,8 +1,8 @@
 {
   "model": "MLB I2 Under/Over v0.2 Research Build",
   "date": "2026-08-15",
-  "cutoff": "2026-08-15T21:41:00Z",
-  "generatedAt": "2026-08-15T21:46:18.740Z",
+  "cutoff": "2026-08-15T21:50:00Z",
+  "generatedAt": "2026-08-15T21:53:30.250Z",
   "trialsPerGame": 50000,
   "marketDataUsed": false,
   "weights": {
@@ -18,9 +18,9 @@
     "Conventional starters default to the probable starter for I2 unless an explicit opener/bulk mixture is supplied.",
     "If MLB pitching stats omit doubles/triples allowed, non-HR hits are split using league event proportions and flagged in dataAudit."
   ],
-  "remainingGamesAtCutoff": 10,
+  "remainingGamesAtCutoff": 9,
   "projectedGames": 8,
-  "pendingOrErroredGames": 2,
+  "pendingOrErroredGames": 1,
   "ranking": [
     {
       "rank": 1,
@@ -38,6 +38,20 @@
     },
     {
       "rank": 2,
+      "gamePk": 823990,
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "gameDate": "2026-08-16T01:38:00Z",
+      "under05Pct": 57.99,
+      "over05Pct": 42.01,
+      "fairUnder": -138,
+      "fairOver": 138,
+      "awayStarter": "Randy Dobnak",
+      "homeStarter": "Reid Detmers",
+      "top2ScorePct": 23.93,
+      "bottom2ScorePct": 23.81
+    },
+    {
+      "rank": 3,
       "gamePk": 823671,
       "matchup": "Philadelphia Phillies @ Minnesota Twins",
       "gameDate": "2026-08-15T23:10:00Z",
@@ -51,7 +65,7 @@
       "bottom2ScorePct": 23.94
     },
     {
-      "rank": 3,
+      "rank": 4,
       "gamePk": 824157,
       "matchup": "Seattle Mariners @ Houston Astros",
       "gameDate": "2026-08-15T23:10:00Z",
@@ -63,20 +77,6 @@
       "homeStarter": "Hayden Wesneski",
       "top2ScorePct": 25.01,
       "bottom2ScorePct": 24.66
-    },
-    {
-      "rank": 4,
-      "gamePk": 822941,
-      "matchup": "Baltimore Orioles @ Tampa Bay Rays",
-      "gameDate": "2026-08-15T22:10:00Z",
-      "under05Pct": 56.12,
-      "over05Pct": 43.88,
-      "fairUnder": -128,
-      "fairOver": 128,
-      "awayStarter": "Kyle Bradish",
-      "homeStarter": "Ian Seymour",
-      "top2ScorePct": 25.19,
-      "bottom2ScorePct": 24.95
     },
     {
       "rank": 5,
@@ -136,97 +136,6 @@
     }
   ],
   "games": [
-    {
-      "gamePk": 822941,
-      "gameDate": "2026-08-15T22:10:00Z",
-      "away": "Baltimore Orioles",
-      "home": "Tampa Bay Rays",
-      "venue": "Tropicana Field",
-      "lineupConfirmed": true,
-      "awayLineup": [
-        "Tyler O'Neill",
-        "Pete Alonso",
-        "Jackson Holliday",
-        "Coby Mayo",
-        "Gunnar Henderson",
-        "Christian Encarnacion-Strand",
-        "Christian Franklin",
-        "Leody Taveras",
-        "Carlos Narváez"
-      ],
-      "homeLineup": [
-        "Yandy Díaz",
-        "Jonathan Aranda",
-        "Junior Caminero",
-        "Liam Hicks",
-        "Chandler Simpson",
-        "Jonny DeLuca",
-        "Cedric Mullins",
-        "Richie Palacios",
-        "Taylor Walls"
-      ],
-      "awayStarter": "Kyle Bradish",
-      "homeStarter": "Ian Seymour",
-      "venueProfile": null,
-      "status": "Pre-Game",
-      "dataAudit": {
-        "awayStarterBF": 535,
-        "homeStarterBF": 373,
-        "awayStarterGamesStarted": 23,
-        "homeStarterGamesStarted": 9,
-        "awayStarterExtraBaseFallback": false,
-        "homeStarterExtraBaseFallback": false,
-        "venueProfileMatched": false
-      },
-      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
-      "trials": 50000,
-      "under05": 0.56116,
-      "over05": 0.43884,
-      "under05Pct": 56.12,
-      "over05Pct": 43.88,
-      "fairUnder": -128,
-      "fairOver": 128,
-      "fullI2Exact": {
-        "0": 56.12,
-        "1": 20.5,
-        "2": 11.5,
-        "3": 5.96,
-        "4+": 5.92
-      },
-      "fullI2Cumulative": {
-        "1+": 43.88,
-        "2+": 23.38,
-        "3+": 11.88,
-        "4+": 5.92
-      },
-      "top2ScorePct": 25.19,
-      "bottom2ScorePct": 24.95,
-      "awayI2StartSlotPct": {
-        "1": 0.68,
-        "2": 0.26,
-        "3": 0.1,
-        "4": 36.91,
-        "5": 30.54,
-        "6": 17.36,
-        "7": 8.62,
-        "8": 3.85,
-        "9": 1.68
-      },
-      "homeI2StartSlotPct": {
-        "1": 0.98,
-        "2": 0.35,
-        "3": 0.16,
-        "4": 33.56,
-        "5": 28.75,
-        "6": 18.95,
-        "7": 10.19,
-        "8": 4.9,
-        "9": 2.14
-      },
-      "awayMeanPitchesEnteringI2": 16.35,
-      "homeMeanPitchesEnteringI2": 16.67,
-      "underRank": 4
-    },
     {
       "gamePk": 824480,
       "gameDate": "2026-08-15T22:40:00Z",
@@ -498,7 +407,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.33,
       "homeMeanPitchesEnteringI2": 16.22,
-      "underRank": 3
+      "underRank": 4
     },
     {
       "gamePk": 823671,
@@ -589,7 +498,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.49,
       "homeMeanPitchesEnteringI2": 16.37,
-      "underRank": 2
+      "underRank": 3
     },
     {
       "gamePk": 823347,
@@ -870,8 +779,18 @@
       "away": "Kansas City Royals",
       "home": "Los Angeles Angels",
       "venue": "Angel Stadium",
-      "lineupConfirmed": false,
-      "awayLineup": [],
+      "lineupConfirmed": true,
+      "awayLineup": [
+        "Nick Loftin",
+        "Bobby Witt Jr.",
+        "Jac Caglianone",
+        "Salvador Perez",
+        "Isaac Collins",
+        "Michael Massey",
+        "Starling Marte",
+        "Luke Maile",
+        "Tyler Tolbert"
+      ],
       "homeLineup": [
         "Wade Meckler",
         "Mike Trout",
@@ -896,7 +815,54 @@
         "homeStarterExtraBaseFallback": false,
         "venueProfileMatched": false
       },
-      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "trials": 50000,
+      "under05": 0.57986,
+      "over05": 0.42013999999999996,
+      "under05Pct": 57.99,
+      "over05Pct": 42.01,
+      "fairUnder": -138,
+      "fairOver": 138,
+      "fullI2Exact": {
+        "0": 57.99,
+        "1": 20.09,
+        "2": 10.86,
+        "3": 5.77,
+        "4+": 5.3
+      },
+      "fullI2Cumulative": {
+        "1+": 42.01,
+        "2+": 21.93,
+        "3+": 11.07,
+        "4+": 5.3
+      },
+      "top2ScorePct": 23.93,
+      "bottom2ScorePct": 23.81,
+      "awayI2StartSlotPct": {
+        "1": 0.59,
+        "2": 0.19,
+        "3": 0.09,
+        "4": 37.37,
+        "5": 31.21,
+        "6": 16.83,
+        "7": 8.49,
+        "8": 3.64,
+        "9": 1.59
+      },
+      "homeI2StartSlotPct": {
+        "1": 0.88,
+        "2": 0.28,
+        "3": 0.12,
+        "4": 34.65,
+        "5": 29.4,
+        "6": 18.8,
+        "7": 9.6,
+        "8": 4.32,
+        "9": 1.94
+      },
+      "awayMeanPitchesEnteringI2": 15.99,
+      "homeMeanPitchesEnteringI2": 16.44,
+      "underRank": 2
     },
     {
       "gamePk": 824966,
@@ -920,7 +886,7 @@
       "awayStarter": "MacKenzie Gore",
       "homeStarter": "J.T. Ginn",
       "venueProfile": null,
-      "status": "Scheduled",
+      "status": "Pre-Game",
       "dataAudit": {
         "awayStarterBF": 570,
         "homeStarterBF": 508,
