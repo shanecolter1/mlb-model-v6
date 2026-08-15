@@ -26,6 +26,28 @@ The prediction engine is market-independent. Sportsbook data is not accepted by 
 8. **Prediction freeze** — freeze baseball probabilities before any market retrieval.
 9. **Market/decision layer** — only after freeze, compare the model with available I2 prices and calculate edge/EV/staking.
 
+## Hard data-source priority rule
+
+For every I2 run, audit, lineup check, starter check, or model update, **the user's own MLB data must be queried before public web sources**. This is a mandatory workflow rule, not a preference.
+
+Source priority is:
+
+1. **Shared/read-only upstream MLB model data layer** — live machine-readable MLB/Statcast/roster/lineup/pitcher data already retrieved by the user's MLB system.
+2. **GitHub model/runtime artifacts** — current frozen snapshots, derived datasets, model outputs, and repository data needed by I2.
+3. **User Library datasets** — historical joined game data, inning benchmarks, saved odds/history files, Retrosheet-derived data, park-factor files, and other approved model datasets.
+4. **Official external baseball sources** — only when the required field is genuinely missing, stale, failed, or needs independent verification after steps 1–3.
+5. **Other public sources** — last resort only, and the fallback must be disclosed.
+
+Additional enforcement rules:
+
+- **Do not declare a lineup, starter, roster state, or other baseball input unavailable until steps 1–3 have been checked.**
+- **For lineups, the shared machine-readable live MLB feed is authoritative ahead of consumer-facing starting-lineup webpages when it is fresher.** A lagging webpage may not override a fresher upstream feed.
+- Public web search must not be used merely for convenience when the same information already exists in the user's MLB data layer, GitHub, or Library.
+- Every fallback to an external source must record the missing/stale/failed upstream field and the fallback source used.
+- Do not silently substitute one data source for another.
+- If sources disagree, preserve the freshest timestamped internal/upstream record, flag the conflict, and verify with an official source rather than automatically replacing the internal value.
+- This priority rule does **not** weaken market isolation: sportsbook/odds/market information remains prohibited from the prediction engine until the baseball prediction artifact is frozen.
+
 ## Why I1 -> I2 state is mandatory
 
 I2 is not an average-lineup inning. The hitters most likely to bat in I2 depend on how many plate appearances occurred in I1. In the 2021–2025 regular-season dataset, I2 began at lineup slot 4 in 8,957 of 24,296 team-game observations and slot 5 in 6,952. The model therefore simulates I1 rather than applying whole-lineup OPS/xwOBA indiscriminately.
