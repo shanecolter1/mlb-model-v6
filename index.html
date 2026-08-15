@@ -54,14 +54,29 @@ main{max-width:1500px;margin:auto;padding:12px}
 .rei-panel{background:#0a1725;border:1px solid #20364d;border-radius:10px;padding:10px}
 .run-dist{margin-top:12px;padding-top:11px;border-top:1px solid #20364d}
 .run-dist-head{margin-bottom:9px;color:#9fb0c4;font-size:12px;text-transform:uppercase;letter-spacing:.10em}
-.run-line-ladder{display:grid;gap:3px}
-.run-line-row{display:grid;grid-template-columns:minmax(82px,1fr) 52px 72px;gap:10px;align-items:center;padding:5px 7px;border-radius:7px;color:#aeb9c8;font-size:15px;font-variant-numeric:tabular-nums}
-.run-line-row .threshold{letter-spacing:.02em}
-.run-line-row .prob,.run-line-row .fair{text-align:right}
-.run-line-row.actionable{color:var(--accent);font-weight:800}
-.run-line-row.primary{background:rgba(57,217,138,.10);box-shadow:inset 3px 0 0 rgba(57,217,138,.70)}
+.run-line-ladder{display:grid;gap:2px}
+.run-prob-head,.run-line-row{display:grid;grid-template-columns:38px minmax(0,1fr) minmax(0,1fr);gap:5px;align-items:center;font-variant-numeric:tabular-nums}
+.run-prob-head{padding:0 4px 3px;color:#73869f;font-size:8px;text-transform:uppercase;letter-spacing:.06em}
+.run-prob-head span:not(:first-child){text-align:right}
+.run-line-row{padding:4px;border-radius:6px;color:#aeb9c8;font-size:11px}
+.run-line-row .threshold{font-size:11px;font-weight:700}
+.run-prob-cell{text-align:right;white-space:nowrap}
+.run-prob-cell b{font-size:11px;color:#e7eef7}
+.run-prob-cell small{font-size:9px;color:#8193aa;margin-left:2px}
+.run-line-row.actionable .cum b,.run-line-row.primary .cum b{color:var(--accent)}
+.run-line-row.primary{background:rgba(57,217,138,.08);box-shadow:inset 2px 0 0 rgba(57,217,138,.60)}
 .run-line-expected{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin-top:11px;padding:11px 7px 2px;border-top:1px solid #20364d;color:#c1cad6;font-size:15px;font-variant-numeric:tabular-nums}
 .run-line-expected b{font-size:17px;color:#eef5ff}
+.combined-inning{margin:6px 8px 2px;padding:6px 7px;background:#081421;border:1px solid #20364d;border-radius:8px}
+.combined-inning-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px}
+.combined-inning-title{font-size:8px;color:#8fa2bd;text-transform:uppercase;letter-spacing:.07em}
+.combined-inning-exp{font-size:9px;color:#c7d2df;white-space:nowrap}.combined-inning-exp b{font-size:11px;color:#eef5ff}
+.combined-inning-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px}
+.combined-inning-cell{min-width:0;text-align:center;padding:3px 1px;border-radius:5px;background:#0d1b2b;font-variant-numeric:tabular-nums}
+.combined-inning-cell span{display:block;font-size:7px;color:#71849d;text-transform:uppercase}
+.combined-inning-cell b{display:block;font-size:10px;line-height:1.15;color:#eef5ff}
+.combined-inning-cell small{display:block;font-size:7.5px;color:#8294aa;line-height:1.1}
+
 
 .rei-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .rei-prob{font-size:25px;font-weight:800;line-height:1}
@@ -290,9 +305,12 @@ main{max-width:1500px;margin:auto;padding:12px}
 
 .final-run-probs{margin:12px 0;background:#0b1624;border:1px solid #23415c;border-radius:10px;padding:10px}
 .runs-scored-note{color:#ffd166;font-weight:600;font-size:11px}
-.prob-table-wrap{overflow-x:auto;margin-top:7px}.prob-table{width:100%;border-collapse:collapse;min-width:690px}
-.prob-table th,.prob-table td{padding:8px 9px;border-bottom:1px solid #20364d;text-align:right;font-size:11px}
-.prob-table th:first-child,.prob-table td:first-child{text-align:left}.prob-table th{color:#9fb0c8;font-size:9px;text-transform:uppercase}
+.prob-table-wrap{overflow-x:auto;margin-top:7px}.prob-table{width:100%;border-collapse:collapse;table-layout:fixed}
+.prob-table th,.prob-table td{padding:8px 6px;border-bottom:1px solid #20364d;text-align:right;font-size:11px;vertical-align:middle}
+.prob-table th:first-child,.prob-table td:first-child{text-align:left;width:10%}.prob-table th{color:#9fb0c8;font-size:9px;text-transform:uppercase;line-height:1.25;white-space:normal}
+.prob-table th:nth-child(2),.prob-table td:nth-child(2){width:20%}.prob-table th:nth-child(3),.prob-table td:nth-child(3){width:22%}.prob-table th:nth-child(4),.prob-table td:nth-child(4){width:23%}.prob-table th:nth-child(5),.prob-table td:nth-child(5){width:25%}
+.mobile-head{display:none}
+@media(max-width:620px){.prob-table-wrap{overflow-x:visible}.prob-table th,.prob-table td{padding:8px 3px;font-size:10px}.prob-table th{font-size:7.5px;letter-spacing:.02em}.wide-head{display:none}.mobile-head{display:inline}.final-run-probs{padding-left:6px;padding-right:6px}}
 .full-lineups{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .full-lineup{background:#0c1725;border:1px solid #20364d;border-radius:10px;padding:9px;overflow:auto}
 .full-lineup table{width:100%;border-collapse:collapse}.full-lineup th,.full-lineup td{font-size:10px;padding:5px 4px;border-bottom:1px solid #1b3044;text-align:right}
@@ -300,8 +318,13 @@ main{max-width:1500px;margin:auto;padding:12px}
 .pitcher-season-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .pitcher-season-card{background:#0c1725;border:1px solid #20364d;border-radius:10px;padding:10px}
 .pitcher-season-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:8px}.pitcher-season-stat span{display:block;color:#8fa2bd;font-size:8px;text-transform:uppercase}.pitcher-season-stat b{font-size:12px}
-.box-score{margin-top:10px;background:#0c1725;border:1px solid #20364d;border-radius:10px;padding:10px;overflow:auto}
-.box-score table{width:100%;border-collapse:collapse;min-width:620px}.box-score th,.box-score td{padding:6px;text-align:center;border-bottom:1px solid #1b3044;font-size:10px}.box-score th:first-child,.box-score td:first-child{text-align:left;font-weight:700}
+.box-score{margin-top:10px;background:#0c1725;border:1px solid #20364d;border-radius:10px;padding:10px;overflow:hidden}
+.box-score-scroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.box-score table{width:100%;border-collapse:separate;border-spacing:0;min-width:620px}
+.box-score th,.box-score td{padding:6px;text-align:center;border-bottom:1px solid #1b3044;font-size:10px;white-space:nowrap}
+.box-score .team-cell{position:sticky;left:0;z-index:2;text-align:left;font-weight:700;background:#0c1725;min-width:142px;box-shadow:5px 0 8px -8px #000}
+.box-score thead .team-cell{z-index:3}
+.box-score .current-inning{background:rgba(57,217,138,.08);font-weight:800}
 @media(max-width:760px){.full-lineups,.pitcher-season-grid{grid-template-columns:1fr}.pitcher-season-stats{grid-template-columns:repeat(5,1fr)}}
 
 </style>
@@ -361,6 +384,9 @@ const feedHealth=new Map();
 const dynamicPitcherState=new Map();
 let scheduleTimer=null, oddsTimer=null, contextTimer=null, pregameTimer=null, overnightTimer=null;
 const pregameDetailMeta=new Map();
+const pregameHalfBaselines=new Map();
+const boxScoreViewState=new Map();
+const PREGAME_BASELINE_TTL_MS=18*60*60*1000;
 const sourceHealth={schedule:{},lineups:{},rosters:{},stats:{},savant:{},odds:{},transactions:{},overnight:{}};
 const postgameJobs=new Map();
 let overnightState={date:null,jobs:{},tomorrowSchedule:[],transactions:[],lastRunAt:0,lastStatus:'idle'};
@@ -619,10 +645,13 @@ function pitcherSeasonCardHTML(pid,pitcherName,title){
 function boxScoreHTML(g){
   const live=g.liveData||{},ls=live.linescore||{},gd=g.gameData||{};
   const away=gd.teams?.away||g.teams?.away?.team,home=gd.teams?.home||g.teams?.home?.team;
-  const innings=Array.from({length:9},(_,i)=>i+1);
+  const currentInning=Math.max(1,num(ls.currentInning,1));
+  const maxInning=Math.max(9,currentInning,...(ls.innings||[]).map(x=>num(x.num,0)));
+  const innings=Array.from({length:maxInning},(_,i)=>i+1);
   const inningMap=new Map((ls.innings||[]).map(x=>[Number(x.num),x]));
-  const row=(side,team)=>`<tr><td>${esc(name(team))}</td>${innings.map(n=>`<td>${esc(inningMap.get(n)?.[side]?.runs ?? '—')}</td>`).join('')}<td>${esc(ls.teams?.[side]?.runs ?? g.teams?.[side]?.score ?? 0)}</td><td>${esc(ls.teams?.[side]?.hits ?? '—')}</td><td>${esc(ls.teams?.[side]?.errors ?? '—')}</td></tr>`;
-  return `<div class="box-score"><div class="label">Box Score</div><table><thead><tr><th>Team</th>${innings.map(n=>`<th>${n}</th>`).join('')}<th>R</th><th>H</th><th>E</th></tr></thead><tbody>${row('away',away)}${row('home',home)}</tbody></table></div>`;
+  const inningClass=n=>n===currentInning?' class="current-inning"':'';
+  const row=(side,team)=>`<tr><td class="team-cell">${esc(name(team))}</td>${innings.map(n=>`<td${inningClass(n)}>${esc(inningMap.get(n)?.[side]?.runs ?? '—')}</td>`).join('')}<td>${esc(ls.teams?.[side]?.runs ?? g.teams?.[side]?.score ?? 0)}</td><td>${esc(ls.teams?.[side]?.hits ?? '—')}</td><td>${esc(ls.teams?.[side]?.errors ?? '—')}</td></tr>`;
+  return `<div class="box-score" data-box-game="${esc(g.gamePk)}" data-current-inning="${currentInning}"><div class="label">Box Score</div><div class="box-score-scroll"><table><thead><tr><th class="team-cell">Team</th>${innings.map(n=>`<th${inningClass(n)} data-inning="${n}">${n}</th>`).join('')}<th>R</th><th>H</th><th>E</th></tr></thead><tbody>${row('away',away)}${row('home',home)}</tbody></table></div></div>`;
 }
 
 function num(v,d=0){const n=Number(v);return Number.isFinite(n)?n:d}
@@ -736,6 +765,60 @@ function runDistribution(lineup,startIdx,pitcherId,outs=0,mask=0,currentCount=nu
   }
   return rec(outs,mask,startIdx,0);
 }
+
+function mixDistributions(a,b,weightA=.5){
+  const w=clamp(Number(weightA)||0,0,1), n=Math.max(a?.length||0,b?.length||0,7), out=Array(n).fill(0);
+  for(let i=0;i<n;i++) out[i]=w*(a?.[i]||0)+(1-w)*(b?.[i]||0);
+  const t=out.reduce((x,y)=>x+y,0)||1; return out.map(x=>x/t);
+}
+function convolveRunDistributions(a,b){
+  const out=Array(7).fill(0);
+  for(let i=0;i<(a?.length||0);i++) for(let j=0;j<(b?.length||0);j++) out[Math.min(6,i+j)]+=(a[i]||0)*(b[j]||0);
+  const t=out.reduce((x,y)=>x+y,0)||1; return out.map(x=>x/t);
+}
+function projectedContinuationProbability(live,side,pid){
+  if(!pid)return 0;
+  const box=live?.boxscore||{}, ids=(box?.teams?.[side]?.pitchers||[]).map(String);
+  const isStarter=ids[0]===String(pid);
+  const stored=dynamicPitcherState.get(String(pid))||{};
+  const pitches=num(pitcherPitches(box,pid,side));
+  const profile=derivedProfiles[String(pid)]||deriveProfile(String(pid));
+  const capacity=Math.max(20,stored.capacity||profile.expectedPitchCapacity||(isStarter?90:32));
+  const workload=stored.workload!=null?stored.workload:pitches/capacity;
+  const line=playerObj(box,side,pid)?.stats?.pitching||{};
+  const bf=Math.max(1,num(line.battersFaced,1));
+  const tto=stored.tto||Math.floor((bf-1)/9)+1;
+  const deterioration=stored.deterioration||0;
+  let p=isStarter?.97:.82;
+  p-=Math.max(0,workload-.52)*(isStarter?.88:1.05);
+  p-=Math.max(0,tto-2)*(isStarter?.09:.03);
+  p-=deterioration*.50;
+  if(!isStarter&&workload>.60)p-=.10;
+  return clamp(p,.10,.98);
+}
+function projectedNextHalfDistribution(live,pitchingSide,battingLineup,startIdx,pregameSeed=null){
+  const pid=currentPitcherId(live,pitchingSide);
+  if(!pid){
+    if(Array.isArray(pregameSeed)) return {dist:pregameSeed,pitcherId:null,continueProb:null,mode:'pregame baseline'};
+    return {dist:runDistribution(battingLineup,startIdx,null,0,0,null),pitcherId:null,continueProb:0,mode:'bullpen baseline'};
+  }
+  const continueDist=runDistribution(battingLineup,startIdx,pid,0,0,null);
+  const bullpenDist=runDistribution(battingLineup,startIdx,null,0,0,null);
+  const continueProb=projectedContinuationProbability(live,pitchingSide,pid);
+  return {dist:mixDistributions(continueDist,bullpenDist,continueProb),pitcherId:pid,continueProb,mode:'projected'};
+}
+function combinedInningHTML(currentAdditionalDist,runsScored,nextHalfDist){
+  const currentFinal=finalRunDistribution(currentAdditionalDist,runsScored);
+  const combined=convolveRunDistributions(currentFinal,nextHalfDist);
+  const m=distributionMetrics(combined);
+  const rows=[['1+',m.p1plus],['2+',m.p2plus],['3+',m.p3plus],['4+',m.p4plus]];
+  const cell=([label,p])=>`<div class="combined-inning-cell"><span>${label}</span><b>${Math.round(p*100)}%</b><small>${p>=.999999?'—':oddsText(fairOdds(p))}</small></div>`;
+  return `<div class="combined-inning">
+    <div class="combined-inning-head"><span class="combined-inning-title">Combined Final Inning</span><span class="combined-inning-exp">Exp <b>${m.expected.toFixed(2)}</b> runs</span></div>
+    <div class="combined-inning-grid">${rows.map(cell).join('')}</div>
+  </div>`;
+}
+
 function distributionMetrics(dist){
   const p0=dist[0]||0;
   const p1plus=1-p0;
@@ -767,32 +850,40 @@ function probabilityTableHTML(additionalDist,runsScored=0){
     const aggOdds=aggregate>=.999999?'—':oddsText(fairOdds(aggregate));
     return `<tr><td>${r}</td><td>${(exact*100).toFixed(1)}%</td><td>${exactOdds}</td><td>${(aggregate*100).toFixed(1)}%</td><td>${aggOdds}</td></tr>`;
   }).join('');
-  return `<div class="final-run-probs"><div class="run-dist-head">Final Half-Inning Run Probabilities${runsScored?` <span class="runs-scored-note">(${runsScored} already scored)</span>`:''}</div><div class="prob-table-wrap"><table class="prob-table"><thead><tr><th>Runs</th><th>Exact Probability</th><th>Exact Fair American Odds</th><th>Aggregate (At Least) Probability</th><th>Aggregate Fair American Odds</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  return `<div class="final-run-probs"><div class="run-dist-head">Final Half-Inning Run Probabilities${runsScored?` <span class="runs-scored-note">(${runsScored} already scored)</span>`:''}</div><div class="prob-table-wrap"><table class="prob-table"><thead><tr><th>Runs</th><th><span class="wide-head">Exact Probability</span><span class="mobile-head">Exact %</span></th><th><span class="wide-head">Exact Fair American Odds</span><span class="mobile-head">Exact Odds</span></th><th><span class="wide-head">Aggregate (At Least) Probability</span><span class="mobile-head">At Least %</span></th><th><span class="wide-head">Aggregate Fair American Odds</span><span class="mobile-head">At Least Odds</span></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
 }
 function scoreProbability(lineup,startIdx,pitcherId,outs=0,mask=0,currentCount=null){
   return distributionMetrics(runDistribution(lineup,startIdx,pitcherId,outs,mask,currentCount)).p1plus;
 }
-function runDistributionHTML(dist){
-  const m=distributionMetrics(dist);
-  const rows=[
-    {label:'1+ Runs',p:m.p1plus},
-    {label:'2+ Runs',p:m.p2plus},
-    {label:'3+ Runs',p:m.p3plus},
-    {label:'4+ Runs',p:m.p4plus}
-  ];
-  // Public-display emphasis: avoid extremely juiced or very-low-probability tails.
-  // Rows in the 30%–70% decision band are bold green; the plus-money row
-  // closest to 38% receives the subtle primary background used in the agreed mockup.
-  const actionable=rows.filter(r=>r.p>=.30&&r.p<=.70);
-  const plusMoney=actionable.filter(r=>r.p<.50);
-  const primary=(plusMoney.length?plusMoney:actionable).slice().sort((a,b)=>Math.abs(a.p-.38)-Math.abs(b.p-.38))[0];
-  const body=rows.map(r=>{
+function runDistributionHTML(dist,runsScored=0){
+  const finalDist=finalRunDistribution(dist,runsScored);
+  const metrics=distributionMetrics(finalDist);
+  const rows=[0,1,2,3,4].map(r=>{
+    const exact=finalDist[r]||0;
+    const cumulative=r===0?1:finalDist.slice(r).reduce((a,b)=>a+(b||0),0);
+    return {r,exact,cumulative};
+  });
+  const candidates=rows.filter(x=>x.r>0&&x.cumulative>=.30&&x.cumulative<=.70);
+  const plusMoney=candidates.filter(x=>x.cumulative<.50);
+  const primary=(plusMoney.length?plusMoney:candidates).slice().sort((a,b)=>Math.abs(a.cumulative-.38)-Math.abs(b.cumulative-.38))[0];
+  const fmtOdds=p=>p<=0?'—':p>=.999999?'—':oddsText(fairOdds(p));
+  const body=rows.map(x=>{
     const classes=['run-line-row'];
-    if(actionable.includes(r))classes.push('actionable');
-    if(primary===r)classes.push('primary');
-    return `<div class="${classes.join(' ')}"><span class="threshold">${r.label}</span><span class="prob">${Math.round(r.p*100)}%</span><span class="fair">(${oddsText(fairOdds(r.p))})</span></div>`;
+    if(x.r>0&&x.cumulative>=.30&&x.cumulative<=.70)classes.push('actionable');
+    if(primary===x)classes.push('primary');
+    const cumLabel=x.r===0?'100%':`${Math.round(x.cumulative*100)}%`;
+    return `<div class="${classes.join(' ')}">
+      <span class="threshold">${x.r}</span>
+      <span class="run-prob-cell exact"><b>${Math.round(x.exact*100)}%</b><small>${fmtOdds(x.exact)}</small></span>
+      <span class="run-prob-cell cum"><b>${cumLabel}</b><small>${fmtOdds(x.cumulative)}</small></span>
+    </div>`;
   }).join('');
-  return `<div class="run-dist"><div class="run-dist-head">Run lines</div><div class="run-line-ladder">${body}</div><div class="run-line-expected"><span>Expected Runs</span><b>${m.expected.toFixed(2)}</b></div></div>`;
+  return `<div class="run-dist">
+    <div class="run-dist-head">Final Half-Inning Runs</div>
+    <div class="run-prob-head"><span>Runs</span><span>Exact</span><span>At least</span></div>
+    <div class="run-line-ladder">${body}</div>
+    <div class="run-line-expected"><span>Expected Final Runs</span><b>${metrics.expected.toFixed(2)}</b></div>
+  </div>`;
 }
 function category(p){return p<.30?'Low':p<.50?'Baseline':'High'}
 function probabilitySignalHTML(p){const c=category(p).toLowerCase();return `<span class="probability-signal ${c}" title="Active team scoring probability: ${category(p)}" aria-label="Active team scoring probability ${category(p)}"></span>`}
@@ -889,7 +980,7 @@ function performanceRatingHTML(opponent){
     <div class="opponent-stats"><div class="opponent-stat"><span>ERA</span><b>${esc(statValue(opponent.id,'pitching','era'))}</b></div><div class="opponent-stat"><span>Pitches</span><b>${esc(opponent.pitches??'—')}</b></div><div class="opponent-stat"><span>IP</span><b>${esc(line.ip??'—')}</b></div><div class="opponent-stat"><span>K</span><b>${esc(line.k??'—')}</b></div><div class="opponent-stat"><span>BB</span><b>${esc(line.bb??'—')}</b></div><div class="opponent-stat"><span>H</span><b>${esc(line.h??'—')}</b></div></div>
   </div>`;
 }
-function compactTeamPanel(gamePk,key,teamName,role,p,conf,dist,nextPlayers,opponent){
+function compactTeamPanel(gamePk,key,teamName,role,p,conf,dist,nextPlayers,opponent,runsScored=0){
   const m=distributionMetrics(dist),fair=fairOdds(p),cat=category(p);
   return `<section class="compact-team-card">
     <div class="compact-team-head">
@@ -901,9 +992,7 @@ function compactTeamPanel(gamePk,key,teamName,role,p,conf,dist,nextPlayers,oppon
       <div class="compact-confidence">Confidence: <b>${esc(conf)}</b> · Adjusted: <b>${Math.round(confidenceAdjusted(p,conf)*100)}%</b></div>
     </div>
     ${performanceRatingHTML(opponent)}
-    <div class="compact-section-label">Run lines</div>
-    ${compactRunLadderHTML(dist)}
-    <div class="compact-expected"><span>Expected Runs</span><b>${m.expected.toFixed(2)}</b></div>
+    ${runDistributionHTML(dist,runsScored)}
     <div class="compact-next"><div class="compact-next-title">Next batters</div>${compactNextRows(nextPlayers)}</div>
   </section>`;
 }
@@ -942,6 +1031,49 @@ function readinessHTML(g,lineupsReady,statsReady,oddsReady){
   const count=items.filter(x=>x[1]).length;
   return `<div class="readiness"><div class="readiness-head"><div class="label">Pregame data readiness</div><b>${count}/${items.length}</b></div><div class="ready-grid">${items.map(([x,ok])=>`<div class="ready-item ${ok?'ok':'partial'}"><span class="ready-dot"></span>${esc(x)}</div>`).join('')}</div></div>`;
 }
+
+function lineupSignature(lineup){
+  return (lineup||[]).map(x=>String(x?.id||'')).filter(Boolean).join(',');
+}
+function persistPregameHalfBaseline(gamePk,data){
+  const key=String(gamePk), value={...data,createdAt:Date.now()};
+  pregameHalfBaselines.set(key,value);
+  try{localStorage.setItem(`mlb-pregame-half-baseline-${key}`,JSON.stringify(value))}catch{}
+  return value;
+}
+function getPregameHalfBaseline(gamePk,side,lineup=null,pitcherId=null){
+  const key=String(gamePk);
+  let value=pregameHalfBaselines.get(key)||null;
+  if(!value){
+    try{
+      const raw=localStorage.getItem(`mlb-pregame-half-baseline-${key}`);
+      if(raw){value=JSON.parse(raw);pregameHalfBaselines.set(key,value)}
+    }catch{}
+  }
+  if(!value||Date.now()-num(value.createdAt)>PREGAME_BASELINE_TTL_MS)return null;
+  const expectedSig=lineupSignature(lineup);
+  if(expectedSig&&value[`${side}LineupSig`]&&value[`${side}LineupSig`]!==expectedSig)return null;
+  if(pitcherId&&value[`${side}OppPitcherId`]&&String(value[`${side}OppPitcherId`])!==String(pitcherId))return null;
+  return Array.isArray(value[`${side}Dist`])?value[`${side}Dist`]:null;
+}
+function initializePregameHalfBaselines(g){
+  if(!g||groupState(gameState(g))!=='scheduled')return null;
+  const live=g.liveData||{},gd=g.gameData||{},box=live.boxscore||{};
+  const awayLineup=activeLineup(box,'away'),homeLineup=activeLineup(box,'home');
+  if(awayLineup.length!==9||homeLineup.length!==9)return null;
+  const awayPid=gd.probablePitchers?.away?.id||g.teams?.away?.probablePitcher?.id||currentPitcherId(live,'away');
+  const homePid=gd.probablePitchers?.home?.id||g.teams?.home?.probablePitcher?.id||currentPitcherId(live,'home');
+  if(!awayPid||!homePid)return null;
+  const awayDist=runDistribution(awayLineup,0,homePid,0,0,null);
+  const homeDist=runDistribution(homeLineup,0,awayPid,0,0,null);
+  return persistPregameHalfBaseline(g.gamePk,{
+    awayDist,homeDist,
+    awayLineupSig:lineupSignature(awayLineup),homeLineupSig:lineupSignature(homeLineup),
+    awayOppPitcherId:homePid,homeOppPitcherId:awayPid,
+    source:'official-lineups+probable-starters'
+  });
+}
+
 function pregamePanel(title,p,conf,market,dist=null){
   const cat=category(p),fair=fairOdds(p),adj=confidenceAdjusted(p,conf),book=market?`${market.book} ${oddsText(market.price)}`:'Odds unavailable';
   let ev=''; if(market){const d=decimalOdds(market.price),v=adj*d-1;ev=`<div class="ev ${v>=0?'pos':'neg'}">Adj. EV ${v>=0?'+':''}${(v*100).toFixed(1)}%</div>`}
@@ -1177,7 +1309,13 @@ function gameCard(g){
   const lastFieldingBatter=lastBatterForSide(live,fieldingSide,new Set(fieldingLineup.map(x=>x.id)));
   const nextStart=lineupStartIndex(fieldingLineup,lastFieldingBatter,true);
   const currentDist=runDistribution(battingLineup,currentStart,defensivePitcherId,Number(ls.outs??cp.count?.outs??0),baseMask(offense),{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0});
-  const nextDist=runDistribution(fieldingLineup,nextStart,offensePitcherId,0,0,null);
+  // The first next-half forecast is initialized pregame when official lineups and starters are ready.
+  // During Top 1, that stored Bottom 1 distribution is available immediately as a continuity fallback.
+  // Once live pitcher state is available, the dynamic continuation/bullpen projection supersedes the seed.
+  const pregameNextSeed=(num(ls.currentInning)===1&&battingSide==='away'&&nextStart===0)
+    ?getPregameHalfBaseline(g.gamePk,'home',fieldingLineup,offensePitcherId):null;
+  const nextPitchingProjection=projectedNextHalfDistribution(live,battingSide,fieldingLineup,nextStart,pregameNextSeed);
+  const nextDist=nextPitchingProjection.dist;
   const currentProb=distributionMetrics(finalRunDistribution(currentDist,currentHalfRuns(ls))).p1plus;
   const nextProb=distributionMetrics(nextDist).p1plus;
   const currentConf=confidence(battingLineup,defensivePitcherId,false);
@@ -1204,7 +1342,8 @@ function gameCard(g){
       <div class="score-team home"><div class="score-team-value">${homeRuns}</div><div class="score-team-meta"><div class="score-team-name">${esc(name(home))}</div><div class="score-team-record">${esc(homeRecord)}</div></div></div>
     </div>
     <div class="compact-matchup"><div class="compact-player"><div class="batter-primary-line"><div class="primary">${esc(name(batter))}</div></div><div class="secondary">#${esc(spot||'—')} · OPS ${esc(statValue(batter?.id,'hitting','ops'))}</div></div><div class="compact-vs">vs</div><div class="compact-player right"><div class="primary">${esc(name(defensivePitcher))}</div><div class="secondary">${esc(pitches)} pitches · ERA ${esc(defensiveEra)} · ${pitcherStateBadge(defensivePitcherId)}</div></div></div>
-    ${probabilityTableHTML(currentDist,currentHalfRuns(ls))}\n    <div class="compact-team-grid">${(()=>{const pid=currentPitcherId(live,'away');return compactTeamPanel(g.gamePk,'away',name(away),battingSide==='away'?'Batting now':'Next half',battingSide==='away'?currentProb:nextProb,battingSide==='away'?currentConf:nextConf,battingSide==='away'?currentDist:nextDist,awayNext,{id:pid,name:name(playerObj(box,'away',pid)?.person),pitches:pitcherPitches(box,pid,'away'),line:pitcherGameLine(box,'away',pid),title:pitcherAppearanceTitle(box,'away',pid)});})()}${(()=>{const pid=currentPitcherId(live,'home');return compactTeamPanel(g.gamePk,'home',name(home),battingSide==='home'?'Batting now':'Next half',battingSide==='home'?currentProb:nextProb,battingSide==='home'?currentConf:nextConf,battingSide==='home'?currentDist:nextDist,homeNext,{id:pid,name:name(playerObj(box,'home',pid)?.person),pitches:pitcherPitches(box,pid,'home'),line:pitcherGameLine(box,'home',pid),title:pitcherAppearanceTitle(box,'home',pid)});})()}</div>
+    <div class="compact-team-grid">${(()=>{const pid=currentPitcherId(live,'away');return compactTeamPanel(g.gamePk,'away',name(away),battingSide==='away'?'Batting now':'Next half',battingSide==='away'?currentProb:nextProb,battingSide==='away'?currentConf:nextConf,battingSide==='away'?currentDist:nextDist,awayNext,{id:pid,name:name(playerObj(box,'away',pid)?.person),pitches:pitcherPitches(box,pid,'away'),line:pitcherGameLine(box,'away',pid),title:pitcherAppearanceTitle(box,'away',pid)},battingSide==='away'?currentHalfRuns(ls):0);})()}${(()=>{const pid=currentPitcherId(live,'home');return compactTeamPanel(g.gamePk,'home',name(home),battingSide==='home'?'Batting now':'Next half',battingSide==='home'?currentProb:nextProb,battingSide==='home'?currentConf:nextConf,battingSide==='home'?currentDist:nextDist,homeNext,{id:pid,name:name(playerObj(box,'home',pid)?.person),pitches:pitcherPitches(box,pid,'home'),line:pitcherGameLine(box,'home',pid),title:pitcherAppearanceTitle(box,'home',pid)},battingSide==='home'?currentHalfRuns(ls):0);})()}</div>
+    ${combinedInningHTML(currentDist,currentHalfRuns(ls),nextDist)}
     ${boxScoreHTML(g)}\n    <div class="compact-actions"><details><summary>Compare odds</summary><div class="details-body">${compactOddsInput(g.gamePk,'away',battingSide==='away'?currentProb:nextProb,battingSide==='away'?currentConf:nextConf,name(away))}${compactOddsInput(g.gamePk,'home',battingSide==='home'?currentProb:nextProb,battingSide==='home'?currentConf:nextConf,name(home))}</div></details><details><summary>Game details</summary><div class="details-body"><div class="compact-diag-grid"><span>Last: ${esc(last||'—')}</span><span>Venue: ${esc(gd.venue?.name||g.venue?.name||'—')}</span><span>Game ${esc(g.gamePk)}</span><span>${savantStatusHTML(g.gamePk)}</span></div></div></details></div>`:`
     <div class="gamehead"><strong>${esc(gd.venue?.name||g.venue?.name||'MLB')}</strong><span class="badge ${phase}">${esc(inningText)}</span></div>
     <div class="teams"><div class="team">${esc(name(away))} <span class="badge">${esc(awayRecord)}</span></div><div class="score">${awayRuns}</div><div class="team">${esc(name(home))} <span class="badge">${esc(homeRecord)}</span></div><div class="score">${homeRuns}</div></div>
@@ -1218,7 +1357,9 @@ function gameCard(g){
       const ready=awayLineup.length===9&&homeLineup.length===9;
       const statsReady=[...awayLineup,...homeLineup].some(x=>seasonStats[x.id]);
       const event=gameOdds(g),awayMarket=bestH2H(event,name(away)),homeMarket=bestH2H(event,name(home));
-      const awayDist=runDistribution(awayLineup,0,homePid,0,0,null),homeDist=runDistribution(homeLineup,0,awayPid,0,0,null);
+      const baseline=ready?initializePregameHalfBaselines(g):null;
+      const awayDist=baseline?.awayDist||runDistribution(awayLineup,0,homePid,0,0,null);
+      const homeDist=baseline?.homeDist||runDistribution(homeLineup,0,awayPid,0,0,null);
       const awayP=distributionMetrics(awayDist).p1plus,homeP=distributionMetrics(homeDist).p1plus;
       const awayC=confidence(awayLineup,homePid,true),homeC=confidence(homeLineup,awayPid,true);
       return `<div class="pitcher-season-grid">${pitcherSeasonCardHTML(awayPid,probableAway,`${name(away)} probable starter`)}${pitcherSeasonCardHTML(homePid,probableHome,`${name(home)} probable starter`)}</div>
@@ -1393,6 +1534,37 @@ function visibleGames(){
   const mode=filter.value;
   return sortGames(cache.filter(g=>mode==='all'||groupState(gameState(g))===mode));
 }
+
+function captureBoxScoreView(card,gamePk){
+  const scroller=card?.querySelector('.box-score-scroll');
+  const box=card?.querySelector('.box-score');
+  if(!scroller||!box)return;
+  const inning=num(box.dataset.currentInning,0);
+  boxScoreViewState.set(String(gamePk),{inning,scrollLeft:scroller.scrollLeft});
+}
+function positionBoxScore(card,g){
+  const box=card?.querySelector('.box-score');
+  const scroller=box?.querySelector('.box-score-scroll');
+  if(!box||!scroller)return;
+  const key=String(g.gamePk),inning=num(box.dataset.currentInning,0),saved=boxScoreViewState.get(key);
+  const currentHeader=box.querySelector(`th[data-inning="${inning}"]`);
+  requestAnimationFrame(()=>{
+    if(saved&&saved.inning===inning){
+      scroller.scrollLeft=saved.scrollLeft;
+    }else if(currentHeader){
+      // Put the current inning near the right side of the visible score window.
+      // This keeps the latest action visible while the sticky Team column remains readable.
+      const stickyWidth=box.querySelector('.team-cell')?.offsetWidth||0;
+      const target=Math.max(0,currentHeader.offsetLeft+currentHeader.offsetWidth-scroller.clientWidth+stickyWidth+18);
+      scroller.scrollLeft=Math.min(target,scroller.scrollWidth-scroller.clientWidth);
+      boxScoreViewState.set(key,{inning,scrollLeft:scroller.scrollLeft});
+    }
+    scroller.addEventListener('scroll',()=>{
+      boxScoreViewState.set(key,{inning,scrollLeft:scroller.scrollLeft});
+    },{passive:true});
+  });
+}
+
 function render(force=false, changedIds=null){
   const visible=visibleGames();
   updateMetrics();
@@ -1405,10 +1577,12 @@ function render(force=false, changedIds=null){
   visible.forEach((g,index)=>{
     const id=String(g.gamePk), existing=gamesEl.querySelector(`[data-game-card="${id}"]`);
     if(force || !changedIds || changedIds.has(id) || !existing){
+      if(existing)captureBoxScoreView(existing,id);
       const wrap=document.createElement('div');wrap.innerHTML=gameCard(g).trim();
       const next=wrap.firstElementChild;next.dataset.gameCard=id;
       if(existing) existing.replaceWith(next); else gamesEl.appendChild(next);
       bindMarketInputs(next);
+      positionBoxScore(next,g);
     }
   });
   visible.forEach(g=>{const el=gamesEl.querySelector(`[data-game-card="${g.gamePk}"]`);if(el)gamesEl.appendChild(el)});
@@ -1478,7 +1652,9 @@ async function refreshPregameDetails(force=false){
     try{
       const detail=await getJSON(`${API}?type=feed&gamePk=${encodeURIComponent(key)}`,{timeoutMs:PREGAME_DETAIL_TIMEOUT_MS});
       const before=cache.find(x=>String(x.gamePk)===key), updated=mergeGame(before||g,detail);
-      cache=cache.map(x=>String(x.gamePk)===key?updated:x);pregameDetailMeta.set(key,Date.now());changed=true;
+      cache=cache.map(x=>String(x.gamePk)===key?updated:x);
+      initializePregameHalfBaselines(updated);
+      pregameDetailMeta.set(key,Date.now());changed=true;
     }catch(e){console.warn(`Pregame detail ${key}`,e)}
   }));
   if(changed){markSource('lineups',true);render(true)}
