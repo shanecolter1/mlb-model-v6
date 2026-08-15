@@ -1,0 +1,90 @@
+name: Run I2 daily slate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_daily_run.yml'
+      - 'src/pipeline/run_i2_today.mjs'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'YYYY-MM-DD'
+        required: false
+      cutoff:
+        description: 'ISO-8601 UTC cutoff; games starting after this are included'
+        required: false
+      trials:
+        description: 'Monte Carlo trials per game'
+        required: false
+        default: '50000'
+
+permissions:
+  contents: write
+
+jobs:
+  run-i2-slate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Resolve run parameters
+        id: params
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE_INPUT='${{ inputs.date }}'
+          CUTOFF_INPUT='${{ inputs.cutoff }}'
+          TRIALS_INPUT='${{ inputs.trials }}'
+          if [ -z "$DATE_INPUT" ]; then DATE_INPUT='2026-08-15'; fi
+          if [ -z "$CUTOFF_INPUT" ]; then CUTOFF_INPUT='2026-08-15T21:41:00Z'; fi
+          if [ -z "$TRIALS_INPUT" ]; then TRIALS_INPUT='50000'; fi
+          echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
+          echo "cutoff=$CUTOFF_INPUT" >> "$GITHUB_OUTPUT"
+          echo "trials=$TRIALS_INPUT" >> "$GITHUB_OUTPUT"
+
+      - name: Build current 3-year Savant venue profiles
+        continue-on-error: true
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+        run: |
+          mkdir -p data/runtime/i2
+          YEAR="${I2_DATE:0:4}"
+          python src/build_savant_venue_profiles.py \
+            --year "$YEAR" \
+            --rolling 3 \
+            --output-dir data/runtime/i2
+
+      - name: Run frozen I2 research projections
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_CUTOFF: ${{ steps.params.outputs.cutoff }}
+          I2_TRIALS: ${{ steps.params.outputs.trials }}
+          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+        run: node src/pipeline/run_i2_today.mjs
+
+      - name: Commit frozen prediction artifact
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json"
+          if git diff --cached --quiet; then
+            echo 'No prediction changes.'
+            exit 0
+          fi
+          git commit -m "Freeze I2 projections ${{ steps.params.outputs.date }}"
+          git push
