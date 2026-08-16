@@ -17,22 +17,20 @@ async function getFeed(gamePk){
       audit.upstreamAttempts++;
       const u=new URL(`${UPSTREAM}/.netlify/functions/mlb`);
       u.searchParams.set('type','feed'); u.searchParams.set('gamePk',String(gamePk));
-      const r=await fetch(u,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.2'}});
+      const r=await fetch(u,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.3'}});
       if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       audit.upstreamSuccesses++;
       return {feed:await r.json(),source:'USER_UPSTREAM'};
     }catch(e){ /* governed fallback below */ }
   }
   audit.officialFallbacks++;
-  const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.2'}});
+  const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.3'}});
   if(!r.ok) throw new Error(`MLB feed ${r.status} ${r.statusText}`);
   return {feed:await r.json(),source:'MLB_STATS_API_FALLBACK'};
 }
 
 // MLB boxscore battingOrder uses 100/200/.../900 for the original starters;
 // later substitutes in the same batting slot use sequence suffixes such as 101.
-// Restricting to values divisible by 100 avoids falsely treating substitutions
-// as pregame lineup changes in a postgame comparison.
 function lineupNames(feed,side){
   const team=feed?.liveData?.boxscore?.teams?.[side];
   return Object.values(team?.players||{})
@@ -54,6 +52,25 @@ function secondInning(feed){
   const complete=Boolean(inn.away) && Boolean(inn.home);
   return {away,home,total:away+home,complete};
 }
+function i2HalfPlays(feed,halfInning){
+  return (feed?.liveData?.plays?.allPlays||[])
+    .filter(p=>Number(p?.about?.inning)===2 && String(p?.about?.halfInning||'').toLowerCase()===halfInning)
+    .map(p=>({
+      batter:p?.matchup?.batter?.fullName||null,
+      pitcher:p?.matchup?.pitcher?.fullName||null,
+      event:p?.result?.event||null,
+      eventType:p?.result?.eventType||null,
+      rbi:Number(p?.result?.rbi||0),
+      description:p?.result?.description||null,
+      isScoringPlay:Boolean(p?.about?.isScoringPlay),
+    }));
+}
+function startSlotFromPlays(lineup,plays){
+  const first=plays?.[0]?.batter;
+  if(!first||!Array.isArray(lineup)) return null;
+  const idx=lineup.indexOf(first);
+  return idx>=0?idx+1:null;
+}
 function sameLineup(a,b){return Array.isArray(a)&&Array.isArray(b)&&a.length===9&&b.length===9&&a.every((x,i)=>x===b[i]);}
 function clamp(p){return Math.min(1-1e-12,Math.max(1e-12,p));}
 
@@ -66,6 +83,9 @@ for(const g of pred.games||[]){
     const status=feed?.gameData?.status?.detailedState || feed?.gameData?.status?.abstractGameState || null;
     const actualAwayLineup=lineupNames(feed,'away'), actualHomeLineup=lineupNames(feed,'home');
     const actualAwayStarter=actualStarter(feed,'away'), actualHomeStarter=actualStarter(feed,'home');
+    const top2Plays=i2HalfPlays(feed,'top'), bottom2Plays=i2HalfPlays(feed,'bottom');
+    const actualAwayI2StartSlot=startSlotFromPlays(actualAwayLineup,top2Plays);
+    const actualHomeI2StartSlot=startSlotFromPlays(actualHomeLineup,bottom2Plays);
     const p=Number(g.under05);
     const y=i2?.complete ? (i2.total===0?1:0) : null;
     rows.push({
@@ -84,6 +104,12 @@ for(const g of pred.games||[]){
       predictedHomeLineup:g.homeLineup||[], actualHomeLineup,
       awayLineupExactMatch:actualAwayLineup.length===9?sameLineup(g.awayLineup,actualAwayLineup):null,
       homeLineupExactMatch:actualHomeLineup.length===9?sameLineup(g.homeLineup,actualHomeLineup):null,
+      actualAwayI2StartSlot,
+      actualHomeI2StartSlot,
+      modelProbabilityOfActualAwayStartSlot:actualAwayI2StartSlot?Number(g.awayI2StartSlotPct?.[String(actualAwayI2StartSlot)]??0)/100:null,
+      modelProbabilityOfActualHomeStartSlot:actualHomeI2StartSlot?Number(g.homeI2StartSlotPct?.[String(actualHomeI2StartSlot)]??0)/100:null,
+      top2Plays,
+      bottom2Plays,
     });
   }catch(e){rows.push({gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,error:String(e)});}
 }
@@ -92,6 +118,7 @@ const graded=rows.filter(r=>r.actualUnder!==null&&r.actualUnder!==undefined);
 const mean=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null;
 const actualUnders=graded.filter(r=>r.actualUnder===1).length;
 const expectedUnders=graded.reduce((s,r)=>s+Number(r.modelUnderPct||0)/100,0);
+const startSlotProbs=graded.flatMap(r=>[r.modelProbabilityOfActualAwayStartSlot,r.modelProbabilityOfActualHomeStartSlot]).filter(x=>Number.isFinite(x));
 const summary={
   date:DATE, generatedAt:new Date().toISOString(), historicalBaselineUnder:HIST_BASELINE_UNDER,
   gradedGames:graded.length, actualUnders, actualOvers:graded.length-actualUnders,
@@ -100,6 +127,7 @@ const summary={
   meanModelUnderProbability:graded.length?expectedUnders/graded.length:null,
   modelBrier:mean(graded.map(r=>r.brier)), baselineBrier:mean(graded.map(r=>r.baselineBrier)),
   modelLogLoss:mean(graded.map(r=>r.logLoss)),
+  meanProbabilityAssignedToActualI2StartSlot:mean(startSlotProbs),
   starterMismatches:graded.filter(r=>r.awayStarterMatch===false||r.homeStarterMatch===false).map(r=>({gamePk:r.gamePk,matchup:r.matchup,predictedAwayStarter:r.predictedAwayStarter,actualAwayStarter:r.actualAwayStarter,predictedHomeStarter:r.predictedHomeStarter,actualHomeStarter:r.actualHomeStarter})),
   lineupMismatches:graded.filter(r=>r.awayLineupExactMatch===false||r.homeLineupExactMatch===false).map(r=>({gamePk:r.gamePk,matchup:r.matchup,predictionClass:r.predictionClass,awayMatch:r.awayLineupExactMatch,homeMatch:r.homeLineupExactMatch})),
   sourcePriorityAudit:audit,
@@ -108,4 +136,4 @@ const out={summary,rows};
 fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});
 fs.writeFileSync(OUTPUT,JSON.stringify(out,null,2));
 console.log(JSON.stringify(summary,null,2));
-for(const r of graded) console.log(`${r.matchup}: model U ${r.modelUnderPct}% | actual I2 ${r.actualI2.away}-${r.actualI2.home} (${r.actualI2.total}) | ${r.actualUnder?'UNDER':'OVER'} | starters ${r.awayStarterMatch&&r.homeStarterMatch?'MATCH':'MISMATCH'} | lineups ${r.awayLineupExactMatch&&r.homeLineupExactMatch?'MATCH':'MISMATCH'}`);
+for(const r of graded) console.log(`${r.matchup}: model U ${r.modelUnderPct}% | actual I2 ${r.actualI2.away}-${r.actualI2.home} (${r.actualI2.total}) | ${r.actualUnder?'UNDER':'OVER'} | starters ${r.awayStarterMatch&&r.homeStarterMatch?'MATCH':'MISMATCH'} | lineups ${r.awayLineupExactMatch&&r.homeLineupExactMatch?'MATCH':'MISMATCH'} | actual I2 slots ${r.actualAwayI2StartSlot}/${r.actualHomeI2StartSlot}`);
