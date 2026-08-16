@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/i2_daily_run.yml'
       - 'src/pipeline/run_i2_today.mjs'
+      - 'src/pipeline/run_i2_today_upstream_wrapper.mjs'
   workflow_dispatch:
     inputs:
       date:
@@ -28,17 +29,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Install Python dependencies
-        run: pip install -r requirements.txt
 
       - name: Resolve run parameters
         id: params
@@ -48,33 +41,35 @@ jobs:
           DATE_INPUT='${{ inputs.date }}'
           CUTOFF_INPUT='${{ inputs.cutoff }}'
           TRIALS_INPUT='${{ inputs.trials }}'
-          if [ -z "$DATE_INPUT" ]; then DATE_INPUT='2026-08-15'; fi
-          if [ -z "$CUTOFF_INPUT" ]; then CUTOFF_INPUT='2026-08-15T21:50:00Z'; fi
+          if [ -z "$DATE_INPUT" ]; then DATE_INPUT="$(date -u +%F)"; fi
+          if [ -z "$CUTOFF_INPUT" ]; then CUTOFF_INPUT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"; fi
           if [ -z "$TRIALS_INPUT" ]; then TRIALS_INPUT='50000'; fi
           echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
           echo "cutoff=$CUTOFF_INPUT" >> "$GITHUB_OUTPUT"
           echo "trials=$TRIALS_INPUT" >> "$GITHUB_OUTPUT"
 
-      - name: Build current 3-year Savant venue profiles
-        continue-on-error: true
-        env:
-          I2_DATE: ${{ steps.params.outputs.date }}
+      - name: Audit internal venue artifact
+        shell: bash
         run: |
-          mkdir -p data/runtime/i2
-          YEAR="${I2_DATE:0:4}"
-          python src/build_savant_venue_profiles.py \
-            --year "$YEAR" \
-            --rolling 3 \
-            --output-dir data/runtime/i2
+          set -euo pipefail
+          YEAR="${{ steps.params.outputs.date }}"
+          YEAR="${YEAR:0:4}"
+          FILE="data/runtime/i2/savant_venue_profiles_${YEAR}_3yr.json"
+          if [ -f "$FILE" ]; then
+            echo "Using repository venue artifact: $FILE"
+          else
+            echo "No internal complete venue artifact found; venue remains MISSING/neutral fallback for dimensional continuity."
+          fi
 
-      - name: Run frozen I2 research projections
+      - name: Run I2 research projections through user upstream first
         env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_DATE: ${{ steps.params.outputs.date }}
           I2_CUTOFF: ${{ steps.params.outputs.cutoff }}
           I2_TRIALS: ${{ steps.params.outputs.trials }}
           I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
           I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
-        run: node src/pipeline/run_i2_today.mjs
+        run: node src/pipeline/run_i2_today_upstream_wrapper.mjs
 
       - name: Commit frozen prediction artifact
         run: |
