@@ -1,0 +1,41 @@
+{
+  "date": "2026-08-16",
+  "purpose": "Full-slate I2 shadow run for games whose batting orders were available externally but not yet populated in the MLB live feed used by the runner.",
+  "governance": {
+    "marketDataUsed": false,
+    "sourceStatus": "EXPECTED_NOT_MLB_FEED_CONFIRMED",
+    "note": "These overrides are used only when the MLB live feed does not contain a complete 9-man batting order. Feed-confirmed lineups always take precedence. Override projections must be labeled provisional until independently confirmed."
+  },
+  "games": {
+    "824642": {
+      "matchup": "St. Louis Cardinals @ Chicago Cubs",
+      "away": ["JJ Wetherholt", "Ivan Herrera", "Alec Burleson", "Jordan Walker", "Nathan Church", "Masyn Winn", "Joshua Baez", "Jimmy Crooks", "Jose Fermin"],
+      "home": ["Pete Crow-Armstrong", "Seiya Suzuki", "Michael Busch", "Alex Bregman", "Ian Happ", "Nico Hoerner", "Carson Kelly", "Dansby Swanson", "Tyrone Taylor"]
+    },
+    "823182": {
+      "matchup": "Colorado Rockies @ San Francisco Giants",
+      "away": ["Jake McCarthy", "Cole Carrigg", "TJ Rumfield", "Hunter Goodman", "Mickey Moniak", "Willi Castro", "Zac Veen", "Connor Norby", "Ezequiel Tovar"],
+      "home": ["Jung Hoo Lee", "Willy Adames", "Bryce Eldridge", "Rafael Devers", "Victor Bericoto", "Drew Gilbert", "Osleivis Basabe", "Daniel Cavanaugh", "Christian Koss"]
+    },
+    "824965": {
+      "matchup": "Texas Rangers @ Athletics",
+      "away": ["Wyatt Langford", "Corey Seager", "Ezequiel Duran", "Brandon Nimmo", "Jake Burger", "Justin Foscue", "Elias Diaz", "Cody Freeman", "Evan Carter"],
+      "home": ["Zack Gelof", "Jacob Wilson", "Jonah Heim", "Tyler Soderstrom", "Tommy White", "Henry Bolte", "Lawrence Butler", "Brian Serven", "Alika Williams"]
+    },
+    "823991": {
+      "matchup": "Kansas City Royals @ Los Angeles Angels",
+      "away": ["Carter Jensen", "Bobby Witt Jr.", "Jac Caglianone", "Salvador Perez", "Michael Massey", "Isaac Collins", "Nick Loftin", "John Rave", "Kyle Isbel"],
+      "home": ["Zach Neto", "Mike Trout", "Nolan Schanuel", "Vaughn Grissom", "Denzer Guzman", "Moises Ballesteros", "Travis d'Arnaud", "Jose Siri", "Wade Meckler"]
+    },
+    "823912": {
+      "matchup": "Milwaukee Brewers @ Los Angeles Dodgers",
+      "away": ["Jackson Chourio", "Brice Turang", "Andrew Vaughn", "Jake Bauers", "William Contreras", "Gary Sanchez", "Brandon Lockridge", "David Hamilton", "Joey Ortiz"],
+      "home": ["Shohei Ohtani", "Andy Pages", "Freddie Freeman", "Max Muncy", "Mookie Betts", "Kyle Tucker", "Tommy Edman", "Teoscar Hernandez", "Hunter Feduccia"]
+    },
+    "824156": {
+      "matchup": "Seattle Mariners @ Houston Astros",
+      "away": ["Taylor Ward", "Cole Young", "Randy Arozarena", "Dominic Canzone", "Julio Rodriguez", "Josh Naylor", "Brendan Donovan", "Cal Raleigh", "Brock Rodden"],
+      "home": ["Jeremy Pena", "Yordan Alvarez", "Isaac Paredes", "Daulton Varsho", "Christian Walker", "Jose Altuve", "Taylor Trammell", "Yainer Diaz", "Cam Smith"]
+    }
+  }
+}
