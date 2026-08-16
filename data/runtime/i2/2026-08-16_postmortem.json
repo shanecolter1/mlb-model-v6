@@ -1,7 +1,7 @@
 {
   "summary": {
     "date": "2026-08-16",
-    "generatedAt": "2026-08-16T21:46:25.098Z",
+    "generatedAt": "2026-08-16T21:48:26.338Z",
     "historicalBaselineUnder": 0.564958,
     "gradedGames": 13,
     "actualUnders": 6,
@@ -14,55 +14,6 @@
     "modelLogLoss": 0.710044823397771,
     "starterMismatches": [],
     "lineupMismatches": [
-      {
-        "gamePk": 824880,
-        "matchup": "Arizona Diamondbacks @ Atlanta Braves",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": false,
-        "homeMatch": true
-      },
-      {
-        "gamePk": 822774,
-        "matchup": "New York Yankees @ Toronto Blue Jays",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": false,
-        "homeMatch": false
-      },
-      {
-        "gamePk": 823590,
-        "matchup": "Washington Nationals @ New York Mets",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": false,
-        "homeMatch": true
-      },
-      {
-        "gamePk": 824397,
-        "matchup": "San Diego Padres @ Cleveland Guardians",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": true,
-        "homeMatch": false
-      },
-      {
-        "gamePk": 824236,
-        "matchup": "Chicago White Sox @ Detroit Tigers",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": false,
-        "homeMatch": false
-      },
-      {
-        "gamePk": 824477,
-        "matchup": "Miami Marlins @ Cincinnati Reds",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": false,
-        "homeMatch": false
-      },
-      {
-        "gamePk": 823670,
-        "matchup": "Philadelphia Phillies @ Minnesota Twins",
-        "predictionClass": "FROZEN_FEED_CONFIRMED",
-        "awayMatch": false,
-        "homeMatch": false
-      },
       {
         "gamePk": 824642,
         "matchup": "St. Louis Cardinals @ Chicago Cubs",
@@ -227,9 +178,9 @@
         "Ketel Marte",
         "Max Kepler",
         "Nolan Arenado",
-        "Ildemaro Vargas",
         "Tim Tawa",
-        "James McCann"
+        "James McCann",
+        "Jorge Barrosa"
       ],
       "predictedHomeLineup": [
         "Drake Baldwin",
@@ -253,7 +204,7 @@
         "Austin Riley",
         "Jim Jarvis"
       ],
-      "awayLineupExactMatch": false,
+      "awayLineupExactMatch": true,
       "homeLineupExactMatch": true
     },
     {
@@ -303,8 +254,8 @@
         "Spencer Jones",
         "George Lombard Jr.",
         "Ryan McMahon",
-        "Paul Goldschmidt",
-        "Jazz Chisholm Jr."
+        "Austin Wells",
+        "José Caballero"
       ],
       "predictedHomeLineup": [
         "Brett Bateman",
@@ -320,16 +271,16 @@
       "actualHomeLineup": [
         "Brett Bateman",
         "Charles McAdoo",
-        "Josh Smith",
         "Alejandro Kirk",
-        "Brandon Valenzuela",
         "George Springer",
         "Ernie Clement",
         "Kazuma Okamoto",
-        "Daz Cameron"
+        "Daz Cameron",
+        "Andrés Giménez",
+        "Myles Straw"
       ],
-      "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "awayLineupExactMatch": true,
+      "homeLineupExactMatch": true
     },
     {
       "gamePk": 823590,
@@ -378,8 +329,8 @@
         "Brady House",
         "Jorbit Vivas",
         "Andrés Chaparro",
-        "José Tena",
-        "Keibert Ruiz"
+        "Keibert Ruiz",
+        "Jacob Young"
       ],
       "predictedHomeLineup": [
         "A.J. Ewing",
@@ -403,7 +354,7 @@
         "Jorge Polanco",
         "Luis Torrens"
       ],
-      "awayLineupExactMatch": false,
+      "awayLineupExactMatch": true,
       "homeLineupExactMatch": true
     },
     {
@@ -470,16 +421,16 @@
       "actualHomeLineup": [
         "Steven Kwan",
         "Chase DeLauter",
-        "Angel Martínez",
         "José Ramírez",
         "Jo Adell",
         "Nathaniel Lowe",
         "Rhys Hoskins",
         "Travis Bazzana",
-        "Austin Hedges"
+        "Austin Hedges",
+        "Brayan Rocchio"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": false
+      "homeLineupExactMatch": true
     },
     {
       "gamePk": 824236,
@@ -525,11 +476,11 @@
         "Munetaka Murakami",
         "Miguel Vargas",
         "Andrew Benintendi",
-        "Randal Grichuk",
         "Braden Montgomery",
         "Colson Montgomery",
         "Chase Meidroth",
-        "Tristan Peters"
+        "Tristan Peters",
+        "Drew Romo"
       ],
       "predictedHomeLineup": [
         "Gleyber Torres",
@@ -547,14 +498,14 @@
         "Kevin McGonigle",
         "Dillon Dingler",
         "Colt Keith",
-        "Eduardo Valencia",
         "Zach McKinstry",
-        "Hao-Yu Lee",
         "Spencer Torkelson",
-        "Brett Callahan"
+        "Brett Callahan",
+        "Max Clark",
+        "Javier Báez"
       ],
-      "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "awayLineupExactMatch": true,
+      "homeLineupExactMatch": true
     },
     {
       "gamePk": 824477,
@@ -602,9 +553,9 @@
         "Xavier Edwards",
         "Javier Sanoja",
         "Leo Jiménez",
-        "Griffin Conine",
-        "Graham Pauley",
-        "Esteury Ruiz"
+        "Esteury Ruiz",
+        "Jakob Marsee",
+        "Brian Navarreto"
       ],
       "predictedHomeLineup": [
         "Elly De La Cruz",
@@ -625,11 +576,11 @@
         "Michael Toglia",
         "Matt McLain",
         "Jose Trevino",
-        "Noelvi Marte",
-        "TJ Friedl"
+        "TJ Friedl",
+        "Ke'Bryan Hayes"
       ],
-      "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "awayLineupExactMatch": true,
+      "homeLineupExactMatch": true
     },
     {
       "gamePk": 823670,
@@ -675,11 +626,11 @@
         "Bryson Stott",
         "Bryce Harper",
         "Luis Arraez",
-        "Derek Hill",
         "Alec Bohm",
         "Brandon Marsh",
         "J.T. Realmuto",
-        "Justin Crawford"
+        "Justin Crawford",
+        "Edmundo Sosa"
       ],
       "predictedHomeLineup": [
         "Trevor Larnach",
@@ -694,17 +645,17 @@
       ],
       "actualHomeLineup": [
         "Trevor Larnach",
-        "Austin Martin",
-        "Ryan Kreidler",
-        "Ryan Jeffers",
         "Byron Buxton",
         "Josh Bell",
         "Kody Clemens",
         "Royce Lewis",
-        "Brooks Lee"
+        "Brooks Lee",
+        "Luke Keaschall",
+        "Victor Caratini",
+        "Kaelen Culpepper"
       ],
-      "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "awayLineupExactMatch": true,
+      "homeLineupExactMatch": true
     },
     {
       "gamePk": 824642,
@@ -775,8 +726,8 @@
         "Nico Hoerner",
         "Pedro Ramírez",
         "Dansby Swanson",
-        "James Triantos",
-        "Michael Conforto"
+        "Michael Conforto",
+        "Miguel Amaya"
       ],
       "awayLineupExactMatch": false,
       "homeLineupExactMatch": false
