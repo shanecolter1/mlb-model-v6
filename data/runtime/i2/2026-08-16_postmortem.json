@@ -1,7 +1,7 @@
 {
   "summary": {
     "date": "2026-08-16",
-    "generatedAt": "2026-08-16T21:48:26.338Z",
+    "generatedAt": "2026-08-16T21:50:31.050Z",
     "historicalBaselineUnder": 0.564958,
     "gradedGames": 13,
     "actualUnders": 6,
@@ -12,6 +12,7 @@
     "modelBrier": 0.2584116682769231,
     "baselineBrier": 0.25921631099476916,
     "modelLogLoss": 0.710044823397771,
+    "meanProbabilityAssignedToActualI2StartSlot": 0.2933307692307692,
     "starterMismatches": [],
     "lineupMismatches": [
       {
@@ -130,7 +131,78 @@
         "Henry Davis"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 7,
+      "modelProbabilityOfActualAwayStartSlot": 0.37920000000000004,
+      "modelProbabilityOfActualHomeStartSlot": 0.1003,
+      "top2Plays": [
+        {
+          "batter": "Adley Rutschman",
+          "pitcher": "Lake Bachar",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Adley Rutschman walks.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Caleb Durbin",
+          "pitcher": "Lake Bachar",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Caleb Durbin singles on a line drive to center fielder Billy Cook. Adley Rutschman to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Andruw Monasterio",
+          "pitcher": "Lake Bachar",
+          "event": "Grounded Into DP",
+          "eventType": "grounded_into_double_play",
+          "rbi": 0,
+          "description": "Andruw Monasterio grounds into a double play, third baseman Nick Yorke to second baseman Brandon Lowe to first baseman Rafael Flores Jr. Adley Rutschman to 3rd. Caleb Durbin out at 2nd. Andruw Monasterio out at 1st.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jarren Duran",
+          "pitcher": "Lake Bachar",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Jarren Duran strikes out on a foul tip.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Nick Yorke",
+          "pitcher": "Patrick Sandoval",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Nick Yorke strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Billy Cook",
+          "pitcher": "Patrick Sandoval",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Billy Cook called out on strikes.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Henry Davis",
+          "pitcher": "Patrick Sandoval",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Henry Davis pops out to shortstop Andruw Monasterio.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824880,
@@ -205,7 +277,69 @@
         "Jim Jarvis"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 5,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.2985,
+      "modelProbabilityOfActualHomeStartSlot": 0.37170000000000003,
+      "top2Plays": [
+        {
+          "batter": "Max Kepler",
+          "pitcher": "Bryce Elder",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Max Kepler called out on strikes.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Nolan Arenado",
+          "pitcher": "Bryce Elder",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Nolan Arenado flies out to right fielder Ronald Acuña Jr.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Tim Tawa",
+          "pitcher": "Bryce Elder",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Tim Tawa grounds out, third baseman Austin Riley to first baseman Matt Olson.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Michael Harris II",
+          "pitcher": "Michael Soroka",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Michael Harris II flies out to left fielder Max Kepler.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Mike Yastrzemski",
+          "pitcher": "Michael Soroka",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Mike Yastrzemski grounds out, second baseman Ketel Marte to first baseman Tim Tawa.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Ozzie Albies",
+          "pitcher": "Michael Soroka",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Ozzie Albies flies out to right fielder Corbin Carroll.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 822774,
@@ -280,7 +414,78 @@
         "Myles Straw"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 5,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.30219999999999997,
+      "modelProbabilityOfActualHomeStartSlot": 0.3699,
+      "top2Plays": [
+        {
+          "batter": "Spencer Jones",
+          "pitcher": "Dylan Cease",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Spencer Jones flies out to center fielder Myles Straw.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "George Lombard Jr.",
+          "pitcher": "Dylan Cease",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "George Lombard Jr. challenged (pitch result), call on the field was overturned: George Lombard Jr. walks.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Ryan McMahon",
+          "pitcher": "Dylan Cease",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Ryan McMahon strikes out swinging. George Lombard Jr. steals (1) 2nd base.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Austin Wells",
+          "pitcher": "Dylan Cease",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Austin Wells strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "George Springer",
+          "pitcher": "Ryan Weathers",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "George Springer grounds out sharply, shortstop George Lombard Jr. to first baseman Ben Rice.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Ernie Clement",
+          "pitcher": "Ryan Weathers",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Ernie Clement flies out to right fielder Spencer Jones.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Kazuma Okamoto",
+          "pitcher": "Ryan Weathers",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Kazuma Okamoto flies out to right fielder Spencer Jones.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 823590,
@@ -355,7 +560,96 @@
         "Luis Torrens"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 6,
+      "modelProbabilityOfActualAwayStartSlot": 0.36219999999999997,
+      "modelProbabilityOfActualHomeStartSlot": 0.1752,
+      "top2Plays": [
+        {
+          "batter": "Daylen Lile",
+          "pitcher": "Christian Scott",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Daylen Lile walks.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brady House",
+          "pitcher": "Christian Scott",
+          "event": "Hit By Pitch",
+          "eventType": "hit_by_pitch",
+          "rbi": 0,
+          "description": "Brady House hit by pitch. Daylen Lile to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jorbit Vivas",
+          "pitcher": "Christian Scott",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Jorbit Vivas strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Andrés Chaparro",
+          "pitcher": "Christian Scott",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Andrés Chaparro flies out to second baseman Brett Baty.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Keibert Ruiz",
+          "pitcher": "Christian Scott",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 1,
+          "description": "Keibert Ruiz singles on a line drive to right fielder Carson Benge. Daylen Lile scores. Brady House out at 3rd on the throw, right fielder Carson Benge to shortstop Francisco Lindor to third baseman Bo Bichette to shortstop Francisco Lindor. Keibert Ruiz to 2nd.",
+          "isScoringPlay": true
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Luis Robert Jr.",
+          "pitcher": "Jake Irvin",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Luis Robert Jr. pops out to first baseman Abimelec Ortiz in foul territory.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brett Baty",
+          "pitcher": "Jake Irvin",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Brett Baty strikes out on a foul tip.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jorge Polanco",
+          "pitcher": "Jake Irvin",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Jorge Polanco singles on a line drive to right fielder Dylan Crews.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Luis Torrens",
+          "pitcher": "Jake Irvin",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Luis Torrens pops out to first baseman Abimelec Ortiz in foul territory.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824397,
@@ -430,7 +724,96 @@
         "Brayan Rocchio"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.38439999999999996,
+      "modelProbabilityOfActualHomeStartSlot": 0.3722,
+      "top2Plays": [
+        {
+          "batter": "Ty France",
+          "pitcher": "Tanner Bibee",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Ty France pops out to first baseman Nathaniel Lowe in foul territory.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jackson Merrill",
+          "pitcher": "Tanner Bibee",
+          "event": "Lineout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jackson Merrill lines out to center fielder Steven Kwan.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Luis Rengifo",
+          "pitcher": "Tanner Bibee",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 1,
+          "description": "Luis Rengifo homers (4) on a fly ball to center field.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Gavin Sheets",
+          "pitcher": "Tanner Bibee",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 1,
+          "description": "Gavin Sheets homers (16) on a fly ball to right field.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Xander Bogaerts",
+          "pitcher": "Tanner Bibee",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Xander Bogaerts flies out to left fielder Jo Adell.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Jo Adell",
+          "pitcher": "Casey Mize",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jo Adell flies out to left fielder Gavin Sheets.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Nathaniel Lowe",
+          "pitcher": "Casey Mize",
+          "event": "Double",
+          "eventType": "double",
+          "rbi": 0,
+          "description": "Nathaniel Lowe doubles (20) on a line drive to left fielder Gavin Sheets.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Rhys Hoskins",
+          "pitcher": "Casey Mize",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Rhys Hoskins strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Travis Bazzana",
+          "pitcher": "Casey Mize",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Travis Bazzana grounds out, second baseman Jake Cronenworth to first baseman Ty France.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824236,
@@ -505,7 +888,123 @@
         "Javier Báez"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 5,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.29410000000000003,
+      "modelProbabilityOfActualHomeStartSlot": 0.3626,
+      "top2Plays": [
+        {
+          "batter": "Braden Montgomery",
+          "pitcher": "Drew Anderson",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Braden Montgomery strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Colson Montgomery",
+          "pitcher": "Drew Anderson",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Colson Montgomery singles on a fly ball to left fielder Brett Callahan.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Chase Meidroth",
+          "pitcher": "Drew Anderson",
+          "event": "Grounded Into DP",
+          "eventType": "grounded_into_double_play",
+          "rbi": 0,
+          "description": "Chase Meidroth grounds into a double play, pitcher Drew Anderson to second baseman Gleyber Torres to first baseman Spencer Torkelson. Colson Montgomery out at 2nd. Chase Meidroth out at 1st.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Colt Keith",
+          "pitcher": "Sean Burke",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Colt Keith singles on a line drive to right fielder Braden Montgomery.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Zach McKinstry",
+          "pitcher": "Sean Burke",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Zach McKinstry walks. Colt Keith to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Spencer Torkelson",
+          "pitcher": "Sean Burke",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Spencer Torkelson pops out to first baseman Munetaka Murakami in foul territory.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brett Callahan",
+          "pitcher": "Sean Burke",
+          "event": "Triple",
+          "eventType": "triple",
+          "rbi": 2,
+          "description": "Brett Callahan triples (1) on a line drive to right fielder Braden Montgomery. Colt Keith scores. Zach McKinstry scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Max Clark",
+          "pitcher": "Sean Burke",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 1,
+          "description": "Max Clark singles on a ground ball to right fielder Braden Montgomery. Brett Callahan scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Javier Báez",
+          "pitcher": "Sean Burke",
+          "event": "Forceout",
+          "eventType": "force_out",
+          "rbi": 0,
+          "description": "Tigers challenged (play at 1st), call on the field was overturned: Javier Báez grounds into a force out, shortstop Colson Montgomery to second baseman Chase Meidroth. Max Clark out at 2nd. Javier Báez to 1st.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Gleyber Torres",
+          "pitcher": "Sean Burke",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Gleyber Torres singles on a ground ball to second baseman Chase Meidroth. Javier Báez to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Kevin McGonigle",
+          "pitcher": "Sean Burke",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Kevin McGonigle walks. Javier Báez to 3rd. Gleyber Torres to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Dillon Dingler",
+          "pitcher": "Sean Burke",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Dillon Dingler flies out to left fielder Sam Antonacci.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824477,
@@ -580,7 +1079,78 @@
         "Ke'Bryan Hayes"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 6,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.19210000000000002,
+      "modelProbabilityOfActualHomeStartSlot": 0.366,
+      "top2Plays": [
+        {
+          "batter": "Leo Jiménez",
+          "pitcher": "Nick Lodolo",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Leo Jiménez flies out to right fielder Michael Toglia.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Esteury Ruiz",
+          "pitcher": "Nick Lodolo",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Esteury Ruiz singles on a sharp line drive to center fielder TJ Friedl.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jakob Marsee",
+          "pitcher": "Nick Lodolo",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Jakob Marsee strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brian Navarreto",
+          "pitcher": "Nick Lodolo",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Brian Navarreto strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Eugenio Suárez",
+          "pitcher": "Eury Pérez",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Eugenio Suárez pops out to third baseman Javier Sanoja in foul territory.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Michael Toglia",
+          "pitcher": "Eury Pérez",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Michael Toglia grounds out, second baseman Xavier Edwards to first baseman Leo Jiménez.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Matt McLain",
+          "pitcher": "Eury Pérez",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Matt McLain strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 823670,
@@ -655,7 +1225,69 @@
         "Kaelen Culpepper"
       ],
       "awayLineupExactMatch": true,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 5,
+      "actualHomeI2StartSlot": 8,
+      "modelProbabilityOfActualAwayStartSlot": 0.2993,
+      "modelProbabilityOfActualHomeStartSlot": 0.0452,
+      "top2Plays": [
+        {
+          "batter": "Alec Bohm",
+          "pitcher": "Dean Kremer",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Alec Bohm grounds out, shortstop Kaelen Culpepper to first baseman Royce Lewis.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brandon Marsh",
+          "pitcher": "Dean Kremer",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Brandon Marsh strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "J.T. Realmuto",
+          "pitcher": "Dean Kremer",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "J.T. Realmuto strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Victor Caratini",
+          "pitcher": "Andrew Painter",
+          "event": "Lineout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Victor Caratini lines out to left fielder Brandon Marsh.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Kaelen Culpepper",
+          "pitcher": "Andrew Painter",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Kaelen Culpepper pops out to first baseman Alec Bohm.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Trevor Larnach",
+          "pitcher": "Andrew Painter",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Trevor Larnach grounds out, first baseman Alec Bohm to pitcher Andrew Painter.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824642,
@@ -730,7 +1362,87 @@
         "Miguel Amaya"
       ],
       "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "homeLineupExactMatch": false,
+      "actualAwayI2StartSlot": 6,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.188,
+      "modelProbabilityOfActualHomeStartSlot": 0.3381,
+      "top2Plays": [
+        {
+          "batter": "Nathan Church",
+          "pitcher": "Edward Cabrera",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Nathan Church flies out to center fielder Pete Crow-Armstrong.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Masyn Winn",
+          "pitcher": "Edward Cabrera",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Masyn Winn grounds out, third baseman Alex Bregman to first baseman Pedro Ramírez.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jimmy Crooks",
+          "pitcher": "Edward Cabrera",
+          "event": "Double",
+          "eventType": "double",
+          "rbi": 0,
+          "description": "Jimmy Crooks doubles (5) on a sharp line drive to right fielder Seiya Suzuki.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Blaze Jordan",
+          "pitcher": "Edward Cabrera",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 1,
+          "description": "Blaze Jordan singles on a fly ball to center fielder Pete Crow-Armstrong. Jimmy Crooks scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "JJ Wetherholt",
+          "pitcher": "Edward Cabrera",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "JJ Wetherholt grounds out to first baseman Pedro Ramírez.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Ian Happ",
+          "pitcher": "Hunter Dobbins",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Ian Happ grounds out, pitcher Hunter Dobbins to shortstop Masyn Winn to first baseman Alec Burleson.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Nico Hoerner",
+          "pitcher": "Hunter Dobbins",
+          "event": "Lineout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Nico Hoerner lines out to second baseman JJ Wetherholt.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Pedro Ramírez",
+          "pitcher": "Hunter Dobbins",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Pedro Ramírez grounds out, second baseman JJ Wetherholt to first baseman Alec Burleson.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 823182,
@@ -805,7 +1517,141 @@
         "Christian Koss"
       ],
       "awayLineupExactMatch": false,
-      "homeLineupExactMatch": true
+      "homeLineupExactMatch": true,
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 6,
+      "modelProbabilityOfActualAwayStartSlot": 0.3538,
+      "modelProbabilityOfActualHomeStartSlot": 0.1777,
+      "top2Plays": [
+        {
+          "batter": "Willi Castro",
+          "pitcher": "Blade Tidwell",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Willi Castro walks.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Troy Johnston",
+          "pitcher": "Blade Tidwell",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Troy Johnston singles on a ground ball to center fielder Drew Gilbert. Willi Castro to 3rd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Zac Veen",
+          "pitcher": "Blade Tidwell",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 1,
+          "description": "Zac Veen singles on a ground ball to second baseman Osleivis Basabe. Willi Castro scores. Troy Johnston to 2nd.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Jordan Beck",
+          "pitcher": "Blade Tidwell",
+          "event": "Grounded Into DP",
+          "eventType": "grounded_into_double_play",
+          "rbi": 0,
+          "description": "Jordan Beck grounds into a double play, shortstop Christian Koss to second baseman Osleivis Basabe to third baseman Buddy Kennedy. Troy Johnston out at 3rd. Zac Veen out at 2nd. Jordan Beck to 1st.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brett Sullivan",
+          "pitcher": "Blade Tidwell",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Brett Sullivan walks. Jordan Beck to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Adael Amador",
+          "pitcher": "Blade Tidwell",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 3,
+          "description": "Adael Amador homers (1) on a fly ball to right field. Jordan Beck scores. Brett Sullivan scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Jake McCarthy",
+          "pitcher": "Blade Tidwell",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jake McCarthy pops out to shortstop Christian Koss.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Drew Cavanaugh",
+          "pitcher": "Gabriel Hughes",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Drew Cavanaugh singles on a soft bunt ground ball to third baseman Willi Castro.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Turner Hill",
+          "pitcher": "Gabriel Hughes",
+          "event": "Forceout",
+          "eventType": "force_out",
+          "rbi": 0,
+          "description": "Turner Hill grounds into a force out, shortstop Cole Carrigg to second baseman Adael Amador. Drew Cavanaugh out at 2nd. Turner Hill to 1st.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Buddy Kennedy",
+          "pitcher": "Gabriel Hughes",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Buddy Kennedy singles on a line drive to left fielder Jordan Beck. Turner Hill to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Christian Koss",
+          "pitcher": "Gabriel Hughes",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Christian Koss strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Drew Gilbert",
+          "pitcher": "Gabriel Hughes",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 1,
+          "description": "Drew Gilbert singles on a line drive to center fielder Jake McCarthy. Turner Hill scores. Buddy Kennedy to 2nd.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Rafael Devers",
+          "pitcher": "Gabriel Hughes",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 3,
+          "description": "Rafael Devers homers (25) on a fly ball to right field. Buddy Kennedy scores. Drew Gilbert scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Bryce Eldridge",
+          "pitcher": "Gabriel Hughes",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Bryce Eldridge grounds out, second baseman Adael Amador to first baseman Troy Johnston.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824965,
@@ -880,7 +1726,123 @@
         "Darell Hernaiz"
       ],
       "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "homeLineupExactMatch": false,
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.3497,
+      "modelProbabilityOfActualHomeStartSlot": 0.3785,
+      "top2Plays": [
+        {
+          "batter": "Jake Burger",
+          "pitcher": "Jacob Lopez",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 1,
+          "description": "Jake Burger homers (21) on a fly ball to right center field.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Justin Foscue",
+          "pitcher": "Jacob Lopez",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Justin Foscue singles on a ground ball to shortstop Jacob Wilson.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Cody Freeman",
+          "pitcher": "Jacob Lopez",
+          "event": "Sac Bunt",
+          "eventType": "sac_bunt",
+          "rbi": 0,
+          "description": "Cody Freeman out on a sacrifice bunt to pitcher Jacob Lopez. Justin Foscue to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Elias Díaz",
+          "pitcher": "Jacob Lopez",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Elias Díaz flies out sharply to center fielder Henry Bolte.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Austin Wynns",
+          "pitcher": "Jacob Lopez",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Austin Wynns walks.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Evan Carter",
+          "pitcher": "Jacob Lopez",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Evan Carter strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Jonah Heim",
+          "pitcher": "Cody Bradford",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jonah Heim flies out to left fielder Wyatt Langford.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Tommy White",
+          "pitcher": "Cody Bradford",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Tommy White singles on a sharp line drive to center fielder Evan Carter.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Lawrence Butler",
+          "pitcher": "Cody Bradford",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 2,
+          "description": "Lawrence Butler homers (11) on a fly ball to right field. Tommy White scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Max Muncy",
+          "pitcher": "Cody Bradford",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Max Muncy singles on a ground ball to right fielder Brandon Nimmo.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Alika Williams",
+          "pitcher": "Cody Bradford",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Alika Williams called out on strikes.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Darell Hernaiz",
+          "pitcher": "Cody Bradford",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Darell Hernaiz called out on strikes.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 823991,
@@ -955,7 +1917,87 @@
         "Josh Lowe"
       ],
       "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "homeLineupExactMatch": false,
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.3404,
+      "modelProbabilityOfActualHomeStartSlot": 0.3515,
+      "top2Plays": [
+        {
+          "batter": "Salvador Perez",
+          "pitcher": "Ryan Johnson",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Salvador Perez singles on a line drive to left fielder Wade Meckler.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Michael Massey",
+          "pitcher": "Ryan Johnson",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Michael Massey singles on a ground ball to right fielder Josh Lowe. Salvador Perez to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Nick Loftin",
+          "pitcher": "Ryan Johnson",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Nick Loftin walks. Salvador Perez to 3rd. Michael Massey to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Isaac Collins",
+          "pitcher": "Ryan Johnson",
+          "event": "Grounded Into DP",
+          "eventType": "grounded_into_double_play",
+          "rbi": 0,
+          "description": "Isaac Collins grounds into a double play, first baseman Vaughn Grissom to catcher Travis d'Arnaud. Salvador Perez out at home. Michael Massey to 3rd. Nick Loftin to 2nd. Isaac Collins out at 1st.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "John Rave",
+          "pitcher": "Ryan Johnson",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "John Rave flies out to right fielder Josh Lowe.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Jose Siri",
+          "pitcher": "Noah Cameron",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jose Siri pops out to third baseman Nick Loftin.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Wade Meckler",
+          "pitcher": "Noah Cameron",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Wade Meckler grounds out to first baseman Jac Caglianone.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Denzer Guzman",
+          "pitcher": "Noah Cameron",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Denzer Guzman pops out to second baseman Michael Massey.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 823912,
@@ -1030,7 +2072,105 @@
         "Ben Rortvedt"
       ],
       "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "homeLineupExactMatch": false,
+      "actualAwayI2StartSlot": 6,
+      "actualHomeI2StartSlot": 5,
+      "modelProbabilityOfActualAwayStartSlot": 0.1769,
+      "modelProbabilityOfActualHomeStartSlot": 0.2969,
+      "top2Plays": [
+        {
+          "batter": "Gary Sánchez",
+          "pitcher": "Tarik Skubal",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Gary Sánchez strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Brandon Lockridge",
+          "pitcher": "Tarik Skubal",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "Brandon Lockridge walks.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Joey Ortiz",
+          "pitcher": "Tarik Skubal",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Joey Ortiz strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jonathan Ornelas",
+          "pitcher": "Tarik Skubal",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Jonathan Ornelas singles on a sharp line drive to left fielder Teoscar Hernández. Brandon Lockridge to 3rd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "William Contreras",
+          "pitcher": "Tarik Skubal",
+          "event": "Walk",
+          "eventType": "walk",
+          "rbi": 0,
+          "description": "William Contreras walks. Jonathan Ornelas to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Luis Lara",
+          "pitcher": "Tarik Skubal",
+          "event": "Fielders Choice",
+          "eventType": "fielders_choice",
+          "rbi": 0,
+          "description": "Luis Lara reaches on a fielder's choice. Brandon Lockridge scores. Jonathan Ornelas to 3rd. William Contreras to 2nd. Missed catch error by second baseman Tommy Edman, assist to shortstop Mookie Betts.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Jackson Chourio",
+          "pitcher": "Tarik Skubal",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jackson Chourio flies out sharply to center fielder Andy Pages.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Mookie Betts",
+          "pitcher": "Logan Henderson",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Mookie Betts singles on a line drive to right fielder Brandon Lockridge.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Kyle Tucker",
+          "pitcher": "Logan Henderson",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Kyle Tucker flies out to right fielder Brandon Lockridge.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Tommy Edman",
+          "pitcher": "Logan Henderson",
+          "event": "Grounded Into DP",
+          "eventType": "grounded_into_double_play",
+          "rbi": 0,
+          "description": "Tommy Edman grounds into a double play, second baseman Jonathan Ornelas to shortstop Joey Ortiz to first baseman Jake Bauers. Mookie Betts out at 2nd. Tommy Edman out at 1st.",
+          "isScoringPlay": false
+        }
+      ]
     },
     {
       "gamePk": 824156,
@@ -1100,7 +2240,13 @@
         "Nick Allen"
       ],
       "awayLineupExactMatch": false,
-      "homeLineupExactMatch": false
+      "homeLineupExactMatch": false,
+      "actualAwayI2StartSlot": null,
+      "actualHomeI2StartSlot": null,
+      "modelProbabilityOfActualAwayStartSlot": null,
+      "modelProbabilityOfActualHomeStartSlot": null,
+      "top2Plays": [],
+      "bottom2Plays": []
     }
   ]
 }
