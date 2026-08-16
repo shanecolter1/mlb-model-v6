@@ -100,6 +100,25 @@ function n(stat, ...keys) {
   return 0;
 }
 
+function maybeNumber(stat, ...keys) {
+  for (const key of keys) {
+    const v = stat?.[key];
+    if (v !== undefined && v !== null && v !== '') {
+      const x = Number(v);
+      if (Number.isFinite(x)) return x;
+    }
+  }
+  return null;
+}
+
+function maybeRaw(stat, ...keys) {
+  for (const key of keys) {
+    const v = stat?.[key];
+    if (v !== undefined && v !== null && v !== '') return v;
+  }
+  return null;
+}
+
 function ratesFromCounts(counts, denom, priorStrength) {
   const d = Math.max(0, Number(denom || 0));
   const strength = Math.max(0, priorStrength);
@@ -149,6 +168,24 @@ function pitcherCounts(stat) {
   return {denom:bf, fallbackExtraBaseSplit, counts:{single,double:d2,triple:d3,home_run:hr,walk:bb,hit_by_pitch:hbp,strikeout:so,ball_in_play_out:residual}};
 }
 
+function starterSeasonSnapshot(stat, pc) {
+  const wins = maybeNumber(stat, 'wins');
+  const losses = maybeNumber(stat, 'losses');
+  return {
+    wins,
+    losses,
+    record: wins !== null && losses !== null ? `${wins}-${losses}` : null,
+    era: maybeRaw(stat, 'era'),
+    whip: maybeRaw(stat, 'whip'),
+    inningsPitched: maybeRaw(stat, 'inningsPitched'),
+    strikeOuts: maybeNumber(stat, 'strikeOuts'),
+    walks: maybeNumber(stat, 'baseOnBalls', 'walks'),
+    homeRunsAllowed: maybeNumber(stat, 'homeRuns'),
+    battersFaced: pc?.denom ?? maybeNumber(stat, 'battersFaced'),
+    gamesStarted: maybeNumber(stat, 'gamesStarted'),
+  };
+}
+
 const statCache = new Map();
 async function seasonStats(personId, group) {
   const key = `${personId}:${group}`;
@@ -188,7 +225,18 @@ async function buildStarter(feed, side) {
   if (!p?.id) return null;
   const stat = await seasonStats(p.id, 'pitching');
   const pc = pitcherCounts(stat);
-  return {id:p.id,name:p.fullName,eventRatesAllowed:ratesFromCounts(pc.counts, pc.denom, 180),seasonBF:pc.denom,fallbackExtraBaseSplit:pc.fallbackExtraBaseSplit,rawStatsError:stat.__error || null,gamesStarted:n(stat,'gamesStarted'),era:stat?.era ?? null};
+  const seasonSnapshot = starterSeasonSnapshot(stat, pc);
+  return {
+    id:p.id,
+    name:p.fullName,
+    eventRatesAllowed:ratesFromCounts(pc.counts, pc.denom, 180),
+    seasonBF:pc.denom,
+    fallbackExtraBaseSplit:pc.fallbackExtraBaseSplit,
+    rawStatsError:stat.__error || null,
+    gamesStarted:seasonSnapshot.gamesStarted ?? n(stat,'gamesStarted'),
+    era:seasonSnapshot.era,
+    seasonStats:seasonSnapshot,
+  };
 }
 
 function pct(x){ return Math.round(x*10000)/100; }
@@ -203,7 +251,33 @@ async function runGame(game) {
   const homeStarter = await buildStarter(feed,'home');
   const venueProfile = venueProfileFor(game);
   const environmentalContext = sanitizeEnvironment(venueProfile);
-  const base = {gamePk,gameDate:game.gameDate,away:game.teams?.away?.team?.name,home:game.teams?.home?.team?.name,venue:game.venue?.name,lineupConfirmed:awayBuilt.confirmed && homeBuilt.confirmed,awayLineup:awayBuilt.names,homeLineup:homeBuilt.names,awayStarter:awayStarter?.name || null,homeStarter:homeStarter?.name || null,venueProfile:venueProfile?.venue_name || null,status:game.status?.detailedState || null,dataAudit:{awayStarterBF:awayStarter?.seasonBF ?? null,homeStarterBF:homeStarter?.seasonBF ?? null,awayStarterGamesStarted:awayStarter?.gamesStarted ?? null,homeStarterGamesStarted:homeStarter?.gamesStarted ?? null,awayStarterExtraBaseFallback:awayStarter?.fallbackExtraBaseSplit ?? null,homeStarterExtraBaseFallback:homeStarter?.fallbackExtraBaseSplit ?? null,venueProfileMatched:Boolean(venueProfile)}};
+  const base = {
+    gamePk,
+    gameDate:game.gameDate,
+    away:game.teams?.away?.team?.name,
+    home:game.teams?.home?.team?.name,
+    venue:game.venue?.name,
+    lineupConfirmed:awayBuilt.confirmed && homeBuilt.confirmed,
+    awayLineup:awayBuilt.names,
+    homeLineup:homeBuilt.names,
+    awayStarter:awayStarter?.name || null,
+    homeStarter:homeStarter?.name || null,
+    awayStarterStats:awayStarter?.seasonStats || null,
+    homeStarterStats:homeStarter?.seasonStats || null,
+    venueProfile:venueProfile?.venue_name || null,
+    status:game.status?.detailedState || null,
+    dataAudit:{
+      awayStarterBF:awayStarter?.seasonBF ?? null,
+      homeStarterBF:homeStarter?.seasonBF ?? null,
+      awayStarterGamesStarted:awayStarter?.gamesStarted ?? null,
+      homeStarterGamesStarted:homeStarter?.gamesStarted ?? null,
+      awayStarterExtraBaseFallback:awayStarter?.fallbackExtraBaseSplit ?? null,
+      homeStarterExtraBaseFallback:homeStarter?.fallbackExtraBaseSplit ?? null,
+      awayStarterStatsError:awayStarter?.rawStatsError ?? null,
+      homeStarterStatsError:homeStarter?.rawStatsError ?? null,
+      venueProfileMatched:Boolean(venueProfile),
+    }
+  };
   if (!awayBuilt.confirmed || !homeBuilt.confirmed) return {...base, modelStatus:'PENDING_CONFIRMED_LINEUP'};
   if (!awayStarter || !homeStarter) return {...base, modelStatus:'PENDING_PROBABLE_STARTER'};
 
@@ -224,7 +298,46 @@ async function main(){
   }
   const ranked = games.filter(g=>g.modelStatus==='FROZEN_RESEARCH_PROJECTION').sort((a,b)=>b.under05-a.under05);
   ranked.forEach((g,i)=>g.underRank=i+1);
-  const payload={model:'MLB I2 Under/Over v0.2 Research Build',date:DATE,cutoff:CUTOFF,generatedAt:new Date().toISOString(),trialsPerGame:TRIALS,marketDataUsed:false,weights:{batter:0.5,pitcher:0.5},leagueBaselineSource:'Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json',parkSource:venueProfiles.length?'Baseball Savant 3-year Statcast park factors':'neutral fallback',currentPlayerSource:'MLB Stats API 2026 season-to-date basic batting/pitching statistics',knownResearchLimitations:['Advanced daily/as-of Statcast batter/pitcher interaction weights are not yet fitted.','Weather/roof is not yet applied by the v0.2 I2 simulator.','Conventional starters default to the probable starter for I2 unless an explicit opener/bulk mixture is supplied.','If MLB pitching stats omit doubles/triples allowed, non-HR hits are split using league event proportions and flagged in dataAudit.'],remainingGamesAtCutoff:remaining.length,projectedGames:ranked.length,pendingOrErroredGames:games.length-ranked.length,ranking:ranked.map(g=>({rank:g.underRank,gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,gameDate:g.gameDate,under05Pct:g.under05Pct,over05Pct:g.over05Pct,fairUnder:g.fairUnder,fairOver:g.fairOver,awayStarter:g.awayStarter,homeStarter:g.homeStarter,top2ScorePct:g.top2ScorePct,bottom2ScorePct:g.bottom2ScorePct})),games};
+  const payload={
+    model:'MLB I2 Under/Over v0.2 Research Build',
+    date:DATE,
+    cutoff:CUTOFF,
+    generatedAt:new Date().toISOString(),
+    trialsPerGame:TRIALS,
+    marketDataUsed:false,
+    weights:{batter:0.5,pitcher:0.5},
+    leagueBaselineSource:'Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json',
+    parkSource:venueProfiles.length?'Baseball Savant 3-year Statcast park factors':'neutral fallback',
+    currentPlayerSource:'MLB Stats API 2026 season-to-date basic batting/pitching statistics',
+    starterStatsPersisted:true,
+    starterStatsFields:['wins','losses','record','era','whip','inningsPitched','strikeOuts','walks','homeRunsAllowed','battersFaced','gamesStarted'],
+    knownResearchLimitations:[
+      'Advanced daily/as-of Statcast batter/pitcher interaction weights are not yet fitted.',
+      'Weather/roof is not yet applied by the v0.2 I2 simulator.',
+      'Conventional starters default to the probable starter for I2 unless an explicit opener/bulk mixture is supplied.',
+      'If MLB pitching stats omit doubles/triples allowed, non-HR hits are split using league event proportions and flagged in dataAudit.'
+    ],
+    remainingGamesAtCutoff:remaining.length,
+    projectedGames:ranked.length,
+    pendingOrErroredGames:games.length-ranked.length,
+    ranking:ranked.map(g=>({
+      rank:g.underRank,
+      gamePk:g.gamePk,
+      matchup:`${g.away} @ ${g.home}`,
+      gameDate:g.gameDate,
+      under05Pct:g.under05Pct,
+      over05Pct:g.over05Pct,
+      fairUnder:g.fairUnder,
+      fairOver:g.fairOver,
+      awayStarter:g.awayStarter,
+      homeStarter:g.homeStarter,
+      awayStarterStats:g.awayStarterStats,
+      homeStarterStats:g.homeStarterStats,
+      top2ScorePct:g.top2ScorePct,
+      bottom2ScorePct:g.bottom2ScorePct
+    })),
+    games
+  };
   fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});
   fs.writeFileSync(OUTPUT, JSON.stringify(payload,null,2));
   console.log(JSON.stringify(payload.ranking,null,2));
