@@ -1,0 +1,56 @@
+name: Run I2 postmortem
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_postmortem.yml'
+      - 'src/analysis/i2_postmortem_today.mjs'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'YYYY-MM-DD'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  postmortem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve date
+        id: params
+        shell: bash
+        run: |
+          DATE_INPUT='${{ inputs.date }}'
+          if [ -z "$DATE_INPUT" ]; then DATE_INPUT="$(date -u +%F)"; fi
+          echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
+      - name: Run postmortem
+        env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_PREDICTIONS: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
+          I2_POSTMORTEM_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_postmortem.json
+        run: node src/analysis/i2_postmortem_today.mjs
+      - name: Commit postmortem artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="data/runtime/i2/${{ steps.params.outputs.date }}_postmortem.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          git reset --hard origin/main
+          # Re-run after reset so artifact reflects current frozen file on main.
+          MLB_OTHER_MODEL_BASE_URL=https://lambent-brioche-ca05b1.netlify.app I2_DATE='${{ steps.params.outputs.date }}' I2_PREDICTIONS="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json" I2_POSTMORTEM_OUTPUT="$FILE" node src/analysis/i2_postmortem_today.mjs
+          git add "$FILE"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Postmortem I2 projections ${{ steps.params.outputs.date }}"
+          git push origin HEAD:main
