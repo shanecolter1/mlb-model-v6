@@ -75,11 +75,12 @@ jobs:
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
           git add "data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json"
           if git diff --cached --quiet; then
             echo 'No prediction changes.'
             exit 0
           fi
           git commit -m "Freeze I2 projections ${{ steps.params.outputs.date }}"
-          git push
+          git pull --rebase origin main
+          git push origin HEAD:main
