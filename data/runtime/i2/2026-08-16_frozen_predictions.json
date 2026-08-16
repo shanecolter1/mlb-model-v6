@@ -1,8 +1,8 @@
 {
   "model": "MLB I2 Under/Over v0.2 Research Build",
   "date": "2026-08-16",
-  "cutoff": "2026-08-16T06:29:37Z",
-  "generatedAt": "2026-08-16T06:29:40.952Z",
+  "cutoff": "2026-08-16T06:48:23Z",
+  "generatedAt": "2026-08-16T06:48:25.054Z",
   "trialsPerGame": 50000,
   "marketDataUsed": false,
   "weights": {
@@ -12,6 +12,20 @@
   "leagueBaselineSource": "Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json",
   "parkSource": "neutral fallback",
   "currentPlayerSource": "MLB Stats API 2026 season-to-date basic batting/pitching statistics",
+  "starterStatsPersisted": true,
+  "starterStatsFields": [
+    "wins",
+    "losses",
+    "record",
+    "era",
+    "whip",
+    "inningsPitched",
+    "strikeOuts",
+    "walks",
+    "homeRunsAllowed",
+    "battersFaced",
+    "gamesStarted"
+  ],
   "knownResearchLimitations": [
     "Advanced daily/as-of Statcast batter/pitcher interaction weights are not yet fitted.",
     "Weather/roof is not yet applied by the v0.2 I2 simulator.",
@@ -34,6 +48,32 @@
       "homeLineup": [],
       "awayStarter": "Trevor Rogers",
       "homeStarter": "Freddy Peralta",
+      "awayStarterStats": {
+        "wins": 7,
+        "losses": 8,
+        "record": "7-8",
+        "era": "4.21",
+        "whip": "1.25",
+        "inningsPitched": "119.2",
+        "strikeOuts": 102,
+        "walks": 34,
+        "homeRunsAllowed": 12,
+        "battersFaced": 503,
+        "gamesStarted": 22
+      },
+      "homeStarterStats": {
+        "wins": 5,
+        "losses": 9,
+        "record": "5-9",
+        "era": "5.33",
+        "whip": "1.50",
+        "inningsPitched": "123.1",
+        "strikeOuts": 121,
+        "walks": 50,
+        "homeRunsAllowed": 20,
+        "battersFaced": 555,
+        "gamesStarted": 24
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -43,6 +83,8 @@
         "homeStarterGamesStarted": 24,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -58,6 +100,32 @@
       "homeLineup": [],
       "awayStarter": "Patrick Sandoval",
       "homeStarter": "Lake Bachar",
+      "awayStarterStats": {
+        "wins": 1,
+        "losses": 1,
+        "record": "1-1",
+        "era": "3.30",
+        "whip": "1.70",
+        "inningsPitched": "30.0",
+        "strikeOuts": 29,
+        "walks": 13,
+        "homeRunsAllowed": 3,
+        "battersFaced": 136,
+        "gamesStarted": 6
+      },
+      "homeStarterStats": {
+        "wins": 1,
+        "losses": 2,
+        "record": "1-2",
+        "era": "3.97",
+        "whip": "1.08",
+        "inningsPitched": "65.2",
+        "strikeOuts": 68,
+        "walks": 23,
+        "homeRunsAllowed": 12,
+        "battersFaced": 270,
+        "gamesStarted": 4
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -67,6 +135,8 @@
         "homeStarterGamesStarted": 4,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -82,6 +152,32 @@
       "homeLineup": [],
       "awayStarter": "Michael Soroka",
       "homeStarter": "Bryce Elder",
+      "awayStarterStats": {
+        "wins": 8,
+        "losses": 3,
+        "record": "8-3",
+        "era": "2.92",
+        "whip": "1.10",
+        "inningsPitched": "86.1",
+        "strikeOuts": 83,
+        "walks": 20,
+        "homeRunsAllowed": 6,
+        "battersFaced": 351,
+        "gamesStarted": 16
+      },
+      "homeStarterStats": {
+        "wins": 8,
+        "losses": 7,
+        "record": "8-7",
+        "era": "4.03",
+        "whip": "1.25",
+        "inningsPitched": "131.2",
+        "strikeOuts": 108,
+        "walks": 45,
+        "homeRunsAllowed": 21,
+        "battersFaced": 556,
+        "gamesStarted": 23
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -91,6 +187,8 @@
         "homeStarterGamesStarted": 23,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -106,6 +204,32 @@
       "homeLineup": [],
       "awayStarter": "Ryan Weathers",
       "homeStarter": "Dylan Cease",
+      "awayStarterStats": {
+        "wins": 5,
+        "losses": 7,
+        "record": "5-7",
+        "era": "3.69",
+        "whip": "1.21",
+        "inningsPitched": "126.2",
+        "strikeOuts": 136,
+        "walks": 37,
+        "homeRunsAllowed": 18,
+        "battersFaced": 525,
+        "gamesStarted": 23
+      },
+      "homeStarterStats": {
+        "wins": 7,
+        "losses": 5,
+        "record": "7-5",
+        "era": "2.40",
+        "whip": "1.07",
+        "inningsPitched": "131.1",
+        "strikeOuts": 191,
+        "walks": 56,
+        "homeRunsAllowed": 9,
+        "battersFaced": 529,
+        "gamesStarted": 22
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -115,6 +239,8 @@
         "homeStarterGamesStarted": 22,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -130,6 +256,32 @@
       "homeLineup": [],
       "awayStarter": "Jake Irvin",
       "homeStarter": "Christian Scott",
+      "awayStarterStats": {
+        "wins": 2,
+        "losses": 6,
+        "record": "2-6",
+        "era": "5.79",
+        "whip": "1.32",
+        "inningsPitched": "65.1",
+        "strikeOuts": 66,
+        "walks": 28,
+        "homeRunsAllowed": 11,
+        "battersFaced": 286,
+        "gamesStarted": 14
+      },
+      "homeStarterStats": {
+        "wins": 3,
+        "losses": 3,
+        "record": "3-3",
+        "era": "3.45",
+        "whip": "1.30",
+        "inningsPitched": "78.1",
+        "strikeOuts": 98,
+        "walks": 33,
+        "homeRunsAllowed": 7,
+        "battersFaced": 340,
+        "gamesStarted": 17
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -139,6 +291,8 @@
         "homeStarterGamesStarted": 17,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -154,6 +308,32 @@
       "homeLineup": [],
       "awayStarter": "Casey Mize",
       "homeStarter": "Tanner Bibee",
+      "awayStarterStats": {
+        "wins": 4,
+        "losses": 7,
+        "record": "4-7",
+        "era": "3.38",
+        "whip": "1.09",
+        "inningsPitched": "96.0",
+        "strikeOuts": 92,
+        "walks": 24,
+        "homeRunsAllowed": 7,
+        "battersFaced": 387,
+        "gamesStarted": 18
+      },
+      "homeStarterStats": {
+        "wins": 4,
+        "losses": 12,
+        "record": "4-12",
+        "era": "3.99",
+        "whip": "1.13",
+        "inningsPitched": "144.1",
+        "strikeOuts": 114,
+        "walks": 40,
+        "homeRunsAllowed": 23,
+        "battersFaced": 586,
+        "gamesStarted": 25
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -163,6 +343,8 @@
         "homeStarterGamesStarted": 25,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -178,6 +360,32 @@
       "homeLineup": [],
       "awayStarter": "Sean Burke",
       "homeStarter": "Drew Anderson",
+      "awayStarterStats": {
+        "wins": 7,
+        "losses": 6,
+        "record": "7-6",
+        "era": "2.99",
+        "whip": "1.08",
+        "inningsPitched": "135.2",
+        "strikeOuts": 152,
+        "walks": 39,
+        "homeRunsAllowed": 15,
+        "battersFaced": 550,
+        "gamesStarted": 20
+      },
+      "homeStarterStats": {
+        "wins": 4,
+        "losses": 4,
+        "record": "4-4",
+        "era": "3.91",
+        "whip": "1.30",
+        "inningsPitched": "71.1",
+        "strikeOuts": 82,
+        "walks": 27,
+        "homeRunsAllowed": 10,
+        "battersFaced": 306,
+        "gamesStarted": 4
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -187,6 +395,8 @@
         "homeStarterGamesStarted": 4,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -202,6 +412,32 @@
       "homeLineup": [],
       "awayStarter": "Eury Pérez",
       "homeStarter": "Nick Lodolo",
+      "awayStarterStats": {
+        "wins": 6,
+        "losses": 9,
+        "record": "6-9",
+        "era": "3.39",
+        "whip": "1.11",
+        "inningsPitched": "116.2",
+        "strikeOuts": 128,
+        "walks": 44,
+        "homeRunsAllowed": 13,
+        "battersFaced": 471,
+        "gamesStarted": 21
+      },
+      "homeStarterStats": {
+        "wins": 3,
+        "losses": 2,
+        "record": "3-2",
+        "era": "4.86",
+        "whip": "1.46",
+        "inningsPitched": "66.2",
+        "strikeOuts": 55,
+        "walks": 27,
+        "homeRunsAllowed": 12,
+        "battersFaced": 297,
+        "gamesStarted": 13
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -211,6 +447,8 @@
         "homeStarterGamesStarted": 13,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -226,6 +464,32 @@
       "homeLineup": [],
       "awayStarter": "Andrew Painter",
       "homeStarter": "Dean Kremer",
+      "awayStarterStats": {
+        "wins": 2,
+        "losses": 8,
+        "record": "2-8",
+        "era": "6.27",
+        "whip": "1.53",
+        "inningsPitched": "80.1",
+        "strikeOuts": 69,
+        "walks": 31,
+        "homeRunsAllowed": 15,
+        "battersFaced": 360,
+        "gamesStarted": 15
+      },
+      "homeStarterStats": {
+        "wins": 2,
+        "losses": 4,
+        "record": "2-4",
+        "era": "5.25",
+        "whip": "1.17",
+        "inningsPitched": "48.0",
+        "strikeOuts": 47,
+        "walks": 14,
+        "homeRunsAllowed": 12,
+        "battersFaced": 194,
+        "gamesStarted": 9
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -235,6 +499,8 @@
         "homeStarterGamesStarted": 9,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -250,6 +516,32 @@
       "homeLineup": [],
       "awayStarter": "Hunter Dobbins",
       "homeStarter": "Edward Cabrera",
+      "awayStarterStats": {
+        "wins": 2,
+        "losses": 3,
+        "record": "2-3",
+        "era": "3.40",
+        "whip": "1.31",
+        "inningsPitched": "45.0",
+        "strikeOuts": 42,
+        "walks": 17,
+        "homeRunsAllowed": 6,
+        "battersFaced": 191,
+        "gamesStarted": 6
+      },
+      "homeStarterStats": {
+        "wins": 5,
+        "losses": 4,
+        "record": "5-4",
+        "era": "5.10",
+        "whip": "1.40",
+        "inningsPitched": "72.1",
+        "strikeOuts": 65,
+        "walks": 29,
+        "homeRunsAllowed": 14,
+        "battersFaced": 309,
+        "gamesStarted": 14
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -259,6 +551,8 @@
         "homeStarterGamesStarted": 14,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -274,6 +568,32 @@
       "homeLineup": [],
       "awayStarter": "Gabriel Hughes",
       "homeStarter": "Blade Tidwell",
+      "awayStarterStats": {
+        "wins": 0,
+        "losses": 4,
+        "record": "0-4",
+        "era": "5.61",
+        "whip": "1.28",
+        "inningsPitched": "33.2",
+        "strikeOuts": 31,
+        "walks": 12,
+        "homeRunsAllowed": 2,
+        "battersFaced": 143,
+        "gamesStarted": 6
+      },
+      "homeStarterStats": {
+        "wins": 0,
+        "losses": 0,
+        "record": "0-0",
+        "era": "2.78",
+        "whip": "1.10",
+        "inningsPitched": "22.2",
+        "strikeOuts": 19,
+        "walks": 5,
+        "homeRunsAllowed": 1,
+        "battersFaced": 91,
+        "gamesStarted": 2
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -283,6 +603,8 @@
         "homeStarterGamesStarted": 2,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -298,6 +620,32 @@
       "homeLineup": [],
       "awayStarter": "Cody Bradford",
       "homeStarter": "Jacob Lopez",
+      "awayStarterStats": {
+        "wins": 0,
+        "losses": 1,
+        "record": "0-1",
+        "era": "2.38",
+        "whip": "1.15",
+        "inningsPitched": "11.1",
+        "strikeOuts": 6,
+        "walks": 3,
+        "homeRunsAllowed": 0,
+        "battersFaced": 46,
+        "gamesStarted": 2
+      },
+      "homeStarterStats": {
+        "wins": 5,
+        "losses": 4,
+        "record": "5-4",
+        "era": "5.38",
+        "whip": "1.56",
+        "inningsPitched": "82.0",
+        "strikeOuts": 75,
+        "walks": 44,
+        "homeRunsAllowed": 14,
+        "battersFaced": 372,
+        "gamesStarted": 16
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -307,6 +655,8 @@
         "homeStarterGamesStarted": 16,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -322,6 +672,32 @@
       "homeLineup": [],
       "awayStarter": "Noah Cameron",
       "homeStarter": "Ryan Johnson",
+      "awayStarterStats": {
+        "wins": 6,
+        "losses": 8,
+        "record": "6-8",
+        "era": "4.45",
+        "whip": "1.29",
+        "inningsPitched": "129.1",
+        "strikeOuts": 118,
+        "walks": 42,
+        "homeRunsAllowed": 14,
+        "battersFaced": 551,
+        "gamesStarted": 22
+      },
+      "homeStarterStats": {
+        "wins": 2,
+        "losses": 6,
+        "record": "2-6",
+        "era": "6.71",
+        "whip": "1.56",
+        "inningsPitched": "55.0",
+        "strikeOuts": 43,
+        "walks": 27,
+        "homeRunsAllowed": 14,
+        "battersFaced": 249,
+        "gamesStarted": 11
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -331,6 +707,8 @@
         "homeStarterGamesStarted": 11,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -346,6 +724,32 @@
       "homeLineup": [],
       "awayStarter": "Logan Henderson",
       "homeStarter": "Tarik Skubal",
+      "awayStarterStats": {
+        "wins": 6,
+        "losses": 2,
+        "record": "6-2",
+        "era": "2.88",
+        "whip": "0.91",
+        "inningsPitched": "56.1",
+        "strikeOuts": 69,
+        "walks": 11,
+        "homeRunsAllowed": 9,
+        "battersFaced": 216,
+        "gamesStarted": 11
+      },
+      "homeStarterStats": {
+        "wins": 7,
+        "losses": 6,
+        "record": "7-6",
+        "era": "2.93",
+        "whip": "0.93",
+        "inningsPitched": "107.2",
+        "strikeOuts": 128,
+        "walks": 18,
+        "homeRunsAllowed": 12,
+        "battersFaced": 419,
+        "gamesStarted": 18
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -355,6 +759,8 @@
         "homeStarterGamesStarted": 18,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
@@ -370,6 +776,32 @@
       "homeLineup": [],
       "awayStarter": "Bryan Woo",
       "homeStarter": "Hunter Brown",
+      "awayStarterStats": {
+        "wins": 8,
+        "losses": 8,
+        "record": "8-8",
+        "era": "4.15",
+        "whip": "1.10",
+        "inningsPitched": "132.1",
+        "strikeOuts": 132,
+        "walks": 28,
+        "homeRunsAllowed": 13,
+        "battersFaced": 541,
+        "gamesStarted": 23
+      },
+      "homeStarterStats": {
+        "wins": 3,
+        "losses": 2,
+        "record": "3-2",
+        "era": "3.68",
+        "whip": "1.27",
+        "inningsPitched": "63.2",
+        "strikeOuts": 67,
+        "walks": 35,
+        "homeRunsAllowed": 8,
+        "battersFaced": 269,
+        "gamesStarted": 12
+      },
       "venueProfile": null,
       "status": "Scheduled",
       "dataAudit": {
@@ -379,6 +811,8 @@
         "homeStarterGamesStarted": 12,
         "awayStarterExtraBaseFallback": false,
         "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
       "modelStatus": "PENDING_CONFIRMED_LINEUP"
