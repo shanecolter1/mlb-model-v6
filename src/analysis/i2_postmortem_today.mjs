@@ -17,21 +17,29 @@ async function getFeed(gamePk){
       audit.upstreamAttempts++;
       const u=new URL(`${UPSTREAM}/.netlify/functions/mlb`);
       u.searchParams.set('type','feed'); u.searchParams.set('gamePk',String(gamePk));
-      const r=await fetch(u,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.1'}});
+      const r=await fetch(u,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.2'}});
       if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
       audit.upstreamSuccesses++;
       return {feed:await r.json(),source:'USER_UPSTREAM'};
     }catch(e){ /* governed fallback below */ }
   }
   audit.officialFallbacks++;
-  const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.1'}});
+  const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.2'}});
   if(!r.ok) throw new Error(`MLB feed ${r.status} ${r.statusText}`);
   return {feed:await r.json(),source:'MLB_STATS_API_FALLBACK'};
 }
 
+// MLB boxscore battingOrder uses 100/200/.../900 for the original starters;
+// later substitutes in the same batting slot use sequence suffixes such as 101.
+// Restricting to values divisible by 100 avoids falsely treating substitutions
+// as pregame lineup changes in a postgame comparison.
 function lineupNames(feed,side){
   const team=feed?.liveData?.boxscore?.teams?.[side];
-  return Object.values(team?.players||{}).filter(p=>Number(p.battingOrder)>0).sort((a,b)=>Number(a.battingOrder)-Number(b.battingOrder)).slice(0,9).map(p=>p.person?.fullName);
+  return Object.values(team?.players||{})
+    .filter(p=>Number(p.battingOrder)>0 && Number(p.battingOrder)%100===0)
+    .sort((a,b)=>Number(a.battingOrder)-Number(b.battingOrder))
+    .slice(0,9)
+    .map(p=>p.person?.fullName);
 }
 function actualStarter(feed,side){
   const team=feed?.liveData?.boxscore?.teams?.[side];
