@@ -1,0 +1,31 @@
+rank,team,games,i2_runs,i2_runs_per_game,i2_score_games,i2_score_pct
+1,"Atlanta Braves",125,80,0.6400,43,34.40
+2,"Pittsburgh Pirates",128,78,0.6094,32,25.00
+3,"Chicago Cubs",127,76,0.5984,37,29.13
+4,"Minnesota Twins",124,72,0.5806,36,29.03
+5,"Milwaukee Brewers",127,72,0.5669,35,27.56
+6,"Miami Marlins",124,65,0.5242,39,31.45
+7,"New York Mets",128,66,0.5156,39,30.47
+8,"Los Angeles Angels",124,62,0.5000,26,20.97
+9,"Houston Astros",125,62,0.4960,34,27.20
+10,"Philadelphia Phillies",125,61,0.4880,31,24.80
+11,"Colorado Rockies",125,61,0.4880,31,24.80
+12,"San Diego Padres",124,59,0.4758,27,21.77
+13,"Seattle Mariners",124,59,0.4758,36,29.03
+14,"Arizona Diamondbacks",125,58,0.4640,27,21.60
+15,"Tampa Bay Rays",123,57,0.4634,29,23.58
+16,"Washington Nationals",125,55,0.4400,33,26.40
+17,"Chicago White Sox",123,54,0.4390,26,21.14
+18,"Cincinnati Reds",124,54,0.4355,29,23.39
+19,"New York Yankees",125,52,0.4160,30,24.00
+20,"Los Angeles Dodgers",125,52,0.4160,35,28.00
+21,"San Francisco Giants",125,51,0.4080,28,22.40
+22,"Boston Red Sox",125,50,0.4000,31,24.80
+23,"Detroit Tigers",124,48,0.3871,31,25.00
+24,"Kansas City Royals",125,47,0.3760,30,24.00
+25,"Athletics",123,46,0.3740,30,24.39
+26,"Baltimore Orioles",126,46,0.3651,30,23.81
+27,"Texas Rangers",124,44,0.3548,25,20.16
+28,"St. Louis Cardinals",126,41,0.3254,25,19.84
+29,"Cleveland Guardians",127,33,0.2598,20,15.75
+30,"Toronto Blue Jays",127,31,0.2441,19,14.96

@@ -1,0 +1,277 @@
+{
+  "season": 2026,
+  "endDate": "2026-08-16",
+  "finalGames": 1882,
+  "rows": [
+    {
+      "teamId": 144,
+      "team": "Atlanta Braves",
+      "games": 125,
+      "i2Runs": 80,
+      "i2ScoreGames": 43,
+      "i2RunsPerGame": 0.64,
+      "i2ScorePct": 0.344
+    },
+    {
+      "teamId": 134,
+      "team": "Pittsburgh Pirates",
+      "games": 128,
+      "i2Runs": 78,
+      "i2ScoreGames": 32,
+      "i2RunsPerGame": 0.609375,
+      "i2ScorePct": 0.25
+    },
+    {
+      "teamId": 112,
+      "team": "Chicago Cubs",
+      "games": 127,
+      "i2Runs": 76,
+      "i2ScoreGames": 37,
+      "i2RunsPerGame": 0.5984251968503937,
+      "i2ScorePct": 0.29133858267716534
+    },
+    {
+      "teamId": 142,
+      "team": "Minnesota Twins",
+      "games": 124,
+      "i2Runs": 72,
+      "i2ScoreGames": 36,
+      "i2RunsPerGame": 0.5806451612903226,
+      "i2ScorePct": 0.2903225806451613
+    },
+    {
+      "teamId": 158,
+      "team": "Milwaukee Brewers",
+      "games": 127,
+      "i2Runs": 72,
+      "i2ScoreGames": 35,
+      "i2RunsPerGame": 0.5669291338582677,
+      "i2ScorePct": 0.2755905511811024
+    },
+    {
+      "teamId": 146,
+      "team": "Miami Marlins",
+      "games": 124,
+      "i2Runs": 65,
+      "i2ScoreGames": 39,
+      "i2RunsPerGame": 0.5241935483870968,
+      "i2ScorePct": 0.31451612903225806
+    },
+    {
+      "teamId": 121,
+      "team": "New York Mets",
+      "games": 128,
+      "i2Runs": 66,
+      "i2ScoreGames": 39,
+      "i2RunsPerGame": 0.515625,
+      "i2ScorePct": 0.3046875
+    },
+    {
+      "teamId": 108,
+      "team": "Los Angeles Angels",
+      "games": 124,
+      "i2Runs": 62,
+      "i2ScoreGames": 26,
+      "i2RunsPerGame": 0.5,
+      "i2ScorePct": 0.20967741935483872
+    },
+    {
+      "teamId": 117,
+      "team": "Houston Astros",
+      "games": 125,
+      "i2Runs": 62,
+      "i2ScoreGames": 34,
+      "i2RunsPerGame": 0.496,
+      "i2ScorePct": 0.272
+    },
+    {
+      "teamId": 143,
+      "team": "Philadelphia Phillies",
+      "games": 125,
+      "i2Runs": 61,
+      "i2ScoreGames": 31,
+      "i2RunsPerGame": 0.488,
+      "i2ScorePct": 0.248
+    },
+    {
+      "teamId": 115,
+      "team": "Colorado Rockies",
+      "games": 125,
+      "i2Runs": 61,
+      "i2ScoreGames": 31,
+      "i2RunsPerGame": 0.488,
+      "i2ScorePct": 0.248
+    },
+    {
+      "teamId": 135,
+      "team": "San Diego Padres",
+      "games": 124,
+      "i2Runs": 59,
+      "i2ScoreGames": 27,
+      "i2RunsPerGame": 0.47580645161290325,
+      "i2ScorePct": 0.21774193548387097
+    },
+    {
+      "teamId": 136,
+      "team": "Seattle Mariners",
+      "games": 124,
+      "i2Runs": 59,
+      "i2ScoreGames": 36,
+      "i2RunsPerGame": 0.47580645161290325,
+      "i2ScorePct": 0.2903225806451613
+    },
+    {
+      "teamId": 109,
+      "team": "Arizona Diamondbacks",
+      "games": 125,
+      "i2Runs": 58,
+      "i2ScoreGames": 27,
+      "i2RunsPerGame": 0.464,
+      "i2ScorePct": 0.216
+    },
+    {
+      "teamId": 139,
+      "team": "Tampa Bay Rays",
+      "games": 123,
+      "i2Runs": 57,
+      "i2ScoreGames": 29,
+      "i2RunsPerGame": 0.4634146341463415,
+      "i2ScorePct": 0.23577235772357724
+    },
+    {
+      "teamId": 120,
+      "team": "Washington Nationals",
+      "games": 125,
+      "i2Runs": 55,
+      "i2ScoreGames": 33,
+      "i2RunsPerGame": 0.44,
+      "i2ScorePct": 0.264
+    },
+    {
+      "teamId": 145,
+      "team": "Chicago White Sox",
+      "games": 123,
+      "i2Runs": 54,
+      "i2ScoreGames": 26,
+      "i2RunsPerGame": 0.43902439024390244,
+      "i2ScorePct": 0.21138211382113822
+    },
+    {
+      "teamId": 113,
+      "team": "Cincinnati Reds",
+      "games": 124,
+      "i2Runs": 54,
+      "i2ScoreGames": 29,
+      "i2RunsPerGame": 0.43548387096774194,
+      "i2ScorePct": 0.23387096774193547
+    },
+    {
+      "teamId": 147,
+      "team": "New York Yankees",
+      "games": 125,
+      "i2Runs": 52,
+      "i2ScoreGames": 30,
+      "i2RunsPerGame": 0.416,
+      "i2ScorePct": 0.24
+    },
+    {
+      "teamId": 119,
+      "team": "Los Angeles Dodgers",
+      "games": 125,
+      "i2Runs": 52,
+      "i2ScoreGames": 35,
+      "i2RunsPerGame": 0.416,
+      "i2ScorePct": 0.28
+    },
+    {
+      "teamId": 137,
+      "team": "San Francisco Giants",
+      "games": 125,
+      "i2Runs": 51,
+      "i2ScoreGames": 28,
+      "i2RunsPerGame": 0.408,
+      "i2ScorePct": 0.224
+    },
+    {
+      "teamId": 111,
+      "team": "Boston Red Sox",
+      "games": 125,
+      "i2Runs": 50,
+      "i2ScoreGames": 31,
+      "i2RunsPerGame": 0.4,
+      "i2ScorePct": 0.248
+    },
+    {
+      "teamId": 116,
+      "team": "Detroit Tigers",
+      "games": 124,
+      "i2Runs": 48,
+      "i2ScoreGames": 31,
+      "i2RunsPerGame": 0.3870967741935484,
+      "i2ScorePct": 0.25
+    },
+    {
+      "teamId": 118,
+      "team": "Kansas City Royals",
+      "games": 125,
+      "i2Runs": 47,
+      "i2ScoreGames": 30,
+      "i2RunsPerGame": 0.376,
+      "i2ScorePct": 0.24
+    },
+    {
+      "teamId": 133,
+      "team": "Athletics",
+      "games": 123,
+      "i2Runs": 46,
+      "i2ScoreGames": 30,
+      "i2RunsPerGame": 0.37398373983739835,
+      "i2ScorePct": 0.24390243902439024
+    },
+    {
+      "teamId": 110,
+      "team": "Baltimore Orioles",
+      "games": 126,
+      "i2Runs": 46,
+      "i2ScoreGames": 30,
+      "i2RunsPerGame": 0.36507936507936506,
+      "i2ScorePct": 0.23809523809523808
+    },
+    {
+      "teamId": 140,
+      "team": "Texas Rangers",
+      "games": 124,
+      "i2Runs": 44,
+      "i2ScoreGames": 25,
+      "i2RunsPerGame": 0.3548387096774194,
+      "i2ScorePct": 0.20161290322580644
+    },
+    {
+      "teamId": 138,
+      "team": "St. Louis Cardinals",
+      "games": 126,
+      "i2Runs": 41,
+      "i2ScoreGames": 25,
+      "i2RunsPerGame": 0.3253968253968254,
+      "i2ScorePct": 0.1984126984126984
+    },
+    {
+      "teamId": 114,
+      "team": "Cleveland Guardians",
+      "games": 127,
+      "i2Runs": 33,
+      "i2ScoreGames": 20,
+      "i2RunsPerGame": 0.25984251968503935,
+      "i2ScorePct": 0.15748031496062992
+    },
+    {
+      "teamId": 141,
+      "team": "Toronto Blue Jays",
+      "games": 127,
+      "i2Runs": 31,
+      "i2ScoreGames": 19,
+      "i2RunsPerGame": 0.2440944881889764,
+      "i2ScorePct": 0.14960629921259844
+    }
+  ]
+}
