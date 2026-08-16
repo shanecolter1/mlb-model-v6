@@ -1,0 +1,583 @@
+{
+  "model": "MLB I2 Under/Over v0.2 Research Build",
+  "date": "2026-08-16",
+  "cutoff": "2026-08-16T06:29:37Z",
+  "generatedAt": "2026-08-16T06:29:40.952Z",
+  "trialsPerGame": 50000,
+  "marketDataUsed": false,
+  "weights": {
+    "batter": 0.5,
+    "pitcher": 0.5
+  },
+  "leagueBaselineSource": "Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json",
+  "parkSource": "neutral fallback",
+  "currentPlayerSource": "MLB Stats API 2026 season-to-date basic batting/pitching statistics",
+  "knownResearchLimitations": [
+    "Advanced daily/as-of Statcast batter/pitcher interaction weights are not yet fitted.",
+    "Weather/roof is not yet applied by the v0.2 I2 simulator.",
+    "Conventional starters default to the probable starter for I2 unless an explicit opener/bulk mixture is supplied.",
+    "If MLB pitching stats omit doubles/triples allowed, non-HR hits are split using league event proportions and flagged in dataAudit."
+  ],
+  "remainingGamesAtCutoff": 15,
+  "projectedGames": 0,
+  "pendingOrErroredGames": 15,
+  "ranking": [],
+  "games": [
+    {
+      "gamePk": 822940,
+      "gameDate": "2026-08-16T16:15:00Z",
+      "away": "Baltimore Orioles",
+      "home": "Tampa Bay Rays",
+      "venue": "Tropicana Field",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Trevor Rogers",
+      "homeStarter": "Freddy Peralta",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 503,
+        "homeStarterBF": 555,
+        "awayStarterGamesStarted": 22,
+        "homeStarterGamesStarted": 24,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 823344,
+      "gameDate": "2026-08-16T17:35:00Z",
+      "away": "Boston Red Sox",
+      "home": "Pittsburgh Pirates",
+      "venue": "PNC Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Patrick Sandoval",
+      "homeStarter": "Lake Bachar",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 136,
+        "homeStarterBF": 270,
+        "awayStarterGamesStarted": 6,
+        "homeStarterGamesStarted": 4,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824880,
+      "gameDate": "2026-08-16T17:35:00Z",
+      "away": "Arizona Diamondbacks",
+      "home": "Atlanta Braves",
+      "venue": "Truist Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Michael Soroka",
+      "homeStarter": "Bryce Elder",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 351,
+        "homeStarterBF": 556,
+        "awayStarterGamesStarted": 16,
+        "homeStarterGamesStarted": 23,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 822774,
+      "gameDate": "2026-08-16T17:37:00Z",
+      "away": "New York Yankees",
+      "home": "Toronto Blue Jays",
+      "venue": "Rogers Centre",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Ryan Weathers",
+      "homeStarter": "Dylan Cease",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 525,
+        "homeStarterBF": 529,
+        "awayStarterGamesStarted": 23,
+        "homeStarterGamesStarted": 22,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 823590,
+      "gameDate": "2026-08-16T17:40:00Z",
+      "away": "Washington Nationals",
+      "home": "New York Mets",
+      "venue": "Citi Field",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Jake Irvin",
+      "homeStarter": "Christian Scott",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 286,
+        "homeStarterBF": 340,
+        "awayStarterGamesStarted": 14,
+        "homeStarterGamesStarted": 17,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824397,
+      "gameDate": "2026-08-16T17:40:00Z",
+      "away": "San Diego Padres",
+      "home": "Cleveland Guardians",
+      "venue": "Progressive Field",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Casey Mize",
+      "homeStarter": "Tanner Bibee",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 387,
+        "homeStarterBF": 586,
+        "awayStarterGamesStarted": 18,
+        "homeStarterGamesStarted": 25,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824236,
+      "gameDate": "2026-08-16T17:40:00Z",
+      "away": "Chicago White Sox",
+      "home": "Detroit Tigers",
+      "venue": "Comerica Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Sean Burke",
+      "homeStarter": "Drew Anderson",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 550,
+        "homeStarterBF": 306,
+        "awayStarterGamesStarted": 20,
+        "homeStarterGamesStarted": 4,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824477,
+      "gameDate": "2026-08-16T17:40:00Z",
+      "away": "Miami Marlins",
+      "home": "Cincinnati Reds",
+      "venue": "Great American Ball Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Eury Pérez",
+      "homeStarter": "Nick Lodolo",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 471,
+        "homeStarterBF": 297,
+        "awayStarterGamesStarted": 21,
+        "homeStarterGamesStarted": 13,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 823670,
+      "gameDate": "2026-08-16T18:10:00Z",
+      "away": "Philadelphia Phillies",
+      "home": "Minnesota Twins",
+      "venue": "Target Field",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Andrew Painter",
+      "homeStarter": "Dean Kremer",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 360,
+        "homeStarterBF": 194,
+        "awayStarterGamesStarted": 15,
+        "homeStarterGamesStarted": 9,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824642,
+      "gameDate": "2026-08-16T19:15:00Z",
+      "away": "St. Louis Cardinals",
+      "home": "Chicago Cubs",
+      "venue": "Wrigley Field",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Hunter Dobbins",
+      "homeStarter": "Edward Cabrera",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 191,
+        "homeStarterBF": 309,
+        "awayStarterGamesStarted": 6,
+        "homeStarterGamesStarted": 14,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 823182,
+      "gameDate": "2026-08-16T20:05:00Z",
+      "away": "Colorado Rockies",
+      "home": "San Francisco Giants",
+      "venue": "Oracle Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Gabriel Hughes",
+      "homeStarter": "Blade Tidwell",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 143,
+        "homeStarterBF": 91,
+        "awayStarterGamesStarted": 6,
+        "homeStarterGamesStarted": 2,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824965,
+      "gameDate": "2026-08-16T20:05:00Z",
+      "away": "Texas Rangers",
+      "home": "Athletics",
+      "venue": "Sutter Health Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Cody Bradford",
+      "homeStarter": "Jacob Lopez",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 46,
+        "homeStarterBF": 372,
+        "awayStarterGamesStarted": 2,
+        "homeStarterGamesStarted": 16,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 823991,
+      "gameDate": "2026-08-16T20:07:00Z",
+      "away": "Kansas City Royals",
+      "home": "Los Angeles Angels",
+      "venue": "Angel Stadium",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Noah Cameron",
+      "homeStarter": "Ryan Johnson",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 551,
+        "homeStarterBF": 249,
+        "awayStarterGamesStarted": 22,
+        "homeStarterGamesStarted": 11,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 823912,
+      "gameDate": "2026-08-16T20:10:00Z",
+      "away": "Milwaukee Brewers",
+      "home": "Los Angeles Dodgers",
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Logan Henderson",
+      "homeStarter": "Tarik Skubal",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 216,
+        "homeStarterBF": 419,
+        "awayStarterGamesStarted": 11,
+        "homeStarterGamesStarted": 18,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    },
+    {
+      "gamePk": 824156,
+      "gameDate": "2026-08-16T23:20:00Z",
+      "away": "Seattle Mariners",
+      "home": "Houston Astros",
+      "venue": "Daikin Park",
+      "lineupConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": "Bryan Woo",
+      "homeStarter": "Hunter Brown",
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 541,
+        "homeStarterBF": 269,
+        "awayStarterGamesStarted": 23,
+        "homeStarterGamesStarted": 12,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+    }
+  ],
+  "sourcePriorityAudit": {
+    "rule": "USER_DATA_FIRST",
+    "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
+    "upstreamAttempts": 46,
+    "upstreamSuccesses": 0,
+    "officialFallbacks": 46,
+    "fallbackEvents": [
+      {
+        "reason": "Error: upstream schedule 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=2026-08-16&hydrate=probablePitcher,team,venue"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/822940/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669432/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/642547/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823344/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/663776/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669199/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824880/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/647336/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/693821/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/822774/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/677960/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/656302/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823590/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/663623/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/681035/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824397/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/663554/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/676440/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824236/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/680732/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/623454/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824477/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691587/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/666157/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823670/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691725/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/665152/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824642/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/690928/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/665795/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823182/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/687312/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694918/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824965/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/674003/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/682052/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823991/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/702070/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/696270/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823912/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/701656/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669373/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824156/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/693433/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686613/stats?stats=season&group=pitching&season=2026"
+      }
+    ],
+    "unmappedOfficialCalls": 0
+  },
+  "primaryBaseballSource": "user-owned MLB Live Command Center upstream data layer",
+  "fallbackBaseballSource": "official MLB Stats API only when the upstream request fails"
+}
