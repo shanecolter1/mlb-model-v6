@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "test": "node tests/environmental_context_adapter.test.mjs && node tests/event_probability_engine.test.mjs && node tests/run_expectancy_engine.test.mjs && node tests/pitcher_staff_blend.test.mjs && node tests/seeded_random.test.mjs && node tests/backtest_metrics.test.mjs && node tests/leakage_guard.test.mjs",
+    "test": "node tests/environmental_context_adapter.test.mjs && node tests/event_probability_engine.test.mjs && node tests/run_expectancy_engine.test.mjs && node tests/pitcher_staff_blend.test.mjs && node tests/seeded_random.test.mjs && node tests/backtest_metrics.test.mjs && node tests/leakage_guard.test.mjs && node tests/i2_total_conditioning.test.mjs",
     "test:python": "python tests/test_mlb_feed_normalizer.py"
   }
 }
