@@ -4,6 +4,8 @@ import path from 'node:path';
 const DATE = process.env.I2_DATE || new Date().toISOString().slice(0, 10);
 const UPSTREAM = String(process.env.MLB_OTHER_MODEL_BASE_URL || '').trim().replace(/\/$/, '');
 const OUTPUT = process.env.I2_RUN_ENVIRONMENT || `data/runtime/i2/${DATE}_run_environment.json`;
+const ATTEMPTS = Number(process.env.I2_RUN_ENVIRONMENT_ATTEMPTS || 12);
+const RETRY_MS = Number(process.env.I2_RUN_ENVIRONMENT_RETRY_MS || 10000);
 
 if (!UPSTREAM) throw new Error('MLB_OTHER_MODEL_BASE_URL is required for the isolated I2 run-environment feed');
 
@@ -12,15 +14,30 @@ function loadExisting() {
   try { return JSON.parse(fs.readFileSync(OUTPUT, 'utf8')); } catch { return { events: [] }; }
 }
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 const url = `${UPSTREAM}/.netlify/functions/i2-run-environment`;
-const response = await fetch(url, {
-  headers: { accept: 'application/json', 'user-agent': 'MLB-I2-Run-Environment-Capture/0.1' }
-});
-if (!response.ok) throw new Error(`I2 run-environment endpoint ${response.status} ${response.statusText}`);
-const payload = await response.json();
-if (payload?.scope !== 'FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES') {
-  throw new Error(`Unexpected run-environment scope: ${payload?.scope || 'missing'}`);
+let payload = null;
+let lastError = null;
+for (let attempt = 1; attempt <= ATTEMPTS; attempt += 1) {
+  try {
+    const response = await fetch(url, {
+      headers: { accept: 'application/json', 'user-agent': 'MLB-I2-Run-Environment-Capture/0.2' }
+    });
+    if (!response.ok) throw new Error(`I2 run-environment endpoint ${response.status} ${response.statusText}`);
+    payload = await response.json();
+    if (payload?.scope !== 'FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES') {
+      throw new Error(`Unexpected run-environment scope: ${payload?.scope || 'missing'}`);
+    }
+    break;
+  } catch (error) {
+    lastError = error;
+    if (attempt < ATTEMPTS) {
+      console.warn(`[I2 run environment] attempt ${attempt}/${ATTEMPTS} failed: ${String(error?.message || error)}; retrying in ${RETRY_MS}ms`);
+      await sleep(RETRY_MS);
+    }
+  }
 }
+if (!payload) throw lastError || new Error('Unable to retrieve I2 run environment');
 
 const existing = loadExisting();
 const priorById = new Map((existing.events || []).filter(x => x.eventId).map(x => [String(x.eventId), x]));
