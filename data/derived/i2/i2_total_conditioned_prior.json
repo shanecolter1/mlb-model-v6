@@ -1,0 +1,31 @@
+{
+  "name": "I2 total-conditioned scoring prior",
+  "version": "2026-08-18",
+  "benchmarkWindow": "2021-2025 regular season",
+  "conditioner": "DraftKings pregame opening full-game total",
+  "sourcePopulationGames": 10730,
+  "broad": {
+    "totalRange": "6.0-11.0",
+    "n": 10730,
+    "over05": 0.43504193849021436,
+    "under05": 0.5649580615097857
+  },
+  "buckets": {
+    "6.0": {"n": 12, "over05": 0.3333333333333333, "under05": 0.6666666666666667},
+    "6.5": {"n": 149, "over05": 0.3825503355704698, "under05": 0.6174496644295302},
+    "7.0": {"n": 655, "over05": 0.3618320610687023, "under05": 0.6381679389312977},
+    "7.5": {"n": 1612, "over05": 0.41935483870967744, "under05": 0.5806451612903225},
+    "8.0": {"n": 2146, "over05": 0.4226467847157502, "under05": 0.5773532152842498},
+    "8.5": {"n": 2871, "over05": 0.4385231626610937, "under05": 0.5614768373389063},
+    "9.0": {"n": 1839, "over05": 0.4410005437737901, "under05": 0.5589994562262099},
+    "9.5": {"n": 875, "over05": 0.47885714285714287, "under05": 0.5211428571428571},
+    "10.0": {"n": 261, "over05": 0.49808429118773945, "under05": 0.5019157088122606},
+    "10.5": {"n": 186, "over05": 0.553763440860215, "under05": 0.44623655913978494},
+    "11.0": {"n": 124, "over05": 0.5241935483870968, "under05": 0.47580645161290325}
+  },
+  "governance": {
+    "exactBucketRequired": true,
+    "broadPriorFallbackAllowed": false,
+    "note": "A game without an approved pregame full-game total bucket is not eligible for an official I2 projection. The broad 6-11 prior is retained only as the reference center for the baseball-only model delta."
+  }
+}
