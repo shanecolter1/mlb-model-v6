@@ -1,0 +1,23 @@
+{
+  "capturedAt": "2026-08-21T20:43:00Z",
+  "source": "DraftKings Sportsbook total points via DK Network board; manual recovery because isolated run-environment endpoint returned 404",
+  "scope": "FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES",
+  "totalDefinition": "First observed approved pregame DraftKings full-game total point; no prices or derivative markets exposed to prediction engine",
+  "events": [
+    {"eventId":"ATL-MIL-20260821","commenceTime":"2026-08-21T20:10:00Z","awayTeam":"Atlanta Braves","homeTeam":"Milwaukee Brewers","fullGameTotal":6.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T17:54:00Z"},
+    {"eventId":"STL-PHI-20260821","commenceTime":"2026-08-21T22:40:00Z","awayTeam":"St. Louis Cardinals","homeTeam":"Philadelphia Phillies","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"TOR-NYY-20260821","commenceTime":"2026-08-21T23:05:00Z","awayTeam":"Toronto Blue Jays","homeTeam":"New York Yankees","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"SF-BOS-20260821","commenceTime":"2026-08-21T23:10:00Z","awayTeam":"San Francisco Giants","homeTeam":"Boston Red Sox","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"WSH-MIA-20260821","commenceTime":"2026-08-21T23:10:00Z","awayTeam":"Washington Nationals","homeTeam":"Miami Marlins","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"TB-BAL-20260821","commenceTime":"2026-08-21T23:15:00Z","awayTeam":"Tampa Bay Rays","homeTeam":"Baltimore Orioles","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"NYM-CWS-20260821","commenceTime":"2026-08-21T23:40:00Z","awayTeam":"New York Mets","homeTeam":"Chicago White Sox","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"ATH-HOU-20260821","commenceTime":"2026-08-22T00:10:00Z","awayTeam":"Athletics","homeTeam":"Houston Astros","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"DET-KC-20260821","commenceTime":"2026-08-22T00:10:00Z","awayTeam":"Detroit Tigers","homeTeam":"Kansas City Royals","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"LAA-TEX-20260821","commenceTime":"2026-08-22T00:15:00Z","awayTeam":"Los Angeles Angels","homeTeam":"Texas Rangers","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"CLE-COL-20260821","commenceTime":"2026-08-22T00:40:00Z","awayTeam":"Cleveland Guardians","homeTeam":"Colorado Rockies","fullGameTotal":10.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"CIN-ARI-20260821","commenceTime":"2026-08-22T01:40:00Z","awayTeam":"Cincinnati Reds","homeTeam":"Arizona Diamondbacks","fullGameTotal":8.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"MIN-SD-20260821","commenceTime":"2026-08-22T01:40:00Z","awayTeam":"Minnesota Twins","homeTeam":"San Diego Padres","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"PIT-LAD-20260821","commenceTime":"2026-08-22T02:10:00Z","awayTeam":"Pittsburgh Pirates","homeTeam":"Los Angeles Dodgers","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"},
+    {"eventId":"CHC-SEA-20260821","commenceTime":"2026-08-22T02:10:00Z","awayTeam":"Chicago Cubs","homeTeam":"Seattle Mariners","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-21T20:43:00Z"}
+  ]
+}
