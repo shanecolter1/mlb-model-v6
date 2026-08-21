@@ -43,8 +43,7 @@ jobs:
           export I2_CUTOFF="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           echo "cutoff=$I2_CUTOFF" | tee -a "$LOG"
 
-          YEAR=2026
-          VENUE="data/runtime/i2/savant_venue_profiles_${YEAR}_3yr.json"
+          VENUE="data/runtime/i2/savant_venue_profiles_2026_3yr.json"
           if [ -f "$VENUE" ]; then
             echo "venue_artifact=present:$VENUE" | tee -a "$LOG"
           else
@@ -57,31 +56,25 @@ jobs:
           echo "fetch_i2_run_environment_rc=$ENV_RC" | tee -a "$LOG"
 
           MODEL_RC=99
+          SHADOW_RC=99
           if [ "$ENV_RC" -eq 0 ]; then
             echo "STEP run_i2_total_conditioned" | tee -a "$LOG"
             node src/pipeline/run_i2_total_conditioned.mjs >> "$LOG" 2>&1
             MODEL_RC=$?
             echo "run_i2_total_conditioned_rc=$MODEL_RC" | tee -a "$LOG"
           else
-            echo "model_skipped_due_to_run_environment_failure" | tee -a "$LOG"
+            echo "official_model_blocked_due_to_required_run_environment_failure" | tee -a "$LOG"
+            echo "STEP baseball_only_shadow_diagnostic (NOT official; NOT a substitute for v0.3 final output)" | tee -a "$LOG"
+            export I2_OUTPUT=data/runtime/i2/2026-08-21_baseball_only_shadow.json
+            node src/pipeline/run_i2_today_upstream_wrapper.mjs >> "$LOG" 2>&1
+            SHADOW_RC=$?
+            echo "baseball_only_shadow_rc=$SHADOW_RC" | tee -a "$LOG"
           fi
 
           echo "finished_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" | tee -a "$LOG"
-          echo "env_rc=$ENV_RC model_rc=$MODEL_RC" | tee -a "$LOG"
+          echo "env_rc=$ENV_RC model_rc=$MODEL_RC shadow_rc=$SHADOW_RC" | tee -a "$LOG"
 
       - name: Commit evaluation artifacts and diagnostic log
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git reset --hard origin/main
-          # The prior step's files survive reset only if copied first, so reconstruct from workspace temp if present.
-          # GitHub Actions reset occurs in-place; stash untracked runtime files before reset.
-        continue-on-error: true
-
-      - name: Commit without resetting generated files
         shell: bash
         run: |
           set -euo pipefail
@@ -90,6 +83,8 @@ jobs:
           git add data/runtime/i2/2026-08-21_manual_eval.log
           if [ -f data/runtime/i2/2026-08-21_run_environment.json ]; then git add data/runtime/i2/2026-08-21_run_environment.json; fi
           if [ -f data/runtime/i2/2026-08-21_frozen_predictions.json ]; then git add data/runtime/i2/2026-08-21_frozen_predictions.json; fi
+          if [ -f data/runtime/i2/2026-08-21_baseball_only_shadow.json ]; then git add data/runtime/i2/2026-08-21_baseball_only_shadow.json; fi
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Run governed I2 evaluation 2026-08-21"
+          git commit -m "Run governed I2 evaluation diagnostics 2026-08-21"
+          git pull --rebase origin main
           git push origin HEAD:main
