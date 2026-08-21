@@ -88,3 +88,5 @@ jobs:
           git commit -m "Run governed I2 evaluation diagnostics 2026-08-21"
           git pull --rebase origin main
           git push origin HEAD:main
+
+# full-slate rerun trigger 2026-08-21 15:43 CT
