@@ -129,3 +129,5 @@ jobs:
 
           echo 'Unable to push I2 artifacts after 3 attempts.'
           exit 1
+
+# manual evaluation trigger 2026-08-21
