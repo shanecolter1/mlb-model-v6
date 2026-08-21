@@ -1,0 +1,19 @@
+started_at=2026-08-21T17:48:32Z
+cutoff=2026-08-21T17:48:32Z
+venue_artifact=missing_neutral_fallback
+STEP fetch_i2_run_environment
+[I2 run environment] attempt 1/3 failed: I2 run-environment endpoint 404 Not Found; retrying in 5000ms
+[I2 run environment] attempt 2/3 failed: I2 run-environment endpoint 404 Not Found; retrying in 5000ms
+file:///home/runner/work/mlb-model-v6/mlb-model-v6/src/pipeline/fetch_i2_run_environment.mjs:26
+    if (!response.ok) throw new Error(`I2 run-environment endpoint ${response.status} ${response.statusText}`);
+                            ^
+
+Error: I2 run-environment endpoint 404 Not Found
+    at file:///home/runner/work/mlb-model-v6/mlb-model-v6/src/pipeline/fetch_i2_run_environment.mjs:26:29
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v22.23.2
+fetch_i2_run_environment_rc=1
+model_skipped_due_to_run_environment_failure
+finished_at=2026-08-21T17:48:42Z
+env_rc=1 model_rc=99
