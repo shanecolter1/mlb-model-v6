@@ -1,14 +1,14 @@
-started_at=2026-08-21T17:54:28Z
-cutoff=2026-08-21T17:54:28Z
+started_at=2026-08-21T20:43:57Z
+cutoff=2026-08-21T20:43:57Z
 venue_artifact=missing_neutral_fallback
 STEP fetch_i2_run_environment
-[I2 run environment] attempt 1/3 failed: I2 run-environment endpoint 404 Not Found; retrying in 5000ms
-[I2 run environment] attempt 2/3 failed: I2 run-environment endpoint 404 Not Found; retrying in 5000ms
+[I2 run environment] attempt 1/3 failed: I2 run-environment endpoint 503 Service Unavailable; retrying in 5000ms
+[I2 run environment] attempt 2/3 failed: I2 run-environment endpoint 503 Service Unavailable; retrying in 5000ms
 file:///home/runner/work/mlb-model-v6/mlb-model-v6/src/pipeline/fetch_i2_run_environment.mjs:26
     if (!response.ok) throw new Error(`I2 run-environment endpoint ${response.status} ${response.statusText}`);
                             ^
 
-Error: I2 run-environment endpoint 404 Not Found
+Error: I2 run-environment endpoint 503 Service Unavailable
     at file:///home/runner/work/mlb-model-v6/mlb-model-v6/src/pipeline/fetch_i2_run_environment.mjs:26:29
     at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
 
@@ -19,43 +19,203 @@ STEP baseball_only_shadow_diagnostic (NOT official; NOT a substitute for v0.3 fi
 [
   {
     "rank": 1,
-    "gamePk": 823746,
-    "matchup": "Atlanta Braves @ Milwaukee Brewers",
-    "gameDate": "2026-08-21T20:10:00Z",
-    "under05Pct": 61.35,
-    "over05Pct": 38.65,
-    "fairUnder": -159,
-    "fairOver": 159,
-    "awayStarter": "Chris Sale",
-    "homeStarter": "Jacob Misiorowski",
+    "gamePk": 823510,
+    "matchup": "Toronto Blue Jays @ New York Yankees",
+    "gameDate": "2026-08-21T23:05:00Z",
+    "under05Pct": 58.17,
+    "over05Pct": 41.83,
+    "fairUnder": -139,
+    "fairOver": 139,
+    "awayStarter": "Mason Fluharty",
+    "homeStarter": "Cam Schlittler",
     "awayStarterStats": {
-      "wins": 12,
-      "losses": 8,
-      "record": "12-8",
-      "era": "2.16",
-      "whip": "1.02",
-      "inningsPitched": "129.0",
-      "strikeOuts": 160,
-      "walks": 28,
-      "homeRunsAllowed": 8,
-      "battersFaced": 517,
+      "wins": 5,
+      "losses": 1,
+      "record": "5-1",
+      "era": "3.71",
+      "whip": "1.24",
+      "inningsPitched": "51.0",
+      "strikeOuts": 56,
+      "walks": 20,
+      "homeRunsAllowed": 6,
+      "battersFaced": 213,
+      "gamesStarted": 3
+    },
+    "homeStarterStats": {
+      "wins": 10,
+      "losses": 6,
+      "record": "10-6",
+      "era": "2.19",
+      "whip": "0.94",
+      "inningsPitched": "152.0",
+      "strikeOuts": 189,
+      "walks": 34,
+      "homeRunsAllowed": 14,
+      "battersFaced": 602,
+      "gamesStarted": 26
+    },
+    "top2ScorePct": 22.26,
+    "bottom2ScorePct": 25.2
+  },
+  {
+    "rank": 2,
+    "gamePk": 824721,
+    "matchup": "San Francisco Giants @ Boston Red Sox",
+    "gameDate": "2026-08-21T23:10:00Z",
+    "under05Pct": 57.97,
+    "over05Pct": 42.03,
+    "fairUnder": -138,
+    "fairOver": 138,
+    "awayStarter": "Logan Webb",
+    "homeStarter": "Sonny Gray",
+    "awayStarterStats": {
+      "wins": 8,
+      "losses": 7,
+      "record": "8-7",
+      "era": "3.50",
+      "whip": "1.06",
+      "inningsPitched": "139.0",
+      "strikeOuts": 110,
+      "walks": 32,
+      "homeRunsAllowed": 9,
+      "battersFaced": 560,
       "gamesStarted": 22
     },
     "homeStarterStats": {
-      "wins": 12,
-      "losses": 5,
-      "record": "12-5",
-      "era": "1.75",
-      "whip": "0.75",
-      "inningsPitched": "139.0",
-      "strikeOuts": 210,
-      "walks": 31,
+      "wins": 15,
+      "losses": 3,
+      "record": "15-3",
+      "era": "2.65",
+      "whip": "1.15",
+      "inningsPitched": "132.2",
+      "strikeOuts": 117,
+      "walks": 34,
       "homeRunsAllowed": 13,
-      "battersFaced": 527,
+      "battersFaced": 536,
       "gamesStarted": 23
     },
-    "top2ScorePct": 19.97,
-    "bottom2ScorePct": 23.38
+    "top2ScorePct": 24.56,
+    "bottom2ScorePct": 23.22
+  },
+  {
+    "rank": 3,
+    "gamePk": 823420,
+    "matchup": "St. Louis Cardinals @ Philadelphia Phillies",
+    "gameDate": "2026-08-21T22:40:00Z",
+    "under05Pct": 56.96,
+    "over05Pct": 43.04,
+    "fairUnder": -132,
+    "fairOver": 132,
+    "awayStarter": "Hunter Dobbins",
+    "homeStarter": "Jesús Luzardo",
+    "awayStarterStats": {
+      "wins": 3,
+      "losses": 3,
+      "record": "3-3",
+      "era": "3.42",
+      "whip": "1.30",
+      "inningsPitched": "50.0",
+      "strikeOuts": 49,
+      "walks": 21,
+      "homeRunsAllowed": 7,
+      "battersFaced": 212,
+      "gamesStarted": 7
+    },
+    "homeStarterStats": {
+      "wins": 11,
+      "losses": 5,
+      "record": "11-5",
+      "era": "3.23",
+      "whip": "1.15",
+      "inningsPitched": "150.1",
+      "strikeOuts": 185,
+      "walks": 46,
+      "homeRunsAllowed": 12,
+      "battersFaced": 621,
+      "gamesStarted": 25
+    },
+    "top2ScorePct": 23.17,
+    "bottom2ScorePct": 25.6
+  },
+  {
+    "rank": 4,
+    "gamePk": 823830,
+    "matchup": "Washington Nationals @ Miami Marlins",
+    "gameDate": "2026-08-21T23:10:00Z",
+    "under05Pct": 55.89,
+    "over05Pct": 44.11,
+    "fairUnder": -127,
+    "fairOver": 127,
+    "awayStarter": "Brad Lord",
+    "homeStarter": "Ryan Gusto",
+    "awayStarterStats": {
+      "wins": 5,
+      "losses": 2,
+      "record": "5-2",
+      "era": "4.04",
+      "whip": "1.25",
+      "inningsPitched": "62.1",
+      "strikeOuts": 57,
+      "walks": 25,
+      "homeRunsAllowed": 7,
+      "battersFaced": 269,
+      "gamesStarted": 3
+    },
+    "homeStarterStats": {
+      "wins": 0,
+      "losses": 3,
+      "record": "0-3",
+      "era": "4.70",
+      "whip": "1.32",
+      "inningsPitched": "53.2",
+      "strikeOuts": 49,
+      "walks": 14,
+      "homeRunsAllowed": 8,
+      "battersFaced": 237,
+      "gamesStarted": 11
+    },
+    "top2ScorePct": 25.83,
+    "bottom2ScorePct": 24.62
+  },
+  {
+    "rank": 5,
+    "gamePk": 824800,
+    "matchup": "Tampa Bay Rays @ Baltimore Orioles",
+    "gameDate": "2026-08-21T23:15:00Z",
+    "under05Pct": 54.3,
+    "over05Pct": 45.7,
+    "fairUnder": -119,
+    "fairOver": 119,
+    "awayStarter": "Freddy Peralta",
+    "homeStarter": "Trevor Rogers",
+    "awayStarterStats": {
+      "wins": 5,
+      "losses": 10,
+      "record": "5-10",
+      "era": "5.27",
+      "whip": "1.48",
+      "inningsPitched": "128.0",
+      "strikeOuts": 123,
+      "walks": 53,
+      "homeRunsAllowed": 20,
+      "battersFaced": 573,
+      "gamesStarted": 25
+    },
+    "homeStarterStats": {
+      "wins": 8,
+      "losses": 8,
+      "record": "8-8",
+      "era": "4.15",
+      "whip": "1.25",
+      "inningsPitched": "125.2",
+      "strikeOuts": 108,
+      "walks": 35,
+      "homeRunsAllowed": 13,
+      "battersFaced": 529,
+      "gamesStarted": 23
+    },
+    "top2ScorePct": 25.52,
+    "bottom2ScorePct": 27.29
   }
 ]
 Wrote data/runtime/i2/2026-08-21_baseball_only_shadow.json
@@ -63,13 +223,722 @@ Wrote data/runtime/i2/2026-08-21_baseball_only_shadow.json
   "sourcePriorityAudit": {
     "rule": "USER_DATA_FIRST",
     "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
-    "upstreamAttempts": 62,
-    "upstreamSuccesses": 62,
-    "officialFallbacks": 0,
-    "fallbackEvents": [],
+    "upstreamAttempts": 177,
+    "upstreamSuccesses": 0,
+    "officialFallbacks": 177,
+    "fallbackEvents": [
+      {
+        "reason": "Error: upstream schedule 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=2026-08-21&hydrate=probablePitcher,team,venue"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823420/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/802139/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/671056/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691023/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/695491/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691458/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/665877/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/677592/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/663494/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686780/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/656941/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/607208/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/547180/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/650333/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/664761/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/681082/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669016/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/592663/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/702222/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/690928/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/666200/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823510/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/703520/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/664770/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/672386/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/660821/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/676391/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/672960/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/678218/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/807727/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/664702/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/502671/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/642708/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/671218/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/700250/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/806146/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/663757/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/682987/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/676609/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/645305/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/689254/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/693645/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824721/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/687551/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/646240/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/642715/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/805811/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/808982/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/678545/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/806367/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/701852/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/683766/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686765/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/678882/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/677800/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/575929/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/668939/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/702332/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/680776/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/655316/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/681508/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/657277/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/543243/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823830/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/695734/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/678391/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/665953/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694673/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691781/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/660688/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686611/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/683083/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/696285/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/805300/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/683357/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/665052/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669364/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/672640/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/681715/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691788/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/682663/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/677870/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/695418/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/687473/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824800/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/650490/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/668723/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/676356/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691406/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/802415/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/622761/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/700652/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/689414/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/670764/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/702616/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/624413/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/683002/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/641933/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694212/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/687637/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691723/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/681297/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/665750/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/642547/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669432/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824559/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/805367/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/808959/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/678246/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/545341/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/695657/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686668/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/682668/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/668670/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/671976/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/640455/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/680732/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824072/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/695600/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/677951/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/695506/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/521692/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686469/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/679845/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686681/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/686555/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/664728/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/675512/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/702070/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824152/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669372/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669713/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/822857/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/679822/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/608369/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694671/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/607043/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/677649/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669394/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/683227/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/553869/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694497/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/672282/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/669022/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824317/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/664983/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691720/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694249/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/681198/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/650489/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/687597/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/666160/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/690924/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/678662/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/676282/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/685299/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/825045/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/545121/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/682998/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/672515/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/672695/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/571448/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/694374/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/691783/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/699912/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/814439/stats?stats=season&group=hitting&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/666157/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/593958/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823262/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/687570/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823911/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/696149/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/808967/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream feed 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823101/feed/live"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/571510/stats?stats=season&group=pitching&season=2026"
+      },
+      {
+        "reason": "Error: upstream peopleStats 503 Service Unavailable",
+        "url": "https://statsapi.mlb.com/api/v1/people/676106/stats?stats=season&group=pitching&season=2026"
+      }
+    ],
     "unmappedOfficialCalls": 0
   }
 }
 baseball_only_shadow_rc=0
-finished_at=2026-08-21T17:54:59Z
+finished_at=2026-08-21T20:45:00Z
 env_rc=1 model_rc=99 shadow_rc=0
