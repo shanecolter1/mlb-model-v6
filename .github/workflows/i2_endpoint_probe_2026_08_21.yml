@@ -12,6 +12,8 @@ permissions:
 jobs:
   probe:
     runs-on: ubuntu-latest
+    env:
+      GH_ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +25,8 @@ jobs:
           mkdir -p data/runtime/i2
           OUT=data/runtime/i2/2026-08-21_endpoint_probe.txt
           : > "$OUT"
+          if [ -n "${GH_ODDS_API_KEY:-}" ]; then echo "github_odds_api_key_configured=yes" >> "$OUT"; else echo "github_odds_api_key_configured=no" >> "$OUT"; fi
+          echo >> "$OUT"
           for BASE in \
             https://lambent-brioche-ca05b1.netlify.app \
             https://mlb-live-command-center.netlify.app; do
@@ -30,6 +34,15 @@ jobs:
             CODE=$(curl -L -sS -o /tmp/schedule.json -w '%{http_code}' "$BASE/.netlify/functions/mlb?type=schedule&date=2026-08-21")
             echo "schedule_http=$CODE" >> "$OUT"
             if [ "$CODE" = "200" ]; then node -e "const x=require('/tmp/schedule.json'); console.log('schedule_dates='+(x.dates?.length||0))" >> "$OUT" 2>&1; fi
+
+            CODEO=$(curl -L -sS -o /tmp/odds.json -w '%{http_code}' "$BASE/.netlify/functions/mlb?type=odds")
+            echo "mlb_odds_http=$CODEO" >> "$OUT"
+            if [ "$CODEO" = "200" ]; then node -e "const x=require('/tmp/odds.json'); const ev=x.events||[]; const ks=[...new Set(ev.flatMap(e=>(e.bookmakers||[]).flatMap(b=>(b.markets||[]).map(m=>m.key))))]; console.log('mlb_odds_events='+ev.length+' market_keys='+ks.join(','));" >> "$OUT" 2>&1; else head -c 200 /tmp/odds.json | tr '\n' ' ' >> "$OUT"; echo >> "$OUT"; fi
+
+            CODEOT=$(curl -L -sS -o /tmp/odds_totals.json -w '%{http_code}' "$BASE/.netlify/functions/mlb?type=odds&markets=totals")
+            echo "mlb_odds_markets_totals_http=$CODEOT" >> "$OUT"
+            if [ "$CODEOT" = "200" ]; then node -e "const x=require('/tmp/odds_totals.json'); const ev=x.events||[]; const ks=[...new Set(ev.flatMap(e=>(e.bookmakers||[]).flatMap(b=>(b.markets||[]).map(m=>m.key))))]; console.log('mlb_odds_markets_totals_events='+ev.length+' market_keys='+ks.join(','));" >> "$OUT" 2>&1; fi
+
             CODE2=$(curl -L -sS -o /tmp/env.json -w '%{http_code}' "$BASE/.netlify/functions/i2-run-environment")
             echo "run_environment_http=$CODE2" >> "$OUT"
             if [ "$CODE2" = "200" ]; then node -e "const x=require('/tmp/env.json'); console.log('scope='+x.scope+' events='+(x.events?.length||0)+' source='+x.source)" >> "$OUT" 2>&1; else head -c 300 /tmp/env.json | tr '\n' ' ' >> "$OUT"; echo >> "$OUT"; fi
@@ -42,5 +55,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
           git add data/runtime/i2/2026-08-21_endpoint_probe.txt
-          git commit -m "Probe I2 upstream endpoints 2026-08-21"
+          git commit -m "Probe I2 upstream odds configuration 2026-08-21"
           git push origin HEAD:main
