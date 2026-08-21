@@ -10,8 +10,15 @@ const RETRY_MS = Number(process.env.I2_RUN_ENVIRONMENT_RETRY_MS || 10000);
 if (!UPSTREAM) throw new Error('MLB_OTHER_MODEL_BASE_URL is required for the isolated I2 run-environment feed');
 
 function loadExisting() {
-  if (!fs.existsSync(OUTPUT)) return { events: [] };
-  try { return JSON.parse(fs.readFileSync(OUTPUT, 'utf8')); } catch { return { events: [] }; }
+  if (!fs.existsSync(OUTPUT)) return null;
+  try {
+    const parsed = JSON.parse(fs.readFileSync(OUTPUT, 'utf8'));
+    if (parsed?.scope !== 'FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES') return null;
+    if (!Array.isArray(parsed?.events) || parsed.events.length === 0) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
 }
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -37,10 +44,18 @@ for (let attempt = 1; attempt <= ATTEMPTS; attempt += 1) {
     }
   }
 }
-if (!payload) throw lastError || new Error('Unable to retrieve I2 run environment');
 
 const existing = loadExisting();
-const priorById = new Map((existing.events || []).filter(x => x.eventId).map(x => [String(x.eventId), x]));
+if (!payload) {
+  if (existing) {
+    console.warn(`[I2 run environment] endpoint unavailable; using validated existing artifact ${OUTPUT}`);
+    console.log(JSON.stringify({ output: OUTPUT, events: existing.events.length, scope: existing.scope, fallback: 'VALIDATED_EXISTING_ARTIFACT' }, null, 2));
+    process.exit(0);
+  }
+  throw lastError || new Error('Unable to retrieve I2 run environment');
+}
+
+const priorById = new Map((existing?.events || []).filter(x => x.eventId).map(x => [String(x.eventId), x]));
 const now = payload.capturedAt || new Date().toISOString();
 const merged = [];
 
