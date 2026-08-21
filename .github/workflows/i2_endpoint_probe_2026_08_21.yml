@@ -1,0 +1,46 @@
+name: Probe I2 upstream endpoints 2026-08-21
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_endpoint_probe_2026_08_21.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Probe candidate user-owned Netlify endpoints
+        shell: bash
+        run: |
+          set +e
+          mkdir -p data/runtime/i2
+          OUT=data/runtime/i2/2026-08-21_endpoint_probe.txt
+          : > "$OUT"
+          for BASE in \
+            https://lambent-brioche-ca05b1.netlify.app \
+            https://mlb-live-command-center.netlify.app; do
+            echo "BASE=$BASE" >> "$OUT"
+            CODE=$(curl -L -sS -o /tmp/schedule.json -w '%{http_code}' "$BASE/.netlify/functions/mlb?type=schedule&date=2026-08-21")
+            echo "schedule_http=$CODE" >> "$OUT"
+            if [ "$CODE" = "200" ]; then node -e "const x=require('/tmp/schedule.json'); console.log('schedule_dates='+(x.dates?.length||0))" >> "$OUT" 2>&1; fi
+            CODE2=$(curl -L -sS -o /tmp/env.json -w '%{http_code}' "$BASE/.netlify/functions/i2-run-environment")
+            echo "run_environment_http=$CODE2" >> "$OUT"
+            if [ "$CODE2" = "200" ]; then node -e "const x=require('/tmp/env.json'); console.log('scope='+x.scope+' events='+(x.events?.length||0)+' source='+x.source)" >> "$OUT" 2>&1; else head -c 300 /tmp/env.json | tr '\n' ' ' >> "$OUT"; echo >> "$OUT"; fi
+            echo >> "$OUT"
+          done
+      - name: Commit probe result
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git add data/runtime/i2/2026-08-21_endpoint_probe.txt
+          git commit -m "Probe I2 upstream endpoints 2026-08-21"
+          git push origin HEAD:main
