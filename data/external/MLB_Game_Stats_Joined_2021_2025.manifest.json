@@ -1,0 +1,37 @@
+{
+  "dataset_name": "MLB_Game_Stats_Joined_2021_2025",
+  "version": "2026-08-09",
+  "coverage": "2021-2025 MLB regular seasons",
+  "canonical_filename": "MLB_Game_Stats_Joined_2021_2025.csv.gz",
+  "canonical_uncompressed_filename": "MLB_Game_Stats_Joined_2021_2025.csv",
+  "release_tag": "historical-mlb-2021-2025-v1",
+  "release_asset_target": "GitHub Release asset",
+  "status": "pending_release_asset_upload",
+  "source_provenance": {
+    "retrosheet_regular_season_games": 12148,
+    "eligible_draftkings_records_with_opening_total": 10933,
+    "reconciled_market_matches": 10911,
+    "deliberate_market_exclusions": 22,
+    "matched_games_total_6_to_11": 10730,
+    "reached_i1_to_i9_observations_total_6_to_11": 96466,
+    "join_rule": "archive date + away team + home team + final score, with documented team-code normalization and explicit reconciliation exceptions"
+  },
+  "required_companion_assets": [
+    "MLB_Game_Stats_Joined_2021_2025_README.txt",
+    "MLB_Game_Stats_Joined_2021_2025_reconciliation_audit.csv"
+  ],
+  "optional_companion_assets": [
+    "MLB_Game_Stats_Joined_2021_2025.sqlite"
+  ],
+  "integrity": {
+    "sha256_csv_gz": null,
+    "sha256_csv": null,
+    "note": "Populate checksums immediately after the release assets are uploaded. Consumers must verify a non-null checksum before production use."
+  },
+  "governance": {
+    "immutable_release": true,
+    "do_not_overwrite": true,
+    "new_version_required_for_data_changes": true,
+    "derived_outputs_path": "data/derived/i2/"
+  }
+}
