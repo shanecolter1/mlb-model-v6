@@ -1,42 +1,39 @@
-# I2 Derived Training / Calibration Data
+# Count-State Historical Analysis Package
 
-These files are reproducible derivatives of the Retrosheet 2021–2025 regular-season CSV packages and support the MLB I2 Under/Over model.
+This package builds the missing historical pitch-count state layer for the MLB live half-inning model.
 
-## State-transition files
+## What it produces
 
-- `i2_state_compact_2021.csv`
-- `i2_state_compact_2022.csv`
-- `i2_state_compact_2023.csv`
-- `i2_state_compact_2024.csv`
-- `i2_state_compact_2025.csv`
-- `i2_start_slot_summary.csv`
-- `i2_state_benchmark.csv`
-- `i2_state_manifest.json`
+The core table estimates the probability distribution of **additional runs remaining in the half inning** at each:
 
-One compact state row represents one team/game side and links its observed I1 progression to its I2 outcome. Historical I1 state is calibration/target information only; a pregame model must simulate I1 rather than read the realized state.
+`outs × base occupancy × balls × strikes`
 
-## Play-state calibration files
+state.
 
-- `i2_play_calibration.json`
-- `i2_play_calibration_summary.csv`
+It also estimates PA terminal-outcome frequencies by count.
 
-`i2_play_calibration.json` is derived from 913,349 regular-season PAs across 2021–2025. It contains empirical transition PMFs conditional on:
+## Run
 
-`event class × outs before PA × base occupancy before PA`
+```bash
+python -m pip install -r requirements-count-state.txt
+python scripts/build_count_state_dataset.py \
+  --start 2021-04-01 \
+  --end 2025-09-30 \
+  --out data/derived/count_state
+```
 
-for all 192 possible state combinations used by the model. Each PMF records outs added, post-play base occupancy, and runs scored. It also contains pitch-count PMFs by event.
+For a pre-downloaded Statcast parquet:
 
-The event normalization exactly matches the existing Version 6 trailing-event-rate engine:
+```bash
+python scripts/build_count_state_dataset.py \
+  --input-parquet /path/to/statcast_2021_2025.parquet \
+  --out data/derived/count_state
+```
 
-- single
-- double
-- triple
-- home_run
-- walk
-- hit_by_pitch
-- strikeout
-- ball_in_play_out (residual PA outcome class)
+## Important
 
-## Retrosheet attribution
-
-The information used here was obtained free of charge from and is copyrighted by Retrosheet. Interested parties may contact Retrosheet at 20 Sunset Rd., Newark, DE 19711.
+- Research/challenger only.
+- No sportsbook data is used.
+- Existing 2021–2025 empirical base/out transition engine remains preserved.
+- Do not replace production count logic until walk-forward validation is complete.
+- Full confidence intervals should use half-inning clustered bootstrap because pitch-state observations within a half inning are correlated.

@@ -1,0 +1,15 @@
+{
+  "repository": "shanecolter1/mlb-model-v6",
+  "branch": "main",
+  "commit_message": "Add historical pitch-count state analysis pipeline",
+  "files": [
+    "docs/STATE_DEPENDENT_COUNT_MODEL_PLAN.md",
+    "docs/STATE_DEPENDENT_COUNT_MODEL_BUILD_STATUS.md",
+    "research/count_state/README.md",
+    "research/count_state/requirements-count-state.txt",
+    "research/count_state/scripts/build_count_state_dataset.py",
+    "research/count_state/scripts/validate_count_state_model.py"
+  ],
+  "status": "ready_for_github_commit",
+  "note": "GitHub connector unavailable in current session; no repository write has occurred."
+}
