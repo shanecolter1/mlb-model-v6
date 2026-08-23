@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           base=data/derived/model_calibration/batter_pitcher_blend
-          for f in model_development_manifest.json joint_multinomial_pa_model.json multinomial_grid_2024.csv; do
+          for f in model_development_manifest.json joint_multinomial_pa_model.json multinomial_grid_2024.csv end_2024_skill_state.json; do
             test -s "$base/$f" || { echo "MISSING ARTIFACT: $base/$f"; exit 1; }
           done
           python - <<'PY'
@@ -51,9 +51,10 @@ jobs:
           assert m['market_inputs_used'] is False
           assert m['same_game_updates_used_in_features'] is False
           assert m['rolling_history_crosses_season_boundaries'] is True
+          assert m['convergence']['converged'] is True
           if m['governance_status']!='PA_GATE_PASS_HALF_INNING_PENDING':
               raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['governance_status']} {m['validation_2025']}")
-          print('Joint PA gate PASS')
+          print('Joint PA gate PASS with convergence')
           PY
       - name: Run locked-2025 half-inning scoring gate
         run: |
