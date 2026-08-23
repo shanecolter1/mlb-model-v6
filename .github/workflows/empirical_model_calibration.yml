@@ -1,0 +1,37 @@
+name: Empirical model calibration
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'analysis/empirical_model_calibration.py'
+      - '.github/workflows/empirical_model_calibration.yml'
+      - 'data/derived/i2/i2_play_calibration.json'
+      - 'data/derived/i2/i2_state_compact_20*.csv'
+
+permissions:
+  contents: write
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run empirical calibration
+        run: python analysis/empirical_model_calibration.py
+      - name: Commit generated calibration outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/derived/model_calibration/
+          if git diff --cached --quiet; then
+            echo 'No calibration changes.'
+          else
+            git commit -m 'Build empirical model calibration outputs'
+            git push
+          fi
