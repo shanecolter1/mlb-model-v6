@@ -1,0 +1,52 @@
+name: Empirical batter pitcher blend calibration
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/batter_pitcher_blend_calibration.py'
+      - '.github/workflows/empirical_batter_pitcher_blend.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run leakage-safe batter pitcher calibration
+        run: python analysis/batter_pitcher_blend_calibration.py | tee batter_pitcher_blend.log
+      - name: Verify artifacts and governance
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/batter_pitcher_blend
+          for f in model_development_manifest.json production_event_blend_weights.json blend_grid_2024.csv; do
+            test -s "$base/$f" || { echo "MISSING ARTIFACT: $base/$f"; exit 1; }
+          done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/model_development_manifest.json').read_text())
+          assert m['development_years']==[2021,2022,2023]
+          assert m['selection_year']==[2024]
+          assert m['locked_validation_year']==[2025]
+          assert m['market_inputs_used'] is False
+          if m['governance_status']!='PASS':
+              raise SystemExit(f"MODEL BLOCKED: {m['governance_status']} validation={m['validation_2025']}")
+          print('Batter/pitcher blend governance PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: empirical-batter-pitcher-blend
+          path: |
+            batter_pitcher_blend.log
+            data/derived/model_calibration/batter_pitcher_blend/
+          retention-days: 30
