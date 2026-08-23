@@ -6,6 +6,11 @@ on:
     paths:
       - 'analysis/seasonal_transition_shrinkage.py'
       - '.github/workflows/seasonal_transition_shrinkage.yml'
+  pull_request:
+    paths:
+      - 'analysis/seasonal_transition_shrinkage.py'
+      - 'analysis/seasonal_transition_run_marker.txt'
+      - '.github/workflows/seasonal_transition_shrinkage.yml'
 
 permissions:
   contents: write
@@ -54,7 +59,8 @@ jobs:
             seasonal_transition_build.log
             data/derived/model_calibration/seasonal/
           retention-days: 30
-      - name: Commit generated outputs
+      - name: Commit generated outputs on main push only
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
