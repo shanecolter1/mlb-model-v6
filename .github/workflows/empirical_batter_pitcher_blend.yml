@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'analysis/batter_pitcher_blend_calibration.py'
+      - 'analysis/batter_pitcher_blend_calibration_fast.py'
       - 'analysis/half_inning_scoring_gate.py'
       - '.github/workflows/empirical_batter_pitcher_blend.yml'
   workflow_dispatch:
@@ -28,10 +29,10 @@ jobs:
           python-version: '3.12'
       - name: Install calibration dependencies
         run: pip install --disable-pip-version-check numpy scikit-learn
-      - name: Run leakage-safe joint multinomial calibration
+      - name: Run staged leakage-safe joint multinomial calibration
         run: |
           set -euo pipefail
-          python analysis/batter_pitcher_blend_calibration.py | tee batter_pitcher_blend.log
+          python analysis/batter_pitcher_blend_calibration_fast.py | tee batter_pitcher_blend.log
       - name: Verify PA gate
         run: |
           set -euo pipefail
