@@ -1,0 +1,1 @@
+Trigger observable pull-request validation for the season-specific Retrosheet transition calibration.
