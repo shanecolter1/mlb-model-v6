@@ -1,0 +1,49 @@
+name: Empirical transition production integration
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/apply_empirical_transition_patch.py'
+      - 'analysis/live_engine_transition_regression.py'
+      - 'data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json'
+      - '.github/workflows/empirical_transition_production.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run transition regression suite
+        run: python analysis/live_engine_transition_regression.py | tee empirical_transition_regression.log
+      - name: Patch live engine
+        run: python analysis/apply_empirical_transition_patch.py
+      - name: Verify production patch
+        run: |
+          grep -q 'EMPIRICAL_PA_TRANSITION_MODEL' index.html
+          ! grep -q 'function hitTransitions' index.html
+          ! grep -q 'function walkTransition' index.html
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          assert "['out',probs.out]" in s
+          assert 'empiricalPATransitions(kind,o,m)' in s
+          print('Production patch structure verified')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: empirical-transition-production
+          path: |
+            empirical_transition_regression.log
+            index.html
+          retention-days: 30
