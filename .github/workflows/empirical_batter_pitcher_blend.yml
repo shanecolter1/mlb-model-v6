@@ -7,6 +7,8 @@ on:
       - 'analysis/batter_pitcher_blend_calibration_fast.py'
       - 'analysis/half_inning_scoring_gate.py'
       - 'analysis/half_inning_scoring_gate_fast.py'
+      - 'analysis/half_inning_dp_engine.py'
+      - 'analysis/test_half_inning_dp_equivalence.py'
       - '.github/workflows/empirical_batter_pitcher_blend.yml'
   workflow_dispatch:
 
@@ -56,6 +58,10 @@ jobs:
               raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['governance_status']} {m['validation_2025']}")
           print('Joint PA gate PASS with convergence')
           PY
+      - name: Verify exact DP equivalence and latency
+        run: |
+          set -euo pipefail
+          python analysis/test_half_inning_dp_equivalence.py | tee half_inning_dp_validation.log
       - name: Run locked-2025 half-inning scoring gate
         run: |
           set -euo pipefail
@@ -65,13 +71,18 @@ jobs:
           set -euo pipefail
           base=data/derived/model_calibration/batter_pitcher_blend
           test -s "$base/half_inning_validation_2025.json"
+          test -s "$base/dp_engine_validation.json"
           python - <<'PY'
           import json
           from pathlib import Path
-          m=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/model_development_manifest.json').read_text())
+          base=Path('data/derived/model_calibration/batter_pitcher_blend')
+          d=json.loads((base/'dp_engine_validation.json').read_text())
+          if d['equivalence_status']!='PASS' or d['latency_status']!='PASS':
+              raise SystemExit(f"DP ENGINE NOT PRODUCTION ELIGIBLE: {d}")
+          m=json.loads((base/'model_development_manifest.json').read_text())
           if m['governance_status']!='PASS' or m['production_eligible'] is not True:
               raise SystemExit(f"MODEL NOT PRODUCTION ELIGIBLE: {m['governance_status']}")
-          print('Joint PA + half-inning governance PASS')
+          print('Joint PA + exact DP + half-inning governance PASS')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
@@ -79,6 +90,7 @@ jobs:
           name: empirical-batter-pitcher-blend
           path: |
             batter_pitcher_blend.log
+            half_inning_dp_validation.log
             half_inning_scoring_gate.log
             data/derived/model_calibration/batter_pitcher_blend/
           retention-days: 30
