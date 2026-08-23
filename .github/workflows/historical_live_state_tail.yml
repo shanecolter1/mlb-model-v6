@@ -25,11 +25,15 @@ jobs:
       - name: Restore frozen Stage-1 artifact
         uses: actions/download-artifact@v4
         with:
-          name: pa-calibration-359244abcfb7f2fd7b21d9dead2529b7fbe8bb79
+          name: pa-calibration-e9756777e15b92fc61c8a0448584b169796d7e7d
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
           run-id: 32666502350
-          path: .
+          path: .stage1
+      - name: Restore calibration state
+        run: |
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage1/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
       - name: Run historical realistic-state tail gate
         run: python analysis/historical_live_state_tail_gate.py | tee historical_live_tail.log
       - uses: actions/upload-artifact@v4
