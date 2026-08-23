@@ -35,7 +35,10 @@ jobs:
           mkdir -p data/derived/model_calibration/batter_pitcher_blend
           cp -R .stage1/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
       - name: Run historical realistic-state tail gate
-        run: python analysis/historical_live_state_tail_gate.py | tee historical_live_tail.log
+        shell: bash
+        run: |
+          set -o pipefail
+          python analysis/historical_live_state_tail_gate.py | tee historical_live_tail.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
