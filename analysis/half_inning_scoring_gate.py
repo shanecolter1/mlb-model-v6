@@ -1,13 +1,20 @@
 #!/usr/bin/env python3
-"""Locked-2025 early-half-inning scoring gate for the joint PA model.
+"""Locked-2025 full-game half-inning scoring gate for the joint PA model.
 
-Evaluates I1/I2 run distributions using pregame-frozen player skill, the frozen joint PA
-model, and the promoted empirical transition engine. HBP/ROE/interference/no-out PA classes
-remain unmodeled in the six-state engine, but they are retained when reconstructing batting
-order progression and actual half-inning scoring so their omission cannot be hidden.
+Evaluates innings 1-9 whenever:
+- the original nine-man batting order remains intact for the evaluated half-inning;
+- one pitcher faces every PA in that half-inning;
+- pregame-frozen batter/pitcher skill is available.
+
+This broadens the initial I1/I2-only gate so a batter/pitcher PA model cannot be certified
+for the full live product using only starter-dominated early innings. Historical batter and
+pitcher features remain frozen before the game; no same-game PA updates enter predictions.
+HBP/ROE/interference/no-out PA classes remain unmodeled in the six-state transition engine,
+but are retained in actual scoring and batting-order progression so their omission is visible.
 """
 from __future__ import annotations
 import csv, io, json, math, urllib.request, zipfile
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 import numpy as np
@@ -19,6 +26,7 @@ YEARS=[2021,2022,2023,2024,2025]
 CLASSES=['out','bb','single','double','triple','hr']
 CAP=6
 EPS=1e-9
+MIN_HALF_INNINGS=5000
 
 def truth(v): return str(v).strip().lower() in {'1','true','t','yes','y'}
 def intval(v,d=0):
@@ -46,7 +54,7 @@ def fetch_rows():
     out=[]
     for y in YEARS:
         url=f'https://www.retrosheet.org/downloads/plays/{y}plays.zip'
-        req=urllib.request.Request(url,headers={'User-Agent':'mlb-model-v6 half inning validation'})
+        req=urllib.request.Request(url,headers={'User-Agent':'mlb-model-v6 full half inning validation'})
         with urllib.request.urlopen(req,timeout=120) as resp:raw=resp.read()
         with zipfile.ZipFile(io.BytesIO(raw)) as z:
             for n in z.namelist():
@@ -78,7 +86,11 @@ def model_prob(br,pr,lr,params):
     for k in range(1,6):feat.append(math.log(max(EPS,br[k])/max(EPS,lr[k])))
     for k in range(1,6):feat.append(math.log(max(EPS,pr[k])/max(EPS,lr[k])))
     for k in range(1,6):feat.append(math.log(max(EPS,lr[k])/max(EPS,lr[0])))
-    return softmax(np.asarray(params['coef'])@np.asarray(feat)+np.asarray(params['intercept']))
+    raw=softmax(np.asarray(params['coef'])@np.asarray(feat)+np.asarray(params['intercept']))
+    # sklearn class ordering is persisted explicitly; map back to our production class order.
+    out=np.zeros(len(CLASSES))
+    for pos,cls_idx in enumerate(params['sklearn_classes']):out[int(cls_idx)]=raw[pos]
+    return out
 def legacy_prob(br,pr):return norm(.68*br+.32*pr)
 def run_dist(lineup_probs,start_idx,table):
     memo={}
@@ -103,11 +115,12 @@ def main():
     if manifest['governance_status']!='PA_GATE_PASS_HALF_INNING_PENDING':raise SystemExit(f"PA gate not passed: {manifest['governance_status']}")
     table=json.loads(TRANS.read_text());hp=params['selected_hyperparameters'];h=float(hp['half_life_days']);prior=float(hp['prior_strength'])
     rows=fetch_rows();bat=Store(h);pit=Store(h);league=Store(h);records=[];i=0
+    skip=Counter()
     while i<len(rows):
         day,gid=rows[i]['_day'],rows[i]['_gid'];j=i
         while j<len(rows) and rows[j]['_day']==day and rows[j]['_gid']==gid:j+=1
         game=rows[i:j];year=game[0]['_year'];lr=norm(league.get('league',day)+1.0)
-        bcache={};pcache={};lineups={0:{},1:{}};starter={};all_pa=[];modeled=[]
+        bcache={};pcache={};lineups={0:{},1:{}};all_pa=[];modeled=[]
         for r in game:
             if not truth(r.get('pa')):continue
             bid=str(r.get('batter') or '').strip();pid=str(r.get('pitcher') or '').strip();tb=intval(r.get('top_bot'),-1)
@@ -116,35 +129,43 @@ def main():
             if pid not in pcache:pcache[pid]=norm(pit.get(pid,day)+prior*lr)
             lp=intval(r.get('lp'),0)
             if 1<=lp<=9 and lp not in lineups[tb]:lineups[tb][lp]=bid
-            starter.setdefault(1-tb,pid)
             all_pa.append(r)
             ev=classify(r)
             if ev is not None:modeled.append((r,ev,bid,pid))
-        if year==2025 and all(len(lineups[tb])==9 for tb in (0,1)):
+        if year==2025:
             for tb in (0,1):
-                order=[lineups[tb][k] for k in range(1,10)];sp=starter.get(1-tb)
-                if not sp or sp not in pcache:continue
-                i1pas=[r for r in all_pa if intval(r.get('inning'))==1 and intval(r.get('top_bot'))==tb]
-                start2=len(i1pas)%9
-                for inn,start in ((1,0),(2,start2)):
-                    half=[r for r in all_pa if intval(r.get('inning'))==inn and intval(r.get('top_bot'))==tb]
+                if len(lineups[tb])!=9:skip['incomplete_original_lineup']+=1;continue
+                order=[lineups[tb][k] for k in range(1,10)]
+                team_pa=[r for r in all_pa if intval(r.get('top_bot'))==tb]
+                for inn in range(1,10):
+                    half=[r for r in team_pa if intval(r.get('inning'))==inn]
                     if not half:continue
-                    if any(str(r.get('pitcher') or '').strip()!=sp for r in half):continue
-                    cand=[];leg=[];pr=pcache[sp]
+                    pids={str(r.get('pitcher') or '').strip() for r in half}
+                    if len(pids)!=1:skip['pitcher_change_within_half']+=1;continue
+                    pid=next(iter(pids))
+                    if not pid or pid not in pcache:skip['missing_pitcher_skill']+=1;continue
+                    before=[r for r in team_pa if intval(r.get('inning'))<inn]
+                    start=len(before)%9
+                    actual_batters=[str(r.get('batter') or '').strip() for r in half]
+                    expected=[order[(start+n)%9] for n in range(len(actual_batters))]
+                    if actual_batters!=expected:skip['batting_order_substitution_or_mismatch']+=1;continue
+                    pr=pcache[pid];cand=[];leg=[]
                     for bid in order:
                         br=bcache.get(bid,norm(bat.get(bid,day)+prior*lr));cand.append(model_prob(br,pr,lr,params));leg.append(legacy_prob(br,pr))
                     pd1=run_dist(cand,start,table);pd0=run_dist(leg,start,table)
-                    actual=sum(max(0,intval(r.get('runs'))) for r in game if intval(r.get('inning'))==inn and intval(r.get('top_bot'))==tb)
+                    actual=sum(max(0,intval(r.get('runs'))) for r in half)
                     unmodeled=sum(1 for r in half if classify(r) is None)
                     records.append({'gid':gid,'inning':inn,'top_bot':tb,'actual_runs':actual,'unmodeled_pa':unmodeled,'joint_ll':ll(actual,pd1),'legacy_ll':ll(actual,pd0),'joint_brier':brier(actual,pd1),'legacy_brier':brier(actual,pd0),'joint_p_score':1-pd1[0],'legacy_p_score':1-pd0[0]})
         for r,ev,bid,pid in modeled:
             k=CLASSES.index(ev);bat.add(bid,day,k);pit.add(pid,day,k);league.add('league',day,k)
         i=j
-    if not records:raise RuntimeError('No eligible 2025 I1/I2 half-innings')
+    if len(records)<MIN_HALF_INNINGS:raise RuntimeError(f'Insufficient eligible 2025 half-innings: {len(records)} < {MIN_HALF_INNINGS}')
+    inning_counts=Counter(r['inning'] for r in records)
+    if any(inning_counts[k]==0 for k in range(1,10)):raise RuntimeError(f'Missing inning coverage: {dict(inning_counts)}')
     joint_ll=float(np.mean([r['joint_ll'] for r in records]));legacy_ll=float(np.mean([r['legacy_ll'] for r in records]));joint_br=float(np.mean([r['joint_brier'] for r in records]));legacy_br=float(np.mean([r['legacy_brier'] for r in records]))
     actual_score=np.asarray([r['actual_runs']>0 for r in records],dtype=float);jp=np.asarray([r['joint_p_score'] for r in records]);lp=np.asarray([r['legacy_p_score'] for r in records])
-    sbj=float(np.mean((jp-actual_score)**2));sbl=float(np.mean((lp-actual_score)**2));unmodeled_rate=float(sum(r['unmodeled_pa'] for r in records)/max(1,sum(1 for _ in records)))
-    result={'sample_half_innings':len(records),'scope':'2025 regular-season I1/I2, starting pitcher remains for all PAs','unmodeled_pa_per_half_inning':unmodeled_rate,'joint_multinomial':{'run_bucket_logloss':joint_ll,'run_bucket_brier':joint_br,'score_any_run_brier':sbj},'legacy_68_32':{'run_bucket_logloss':legacy_ll,'run_bucket_brier':legacy_br,'score_any_run_brier':sbl},'delta_vs_legacy':{'run_bucket_logloss':legacy_ll-joint_ll,'run_bucket_brier':legacy_br-joint_br,'score_any_run_brier':sbl-sbj}}
+    sbj=float(np.mean((jp-actual_score)**2));sbl=float(np.mean((lp-actual_score)**2));unmodeled_total=sum(r['unmodeled_pa'] for r in records);pa_total=sum(len([x for x in rows if False]) for _ in [])
+    result={'sample_half_innings':len(records),'scope':'2025 regular-season innings 1-9; original batting order intact; one pitcher for entire half-inning','inning_counts':dict(sorted(inning_counts.items())),'skipped_half_innings':dict(skip),'unmodeled_pa_total':unmodeled_total,'unmodeled_pa_per_half_inning':float(unmodeled_total/len(records)),'joint_multinomial':{'run_bucket_logloss':joint_ll,'run_bucket_brier':joint_br,'score_any_run_brier':sbj},'legacy_68_32':{'run_bucket_logloss':legacy_ll,'run_bucket_brier':legacy_br,'score_any_run_brier':sbl},'delta_vs_legacy':{'run_bucket_logloss':legacy_ll-joint_ll,'run_bucket_brier':legacy_br-joint_br,'score_any_run_brier':sbl-sbj}}
     pass_gate=(joint_ll<legacy_ll and joint_br<=legacy_br and sbj<=sbl);result['gate_status']='PASS' if pass_gate else 'BLOCKED'
     (BASE/'half_inning_validation_2025.json').write_text(json.dumps(result,indent=2));manifest['half_inning_validation_2025']=result;manifest['governance_status']='PASS' if pass_gate else 'BLOCKED_HALF_INNING_GATE';manifest['production_eligible']=bool(pass_gate);(BASE/'model_development_manifest.json').write_text(json.dumps(manifest,indent=2));params['half_inning_validation_2025']=result;params['production_eligible']=bool(pass_gate);(BASE/'joint_multinomial_pa_model.json').write_text(json.dumps(params,indent=2));print(json.dumps(result,indent=2))
     if not pass_gate:raise SystemExit('HALF-INNING MODEL BLOCKED: joint PA model did not clear all locked-2025 scoring gates')
