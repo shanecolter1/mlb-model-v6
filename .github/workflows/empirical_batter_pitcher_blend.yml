@@ -25,7 +25,9 @@ jobs:
       - name: Install calibration dependencies
         run: pip install --disable-pip-version-check numpy scikit-learn
       - name: Run leakage-safe joint multinomial calibration
-        run: python analysis/batter_pitcher_blend_calibration.py | tee batter_pitcher_blend.log
+        run: |
+          set -euo pipefail
+          python analysis/batter_pitcher_blend_calibration.py | tee batter_pitcher_blend.log
       - name: Verify PA gate
         run: |
           set -euo pipefail
@@ -48,7 +50,9 @@ jobs:
           print('Joint PA gate PASS')
           PY
       - name: Run locked-2025 half-inning scoring gate
-        run: python analysis/half_inning_scoring_gate.py | tee half_inning_scoring_gate.log
+        run: |
+          set -euo pipefail
+          python analysis/half_inning_scoring_gate.py | tee half_inning_scoring_gate.log
       - name: Verify final governance
         run: |
           set -euo pipefail
