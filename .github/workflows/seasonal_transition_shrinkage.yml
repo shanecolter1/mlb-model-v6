@@ -63,3 +63,4 @@ jobs:
             git commit -m 'Build season-specific shrunk transition calibration'
             git push
           fi
+      # Trigger marker: governance-corrected seasonal build v1
