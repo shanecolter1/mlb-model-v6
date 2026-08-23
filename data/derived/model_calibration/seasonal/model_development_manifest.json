@@ -1,0 +1,158 @@
+{
+  "component": "PA base/out transition engine",
+  "governance_status": "PASS",
+  "data_source": "Retrosheet official parsed play-by-play season ZIPs",
+  "source_urls": [
+    "https://www.retrosheet.org/downloads/plays/2021plays.zip",
+    "https://www.retrosheet.org/downloads/plays/2022plays.zip",
+    "https://www.retrosheet.org/downloads/plays/2023plays.zip",
+    "https://www.retrosheet.org/downloads/plays/2024plays.zip",
+    "https://www.retrosheet.org/downloads/plays/2025plays.zip"
+  ],
+  "development_years": [
+    2021,
+    2022,
+    2023
+  ],
+  "hyperparameter_selection_year": [
+    2024
+  ],
+  "locked_validation_year": [
+    2025
+  ],
+  "hyperparameters_frozen_before_2025": true,
+  "selected_shrinkage": {
+    "k_exact_to_event_outs": 5,
+    "k_event_outs_to_event": 1280,
+    "logloss_2024": 0.2323195837322956
+  },
+  "validation_2025": {
+    "logloss_shrunk": 0.23242399683860213,
+    "logloss_raw": 0.23359432838420177,
+    "delta_vs_raw": 0.0011703315455996455
+  },
+  "market_inputs_used": false,
+  "provenance": [
+    {
+      "year": 2021,
+      "source_url": "https://www.retrosheet.org/downloads/plays/2021plays.zip",
+      "rows_total": 193696,
+      "rows_regular": 190700,
+      "accepted_pa": 177962,
+      "event_counts": {
+        "strikeout": 42145,
+        "ball_in_play_out": 80539,
+        "single": 25006,
+        "double": 7863,
+        "bb": 15794,
+        "hr": 5944,
+        "triple": 671
+      },
+      "gametype_values": {
+        "regular": 190700,
+        "allstar": 77,
+        "wildcard": 153,
+        "divisionseries": 1344,
+        "lcs": 956,
+        "worldseries": 466
+      }
+    },
+    {
+      "year": 2022,
+      "source_url": "https://www.retrosheet.org/downloads/plays/2022plays.zip",
+      "rows_total": 191120,
+      "rows_regular": 187969,
+      "accepted_pa": 178392,
+      "event_counts": {
+        "strikeout": 40812,
+        "single": 25877,
+        "ball_in_play_out": 83052,
+        "bb": 14853,
+        "double": 7940,
+        "hr": 5215,
+        "triple": 643
+      },
+      "gametype_values": {
+        "regular": 187969,
+        "allstar": 74,
+        "wildcard": 718,
+        "divisionseries": 1262,
+        "lcs": 652,
+        "worldseries": 445
+      }
+    },
+    {
+      "year": 2023,
+      "source_url": "https://www.retrosheet.org/downloads/plays/2023plays.zip",
+      "rows_total": 194350,
+      "rows_regular": 191073,
+      "accepted_pa": 180427,
+      "event_counts": {
+        "strikeout": 41843,
+        "hr": 5868,
+        "bb": 15819,
+        "ball_in_play_out": 81926,
+        "triple": 712,
+        "single": 26031,
+        "double": 8228
+      },
+      "gametype_values": {
+        "regular": 191073,
+        "allstar": 80,
+        "wildcard": 606,
+        "divisionseries": 1082,
+        "lcs": 1099,
+        "worldseries": 410
+      }
+    },
+    {
+      "year": 2024,
+      "source_url": "https://www.retrosheet.org/downloads/plays/2024plays.zip",
+      "rows_total": 192998,
+      "rows_regular": 189536,
+      "accepted_pa": 178813,
+      "event_counts": {
+        "bb": 14929,
+        "ball_in_play_out": 82864,
+        "strikeout": 41197,
+        "single": 25902,
+        "triple": 697,
+        "double": 7771,
+        "hr": 5453
+      },
+      "gametype_values": {
+        "regular": 189536,
+        "allstar": 68,
+        "wildcard": 676,
+        "divisionseries": 1373,
+        "lcs": 938,
+        "worldseries": 407
+      }
+    },
+    {
+      "year": 2025,
+      "source_url": "https://www.retrosheet.org/downloads/plays/2025plays.zip",
+      "rows_total": 193767,
+      "rows_regular": 189939,
+      "accepted_pa": 179461,
+      "event_counts": {
+        "ball_in_play_out": 83299,
+        "strikeout": 40645,
+        "bb": 15379,
+        "single": 26115,
+        "double": 7745,
+        "hr": 5650,
+        "triple": 628
+      },
+      "gametype_values": {
+        "regular": 189939,
+        "allstar": 81,
+        "wildcard": 821,
+        "divisionseries": 1452,
+        "lcs": 840,
+        "worldseries": 634
+      }
+    }
+  ],
+  "promotion_note": "Production eligibility still requires artifact-integrity audit and live-engine regression tests."
+}
