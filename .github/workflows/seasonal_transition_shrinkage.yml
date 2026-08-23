@@ -23,7 +23,7 @@ jobs:
           python-version: '3.12'
       - name: Build season-specific transition tables and shrinkage model
         run: python analysis/seasonal_transition_shrinkage.py | tee seasonal_transition_build.log
-      - name: Verify required artifacts
+      - name: Verify required artifacts and governance gate
         run: |
           set -euo pipefail
           base=data/derived/model_calibration/seasonal
@@ -41,7 +41,9 @@ jobs:
           assert m['market_inputs_used'] is False
           assert m['development_years']==[2021,2022,2023]
           assert m['hyperparameter_selection_year']==2024
-          assert m['locked_validation_year']==2025
+          assert m['locked_validation_year']==[2025]
+          if m['governance_status'] != 'PASS':
+              raise SystemExit(f"MODEL BLOCKED: governance_status={m['governance_status']} validation={m.get('validation_2025')}")
           print('Artifact and governance verification passed')
           PY
       - uses: actions/upload-artifact@v4
@@ -63,4 +65,3 @@ jobs:
             git commit -m 'Build season-specific shrunk transition calibration'
             git push
           fi
-      # Trigger marker: governance-corrected seasonal build v1
