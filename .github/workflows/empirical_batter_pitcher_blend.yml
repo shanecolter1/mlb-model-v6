@@ -20,9 +20,10 @@ permissions:
   contents: read
 
 jobs:
-  calibrate:
+  pa_calibration:
+    name: PA calibration and governance
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,10 +59,87 @@ jobs:
               raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['governance_status']} {m['validation_2025']}")
           print('Joint PA gate PASS with convergence')
           PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pa-calibration-${{ github.sha }}
+          path: |
+            batter_pitcher_blend.log
+            data/derived/model_calibration/batter_pitcher_blend/
+          retention-days: 30
+
+  dp_validation:
+    name: Exact DP equivalence and latency
+    needs: pa_calibration
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install DP dependencies
+        run: pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: pa-calibration-${{ github.sha }}
+          path: .stage1
+      - name: Restore PA calibration state
+        run: |
+          set -euo pipefail
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage1/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
       - name: Verify exact DP equivalence and latency
         run: |
           set -euo pipefail
           python analysis/test_half_inning_dp_equivalence.py | tee half_inning_dp_validation.log
+      - name: Verify DP gate artifact
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/batter_pitcher_blend
+          test -s "$base/dp_engine_validation.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/dp_engine_validation.json').read_text())
+          if d['equivalence_status']!='PASS' or d['latency_status']!='PASS':
+              raise SystemExit(f"DP ENGINE BLOCKED: {d}")
+          print('Exact DP equivalence and latency PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dp-validated-model-${{ github.sha }}
+          path: |
+            half_inning_dp_validation.log
+            data/derived/model_calibration/batter_pitcher_blend/
+          retention-days: 30
+
+  half_inning_validation:
+    name: Locked-2025 half-inning validation
+    needs: dp_validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scoring dependencies
+        run: pip install --disable-pip-version-check numpy scikit-learn
+      - uses: actions/download-artifact@v4
+        with:
+          name: dp-validated-model-${{ github.sha }}
+          path: .stage2
+      - name: Restore validated model state
+        run: |
+          set -euo pipefail
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage2/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage2/. data/derived/model_calibration/batter_pitcher_blend/
       - name: Run locked-2025 half-inning scoring gate
         run: |
           set -euo pipefail
@@ -87,10 +165,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: empirical-batter-pitcher-blend
+          name: final-empirical-batter-pitcher-${{ github.sha }}
           path: |
-            batter_pitcher_blend.log
-            half_inning_dp_validation.log
             half_inning_scoring_gate.log
             data/derived/model_calibration/batter_pitcher_blend/
           retention-days: 30
