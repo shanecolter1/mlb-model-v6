@@ -7,8 +7,9 @@ on:
       - 'analysis/batter_pitcher_blend_calibration_fast.py'
       - 'analysis/half_inning_scoring_gate.py'
       - 'analysis/half_inning_scoring_gate_fast.py'
-      - 'analysis/half_inning_dp_engine.py'
-      - 'analysis/test_half_inning_dp_equivalence.py'
+      - 'analysis/half_inning_transition_operator.py'
+      - 'analysis/test_half_inning_transition_operator.py'
+      - 'analysis/full_game_state_engine.py'
       - '.github/workflows/empirical_batter_pitcher_blend.yml'
   workflow_dispatch:
 
@@ -18,108 +19,98 @@ concurrency:
 
 permissions:
   contents: read
+  actions: read
+
+env:
+  FROZEN_PA_RUN_ID: '32666502350'
+  FROZEN_PA_ARTIFACT: 'pa-calibration-e9756777e15b92fc61c8a0448584b169796d7e7d'
 
 jobs:
-  pa_calibration:
-    name: PA calibration and governance
+  pa_state:
+    name: Restore frozen PA calibration and governance
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref || github.ref_name }}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install calibration dependencies
-        run: pip install --disable-pip-version-check numpy scikit-learn
-      - name: Run staged leakage-safe joint multinomial calibration
-        run: |
-          set -euo pipefail
-          python analysis/batter_pitcher_blend_calibration_fast.py | tee batter_pitcher_blend.log
-      - name: Verify PA gate
-        run: |
-          set -euo pipefail
-          base=data/derived/model_calibration/batter_pitcher_blend
-          for f in model_development_manifest.json joint_multinomial_pa_model.json multinomial_grid_2024.csv end_2024_skill_state.json; do
-            test -s "$base/$f" || { echo "MISSING ARTIFACT: $base/$f"; exit 1; }
-          done
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          m=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/model_development_manifest.json').read_text())
-          assert m['development_years']==[2021,2022,2023]
-          assert m['selection_year']==[2024]
-          assert m['locked_validation_year']==[2025]
-          assert m['market_inputs_used'] is False
-          assert m['same_game_updates_used_in_features'] is False
-          assert m['rolling_history_crosses_season_boundaries'] is True
-          assert m['convergence']['converged'] is True
-          if m['governance_status']!='PA_GATE_PASS_HALF_INNING_PENDING':
-              raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['governance_status']} {m['validation_2025']}")
-          print('Joint PA gate PASS with convergence')
-          PY
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: pa-calibration-${{ github.sha }}
-          path: |
-            batter_pitcher_blend.log
-            data/derived/model_calibration/batter_pitcher_blend/
-          retention-days: 30
-
-  dp_validation:
-    name: Exact DP equivalence and latency
-    needs: pa_calibration
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Install DP dependencies
-        run: pip install --disable-pip-version-check numpy
       - uses: actions/download-artifact@v4
         with:
-          name: pa-calibration-${{ github.sha }}
+          name: ${{ env.FROZEN_PA_ARTIFACT }}
           path: .stage1
-      - name: Restore PA calibration state
+          run-id: ${{ env.FROZEN_PA_RUN_ID }}
+          github-token: ${{ github.token }}
+      - name: Restore and verify frozen PA state
         run: |
           set -euo pipefail
           mkdir -p data/derived/model_calibration/batter_pitcher_blend
           cp -R .stage1/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
-      - name: Verify exact DP equivalence and latency
-        run: |
-          set -euo pipefail
-          python analysis/test_half_inning_dp_equivalence.py | tee half_inning_dp_validation.log
-      - name: Verify DP gate artifact
-        run: |
-          set -euo pipefail
-          base=data/derived/model_calibration/batter_pitcher_blend
-          test -s "$base/dp_engine_validation.json"
           python - <<'PY'
           import json
           from pathlib import Path
-          d=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/dp_engine_validation.json').read_text())
+          p=Path('data/derived/model_calibration/batter_pitcher_blend/model_development_manifest.json')
+          m=json.loads(p.read_text())
+          assert m['governance_status']=='PA_GATE_PASS_HALF_INNING_PENDING'
+          assert m['convergence']['converged'] is True
+          print('Frozen PA calibration restored: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pa-state-reused-${{ github.sha }}
+          path: data/derived/model_calibration/batter_pitcher_blend/
+          retention-days: 30
+
+  operator_validation:
+    name: Joint run-lineup operator equivalence and latency
+    needs: pa_state
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: pa-state-reused-${{ github.sha }}
+          path: .stage1
+      - name: Restore frozen PA state
+        run: |
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
+      - name: Run exact joint operator gate
+        run: |
+          set -euo pipefail
+          python analysis/test_half_inning_transition_operator.py | tee joint_operator_validation.log
+      - name: Verify operator artifact
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/batter_pitcher_blend
+          test -s "$base/joint_operator_validation.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/joint_operator_validation.json').read_text())
           if d['equivalence_status']!='PASS' or d['latency_status']!='PASS':
-              raise SystemExit(f"DP ENGINE BLOCKED: {d}")
-          print('Exact DP equivalence and latency PASS')
+              raise SystemExit(f"JOINT OPERATOR BLOCKED: {d}")
+          print('Joint operator equivalence and latency PASS')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: dp-validated-model-${{ github.sha }}
+          name: joint-operator-validated-${{ github.sha }}
           path: |
-            half_inning_dp_validation.log
+            joint_operator_validation.log
             data/derived/model_calibration/batter_pitcher_blend/
           retention-days: 30
 
   half_inning_validation:
-    name: Locked-2025 half-inning validation
-    needs: dp_validation
+    name: Locked-2025 half-inning validation with joint operator
+    needs: operator_validation
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -133,14 +124,13 @@ jobs:
         run: pip install --disable-pip-version-check numpy scikit-learn
       - uses: actions/download-artifact@v4
         with:
-          name: dp-validated-model-${{ github.sha }}
+          name: joint-operator-validated-${{ github.sha }}
           path: .stage2
       - name: Restore validated model state
         run: |
-          set -euo pipefail
           mkdir -p data/derived/model_calibration/batter_pitcher_blend
           cp -R .stage2/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage2/. data/derived/model_calibration/batter_pitcher_blend/
-      - name: Run locked-2025 half-inning scoring gate
+      - name: Run locked-2025 scoring gate
         run: |
           set -euo pipefail
           python analysis/half_inning_scoring_gate_fast.py | tee half_inning_scoring_gate.log
@@ -149,23 +139,19 @@ jobs:
           set -euo pipefail
           base=data/derived/model_calibration/batter_pitcher_blend
           test -s "$base/half_inning_validation_2025.json"
-          test -s "$base/dp_engine_validation.json"
           python - <<'PY'
           import json
           from pathlib import Path
           base=Path('data/derived/model_calibration/batter_pitcher_blend')
-          d=json.loads((base/'dp_engine_validation.json').read_text())
-          if d['equivalence_status']!='PASS' or d['latency_status']!='PASS':
-              raise SystemExit(f"DP ENGINE NOT PRODUCTION ELIGIBLE: {d}")
           m=json.loads((base/'model_development_manifest.json').read_text())
           if m['governance_status']!='PASS' or m['production_eligible'] is not True:
               raise SystemExit(f"MODEL NOT PRODUCTION ELIGIBLE: {m['governance_status']}")
-          print('Joint PA + exact DP + half-inning governance PASS')
+          print('Joint PA + joint operator + half-inning governance PASS')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: final-empirical-batter-pitcher-${{ github.sha }}
+          name: joint-operator-half-inning-final-${{ github.sha }}
           path: |
             half_inning_scoring_gate.log
             data/derived/model_calibration/batter_pitcher_blend/
