@@ -1,0 +1,65 @@
+name: Seasonal transition shrinkage calibration
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'analysis/seasonal_transition_shrinkage.py'
+      - '.github/workflows/seasonal_transition_shrinkage.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build season-specific transition tables and shrinkage model
+        run: python analysis/seasonal_transition_shrinkage.py | tee seasonal_transition_build.log
+      - name: Verify required artifacts
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/seasonal
+          for f in \
+            transitions_2021.json transitions_2022.json transitions_2023.json transitions_2024.json transitions_2025.json \
+            production_pa_transition_table_shrunk.json shrinkage_grid_2024.csv model_development_manifest.json; do
+            test -s "$base/$f" || { echo "MISSING ARTIFACT: $base/$f"; exit 1; }
+          done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/model_calibration/seasonal/model_development_manifest.json')
+          m=json.loads(p.read_text())
+          assert m['hyperparameters_frozen_before_2025'] is True
+          assert m['market_inputs_used'] is False
+          assert m['development_years']==[2021,2022,2023]
+          assert m['hyperparameter_selection_year']==2024
+          assert m['locked_validation_year']==2025
+          print('Artifact and governance verification passed')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seasonal-transition-calibration
+          path: |
+            seasonal_transition_build.log
+            data/derived/model_calibration/seasonal/
+          retention-days: 30
+      - name: Commit generated outputs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/derived/model_calibration/seasonal/
+          if git diff --cached --quiet; then
+            echo 'No generated calibration changes.'
+          else
+            git commit -m 'Build season-specific shrunk transition calibration'
+            git push
+          fi
