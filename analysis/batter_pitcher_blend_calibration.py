@@ -18,7 +18,6 @@ Production promotion remains blocked until a separate half-inning scoring calibr
 """
 from __future__ import annotations
 import csv, io, json, math, urllib.request, zipfile
-from collections import Counter, defaultdict
 from datetime import datetime
 from pathlib import Path
 
@@ -52,7 +51,7 @@ def ids(r):
     bid=r.get('batter') or r.get('batter_id') or r.get('bat_id') or r.get('batterid')
     pid=r.get('pitcher') or r.get('pitcher_id') or r.get('pit_id') or r.get('pitcherid')
     return str(bid or '').strip(),str(pid or '').strip()
-def game_id(r): return str(r.get('game_id') or r.get('gameid') or r.get('game') or '').strip()
+def game_id(r): return str(r.get('gid') or r.get('game_id') or r.get('gameid') or r.get('game') or '').strip()
 def game_date(r):
     for k in ('date','game_date','game_dt'):
         v=str(r.get(k,'')).strip()
@@ -60,7 +59,6 @@ def game_date(r):
             try: return datetime.fromisoformat(v[:10]).date().toordinal()
             except Exception: pass
     gid=game_id(r)
-    # Fallback for standard Retrosheet IDs TEAMYYYYMMDDN.
     digits=''.join(c for c in gid if c.isdigit())
     if len(digits)>=8:
         try: return datetime.strptime(digits[:8],'%Y%m%d').date().toordinal()
@@ -92,15 +90,14 @@ class DecayedStore:
     def __init__(self,half_life): self.h=float(half_life); self.data={}
     def _decayed(self,key,day):
         vec,last=self.data.get(key,(np.zeros(len(CLASSES),dtype=float),day))
-        if day>last:
-            vec=vec*(0.5**((day-last)/self.h))
+        if day>last: vec=vec*(0.5**((day-last)/self.h))
         return vec.copy()
     def get(self,key,day): return self._decayed(key,day)
     def add(self,key,day,class_idx):
         vec=self._decayed(key,day);vec[class_idx]+=1.0;self.data[key]=(vec,day)
 
 def normalize(v):
-    s=float(np.sum(v));
+    s=float(np.sum(v))
     if s<=0: return np.full(len(CLASSES),1/len(CLASSES))
     return np.asarray(v,dtype=float)/s
 
@@ -113,7 +110,6 @@ def build_features(plays,half_life,prior):
         while j<len(plays) and plays[j][0]==day and plays[j][1]==gid: j+=1
         game=plays[i:j]
         lv=league.get('league',day); lrate=normalize(lv+1.0)
-        # Freeze every player probability vector before this game's observations are added.
         bcache={};pcache={}
         for _,_,year,bid,pid,ev in game:
             if bid not in bcache:
@@ -122,7 +118,6 @@ def build_features(plays,half_life,prior):
                 pv=pit.get(pid,day); pcache[pid]=normalize(pv+prior*lrate)
             br,pr=bcache[bid],pcache[pid]
             feat=[]
-            # Relative log rates for each non-out event plus current league logits vs out.
             for k in range(1,len(CLASSES)): feat.append(math.log(max(EPS,br[k])/max(EPS,lrate[k])))
             for k in range(1,len(CLASSES)): feat.append(math.log(max(EPS,pr[k])/max(EPS,lrate[k])))
             for k in range(1,len(CLASSES)): feat.append(math.log(max(EPS,lrate[k])/max(EPS,lrate[0])))
@@ -130,7 +125,6 @@ def build_features(plays,half_life,prior):
             legacy=normalize(.68*br+.32*pr)
             probs.append({'league':lrate.copy(),'legacy':legacy,'batter':br.copy(),'pitcher':pr.copy()})
             meta.append({'year':year,'day':day,'game_id':gid,'batter_id':bid,'pitcher_id':pid})
-        # Only after snapshots are frozen do current-game PAs enter future history.
         for _,_,year,bid,pid,ev in game:
             k=CLASSES.index(ev);bat.add(bid,day,k);pit.add(pid,day,k);league.add('league',day,k)
         i=j
@@ -142,20 +136,20 @@ def multiclass_brier(y,p):
 def metrics(y,p):
     return {'logloss':float(log_loss(y,p,labels=list(range(len(CLASSES))))),'brier':multiclass_brier(y,p)}
 def baseline_matrix(probs,key): return np.vstack([x[key] for x in probs])
-
 def fit_model(X,y,C):
-    m=LogisticRegression(C=C,penalty='l2',solver='lbfgs',max_iter=350,n_jobs=None)
+    m=LogisticRegression(C=C,solver='lbfgs',max_iter=350)
     m.fit(X,y);return m
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     plays,provenance=fetch_plays()
+    if not plays: raise RuntimeError('No Retrosheet PA rows materialized')
     grid=[];best=None
-    # Hyperparameters selected solely on 2024, models trained only on 2021-2023.
     for hl in HALF_LIVES:
         for prior in PRIORS:
             X,y,yrs,pr,meta=build_features(plays,hl,prior)
             tr=np.isin(yrs,[2021,2022,2023]); sel=yrs==2024
+            if not tr.any() or not sel.any(): raise RuntimeError(f'Empty chronological split for hl={hl} prior={prior}')
             for C in CS:
                 model=fit_model(X[tr],y[tr],C); pp=model.predict_proba(X[sel]); m=metrics(y[sel],pp)
                 row={'half_life_days':hl,'prior_strength':prior,'C':C,'logloss_2024':m['logloss'],'brier_2024':m['brier']};grid.append(row)
@@ -168,40 +162,12 @@ def main():
     base={k:baseline_matrix(val_probs,k) for k in ('league','legacy','batter','pitcher')}
     validation={'joint_multinomial':metrics(y[val],fitted)}
     for k,p in base.items(): validation[k]=metrics(y[val],p)
-    by_class={}
-    one=np.eye(len(CLASSES))[y[val]]
+    by_class={};one=np.eye(len(CLASSES))[y[val]]
     for idx,c in enumerate(CLASSES):
-        by_class[c]={
-            'mean_pred':float(np.mean(fitted[:,idx])),
-            'observed_rate':float(np.mean(one[:,idx])),
-            'brier':float(np.mean((fitted[:,idx]-one[:,idx])**2)),
-            'legacy_brier':float(np.mean((base['legacy'][:,idx]-one[:,idx])**2)),
-        }
+        by_class[c]={'mean_pred':float(np.mean(fitted[:,idx])),'observed_rate':float(np.mean(one[:,idx])),'brier':float(np.mean((fitted[:,idx]-one[:,idx])**2)),'legacy_brier':float(np.mean((base['legacy'][:,idx]-one[:,idx])**2))}
     pa_pass=(validation['joint_multinomial']['logloss']<validation['legacy']['logloss'] and validation['joint_multinomial']['brier']<=validation['legacy']['brier'])
-    manifest={
-        'component':'joint multinomial batter/pitcher PA model',
-        'architecture':'regularized multinomial logistic model on batter/pitcher relative log rates and league logits',
-        'governance_status':'PA_GATE_PASS_HALF_INNING_PENDING' if pa_pass else 'BLOCKED_PA_GATE',
-        'production_eligible':False,
-        'development_years':[2021,2022,2023],
-        'selection_year':[2024],
-        'locked_validation_year':[2025],
-        'market_inputs_used':False,
-        'same_game_updates_used_in_features':False,
-        'rolling_history_crosses_season_boundaries':True,
-        'selected_hyperparameters':{'half_life_days':hl,'prior_strength':prior,'C':C},
-        'validation_2025':validation,
-        'validation_by_class':by_class,
-        'provenance':provenance,
-        'promotion_rule':'Must beat legacy 68/32 on locked-2025 multiclass log loss and not worsen multiclass Brier, then pass separate half-inning scoring calibration gate.'
-    }
-    params={
-        'version':'joint-multinomial-pa-v1','classes':CLASSES,
-        'feature_order':[f'batter_log_ratio_{e}' for e in NONOUT]+[f'pitcher_log_ratio_{e}' for e in NONOUT]+[f'league_logit_{e}_vs_out' for e in NONOUT],
-        'selected_hyperparameters':manifest['selected_hyperparameters'],
-        'coef':model.coef_.tolist(),'intercept':model.intercept_.tolist(),'sklearn_classes':model.classes_.tolist(),
-        'validation_2025':validation,'production_eligible':False
-    }
+    manifest={'component':'joint multinomial batter/pitcher PA model','architecture':'regularized multinomial logistic model on batter/pitcher relative log rates and league logits','governance_status':'PA_GATE_PASS_HALF_INNING_PENDING' if pa_pass else 'BLOCKED_PA_GATE','production_eligible':False,'development_years':[2021,2022,2023],'selection_year':[2024],'locked_validation_year':[2025],'market_inputs_used':False,'same_game_updates_used_in_features':False,'rolling_history_crosses_season_boundaries':True,'selected_hyperparameters':{'half_life_days':hl,'prior_strength':prior,'C':C},'validation_2025':validation,'validation_by_class':by_class,'provenance':provenance,'promotion_rule':'Must beat legacy 68/32 on locked-2025 multiclass log loss and not worsen multiclass Brier, then pass separate half-inning scoring calibration gate.'}
+    params={'version':'joint-multinomial-pa-v1','classes':CLASSES,'feature_order':[f'batter_log_ratio_{e}' for e in NONOUT]+[f'pitcher_log_ratio_{e}' for e in NONOUT]+[f'league_logit_{e}_vs_out' for e in NONOUT],'selected_hyperparameters':manifest['selected_hyperparameters'],'coef':model.coef_.tolist(),'intercept':model.intercept_.tolist(),'sklearn_classes':model.classes_.tolist(),'validation_2025':validation,'production_eligible':False}
     (OUT/'model_development_manifest.json').write_text(json.dumps(manifest,indent=2))
     (OUT/'joint_multinomial_pa_model.json').write_text(json.dumps(params,indent=2))
     with (OUT/'multinomial_grid_2024.csv').open('w',newline='') as f:
