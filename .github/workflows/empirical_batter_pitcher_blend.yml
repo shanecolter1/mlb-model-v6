@@ -13,7 +13,7 @@ permissions:
 jobs:
   calibrate:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,13 +21,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run leakage-safe batter pitcher calibration
+      - name: Install calibration dependencies
+        run: pip install --disable-pip-version-check numpy scikit-learn
+      - name: Run leakage-safe joint multinomial calibration
         run: python analysis/batter_pitcher_blend_calibration.py | tee batter_pitcher_blend.log
-      - name: Verify artifacts and governance
+      - name: Verify PA artifacts and governance
         run: |
           set -euo pipefail
           base=data/derived/model_calibration/batter_pitcher_blend
-          for f in model_development_manifest.json production_event_blend_weights.json blend_grid_2024.csv; do
+          for f in model_development_manifest.json joint_multinomial_pa_model.json multinomial_grid_2024.csv; do
             test -s "$base/$f" || { echo "MISSING ARTIFACT: $base/$f"; exit 1; }
           done
           python - <<'PY'
@@ -38,9 +40,13 @@ jobs:
           assert m['selection_year']==[2024]
           assert m['locked_validation_year']==[2025]
           assert m['market_inputs_used'] is False
-          if m['governance_status']!='PASS':
-              raise SystemExit(f"MODEL BLOCKED: {m['governance_status']} validation={m['validation_2025']}")
-          print('Batter/pitcher blend governance PASS')
+          assert m['same_game_updates_used_in_features'] is False
+          assert m['rolling_history_crosses_season_boundaries'] is True
+          if m['governance_status']=='BLOCKED_PA_GATE':
+              raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['validation_2025']}")
+          if m['governance_status']!='PA_GATE_PASS_HALF_INNING_PENDING':
+              raise SystemExit(f"UNEXPECTED GOVERNANCE STATUS: {m['governance_status']}")
+          print('Joint PA gate PASS; half-inning gate still required before production')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
