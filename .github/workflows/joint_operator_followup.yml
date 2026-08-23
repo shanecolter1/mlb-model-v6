@@ -1,0 +1,126 @@
+name: Joint operator follow-up validation
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/half_inning_transition_operator.py'
+      - 'analysis/test_half_inning_transition_operator.py'
+      - 'analysis/half_inning_scoring_gate_fast.py'
+      - 'analysis/full_game_state_engine.py'
+      - '.github/workflows/joint_operator_followup.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: joint-operator-followup-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  # Frozen PASS PA-calibration artifact from staged run #26.
+  SOURCE_RUN_ID: '32666502350'
+  SOURCE_ARTIFACT: 'pa-calibration-e9756777e15b92fc61c8a0448584b169796d7e7d'
+
+jobs:
+  operator_validation:
+    name: Joint run-lineup operator equivalence and latency
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check numpy
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.SOURCE_ARTIFACT }}
+          path: .stage1
+          run-id: ${{ env.SOURCE_RUN_ID }}
+          github-token: ${{ github.token }}
+      - name: Restore frozen PA state
+        run: |
+          set -euo pipefail
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage1/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
+      - name: Run exact joint operator gate
+        run: |
+          set -euo pipefail
+          python analysis/test_half_inning_transition_operator.py | tee joint_operator_validation.log
+      - name: Verify operator artifact
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/batter_pitcher_blend
+          test -s "$base/joint_operator_validation.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/joint_operator_validation.json').read_text())
+          if d['equivalence_status']!='PASS' or d['latency_status']!='PASS':
+              raise SystemExit(f"JOINT OPERATOR BLOCKED: {d}")
+          print('Joint run-lineup operator equivalence and latency PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: joint-operator-validated-${{ github.sha }}
+          path: |
+            joint_operator_validation.log
+            data/derived/model_calibration/batter_pitcher_blend/
+          retention-days: 30
+
+  half_inning_validation:
+    name: Locked-2025 half-inning validation with joint operator
+    needs: operator_validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install scoring dependencies
+        run: pip install --disable-pip-version-check numpy scikit-learn
+      - uses: actions/download-artifact@v4
+        with:
+          name: joint-operator-validated-${{ github.sha }}
+          path: .stage2
+      - name: Restore validated state
+        run: |
+          set -euo pipefail
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage2/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage2/. data/derived/model_calibration/batter_pitcher_blend/
+      - name: Run locked-2025 scoring gate
+        run: |
+          set -euo pipefail
+          python analysis/half_inning_scoring_gate_fast.py | tee half_inning_scoring_gate.log
+      - name: Verify final scoring governance
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/batter_pitcher_blend
+          test -s "$base/half_inning_validation_2025.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('data/derived/model_calibration/batter_pitcher_blend')
+          m=json.loads((base/'model_development_manifest.json').read_text())
+          v=json.loads((base/'half_inning_validation_2025.json').read_text())
+          if m['governance_status']!='PASS' or m['production_eligible'] is not True:
+              raise SystemExit(f"SCORING MODEL NOT PRODUCTION ELIGIBLE: {m['governance_status']}")
+          print('Locked-2025 half-inning validation PASS with joint operator')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: joint-operator-half-inning-final-${{ github.sha }}
+          path: |
+            half_inning_scoring_gate.log
+            data/derived/model_calibration/batter_pitcher_blend/
+          retention-days: 30
