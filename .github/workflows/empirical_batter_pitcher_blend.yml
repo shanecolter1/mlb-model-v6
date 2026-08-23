@@ -6,6 +6,7 @@ on:
       - 'analysis/batter_pitcher_blend_calibration.py'
       - 'analysis/batter_pitcher_blend_calibration_fast.py'
       - 'analysis/half_inning_scoring_gate.py'
+      - 'analysis/half_inning_scoring_gate_fast.py'
       - '.github/workflows/empirical_batter_pitcher_blend.yml'
   workflow_dispatch:
 
@@ -57,7 +58,7 @@ jobs:
       - name: Run locked-2025 half-inning scoring gate
         run: |
           set -euo pipefail
-          python analysis/half_inning_scoring_gate.py | tee half_inning_scoring_gate.log
+          python analysis/half_inning_scoring_gate_fast.py | tee half_inning_scoring_gate.log
       - name: Verify final governance
         run: |
           set -euo pipefail
