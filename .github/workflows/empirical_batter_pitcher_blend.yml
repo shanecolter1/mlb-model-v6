@@ -8,6 +8,10 @@ on:
       - '.github/workflows/empirical_batter_pitcher_blend.yml'
   workflow_dispatch:
 
+concurrency:
+  group: empirical-batter-pitcher-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
