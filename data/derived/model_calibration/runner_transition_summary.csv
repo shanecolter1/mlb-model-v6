@@ -1,0 +1,10 @@
+metric,outs,legacy_p,n,empirical_p,absolute_change_pp
+runner_1b_scores_on_double,0,0.45,2242,0.289028,-16.0972
+runner_1b_scores_on_double,1,0.45,2712,0.328540,-12.1460
+runner_1b_scores_on_double,2,0.45,2577,0.521537,7.1537
+runner_2b_scores_on_single,0,0.60,2643,0.373061,-22.6939
+runner_2b_scores_on_single,1,0.60,3477,0.519989,-8.0011
+runner_2b_scores_on_single,2,0.60,4157,0.789031,18.9031
+runner_1b_to_3b_on_single,0,0.30,7593,0.254840,-4.5160
+runner_1b_to_3b_on_single,1,0.30,9238,0.269539,-3.0461
+runner_1b_to_3b_on_single,2,0.30,8683,0.348497,4.8497
