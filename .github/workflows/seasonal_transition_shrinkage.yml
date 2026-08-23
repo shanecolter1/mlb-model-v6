@@ -45,7 +45,7 @@ jobs:
           assert m['hyperparameters_frozen_before_2025'] is True
           assert m['market_inputs_used'] is False
           assert m['development_years']==[2021,2022,2023]
-          assert m['hyperparameter_selection_year']==2024
+          assert m['hyperparameter_selection_year']==[2024]
           assert m['locked_validation_year']==[2025]
           if m['governance_status'] != 'PASS':
               raise SystemExit(f"MODEL BLOCKED: governance_status={m['governance_status']} validation={m.get('validation_2025')}")
