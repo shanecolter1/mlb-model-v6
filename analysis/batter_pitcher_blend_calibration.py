@@ -38,8 +38,7 @@ def classify(r):
     if any(truth(r.get(k)) for k in ('hbp','xi','roe','noout','k_safe')):return None
     if truth(r.get('k')) or intval(r.get('outs_post'))>intval(r.get('outs_pre')):return 'out'
     return None
-def ids(r):
-    return str(r.get('batter') or r.get('batter_id') or '').strip(),str(r.get('pitcher') or r.get('pitcher_id') or '').strip()
+def ids(r):return str(r.get('batter') or r.get('batter_id') or '').strip(),str(r.get('pitcher') or r.get('pitcher_id') or '').strip()
 def game_id(r):return str(r.get('gid') or r.get('game_id') or r.get('gameid') or r.get('game') or '').strip()
 def game_date(r):
     for k in ('date','game_date','game_dt'):
@@ -77,47 +76,51 @@ class Store:
     def add(self,k,day,idx):v=self.get(k,day);v[idx]+=1;self.d[k]=(v,day)
 def norm(v):
     s=float(np.sum(v));return np.asarray(v,dtype=float)/s if s>0 else np.full(6,1/6)
+def feature(br,pr,lr):
+    x=[];x.extend(math.log(max(EPS,br[k])/max(EPS,lr[k])) for k in range(1,6));x.extend(math.log(max(EPS,pr[k])/max(EPS,lr[k])) for k in range(1,6));x.extend(math.log(max(EPS,lr[k])/max(EPS,lr[0])) for k in range(1,6));return x
 
-def build_features(plays,h,prior,collect_baselines_year=None):
-    bat=Store(h);pit=Store(h);league=Store(h);X=[];Y=[];yrs=[];bases=[];i=0
-    while i<len(plays):
+def build_multi_prior(plays,h,priors,collect_baseline_prior=None,collect_baseline_year=None):
+    n=len(plays);Xs={p:np.empty((n,15),dtype=np.float32) for p in priors};Y=np.empty(n,dtype=np.int8);yrs=np.empty(n,dtype=np.int16);bases=[]
+    bat=Store(h);pit=Store(h);league=Store(h);i=row=0
+    while i<n:
         day,gid=plays[i][0],plays[i][1];j=i
-        while j<len(plays) and plays[j][0]==day and plays[j][1]==gid:j+=1
-        game=plays[i:j];lr=norm(league.get('league',day)+1.0);bc={};pc={}
+        while j<n and plays[j][0]==day and plays[j][1]==gid:j+=1
+        game=plays[i:j];lr=norm(league.get('league',day)+1.0);rawb={};rawp={}
         for _,_,year,bid,pid,ev in game:
-            if bid not in bc:bc[bid]=norm(bat.get(bid,day)+prior*lr)
-            if pid not in pc:pc[pid]=norm(pit.get(pid,day)+prior*lr)
-            br,pr=bc[bid],pc[pid];feat=[]
-            feat.extend(math.log(max(EPS,br[k])/max(EPS,lr[k])) for k in range(1,6));feat.extend(math.log(max(EPS,pr[k])/max(EPS,lr[k])) for k in range(1,6));feat.extend(math.log(max(EPS,lr[k])/max(EPS,lr[0])) for k in range(1,6))
-            X.append(feat);Y.append(CLASSES.index(ev));yrs.append(year)
-            if collect_baselines_year==year:bases.append(np.stack([lr,norm(.68*br+.32*pr),br,pr]).astype(np.float32))
+            if bid not in rawb:rawb[bid]=bat.get(bid,day)
+            if pid not in rawp:rawp[pid]=pit.get(pid,day)
+            Y[row]=CLASSES.index(ev);yrs[row]=year
+            for prior in priors:
+                br=norm(rawb[bid]+prior*lr);pr=norm(rawp[pid]+prior*lr);Xs[prior][row]=feature(br,pr,lr)
+                if collect_baseline_prior==prior and collect_baseline_year==year:bases.append(np.stack([lr,norm(.68*br+.32*pr),br,pr]).astype(np.float32))
+            row+=1
         for _,_,_,bid,pid,ev in game:
             k=CLASSES.index(ev);bat.add(bid,day,k);pit.add(pid,day,k);league.add('league',day,k)
         i=j
-    return np.asarray(X,dtype=np.float32),np.asarray(Y,dtype=np.int8),np.asarray(yrs,dtype=np.int16),(np.stack(bases) if bases else None)
+    return Xs,Y,yrs,(np.stack(bases) if bases else None)
 
 def brier(y,p):return float(np.mean(np.sum((p-np.eye(6)[y])**2,axis=1)))
 def metrics(y,p):return {'logloss':float(log_loss(y,p,labels=list(range(6)))),'brier':brier(y,p)}
-def fit(X,y,C):
-    m=LogisticRegression(C=C,solver='lbfgs',max_iter=350);m.fit(X,y);return m
+def fit(X,y,C):m=LogisticRegression(C=C,solver='lbfgs',max_iter=350);m.fit(X,y);return m
 
 def main():
     OUT.mkdir(parents=True,exist_ok=True);plays,prov=fetch_plays()
     if not plays:raise RuntimeError('No Retrosheet modeled PAs materialized')
     grid=[];best=None
     for h in HALF_LIVES:
+        Xs,y,yrs,_=build_multi_prior(plays,h,PRIORS);tr=np.isin(yrs,[2021,2022,2023]);sel=yrs==2024
+        if not tr.any() or not sel.any():raise RuntimeError('Empty chronological split')
         for prior in PRIORS:
-            X,y,yrs,_=build_features(plays,h,prior);tr=np.isin(yrs,[2021,2022,2023]);sel=yrs==2024
-            if not tr.any() or not sel.any():raise RuntimeError('Empty chronological split')
+            X=Xs[prior]
             for C in CS:
                 m=fit(X[tr],y[tr],C);met=metrics(y[sel],m.predict_proba(X[sel]));row={'half_life_days':h,'prior_strength':prior,'C':C,'logloss_2024':met['logloss'],'brier_2024':met['brier']};grid.append(row)
                 if best is None or (met['logloss'],met['brier'])<(best[0],best[1]):best=(met['logloss'],met['brier'],h,prior,C)
-            del X,y,yrs;gc.collect()
+        del Xs,y,yrs;gc.collect()
     _,_,h,prior,C=best
-    X,y,yrs,bases=build_features(plays,h,prior,collect_baselines_year=2025);train=np.isin(yrs,[2021,2022,2023,2024]);val=yrs==2025;m=fit(X[train],y[train],C);pred=m.predict_proba(X[val])
+    Xs,y,yrs,bases=build_multi_prior(plays,h,[prior],collect_baseline_prior=prior,collect_baseline_year=2025);X=Xs[prior];train=np.isin(yrs,[2021,2022,2023,2024]);val=yrs==2025;m=fit(X[train],y[train],C);pred=m.predict_proba(X[val])
     if bases is None or len(bases)!=int(val.sum()):raise RuntimeError('Locked-2025 baseline alignment failure')
     names=['league','legacy','batter','pitcher'];validation={'joint_multinomial':metrics(y[val],pred)}
-    for idx,n in enumerate(names):validation[n]=metrics(y[val],bases[:,idx,:])
+    for idx,nm in enumerate(names):validation[nm]=metrics(y[val],bases[:,idx,:])
     one=np.eye(6)[y[val]];by_class={c:{'mean_pred':float(pred[:,i].mean()),'observed_rate':float(one[:,i].mean()),'brier':float(np.mean((pred[:,i]-one[:,i])**2)),'legacy_brier':float(np.mean((bases[:,1,i]-one[:,i])**2))} for i,c in enumerate(CLASSES)}
     pa_pass=validation['joint_multinomial']['logloss']<validation['legacy']['logloss'] and validation['joint_multinomial']['brier']<=validation['legacy']['brier']
     manifest={'component':'joint multinomial batter/pitcher PA model','architecture':'regularized multinomial logistic model on batter/pitcher relative log rates and league logits','modeled_outcomes':CLASSES,'unmodeled_pa_handling':'HBP/interference/reach-on-error/no-out PAs excluded from PA fit; materiality tested by half-inning gate','governance_status':'PA_GATE_PASS_HALF_INNING_PENDING' if pa_pass else 'BLOCKED_PA_GATE','production_eligible':False,'development_years':[2021,2022,2023],'selection_year':[2024],'locked_validation_year':[2025],'market_inputs_used':False,'same_game_updates_used_in_features':False,'rolling_history_crosses_season_boundaries':True,'selected_hyperparameters':{'half_life_days':h,'prior_strength':prior,'C':C},'validation_2025':validation,'validation_by_class':by_class,'provenance':prov,'promotion_rule':'Beat legacy 68/32 on locked-2025 multiclass log loss without worsening multiclass Brier, then pass locked-2025 half-inning scoring gate.'}
