@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'analysis/batter_pitcher_blend_calibration.py'
+      - 'analysis/half_inning_scoring_gate.py'
       - '.github/workflows/empirical_batter_pitcher_blend.yml'
   workflow_dispatch:
 
@@ -13,7 +14,7 @@ permissions:
 jobs:
   calibrate:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,7 +26,7 @@ jobs:
         run: pip install --disable-pip-version-check numpy scikit-learn
       - name: Run leakage-safe joint multinomial calibration
         run: python analysis/batter_pitcher_blend_calibration.py | tee batter_pitcher_blend.log
-      - name: Verify PA artifacts and governance
+      - name: Verify PA gate
         run: |
           set -euo pipefail
           base=data/derived/model_calibration/batter_pitcher_blend
@@ -42,11 +43,24 @@ jobs:
           assert m['market_inputs_used'] is False
           assert m['same_game_updates_used_in_features'] is False
           assert m['rolling_history_crosses_season_boundaries'] is True
-          if m['governance_status']=='BLOCKED_PA_GATE':
-              raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['validation_2025']}")
           if m['governance_status']!='PA_GATE_PASS_HALF_INNING_PENDING':
-              raise SystemExit(f"UNEXPECTED GOVERNANCE STATUS: {m['governance_status']}")
-          print('Joint PA gate PASS; half-inning gate still required before production')
+              raise SystemExit(f"MODEL BLOCKED AT PA GATE: {m['governance_status']} {m['validation_2025']}")
+          print('Joint PA gate PASS')
+          PY
+      - name: Run locked-2025 half-inning scoring gate
+        run: python analysis/half_inning_scoring_gate.py | tee half_inning_scoring_gate.log
+      - name: Verify final governance
+        run: |
+          set -euo pipefail
+          base=data/derived/model_calibration/batter_pitcher_blend
+          test -s "$base/half_inning_validation_2025.json"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/model_calibration/batter_pitcher_blend/model_development_manifest.json').read_text())
+          if m['governance_status']!='PASS' or m['production_eligible'] is not True:
+              raise SystemExit(f"MODEL NOT PRODUCTION ELIGIBLE: {m['governance_status']}")
+          print('Joint PA + half-inning governance PASS')
           PY
       - uses: actions/upload-artifact@v4
         if: always()
@@ -54,5 +68,6 @@ jobs:
           name: empirical-batter-pitcher-blend
           path: |
             batter_pitcher_blend.log
+            half_inning_scoring_gate.log
             data/derived/model_calibration/batter_pitcher_blend/
           retention-days: 30
