@@ -1,8 +1,8 @@
-# MLB Model Development Governance — Anti-Overfitting Rules
+# MLB Model Development Governance — Anti-Overfitting and Production Rules
 
 Status: HARD GOVERNANCE
 Effective: 2026-08-23
-Applies to: all empirical parameter estimation, feature selection, calibration, validation, and production promotion for the MLB model.
+Applies to: all empirical parameter estimation, feature selection, calibration, validation, production implementation, and production promotion for the MLB model.
 
 ## Hard rules
 
@@ -16,18 +16,24 @@ Applies to: all empirical parameter estimation, feature selection, calibration, 
 8. Regularization. Multi-parameter fitted models must use an appropriate regularization or shrinkage method unless there is a documented reason it is unnecessary.
 9. Calibration evaluation. Probability models must be evaluated with proper scoring rules and calibration diagnostics, including Brier score and/or log loss and probability-bucket calibration where sample size permits. Classification accuracy alone is not sufficient.
 10. No betting-result tuning. Baseball-model parameters may not be selected or altered to maximize historical wagering profit, EV, sportsbook performance, or market agreement. Betting markets remain isolated until baseball probabilities are frozen.
-11. No silent exceptions. If a governance rule prevents or materially limits development, the limitation must be reported explicitly. The rule is not weakened automatically.
-12. Exceptions require user decision. A blocked development path may proceed under a temporary exception only after the issue, expected benefit, overfitting risk, and proposed safeguard are presented to the user.
+11. Hard live-latency requirement. Every production live-model update triggered by receipt of a new pitch state must complete within 1.000 second from model-input receipt to availability of the updated model output. This applies to all production model components participating in a live update.
+12. Latency engineering target. Production implementations should target p95 model-compute latency of 500 ms or less and preferably 250-500 ms, preserving headroom for data-ingestion, serialization, network, and UI overhead. The hard acceptance limit remains 1.000 second.
+13. Predictive value may not be sacrificed merely to meet latency. Sample reduction, state collapse, probability truncation, Monte Carlo substitution, omitted variables, or other approximations that can change predictive output are prohibited unless separately validated and explicitly approved under governance. Prefer mathematically equivalent precomputation, caching, dynamic programming, vectorization, compiled lookup tables, incremental state updates, and parallelization.
+14. Numerical-equivalence gate for acceleration. Whenever a validated research calculation is replaced by a faster production implementation, the accelerated implementation must reproduce the reference probability outputs within a documented tight numerical tolerance on a representative regression suite before promotion. Any material discrepancy is BLOCKED until explained and validated as a deliberate model change.
+15. Offline/live separation. Computationally expensive fitting, historical calibration, hyperparameter search, and parameter estimation must occur offline/pregame whenever possible. Live per-pitch execution should consume frozen or incrementally maintained parameters and recompute only state affected by the new pitch.
+16. Latency regression is a production blocker. A model change that clears statistical validation but fails the live latency gate is not production-eligible. The latency failure must be surfaced and corrected before promotion.
+17. No silent exceptions. If a governance rule prevents or materially limits development, the limitation must be reported explicitly. The rule is not weakened automatically.
+18. Exceptions require user decision. A blocked development path may proceed under a temporary exception only after the issue, expected benefit, overfitting risk, latency/predictive tradeoff, and proposed safeguard are presented to the user.
 
 ## Required issue reporting
 
 Every model-development analysis should classify governance status as PASS, WARNING, or BLOCKED.
 
-A WARNING is required when, for example, sample size is marginal, validation periods are unusually different from training periods, a requested feature cannot be reconstructed leakage-free, or a holdout has already been partially examined.
+A WARNING is required when, for example, sample size is marginal, validation periods are unusually different from training periods, a requested feature cannot be reconstructed leakage-free, a holdout has already been partially examined, or a proposed production implementation materially reduces latency headroom without violating the hard 1-second limit.
 
-A BLOCKED status is required when, for example, future information would leak into training, no genuinely unseen validation data exists for a proposed parameter, a complex model improves only in-sample, or a requested empirical state is too sparse to estimate responsibly without an approved pooling/shrinkage hierarchy.
+A BLOCKED status is required when, for example, future information would leak into training, no genuinely unseen validation data exists for a proposed parameter, a complex model improves only in-sample, a requested empirical state is too sparse to estimate responsibly without an approved pooling/shrinkage hierarchy, an accelerated implementation fails numerical equivalence, or a live production update exceeds the 1.000-second hard limit.
 
-When WARNING or BLOCKED occurs, report: affected component; rule triggered; why it matters; what development is still valid; recommended remedy; and whether proceeding would consume or contaminate a holdout.
+When WARNING or BLOCKED occurs, report: affected component; rule triggered; why it matters; what development is still valid; recommended remedy; whether proceeding would consume or contaminate a holdout; and, for production performance issues, whether the proposed remedy changes predictive outputs or is computation-only.
 
 ## Current holdout interpretation
 
@@ -37,6 +43,14 @@ When WARNING or BLOCKED occurs, report: affected component; rule triggered; why 
 
 Because 2021-2025 have already been used in prior historical model work, historical cross-validation remains useful but must not be described as a fully pristine final test. The strongest evidence for new components is a frozen specification evaluated on subsequent 2026 games not used in its design.
 
+## Production latency validation standard
+
+For any component participating in live per-pitch predictions, production promotion requires a reproducible latency benchmark using representative legal live states and realistic production data structures. Report at minimum median, p95, p99, maximum observed model-compute latency, benchmark hardware/runtime, sample count, and whether caches were warm or cold.
+
+The hard pass condition is that all intended live update paths complete within 1.000 second in the approved production configuration. A p95 above 500 ms is a WARNING even if all observations remain under 1.000 second because it leaves insufficient operating headroom. The preferred implementation target is 250-500 ms p95 or faster.
+
+Latency optimization must preserve the same market-isolation rules and predictive-governance rules as the research model. Market data may not be introduced merely as a computational shortcut or fallback for a slow baseball-model calculation.
+
 ## Promotion standard
 
-A component is production-eligible only when: data lineage is documented; leakage checks pass; sample support is adequate or an empirical shrinkage hierarchy is defined; the specification is frozen before testing; unseen chronological evaluation is completed; proper scoring/calibration metrics are reported; a simpler benchmark is reported; and no material governance BLOCKED issue remains.
+A component is production-eligible only when: data lineage is documented; leakage checks pass; sample support is adequate or an empirical shrinkage hierarchy is defined; the specification is frozen before testing; unseen chronological evaluation is completed; proper scoring/calibration metrics are reported; a simpler benchmark is reported; no material governance BLOCKED issue remains; accelerated implementations pass numerical-equivalence testing; and every live per-pitch execution path passes the hard 1.000-second latency requirement.
