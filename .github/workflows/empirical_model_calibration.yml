@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'analysis/empirical_model_calibration.py'
+      - 'analysis/governance_retro_audit.py'
       - '.github/workflows/empirical_model_calibration.yml'
       - 'data/derived/i2/i2_play_calibration.json'
       - 'data/derived/i2/i2_state_compact_20*.csv'
@@ -25,7 +26,9 @@ jobs:
           python-version: '3.12'
       - name: Run empirical calibration
         run: python analysis/empirical_model_calibration.py
-      - name: Commit generated calibration outputs
+      - name: Run anti-overfitting governance audit
+        run: python analysis/governance_retro_audit.py
+      - name: Commit generated calibration and governance outputs
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -33,6 +36,6 @@ jobs:
           if git diff --cached --quiet; then
             echo 'No calibration changes.'
           else
-            git commit -m 'Build empirical model calibration outputs'
+            git commit -m 'Build empirical calibration and governance audit outputs'
             git push
           fi
