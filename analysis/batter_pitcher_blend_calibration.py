@@ -3,7 +3,10 @@
 
 Architecture
 ------------
-* Six mutually-exclusive PA outcomes are fitted jointly: out, BB, 1B, 2B, 3B, HR.
+* Six mutually-exclusive modeled PA outcomes are fitted jointly: out, BB, 1B, 2B, 3B, HR.
+* HBP, interference, reach-on-error, and other no-out PA outcomes are excluded rather than
+  silently mislabeled as outs because the current production transition engine does not yet
+  contain those transition classes.
 * Player skill is represented as batter/pitcher log-rate ratios versus the rolling league rate.
 * Historical counts roll across seasons with exponential time decay.
 * Player snapshots are frozen BEFORE each game; PAs from the current game are only added after
@@ -36,6 +39,9 @@ CS=[0.1,0.3,1.0]
 EPS=1e-7
 
 def truth(v): return str(v).strip().lower() in {'1','true','t','yes','y'}
+def intval(v,d=0):
+    try:return int(float(v))
+    except:return d
 def is_regular(g):
     s=str(g or '').strip().lower().replace('_',' ').replace('-',' ')
     return ('regular' in s) or s in {'r','rs','0'}
@@ -46,7 +52,10 @@ def classify(r):
     if truth(r.get('triple')): return 'triple'
     if truth(r.get('hr')): return 'hr'
     if truth(r.get('walk')) and not truth(r.get('hbp')): return 'bb'
-    return 'out'
+    if truth(r.get('hbp')) or truth(r.get('xi')) or truth(r.get('roe')) or truth(r.get('noout')) or truth(r.get('k_safe')): return None
+    if truth(r.get('k')): return 'out'
+    if intval(r.get('outs_post'))>intval(r.get('outs_pre')): return 'out'
+    return None
 def ids(r):
     bid=r.get('batter') or r.get('batter_id') or r.get('bat_id') or r.get('batterid')
     pid=r.get('pitcher') or r.get('pitcher_id') or r.get('pit_id') or r.get('pitcherid')
@@ -76,13 +85,14 @@ def fetch_plays():
             for n in z.namelist():
                 if n.lower().endswith('.csv'):
                     with z.open(n) as f: rows.extend(csv.DictReader(io.TextIOWrapper(f,encoding='utf-8-sig',newline='')))
-        accepted=0
+        accepted=0; excluded=0
         for r in rows:
             if not is_regular(r.get('gametype')): continue
             ev=classify(r); bid,pid=ids(r); gid=game_id(r)
+            if truth(r.get('pa')) and ev is None: excluded+=1
             if ev is None or not bid or not pid or not gid: continue
             plays.append((game_date(r),gid,y,bid,pid,ev)); accepted+=1
-        provenance.append({'year':y,'source_url':url,'rows_total':len(rows),'accepted_pa':accepted})
+        provenance.append({'year':y,'source_url':url,'rows_total':len(rows),'accepted_modeled_pa':accepted,'excluded_unmodeled_pa':excluded})
     plays.sort(key=lambda x:(x[0],x[1]))
     return plays,provenance
 
@@ -166,7 +176,7 @@ def main():
     for idx,c in enumerate(CLASSES):
         by_class[c]={'mean_pred':float(np.mean(fitted[:,idx])),'observed_rate':float(np.mean(one[:,idx])),'brier':float(np.mean((fitted[:,idx]-one[:,idx])**2)),'legacy_brier':float(np.mean((base['legacy'][:,idx]-one[:,idx])**2))}
     pa_pass=(validation['joint_multinomial']['logloss']<validation['legacy']['logloss'] and validation['joint_multinomial']['brier']<=validation['legacy']['brier'])
-    manifest={'component':'joint multinomial batter/pitcher PA model','architecture':'regularized multinomial logistic model on batter/pitcher relative log rates and league logits','governance_status':'PA_GATE_PASS_HALF_INNING_PENDING' if pa_pass else 'BLOCKED_PA_GATE','production_eligible':False,'development_years':[2021,2022,2023],'selection_year':[2024],'locked_validation_year':[2025],'market_inputs_used':False,'same_game_updates_used_in_features':False,'rolling_history_crosses_season_boundaries':True,'selected_hyperparameters':{'half_life_days':hl,'prior_strength':prior,'C':C},'validation_2025':validation,'validation_by_class':by_class,'provenance':provenance,'promotion_rule':'Must beat legacy 68/32 on locked-2025 multiclass log loss and not worsen multiclass Brier, then pass separate half-inning scoring calibration gate.'}
+    manifest={'component':'joint multinomial batter/pitcher PA model','architecture':'regularized multinomial logistic model on batter/pitcher relative log rates and league logits','modeled_outcomes':CLASSES,'unmodeled_pa_handling':'HBP/interference/reach-on-error/no-out PAs excluded from PA fit; materiality tested by half-inning gate','governance_status':'PA_GATE_PASS_HALF_INNING_PENDING' if pa_pass else 'BLOCKED_PA_GATE','production_eligible':False,'development_years':[2021,2022,2023],'selection_year':[2024],'locked_validation_year':[2025],'market_inputs_used':False,'same_game_updates_used_in_features':False,'rolling_history_crosses_season_boundaries':True,'selected_hyperparameters':{'half_life_days':hl,'prior_strength':prior,'C':C},'validation_2025':validation,'validation_by_class':by_class,'provenance':provenance,'promotion_rule':'Must beat legacy 68/32 on locked-2025 multiclass log loss and not worsen multiclass Brier, then pass separate half-inning scoring calibration gate.'}
     params={'version':'joint-multinomial-pa-v1','classes':CLASSES,'feature_order':[f'batter_log_ratio_{e}' for e in NONOUT]+[f'pitcher_log_ratio_{e}' for e in NONOUT]+[f'league_logit_{e}_vs_out' for e in NONOUT],'selected_hyperparameters':manifest['selected_hyperparameters'],'coef':model.coef_.tolist(),'intercept':model.intercept_.tolist(),'sklearn_classes':model.classes_.tolist(),'validation_2025':validation,'production_eligible':False}
     (OUT/'model_development_manifest.json').write_text(json.dumps(manifest,indent=2))
     (OUT/'joint_multinomial_pa_model.json').write_text(json.dumps(params,indent=2))
