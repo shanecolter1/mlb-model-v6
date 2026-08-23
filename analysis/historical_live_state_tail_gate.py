@@ -48,7 +48,6 @@ def main():
                 bid=str(r.get('batter') or '').strip(); pid=str(r.get('pitcher') or '').strip(); lp=core.intval(r.get('lp'),0)
                 outs=core.intval(r.get('outs_pre'),-1)
                 if pid not in pcache or bid not in bcache or not(1<=lp<=9) or outs not in (0,1,2):skip['missing_state']+=1;continue
-                # Retrosheet play CSV base occupancy fields are pre-PA runner IDs.
                 mask=0
                 for bit,key in enumerate(('r1','r2','r3')):
                     if str(r.get(key) or '').strip():mask|=(1<<bit)
@@ -56,16 +55,20 @@ def main():
                 for obid in order:
                     br=bcache.get(obid,core.norm(bat.get(obid,day)+prior*lr)); lineup.append(core.model_prob(br,pr,lr,params))
                 try:
-                    res=live_half_inning_distribution(np.asarray(lineup),table,batter_index=lp-1,outs=outs,bases=mask,runs_already=0)
+                    res=live_half_inning_distribution(
+                        np.asarray(lineup), current_batter_idx=lp-1, outs=outs,
+                        bases_mask=mask, runs_already=0, table=table,
+                        max_remaining_pa=18,
+                    )
                     vals.append(float(res['unresolved_probability']))
-                except Exception:skip['engine_error']+=1
+                except Exception as exc:
+                    skip[f'engine_error:{type(exc).__name__}']+=1
         for ev,bid,pid in modeled:
             k=core.CLASSES.index(ev);bat.add(bid,day,k);pit.add(pid,day,k);league.add('league',day,k)
         i=j
-    if not vals:raise RuntimeError('no historical states evaluated')
+    if not vals:raise RuntimeError(f'no historical states evaluated; skip={dict(skip)}')
     a=np.asarray(vals)
     result={'historical_states':int(a.size),'source':'2025 Retrosheet regular season actual pre-PA base/out/lineup states','max_unresolved_probability':float(a.max()),'p99_unresolved_probability':float(np.percentile(a,99)),'p999_unresolved_probability':float(np.percentile(a,99.9)),'mean_unresolved_probability':float(a.mean()),'states_over_1e-9':int((a>1e-9).sum()),'states_over_1e-6':int((a>1e-6).sum()),'skip':dict(skip)}
-    # Promotion threshold: no realistic state may leave >1e-6 mass unresolved.
     result['gate_status']='PASS' if result['max_unresolved_probability']<=1e-6 else 'BLOCKED'
     out=BASE/'historical_live_state_tail_validation.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
     if result['gate_status']!='PASS':raise SystemExit('Historical 18-PA tail gate blocked')
