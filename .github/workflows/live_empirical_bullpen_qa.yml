@@ -1,0 +1,32 @@
+name: Live empirical bullpen QA
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'empirical-bullpen-production.js'
+      - 'bullpen-production-models.json'
+      - '.github/workflows/live_empirical_bullpen_qa.yml'
+  workflow_dispatch:
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax check
+        run: node --check empirical-bullpen-production.js
+      - name: Verify exact live-dashboard hooks
+        shell: python
+        run: |
+          from pathlib import Path
+          s=Path('index.html').read_text()
+          assert s.count('empiricalBullpenEngine?.currentHalfMixture') == 2, s.count('empiricalBullpenEngine?.currentHalfMixture')
+          assert s.count('<script src="/empirical-bullpen-production.js"></script>') == 1
+          import json
+          m=json.loads(Path('bullpen-production-models.json').read_text())
+          assert 'in_inning_removal' in m.get('models',{})
+          assert 'between_inning_removal' not in m.get('models',{}), 'between-inning model must remain inactive until fresh 2026 forward test'
+          print('PASS: existing dashboard UI hooks intact; validated in-inning empirical stack active')
