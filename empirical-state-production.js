@@ -6,8 +6,9 @@ const CAP=6, TOL=1e-12, MAX_PA=72;
 function norm(a){const s=a.reduce((x,y)=>x+Number(y||0),0)||1;return a.map(x=>Number(x||0)/s)}
 function eventVector(batterId,pitcherId){const p=window.outcomeProb(batterId,pitcherId,null);return {out:Number(p.out||0),bb:Number(p.bb||0),single:Number(p.single||0),double:Number(p.double||0),triple:Number(p.triple||0),hr:Number(p.hr||0)}}
 function countAdjustedEventVector(base,outs,mask,count){
-  // Existing dashboard count-state calibration remains the authoritative first-PA count adjustment.
-  // If no event-level count model is exposed, preserve the frozen PA event vector rather than inventing one.
+  // Use an event-level count model only when one is explicitly exposed.
+  // Otherwise preserve the frozen PA event vector and apply the validated
+  // historical run-distribution count tilt after convergence.
   if(!count)return base;
   if(typeof window.countConditionedOutcomeProb==='function'){
     try{const q=window.countConditionedOutcomeProb(base,outs,mask,count);if(q&&typeof q==='object')return q}catch(_){ }
@@ -55,8 +56,14 @@ const legacy=window.runDistribution;
 function productionRunDistribution(lineup,startIdx,pitcherId,outs=0,mask=0,currentCount=null){
   const res=liveStateDistribution(lineup,startIdx,pitcherId,outs,mask,currentCount);
   if(!res)return legacy(lineup,startIdx,pitcherId,outs,mask,currentCount);
-  return res.dist;
+  let dist=res.dist;
+  // The V11.13 historical count-state model is distribution-level. The convergence
+  // engine must preserve that calibration when no event-level count model exists.
+  if(currentCount&&typeof window.countConditionedOutcomeProb!=='function'&&typeof window.applyHistoricalCountState==='function'){
+    dist=window.applyHistoricalCountState(dist,outs,mask,currentCount);
+  }
+  return dist;
 }
-window.empiricalLiveStateEngine={liveStateDistribution,legacyRunDistribution:legacy,version:'validated-live-state-convergence-v1',unresolvedTolerance:TOL,emergencyMaxRemainingPA:MAX_PA};
+window.empiricalLiveStateEngine={liveStateDistribution,legacyRunDistribution:legacy,version:'validated-live-state-convergence-v1.1',unresolvedTolerance:TOL,emergencyMaxRemainingPA:MAX_PA,countStatePreserved:true};
 window.runDistribution=productionRunDistribution;
 })();
