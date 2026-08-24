@@ -40,3 +40,12 @@ Because 2021-2025 have already been used in prior historical model work, histori
 ## Promotion standard
 
 A component is production-eligible only when: data lineage is documented; leakage checks pass; sample support is adequate or an empirical shrinkage hierarchy is defined; the specification is frozen before testing; unseen chronological evaluation is completed; proper scoring/calibration metrics are reported; a simpler benchmark is reported; and no material governance BLOCKED issue remains.
+
+## Committed future bullpen upgrades
+
+These are explicit future production upgrades and must remain on the development roadmap even if the current structural bullpen models pass validation:
+
+1. Authoritative starter identity. Replace the current first-pitcher proxy with a verified starter/game-start indicator from an upstream source such as MLB Stats API or another authoritative roster/game feed. Opener and bulk-reliever games must be identified explicitly rather than inferred from first appearance alone.
+2. True numeric pitch-count workload. Add reliable pitcher pitch-count history for recent appearances and rest/workload features. Batters faced remains a valid independent workload feature, but it must never be relabeled or treated as equivalent to pitches thrown.
+3. Live warming-pitcher signal. Maintain warming status as a separate live Bayesian update to pitcher-removal and reliever-selection probabilities. Absence of an observed warming signal must never imply that a pitching change cannot occur.
+4. Revalidation requirement. When either authoritative starter identity or true pitch-count workload is added, affected bullpen components must be rerun through chronological locked-test, context-calibration, leakage, and p99 latency gates before production promotion.
