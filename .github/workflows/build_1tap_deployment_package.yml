@@ -11,6 +11,10 @@ on:
       - 'netlify.toml'
       - 'deployment-package-trigger.txt'
       - '.github/workflows/build_1tap_deployment_package.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'deployment-package-trigger.txt'
 permissions:
   contents: write
 jobs:
@@ -63,6 +67,7 @@ jobs:
           if-no-files-found: error
           retention-days: 30
       - name: Persist patched dashboard and manifest
+        if: github.event_name == 'push'
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
