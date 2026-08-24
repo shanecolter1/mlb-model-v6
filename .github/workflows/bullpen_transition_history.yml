@@ -1,0 +1,37 @@
+name: Bullpen transition history analysis
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'analysis/bullpen_transition_history.py'
+      - '.github/workflows/bullpen_transition_history.yml'
+  workflow_dispatch:
+concurrency:
+  group: bullpen-transition-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: empirical-batter-pitcher-blend
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Build historical bullpen transition dataset
+        shell: bash
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_transition_history.py | tee bullpen_transition_history.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bullpen-transition-history-${{ github.sha }}
+          path: |
+            bullpen_transition_history.log
+            data/derived/model_calibration/bullpen_transitions/bullpen_transition_pa_boundaries_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_transition_summary_2025.json
+          retention-days: 30
