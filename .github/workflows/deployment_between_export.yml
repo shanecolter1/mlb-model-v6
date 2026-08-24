@@ -1,0 +1,51 @@
+name: Deployment between-inning model export
+on:
+  push:
+    branches: [deploy-full-empirical]
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy scikit-learn
+      - name: Build between-inning history
+        run: python analysis/bullpen_between_inning_history.py
+      - name: Fit existing between-inning specification
+        run: python analysis/fit_bullpen_between_inning_hazard.py
+      - name: Export browser-safe between-inning model
+        run: |
+          python - <<'PY'
+          import json,pickle
+          from pathlib import Path
+          import numpy as np
+          p=Path('data/derived/model_calibration/bullpen_transitions/between_inning_hazard/between_inning_removal_hazard_model.pkl')
+          m=pickle.load(p.open('rb')); pre=m.named_steps['pre']; lr=m.named_steps['lr']
+          def py(v):
+              if isinstance(v,np.generic): return v.item()
+              if isinstance(v,np.ndarray): return v.tolist()
+              if isinstance(v,(list,tuple)): return [py(x) for x in v]
+              return v
+          out={'intercept':float(lr.intercept_[0]),'coef':[float(x) for x in lr.coef_[0]],'transformers':[]}
+          for name,pipe,cols in pre.transformers_:
+              if name=='remainder': continue
+              rec={'name':'num' if 'sc' in pipe.named_steps else 'cat','columns':[int(x) for x in cols]}
+              imp=pipe.named_steps['imp']
+              if 'sc' in pipe.named_steps:
+                  sc=pipe.named_steps['sc']; rec.update({'statistics':py(imp.statistics_),'add_indicator':bool(getattr(imp,'add_indicator',False)),'indicator_features':py(getattr(getattr(imp,'indicator_',None),'features_',[])),'mean':py(sc.mean_),'scale':py(sc.scale_)})
+              else:
+                  oh=pipe.named_steps['oh']; rec.update({'statistics':py(imp.statistics_),'categories':py(oh.categories_)})
+              out['transformers'].append(rec)
+          Path('between-inning-production.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps({'status':'PASS','coef_count':len(out['coef'])},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: between-inning-production
+          path: between-inning-production.json
+          retention-days: 30
