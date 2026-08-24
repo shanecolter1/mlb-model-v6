@@ -1,0 +1,67 @@
+name: Promote between-inning empirical model for deployment
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'promote-between-inning-trigger.txt'
+permissions:
+  contents: write
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: empirical-batter-pitcher-blend
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy scikit-learn
+      - name: Build and fit approved between-inning specification
+        run: |
+          python analysis/bullpen_between_inning_history.py
+          python analysis/fit_bullpen_between_inning_hazard.py
+      - name: Export browser-safe model
+        run: |
+          python - <<'PY'
+          import json,pickle
+          from pathlib import Path
+          import numpy as np
+          p=Path('data/derived/model_calibration/bullpen_transitions/between_inning_hazard/between_inning_removal_hazard_model.pkl')
+          m=pickle.load(p.open('rb'));pre=m.named_steps['pre'];lr=m.named_steps['lr']
+          def py(v):
+              if isinstance(v,np.generic):return v.item()
+              if isinstance(v,np.ndarray):return v.tolist()
+              if isinstance(v,(list,tuple)):return [py(x) for x in v]
+              return v
+          out={'intercept':float(lr.intercept_[0]),'coef':[float(x) for x in lr.coef_[0]],'transformers':[]}
+          for _,pipe,cols in pre.transformers_:
+              if not hasattr(pipe,'named_steps'):continue
+              rec={'name':'num' if 'sc' in pipe.named_steps else 'cat','columns':[int(x) for x in cols]};imp=pipe.named_steps['imp']
+              if 'sc' in pipe.named_steps:
+                  sc=pipe.named_steps['sc'];rec.update({'statistics':py(imp.statistics_),'add_indicator':bool(getattr(imp,'add_indicator',False)),'indicator_features':py(getattr(getattr(imp,'indicator_',None),'features_',[])),'mean':py(sc.mean_),'scale':py(sc.scale_)})
+              else:
+                  oh=pipe.named_steps['oh'];rec.update({'statistics':py(imp.statistics_),'categories':py(oh.categories_)})
+              out['transformers'].append(rec)
+          Path('/tmp/between-inning-production.json').write_text(json.dumps(out,indent=2))
+          PY
+      - name: Write model into main runtime asset
+        run: |
+          git fetch origin main
+          git checkout main
+          cp /tmp/between-inning-production.json /tmp/between.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('bullpen-production-models.json');x=json.loads(p.read_text());b=json.loads(Path('/tmp/between.json').read_text())
+          x.setdefault('models',{})['between_inning_removal']=b
+          x['governance']={'reliever_choice':'frozen 2025 specification passed fresh 2026 forward test','between_inning':'activated for deployment by user instruction; no additional forward test requested'}
+          p.write_text(json.dumps(x,indent=2))
+          PY
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add bullpen-production-models.json
+          git commit -m 'Activate approved empirical between-inning runtime model'
+          git push origin main
