@@ -7,6 +7,9 @@ Architecture:
 3) MLBAM ids are mapped to Retrosheet ids with the public Chadwick Register;
 4) prior same-club appearances/BF/rest are features only, never the eligibility rule;
 5) current-game future appearances/statistics are never used to construct candidates.
+
+Validation trigger note: this file is intentionally persisted on the development branch
+so PR-based CI validates the exact-date roster reconstruction before reliever-choice fitting.
 """
 from __future__ import annotations
 import csv, io, json, urllib.request
