@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Historical realistic-state tail gate for live/full-game promotion.
+"""Historical realistic-state convergence-tail gate for live/full-game promotion.
 
 Uses 2025 Retrosheet regular-season PA states and the frozen end-2024 PA model.
-Measures unresolved probability at the existing 18-PA cap from actual base/out/
-lineup states. This is a computational-governance test; no sportsbook inputs.
+Measures residual unresolved probability after convergence-based propagation from
+actual base/out/lineup states. This is market-blind computational governance.
 """
 from __future__ import annotations
 import json
@@ -17,6 +17,8 @@ ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'data/derived/model_calibration/batter_pitcher_blend'
 TRANS=ROOT/'data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json'
 MAX_STATES=50000
+UNRESOLVED_TOL=1e-12
+EMERGENCY_MAX=72
 
 
 def main():
@@ -25,7 +27,7 @@ def main():
     table=json.loads(TRANS.read_text())
     hp=params['selected_hyperparameters']; h=float(hp['half_life_days']); prior=float(hp['prior_strength'])
     rows=core.fetch_rows_2025(); bat=core.Store(h,state['batter']); pit=core.Store(h,state['pitcher']); league=core.Store(h,state['league'])
-    vals=[]; skip=Counter(); i=0
+    vals=[]; depths=[]; skip=Counter(); i=0
     while i<len(rows) and len(vals)<MAX_STATES:
         day,gid=rows[i]['_day'],rows[i]['_gid']; j=i
         while j<len(rows) and rows[j]['_day']==day and rows[j]['_gid']==gid:j+=1
@@ -58,18 +60,35 @@ def main():
                     res=live_half_inning_distribution(
                         np.asarray(lineup), current_batter_idx=lp-1, outs=outs,
                         bases_mask=mask, runs_already=0, table=table,
-                        max_remaining_pa=18,
+                        unresolved_tolerance=UNRESOLVED_TOL,
+                        emergency_max_remaining_pa=EMERGENCY_MAX,
                     )
                     vals.append(float(res['unresolved_probability']))
+                    depths.append(int(res['remaining_pa_iterations']))
+                    if not res['converged']: skip['emergency_ceiling_not_converged']+=1
                 except Exception as exc:
                     skip[f'engine_error:{type(exc).__name__}']+=1
         for ev,bid,pid in modeled:
             k=core.CLASSES.index(ev);bat.add(bid,day,k);pit.add(pid,day,k);league.add('league',day,k)
         i=j
     if not vals:raise RuntimeError(f'no historical states evaluated; skip={dict(skip)}')
-    a=np.asarray(vals)
-    result={'historical_states':int(a.size),'source':'2025 Retrosheet regular season actual pre-PA base/out/lineup states','max_unresolved_probability':float(a.max()),'p99_unresolved_probability':float(np.percentile(a,99)),'p999_unresolved_probability':float(np.percentile(a,99.9)),'mean_unresolved_probability':float(a.mean()),'states_over_1e-9':int((a>1e-9).sum()),'states_over_1e-6':int((a>1e-6).sum()),'skip':dict(skip)}
-    result['gate_status']='PASS' if result['max_unresolved_probability']<=1e-6 else 'BLOCKED'
+    a=np.asarray(vals); d=np.asarray(depths)
+    result={
+      'historical_states':int(a.size),
+      'source':'2025 Retrosheet regular season actual pre-PA base/out/lineup states',
+      'unresolved_tolerance':UNRESOLVED_TOL,
+      'emergency_max_remaining_pa':EMERGENCY_MAX,
+      'max_unresolved_probability':float(a.max()),
+      'p99_unresolved_probability':float(np.percentile(a,99)),
+      'p999_unresolved_probability':float(np.percentile(a,99.9)),
+      'mean_unresolved_probability':float(a.mean()),
+      'states_over_1e-9':int((a>1e-9).sum()),
+      'states_over_1e-6':int((a>1e-6).sum()),
+      'max_pa_iterations_used':int(d.max()),
+      'p99_pa_iterations_used':float(np.percentile(d,99)),
+      'skip':dict(skip)
+    }
+    result['gate_status']='PASS' if result['max_unresolved_probability']<=1e-6 and skip.get('emergency_ceiling_not_converged',0)==0 else 'BLOCKED'
     out=BASE/'historical_live_state_tail_validation.json';out.parent.mkdir(parents=True,exist_ok=True);out.write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2))
-    if result['gate_status']!='PASS':raise SystemExit('Historical 18-PA tail gate blocked')
+    if result['gate_status']!='PASS':raise SystemExit('Historical convergence-tail gate blocked')
 if __name__=='__main__':main()
