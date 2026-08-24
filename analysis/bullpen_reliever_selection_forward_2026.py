@@ -57,7 +57,6 @@ def fetch_active_pitchers_2026(team_id,day_iso,mlb_to_retro):
 
 
 def main():
-    # 1. Load untouched 2025 candidate history and freeze training sample/specification.
     if not CAND_CANON.exists():
         raise SystemExit('2025 candidate artifact must be built before the forward test')
     groups_2025=sel.load();train_2025,_,_=sel.split(groups_2025)
@@ -65,7 +64,6 @@ def main():
     X,y=sel.flat(train_2025,sel.EXP_NUM,sel.EXP_CAT)
     model=sel.make_model(FROZEN_C,sel.EXP_NUM,sel.EXP_CAT);model.fit(X,y)
 
-    # 2. Rebuild the identical candidate architecture from fresh 2026 baseball data.
     orig_rows=core.fetch_rows_2025;orig_team=cand.team_map;orig_roster=cand.fetch_active_pitchers
     try:
         core.fetch_rows_2025=lambda: core.fetch_rows_year(YEAR)
@@ -75,11 +73,8 @@ def main():
     finally:
         core.fetch_rows_2025=orig_rows;cand.team_map=orig_team;cand.fetch_active_pitchers=orig_roster
 
-    # Candidate builder uses legacy filenames internally; preserve the fresh result under explicit 2026 names.
     shutil.copy2(CAND_CANON,CAND_2026);shutil.copy2(SUM_CANON,SUM_2026)
     candidate_summary=json.loads(SUM_2026.read_text())
-
-    # 3. Score all eligible 2026 choices. No fit/tuning occurs after this point.
     groups_2026=sel.load()
     if len(groups_2026)<500:raise SystemExit(f'insufficient 2026 forward choice sets: {len(groups_2026)}')
     metrics=sel.evalm(model,groups_2026,sel.EXP_NUM,sel.EXP_CAT)
@@ -91,21 +86,13 @@ def main():
         'p99_lt_1000ms':metrics['p99_inference_ms']<1000,
     }
     rep={
-        'status':'FRESH_2026_FORWARD_TEST',
-        'market_blind':True,
-        'frozen_before_2026':{
-            'training':'2025 through 2025-07-31',
-            'C':FROZEN_C,
-            'features':sel.EXP_NUM+sel.EXP_CAT,
-            'excluded_features':['team identity','pitcher identity','sportsbook/market inputs','future current-game usage'],
-        },
-        'candidate_summary':candidate_summary,
-        'forward_metrics':metrics,
-        'promotion_gates':gate,
+        'status':'FRESH_2026_FORWARD_TEST','market_blind':True,
+        'frozen_before_2026':{'training':'2025 through 2025-07-31','C':FROZEN_C,'features':sel.EXP_NUM+sel.EXP_CAT,'excluded_features':['team identity','pitcher identity','sportsbook/market inputs','future current-game usage']},
+        'candidate_summary':candidate_summary,'forward_metrics':metrics,'promotion_gates':gate,
         'forward_gate_status':'PASS' if all(gate.values()) else 'BLOCKED',
-        'next_gate':'downstream inning/remaining-game run-distribution improvement; forward reliever-choice pass alone does not authorize production promotion',
-    }
+        'next_gate':'downstream inning/remaining-game run-distribution improvement; forward reliever-choice pass alone does not authorize production promotion'}
     OUT.write_text(json.dumps(rep,indent=2));print(json.dumps(rep,indent=2))
     if not all(gate.values()):raise SystemExit('2026 reliever-selection forward gate blocked')
 
 if __name__=='__main__':main()
+# CI synchronization marker for the frozen 2026 forward test.
