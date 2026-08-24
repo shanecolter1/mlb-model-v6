@@ -4,6 +4,8 @@
 Candidate pools use only pitchers observed for the same club in PRIOR games.
 No pitcher is included because he later appears in the current game. This avoids
 answer leakage. Both in-inning and between-inning pitching changes are emitted.
+
+This file is exercised by the development-only bullpen PR validation workflow.
 """
 from __future__ import annotations
 import csv,json,re
@@ -24,7 +26,6 @@ def iv(r,k,d=-1):
 def clean(v):return str(v or '').strip()
 
 def teams(r,gid):
-    # Prefer explicit Retrosheet club fields. Home fallback from traditional gid prefix.
     hcands=('home_team','hometeam','home','team_home','home_id','home_team_id')
     acands=('away_team','awayteam','visitor_team','visit_team','visteam','visitor','away','team_away','away_id','away_team_id')
     h=next((clean(r.get(k)) for k in hcands if clean(r.get(k))), '')
@@ -40,7 +41,6 @@ def main():
             lk=k.lower()
             if any(x in lk for x in ('team','home','away','visit')) and v not in (None,''):
                 team_fields[k]+=1;team_samples.setdefault(k,str(v))
-    # rolling pitcher usage by team; each tuple=(day,pid,bf)
     hist=defaultdict(deque)
     i=0
     while i<len(rows):
@@ -51,13 +51,11 @@ def main():
         h,a=teams(game[0],gid)
         if h and a:diag['games_with_both_teams']+=1
         else:diag['games_missing_team_id']+=1
-        # Pre-game candidate pools. Never updated until after all current-game decisions emitted.
         pools={}
         for team in (h,a):
             if not team:continue
             dq=hist[team]
             while dq and day-dq[0][0]>LOOKBACK_DAYS:dq.popleft()
-            # aggregate pitcher prior usage within lookback
             p=defaultdict(lambda:{'apps':0,'bf':0,'last_day':None})
             seen_games=set()
             for d,pgid,pid,bf in dq:
@@ -65,15 +63,12 @@ def main():
                 if key in seen_games:continue
                 seen_games.add(key);z=p[pid];z['apps']+=1;z['bf']+=bf;z['last_day']=d if z['last_day'] is None else max(z['last_day'],d)
             pools[team]=p
-        # current-game cumulative BF for usage update only after decisions built
         current_usage=defaultdict(lambda:defaultdict(int))
-        first_by_def={0:None,1:None}
         for n,r in enumerate(game):
             tb=iv(r,'top_bot',-1);pid=clean(r.get('pitcher'))
             if tb not in (0,1) or not pid:continue
             team=h if tb==0 else a
             if team:current_usage[team][pid]+=1
-            if first_by_def[tb] is None:first_by_def[tb]=pid
             if n+1>=len(game):continue
             nxt=game[n+1];tb2=iv(nxt,'top_bot',-1);npid=clean(nxt.get('pitcher'))
             if not npid:continue
@@ -95,7 +90,6 @@ def main():
             obs.append({'game_id':gid,'date':str(day),'defense_team':team,'transition_kind':kind,'inning':inn,
                         'outgoing_pitcher_id':pid,'actual_next_pitcher_id':npid,'actual_next_in_candidate_pool':int(actual_in),
                         'candidate_count':len(candidates),'candidates_json':json.dumps(candidates,separators=(',',':'))})
-        # update team histories only after every current-game decision has been emitted.
         for team,usage in current_usage.items():
             for pid,bf in usage.items():hist[team].append((day,gid,pid,bf))
         i=j
