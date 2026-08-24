@@ -1335,7 +1335,7 @@ function liveMetrics(g){
   const currentStart=lineupStartIndex(battingLineup,batterId,false);
   const lastFieldingBatter=lastBatterForSide(live,fieldingSide,new Set(fieldingLineup.map(x=>x.id)));
   const nextStart=lineupStartIndex(fieldingLineup,lastFieldingBatter,true);
-  const currentAdditional=phase==='live'?runDistribution(battingLineup,currentStart,defensivePitcherId,Number(ls.outs??cp.count?.outs??0),baseMask(ls.offense||{}),{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0}):[1,0,0,0,0,0,0];
+  const currentAdditional=phase==='live'?(window.empiricalBullpenEngine?.currentHalfMixture?.({live,pitchingSide:fieldingSide,lineup:battingLineup,startIdx:currentStart,pitcherId:defensivePitcherId,outs:Number(ls.outs??cp.count?.outs??0),mask:baseMask(ls.offense||{}),currentCount:{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0}})||runDistribution(battingLineup,currentStart,defensivePitcherId,Number(ls.outs??cp.count?.outs??0),baseMask(ls.offense||{}),{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0})):[1,0,0,0,0,0,0];
   let currentProb=phase==='live'?distributionMetrics(finalRunDistribution(currentAdditional,currentHalfRuns(ls))).p1plus:0;
   let nextProb=phase==='live'?scoreProbability(fieldingLineup,nextStart,offensePitcherId,0,0,null):0;
   let currentConf=confidence(battingLineup,defensivePitcherId,false), nextConf=confidence(fieldingLineup,offensePitcherId,true);
@@ -1593,7 +1593,7 @@ function gameCard(g){
   const currentStart=lineupStartIndex(battingLineup,currentBatterId,false);
   const lastFieldingBatter=lastBatterForSide(live,fieldingSide,new Set(fieldingLineup.map(x=>x.id)));
   const nextStart=lineupStartIndex(fieldingLineup,lastFieldingBatter,true);
-  const currentDist=runDistribution(battingLineup,currentStart,defensivePitcherId,Number(ls.outs??cp.count?.outs??0),baseMask(offense),{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0});
+  const currentDist=window.empiricalBullpenEngine?.currentHalfMixture?.({live,pitchingSide:fieldingSide,lineup:battingLineup,startIdx:currentStart,pitcherId:defensivePitcherId,outs:Number(ls.outs??cp.count?.outs??0),mask:baseMask(offense),currentCount:{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0}})||runDistribution(battingLineup,currentStart,defensivePitcherId,Number(ls.outs??cp.count?.outs??0),baseMask(offense),{balls:ls.balls??cp.count?.balls??0,strikes:ls.strikes??cp.count?.strikes??0});
   // The first next-half forecast is initialized pregame when official lineups and starters are ready.
   // During Top 1, that stored Bottom 1 distribution is available immediately as a continuity fallback.
   // Once live pitcher state is available, the dynamic continuation/bullpen projection supersedes the seed.
@@ -2201,5 +2201,6 @@ document.addEventListener('visibilitychange',()=>{
 });
 restoreOvernightState();restoreDailyCache();refreshSchedule(true).then(setTimer);
 </script>
+<script src="/empirical-bullpen-production.js"></script>
 </body>
 </html>
