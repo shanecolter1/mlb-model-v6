@@ -1,0 +1,10 @@
+{
+  "build_id": "full-empirical-audited-2026-08-24-1315CT",
+  "purpose": "Netlify deployment verification",
+  "dashboard": "MLB Live Command Center V11.13",
+  "empirical_state_engine": "validated-live-state-convergence-v1",
+  "empirical_bullpen_engine": "full-empirical-state+in-inning+between-inning+reliever-choice",
+  "count_state_model": "count-state-2021-2025-v1",
+  "repository": "shanecolter1/mlb-model-v6",
+  "branch": "main"
+}
