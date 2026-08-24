@@ -17,7 +17,6 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler,OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import log_loss
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'data/derived/model_calibration/bullpen_transitions'
@@ -78,12 +77,11 @@ def make_model(C):
 
 def probs_for_group(model,g):
     X=np.asarray([[r[k] for k in NUM+CAT] for r in g['rows']],dtype=object)
-    # candidate utility from logit; normalize within choice set
-    p=model.predict_proba(X)[:,1]; u=np.log(np.clip(p,EPS,1-EPS))-np.log(np.clip(1-p,EPS,1-EPS));u-=u.max();e=np.exp(u);return e/e.sum()
+    p=model.predict_proba(X)[:,1]
+    u=np.log(np.clip(p,EPS,1-EPS))-np.log(np.clip(1-p,EPS,1-EPS));u-=u.max();e=np.exp(u);return e/e.sum()
 
 def evaluate(model,gs):
-    n=len(gs); ll=0.;top1=0;top3=0;mrr=0.;base_u=0.;base_usage=0.;usage_ll=0.
-    lat=[]
+    n=len(gs); ll=0.;top1=0;top3=0;mrr=0.;base_u=0.;base_usage=0.;usage_ll=0.;lat=[]
     for g in gs:
         t=time.perf_counter_ns();p=probs_for_group(model,g);lat.append((time.perf_counter_ns()-t)/1e6)
         yi=next(i for i,r in enumerate(g['rows']) if r['y']==1); ll-=math.log(max(EPS,p[yi]))
@@ -115,7 +113,7 @@ def main():
                              'p99_lt_1000ms':test['p99_inference_ms']<1000},
          'promotion_rule':'No production promotion from 2025 diagnostics. Final promotion requires fresh 2026 forward test plus downstream run-distribution improvement.'}
     OUT.write_text(json.dumps(rep,indent=2));print(json.dumps(rep,indent=2))
-    # Development may continue only if it beats both simple baselines on log loss and latency clears.
     if not (rep['development_gate']['beats_uniform_logloss'] and rep['development_gate']['beats_prior_usage_logloss'] and rep['development_gate']['p99_lt_1000ms']):
         raise SystemExit('Reliever-selection development gate blocked')
 if __name__=='__main__':main()
+# CI sync marker: reliever-choice fit wired into bullpen validation.
