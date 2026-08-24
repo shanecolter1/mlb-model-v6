@@ -13,6 +13,9 @@ jobs:
   validate-bullpen:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -20,13 +23,21 @@ jobs:
           python-version: '3.12'
       - run: pip install --disable-pip-version-check numpy scikit-learn
       - name: Build workload history
-        run: python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
       - name: Build reliever candidate sets
-        run: python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
       - name: Fit reliever selection development model
-        run: python analysis/bullpen_reliever_selection_model.py | tee bullpen_reliever_selection.log
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_reliever_selection_model.py | tee bullpen_reliever_selection.log
       - name: Run frozen 2026 forward test
-        run: python analysis/bullpen_reliever_selection_forward_2026.py | tee bullpen_reliever_selection_forward_2026.log
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_reliever_selection_forward_2026.py | tee bullpen_reliever_selection_forward_2026.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
