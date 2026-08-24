@@ -1,0 +1,36 @@
+name: Bullpen CI validation
+on:
+  pull_request:
+    branches: [bullpen-ci-base]
+    paths:
+      - 'analysis/bullpen_*.py'
+      - '.github/workflows/bullpen_ci_validation.yml'
+concurrency:
+  group: bullpen-ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  validate-bullpen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy scikit-learn
+      - name: Build workload history
+        run: python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
+      - name: Build reliever candidate sets
+        run: python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bullpen-ci-${{ github.sha }}
+          path: |
+            bullpen_workload_history.log
+            bullpen_reliever_candidates.log
+            data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
+          retention-days: 30
