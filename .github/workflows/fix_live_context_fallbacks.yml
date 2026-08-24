@@ -1,0 +1,31 @@
+name: Fix live context fallbacks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'analysis/fix_live_context_fallbacks.py'
+      - '.github/workflows/fix_live_context_fallbacks.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python analysis/fix_live_context_fallbacks.py
+      - name: Commit repaired index
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'No index changes required'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Repair live pitcher and lineup context fallbacks'
+          git push origin main
