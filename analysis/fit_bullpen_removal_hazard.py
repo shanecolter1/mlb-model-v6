@@ -13,6 +13,7 @@ The model predicts P(current pitcher is replaced before the next PA | current ba
 """
 from __future__ import annotations
 import csv, json, math, pickle
+from datetime import date
 from pathlib import Path
 import numpy as np
 from sklearn.compose import ColumnTransformer
@@ -32,8 +33,16 @@ CANDIDATE_C=[0.01,0.03,0.1,0.3,1.0]
 
 
 def parse_date(s):
-    x=str(s).replace('-','')
-    return int(x[:8])
+    """Return YYYYMMDD from either ISO-ish date text or Python date ordinal."""
+    raw=str(s).strip()
+    digits=''.join(ch for ch in raw if ch.isdigit())
+    # Historical builder currently persists core._day, which is a Python ordinal.
+    if digits and len(digits)<=6:
+        d=date.fromordinal(int(digits))
+        return d.year*10000+d.month*100+d.day
+    if len(digits)>=8:
+        return int(digits[:8])
+    raise ValueError(f'unrecognized date value: {s!r}')
 
 
 def load_rows():
@@ -56,7 +65,6 @@ def load_rows():
 
 def matrix(rows):
     X=[x for _,x,_ in rows]; y=np.array([y for *_,y in rows],dtype=int)
-    # sklearn accepts list-of-dicts through pandas more naturally; build object matrix with fixed columns.
     cols=NUM+CAT
     arr=np.empty((len(X),len(cols)),dtype=object)
     for i,x in enumerate(X):
@@ -83,14 +91,14 @@ def main():
     train=[r for r in rows if r[0]<=20250731]
     valid=[r for r in rows if 20250801<=r[0]<=20250831]
     test=[r for r in rows if r[0]>=20250901]
-    if min(map(len,(train,valid,test)))<1000:raise RuntimeError('temporal split too small')
+    split_sizes={'train':len(train),'validation':len(valid),'locked_test':len(test)}
+    if min(split_sizes.values())<1000:raise RuntimeError(f'temporal split too small: {split_sizes}')
     Xt,yt,cols=matrix(train); Xv,yv,_=matrix(valid); Xq,yq,_=matrix(test)
     tune=[]
     for C in CANDIDATE_C:
         m=make_pipe(C);m.fit(Xt,yt);pv=m.predict_proba(Xv)[:,1]
         mm=metrics(yv,pv);mm['C']=C;tune.append(mm)
     best=min(tune,key=lambda z:(z['log_loss'],z['brier']))
-    # Refit on train+validation only after choosing C; locked test remains untouched.
     dev=train+valid;Xd,yd,_=matrix(dev)
     model=make_pipe(best['C']);model.fit(Xd,yd);pq=model.predict_proba(Xq)[:,1]
     test_m=metrics(yq,pq)
