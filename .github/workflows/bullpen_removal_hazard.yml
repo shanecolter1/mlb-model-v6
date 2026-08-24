@@ -3,6 +3,7 @@ on:
   pull_request:
     branches: [main]
     paths:
+      - 'analysis/bullpen_transition_history.py'
       - 'analysis/fit_bullpen_removal_hazard.py'
       - '.github/workflows/bullpen_removal_hazard.yml'
   workflow_dispatch:
@@ -12,7 +13,7 @@ concurrency:
 jobs:
   fit-removal-hazard:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,20 +22,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install --disable-pip-version-check numpy scikit-learn
-      - name: Restore persisted bullpen history artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: bullpen-transition-history-1a2a51f345b995df15ef24f6bb417f8223a535b3
-          github-token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          run-id: 32676763749
-          path: .history
-      - name: Restore history dataset
+      - name: Build corrected in-inning bullpen history
         shell: bash
         run: |
-          mkdir -p data/derived/model_calibration/bullpen_transitions
-          cp -R .history/data/derived/model_calibration/bullpen_transitions/. data/derived/model_calibration/bullpen_transitions/ 2>/dev/null || cp -R .history/. data/derived/model_calibration/bullpen_transitions/
-      - name: Fit and validate in-inning removal hazard
+          set -euo pipefail
+          python analysis/bullpen_transition_history.py | tee bullpen_transition_history.log
+      - name: Fit and validate corrected in-inning removal hazard
         shell: bash
         run: |
           set -euo pipefail
@@ -44,7 +37,10 @@ jobs:
         with:
           name: bullpen-removal-hazard-${{ github.sha }}
           path: |
+            bullpen_transition_history.log
             bullpen_removal_hazard.log
+            data/derived/model_calibration/bullpen_transitions/bullpen_transition_pa_boundaries_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_transition_summary_2025.json
             data/derived/model_calibration/bullpen_transitions/removal_hazard/in_inning_removal_hazard_validation.json
             data/derived/model_calibration/bullpen_transitions/removal_hazard/in_inning_removal_hazard_model.pkl
           retention-days: 30
