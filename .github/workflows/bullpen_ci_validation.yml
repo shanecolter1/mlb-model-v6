@@ -4,6 +4,8 @@ on:
     branches: [bullpen-ci-base]
     paths:
       - 'analysis/bullpen_*.py'
+      - 'analysis/fit_bullpen_*.py'
+      - 'analysis/export_bullpen_production_models.py'
       - 'analysis/half_inning_scoring_gate.py'
       - '.github/workflows/bullpen_ci_validation.yml'
 concurrency:
@@ -26,6 +28,22 @@ jobs:
         run: |
           set -euo pipefail
           python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
+      - name: Build transition history
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_transition_history.py | tee bullpen_transition_history.log
+      - name: Fit validated in-inning removal hazard
+        run: |
+          set -euo pipefail
+          python analysis/fit_bullpen_removal_hazard.py | tee bullpen_removal_hazard.log
+      - name: Build between-inning history
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_between_inning_history.py | tee bullpen_between_inning_history.log
+      - name: Fit validated between-inning removal hazard
+        run: |
+          set -euo pipefail
+          python analysis/fit_bullpen_between_inning_hazard.py | tee bullpen_between_inning_hazard.log
       - name: Build reliever candidate sets
         run: |
           set -euo pipefail
@@ -38,17 +56,29 @@ jobs:
         run: |
           set -euo pipefail
           python analysis/bullpen_reliever_selection_forward_2026.py | tee bullpen_reliever_selection_forward_2026.log
+      - name: Export frozen production models
+        run: |
+          set -euo pipefail
+          python analysis/export_bullpen_production_models.py | tee bullpen_production_export.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: bullpen-ci-${{ github.sha }}
           path: |
             bullpen_workload_history.log
+            bullpen_transition_history.log
+            bullpen_removal_hazard.log
+            bullpen_between_inning_history.log
+            bullpen_between_inning_hazard.log
             bullpen_reliever_candidates.log
             bullpen_reliever_selection.log
             bullpen_reliever_selection_forward_2026.log
+            bullpen_production_export.log
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
+            data/derived/model_calibration/bullpen_transitions/removal_hazard/in_inning_removal_hazard_validation.json
+            data/derived/model_calibration/bullpen_transitions/between_inning_hazard/between_inning_removal_hazard_validation.json
+            data/derived/model_calibration/bullpen_transitions/bullpen_production_models.json
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_selection_development_2025.json
