@@ -1,0 +1,37 @@
+name: Bullpen reliever candidate history validation
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'analysis/bullpen_reliever_candidate_history.py'
+      - '.github/workflows/bullpen_reliever_candidates.yml'
+  workflow_dispatch:
+concurrency:
+  group: bullpen-reliever-candidates-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-reliever-candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: empirical-batter-pitcher-blend
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Build leakage-safe reliever candidate sets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bullpen-reliever-candidates-${{ github.sha }}
+          path: |
+            bullpen_reliever_candidates.log
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
+          retention-days: 30
