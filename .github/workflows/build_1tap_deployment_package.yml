@@ -1,0 +1,52 @@
+name: Build complete 1Tap deployment package
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'analysis/apply_full_empirical_runtime_patch.py'
+      - 'empirical-state-production.js'
+      - 'empirical-bullpen-production.js'
+      - 'bullpen-production-models.json'
+      - 'netlify/functions/**'
+      - 'deployment-package-trigger.txt'
+permissions:
+  contents: write
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply full empirical runtime include
+        run: python analysis/apply_full_empirical_runtime_patch.py
+      - name: Verify required runtime files
+        run: |
+          set -euo pipefail
+          test -s index.html
+          test -s empirical-state-production.js
+          test -s empirical-bullpen-production.js
+          test -s bullpen-production-models.json
+          test -s netlify/functions/mlb.js
+          test -s netlify.toml
+          grep -q 'empirical-state-production.js' index.html
+          grep -q 'empirical-bullpen-production.js' index.html
+      - name: Build 1Tap package
+        run: |
+          rm -rf .deploy-package deploy
+          mkdir -p .deploy-package/netlify/functions deploy
+          cp index.html empirical-state-production.js empirical-bullpen-production.js bullpen-production-models.json netlify.toml .deploy-package/
+          cp netlify/functions/*.js .deploy-package/netlify/functions/
+          cat > .deploy-package/DEPLOYMENT_README.txt <<'EOF'
+          MLB Live Dashboard — Full Empirical Runtime
+          Upload this ZIP as one complete replacement package in 1Tap.
+          The dashboard appearance is unchanged.
+          Runtime includes empirical state-dependent PA transitions, convergence-based live-state propagation, bullpen workload/context, in-inning removal hazard, reliever-selection probabilities, and approved between-inning runtime when present in the model asset.
+          EOF
+          (cd .deploy-package && zip -qr ../deploy/mlb-live-dashboard-full-empirical-1tap.zip .)
+      - name: Persist patched dashboard and package
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add index.html deploy/mlb-live-dashboard-full-empirical-1tap.zip
+          git commit -m 'Build full empirical 1Tap deployment package' || exit 0
+          git push
