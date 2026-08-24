@@ -12,11 +12,12 @@ Governance:
 The model predicts P(current pitcher is replaced before the next PA | current baseball state).
 """
 from __future__ import annotations
-import csv, json, math, pickle
+import csv, json, pickle
 from datetime import date
 from pathlib import Path
 import numpy as np
 from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import brier_score_loss, log_loss, roc_auc_score
 from sklearn.pipeline import Pipeline
@@ -36,7 +37,6 @@ def parse_date(s):
     """Return YYYYMMDD from either ISO-ish date text or Python date ordinal."""
     raw=str(s).strip()
     digits=''.join(ch for ch in raw if ch.isdigit())
-    # Historical builder currently persists core._day, which is a Python ordinal.
     if digits and len(digits)<=6:
         d=date.fromordinal(int(digits))
         return d.year*10000+d.month*100+d.day
@@ -75,10 +75,16 @@ def matrix(rows):
 def make_pipe(C):
     num_idx=list(range(len(NUM))); cat_idx=list(range(len(NUM),len(NUM)+len(CAT)))
     pre=ColumnTransformer([
-        ('num',Pipeline([('scale',StandardScaler())]),num_idx),
-        ('cat',OneHotEncoder(handle_unknown='ignore'),cat_idx),
+        ('num',Pipeline([
+            ('impute',SimpleImputer(strategy='median',add_indicator=True)),
+            ('scale',StandardScaler()),
+        ]),num_idx),
+        ('cat',Pipeline([
+            ('impute',SimpleImputer(strategy='most_frequent')),
+            ('onehot',OneHotEncoder(handle_unknown='ignore')),
+        ]),cat_idx),
     ])
-    return Pipeline([('pre',pre),('lr',LogisticRegression(C=C,penalty='l2',solver='lbfgs',max_iter=1000))])
+    return Pipeline([('pre',pre),('lr',LogisticRegression(C=C,solver='lbfgs',max_iter=1000))])
 
 
 def metrics(y,p):
@@ -107,7 +113,7 @@ def main():
         'market_blind':True,
         'task':'P(pitcher change before next PA) for in-inning PA boundaries',
         'data_source':'persisted 2025 Retrosheet bullpen transition artifact',
-        'anti_overfit_controls':['chronological train/validation/locked-test split','small regularization grid','no pitcher identity in first structural model','locked test not used for tuning'],
+        'anti_overfit_controls':['chronological train/validation/locked-test split','small regularization grid','no pitcher identity in first structural model','locked test not used for tuning','numeric missingness imputed from development data only'],
         'feature_columns':cols,
         'split':{'train_through':'2025-07-31','validation':'2025-08-01..2025-08-31','locked_test':'2025-09-01 onward','train_n':len(train),'validation_n':len(valid),'locked_test_n':len(test)},
         'regularization_tuning':tune,
