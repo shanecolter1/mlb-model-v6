@@ -111,7 +111,6 @@ def parse_game(day,pk,start,feed):
         first_inning[team].setdefault(pid,inn)
         if i+1<len(states):
             n=states[i+1]
-            # Preserve the frozen 2025 candidate-builder transition definition: adjacent same-half PA change.
             if n['team']==team and n['half']==s['half'] and n['inning']==inn and n['pitcher']!=pid:
                 sd=defense_diff(s,home_id)
                 events.append({'game_id':pk,'date':day,'defense_team':team,'transition_kind':'in_inning',
@@ -216,13 +215,13 @@ def main():
     groups_2026,candidate_summary=build_2026_groups()
     if len(groups_2026)<500:raise SystemExit(f'insufficient 2026 forward choice sets: {len(groups_2026)}')
     metrics=sel.evalm(model,groups_2026,sel.EXP_NUM,sel.EXP_CAT)
-    gate={'candidate_coverage_ge_0_97':candidate_summary['actual_reliever_candidate_coverage']>=.97,
-          'nonempty_candidate_pool_ge_0_99':candidate_summary['nonempty_candidate_pool_rate']>=.99,
-          'score_state_coverage_ge_0_999':candidate_summary['score_state_coverage']>=.999,
-          'beats_uniform_logloss':metrics['log_loss']<metrics['uniform_log_loss'],
-          'beats_prior_usage_logloss':metrics['log_loss']<metrics['prior_usage_log_loss'],
-          'beats_prior_usage_top1':metrics['top1_accuracy']>metrics['prior_usage_top1_accuracy'],
-          'p99_lt_1000ms':metrics['p99_inference_ms']<1000}
+    gate={'candidate_coverage_ge_0_97':bool(candidate_summary['actual_reliever_candidate_coverage']>=.97),
+          'nonempty_candidate_pool_ge_0_99':bool(candidate_summary['nonempty_candidate_pool_rate']>=.99),
+          'score_state_coverage_ge_0_999':bool(candidate_summary['score_state_coverage']>=.999),
+          'beats_uniform_logloss':bool(metrics['log_loss']<metrics['uniform_log_loss']),
+          'beats_prior_usage_logloss':bool(metrics['log_loss']<metrics['prior_usage_log_loss']),
+          'beats_prior_usage_top1':bool(metrics['top1_accuracy']>metrics['prior_usage_top1_accuracy']),
+          'p99_lt_1000ms':bool(metrics['p99_inference_ms']<1000)}
     rep={'status':'FRESH_2026_FORWARD_TEST','market_blind':True,
          'frozen_before_2026':{'training':'2025 through 2025-07-31','C':FROZEN_C,'features':sel.EXP_NUM+sel.EXP_CAT,
                               'excluded_features':['team identity','pitcher identity','sportsbook/market inputs','future current-game usage']},
