@@ -1,0 +1,1 @@
+Trigger validated bullpen hazard export for live dashboard integration.
