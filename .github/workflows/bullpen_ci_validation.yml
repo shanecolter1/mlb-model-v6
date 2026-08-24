@@ -11,7 +11,7 @@ concurrency:
 jobs:
   validate-bullpen:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -22,6 +22,8 @@ jobs:
         run: python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
       - name: Build reliever candidate sets
         run: python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
+      - name: Fit reliever selection development model
+        run: python analysis/bullpen_reliever_selection_model.py | tee bullpen_reliever_selection.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -29,8 +31,10 @@ jobs:
           path: |
             bullpen_workload_history.log
             bullpen_reliever_candidates.log
+            bullpen_reliever_selection.log
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_selection_development_2025.json
           retention-days: 30
