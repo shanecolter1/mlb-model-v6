@@ -38,8 +38,8 @@ def game_day(gid):
     digits=''.join(c for c in str(gid) if c.isdigit())
     if len(digits)>=8:return datetime.strptime(digits[:8],'%Y%m%d').date().toordinal()
     raise ValueError(gid)
-def fetch_rows_2025():
-    url='https://www.retrosheet.org/downloads/plays/2025plays.zip';req=urllib.request.Request(url,headers={'User-Agent':'mlb-model-v6 locked 2025 validation'})
+def fetch_rows_year(year:int):
+    year=int(year);url=f'https://www.retrosheet.org/downloads/plays/{year}plays.zip';req=urllib.request.Request(url,headers={'User-Agent':f'mlb-model-v6 {year} baseball validation'})
     with urllib.request.urlopen(req,timeout=120) as resp:raw=resp.read()
     out=[]
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
@@ -52,6 +52,7 @@ def fetch_rows_2025():
                     if not gid:continue
                     r['_gid']=gid;r['_day']=game_day(gid);out.append(r)
     out.sort(key=lambda r:(r['_day'],r['_gid']));return out
+def fetch_rows_2025():return fetch_rows_year(2025)
 
 class Store:
     def __init__(self,h,data=None):
@@ -110,7 +111,6 @@ def main():
             if 1<=lp<=9 and lp not in lineups[tb]:lineups[tb][lp]=bid
             all_pa.append(r);ev=classify(r)
             if ev is not None:modeled.append((ev,bid,pid))
-        # Cache probability lineups and recursion results within this game.
         lineup_prob_cache={};dist_cache={}
         for tb in (0,1):
             if len(lineups[tb])!=9:skip['incomplete_original_lineup']+=1;continue

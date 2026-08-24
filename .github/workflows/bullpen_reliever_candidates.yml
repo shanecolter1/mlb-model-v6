@@ -1,19 +1,18 @@
-name: Bullpen workload history analysis
+name: Bullpen reliever candidate history validation
 on:
   pull_request:
     branches: [main]
     paths:
-      - 'analysis/bullpen_workload_history.py'
       - 'analysis/bullpen_reliever_candidate_history.py'
-      - '.github/workflows/bullpen_workload_history.yml'
+      - '.github/workflows/bullpen_reliever_candidates.yml'
   workflow_dispatch:
 concurrency:
-  group: bullpen-workload-${{ github.ref }}
+  group: bullpen-reliever-candidates-${{ github.ref }}
   cancel-in-progress: true
 jobs:
-  build-workload-history:
+  build-reliever-candidates:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,11 +21,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install --disable-pip-version-check numpy
-      - name: Build leakage-safe bullpen workload history
-        shell: bash
-        run: |
-          set -euo pipefail
-          python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
       - name: Build leakage-safe reliever candidate sets
         shell: bash
         run: |
@@ -35,12 +29,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: bullpen-workload-history-${{ github.sha }}
+          name: bullpen-reliever-candidates-${{ github.sha }}
           path: |
-            bullpen_workload_history.log
             bullpen_reliever_candidates.log
-            data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
-            data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
           retention-days: 30
