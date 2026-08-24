@@ -1,0 +1,47 @@
+name: Deploy production to Netlify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'empirical-state-production.js'
+      - 'empirical-bullpen-production.js'
+      - 'bullpen-production-models.json'
+      - 'netlify/functions/**'
+      - 'netlify.toml'
+      - '.github/workflows/deploy_netlify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify Netlify credentials are configured
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          set -euo pipefail
+          test -n "$NETLIFY_AUTH_TOKEN" || { echo 'Missing GitHub secret NETLIFY_AUTH_TOKEN'; exit 1; }
+          test -n "$NETLIFY_SITE_ID" || { echo 'Missing GitHub secret NETLIFY_SITE_ID'; exit 1; }
+
+      - name: Deploy current main to Netlify production
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        run: |
+          set -euo pipefail
+          npx --yes netlify-cli@latest deploy \
+            --prod \
+            --dir=. \
+            --functions=netlify/functions \
+            --site="$NETLIFY_SITE_ID" \
+            --auth="$NETLIFY_AUTH_TOKEN" \
+            --message="GitHub main ${GITHUB_SHA}"
