@@ -4,6 +4,7 @@ on:
     branches: [bullpen-ci-base]
     paths:
       - 'analysis/bullpen_*.py'
+      - 'analysis/half_inning_scoring_gate.py'
       - '.github/workflows/bullpen_ci_validation.yml'
 concurrency:
   group: bullpen-ci-${{ github.event.pull_request.number }}
@@ -11,7 +12,7 @@ concurrency:
 jobs:
   validate-bullpen:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -24,6 +25,8 @@ jobs:
         run: python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
       - name: Fit reliever selection development model
         run: python analysis/bullpen_reliever_selection_model.py | tee bullpen_reliever_selection.log
+      - name: Run frozen 2026 forward test
+        run: python analysis/bullpen_reliever_selection_forward_2026.py | tee bullpen_reliever_selection_forward_2026.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -32,9 +35,13 @@ jobs:
             bullpen_workload_history.log
             bullpen_reliever_candidates.log
             bullpen_reliever_selection.log
+            bullpen_reliever_selection_forward_2026.log
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
             data/derived/model_calibration/bullpen_transitions/bullpen_reliever_selection_development_2025.json
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2026.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2026.json
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_selection_forward_2026.json
           retention-days: 30
