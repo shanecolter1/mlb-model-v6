@@ -96,3 +96,4 @@ def main():
 
 if __name__=='__main__':main()
 # CI synchronization marker for the frozen 2026 forward test.
+# Fresh PR synchronization trigger: 2026 forward test requested 2026-08-23 CT.
