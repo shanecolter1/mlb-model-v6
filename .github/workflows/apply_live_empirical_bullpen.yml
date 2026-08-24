@@ -1,0 +1,40 @@
+name: Apply live empirical bullpen integration
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'empirical-bullpen-production.js'
+      - 'bullpen-production-models.json'
+      - 'analysis/apply_live_empirical_bullpen_patch.py'
+      - '.github/workflows/apply_live_empirical_bullpen.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: live-empirical-bullpen-integration
+  cancel-in-progress: false
+jobs:
+  patch-dashboard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch probability engine only
+        run: python analysis/apply_live_empirical_bullpen_patch.py
+      - name: Verify dashboard structure unchanged except probability hook
+        run: |
+          grep -q 'empirical-bullpen-production.js' index.html
+          grep -q 'empiricalBullpenEngine?.currentHalfMixture' index.html
+      - name: Commit patched dashboard
+        run: |
+          if git diff --quiet -- index.html; then
+            echo 'Dashboard probability hook already current.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          git commit -m 'Integrate validated empirical bullpen probabilities into live dashboard'
+          git push
