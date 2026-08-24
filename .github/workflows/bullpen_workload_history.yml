@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'analysis/bullpen_workload_history.py'
+      - 'analysis/bullpen_reliever_candidate_history.py'
       - '.github/workflows/bullpen_workload_history.yml'
   workflow_dispatch:
 concurrency:
@@ -12,7 +13,7 @@ concurrency:
 jobs:
   build-workload-history:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,12 +27,20 @@ jobs:
         run: |
           set -euo pipefail
           python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
+      - name: Build leakage-safe reliever candidate sets
+        shell: bash
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_reliever_candidate_history.py | tee bullpen_reliever_candidates.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: bullpen-workload-history-${{ github.sha }}
           path: |
             bullpen_workload_history.log
+            bullpen_reliever_candidates.log
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
             data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_sets_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_reliever_candidate_summary_2025.json
           retention-days: 30
