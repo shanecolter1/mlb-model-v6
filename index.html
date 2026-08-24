@@ -688,10 +688,18 @@ function statValue(id, group, field, fallback='—'){
 function currentPitcherId(live, side){
   const box=live?.boxscore||{};
   const team=box?.teams?.[side];
-  return team?.pitchers?.slice(-1)[0] || null;
+  const listed=team?.pitchers?.slice(-1)[0];
+  if(listed) return listed;
+  // MLB can mark a game Live before the boxscore pitcher array is populated.
+  // currentPlay is authoritative for the team currently on defense.
+  const ls=live?.linescore||{}, cp=live?.plays?.currentPlay||{};
+  const fieldingSide=ls.isTopInning===false?'away':'home';
+  if(side===fieldingSide && cp?.matchup?.pitcher?.id) return cp.matchup.pitcher.id;
+  return null;
 }
 function activeLineup(box, side){
-  const players=Object.values(box?.teams?.[side]?.players||{});
+  const team=box?.teams?.[side]||{};
+  const players=Object.values(team.players||{});
   const bySlot=new Map();
   players.forEach(p=>{
     const raw=Number(p?.battingOrder||0);
@@ -701,9 +709,16 @@ function activeLineup(box, side){
       if(!existing || raw >= Number(existing.battingOrder||0)) bySlot.set(slot,p);
     }
   });
-  return [...bySlot.entries()].sort((a,b)=>a[0]-b[0]).map(([slot,p])=>({
-    id:p.person?.id, name:p.person?.fullName||'—', slot
-  }));
+  if(bySlot.size){
+    return [...bySlot.entries()].sort((a,b)=>a[0]-b[0]).map(([slot,p])=>({id:p.person?.id,name:p.person?.fullName||'—',slot}));
+  }
+  // Early live feeds sometimes expose the official order as IDs before each player
+  // object receives battingOrder. Use those authoritative team arrays as fallback.
+  const ids=(team.battingOrder||team.batters||[]).map(Number).filter(Boolean).slice(0,9);
+  return ids.map((id,i)=>{
+    const p=team.players?.['ID'+id]||{};
+    return {id,name:p.person?.fullName||p.person?.name||'—',slot:i+1};
+  });
 }
 function lastBatterForSide(live, side, playerIds){
   const plays=live?.plays?.allPlays||[];
@@ -1331,7 +1346,7 @@ function liveMetrics(g){
   const battingLineup=activeLineup(box,battingSide), fieldingLineup=activeLineup(box,fieldingSide);
   const batterId=cp.matchup?.batter?.id||battingLineup[0]?.id;
   const defensivePitcherId=cp.matchup?.pitcher?.id||currentPitcherId(live,fieldingSide);
-  const offensePitcherId=currentPitcherId(live,battingSide);
+  const offensePitcherId=currentPitcherId(live,battingSide)||gd.probablePitchers?.[battingSide]?.id||g.teams?.[battingSide]?.probablePitcher?.id||null;
   const currentStart=lineupStartIndex(battingLineup,batterId,false);
   const lastFieldingBatter=lastBatterForSide(live,fieldingSide,new Set(fieldingLineup.map(x=>x.id)));
   const nextStart=lineupStartIndex(fieldingLineup,lastFieldingBatter,true);
@@ -1674,7 +1689,7 @@ function gameCard(g){
     ${combinedInningHTML(displayCurrentDist,displayRunsScored,displayNextDist,completedTopRuns)}
     ${compactBoxScoreHTML(g)}
     <div class="compact-matchup"><div class="compact-player"><div class="batter-primary-line"><div class="primary">${esc(name(displayBatter))}</div></div><div class="secondary">#${esc(lineupSpot(box,displayBatter?.id,displayBattingSide)||'—')} · OPS ${esc(statValue(displayBatter?.id,'hitting','ops'))}</div></div><div class="compact-vs">vs</div><div class="compact-player right"><div class="primary">${esc(name(displayDefensivePitcher))}</div><div class="secondary">${esc(displayPitches)} pitches · ERA ${esc(displayDefensiveEra)} · ${pitcherStateBadge(displayDefensivePitcherId)}</div></div></div>
-    <div class="compact-team-grid">${(()=>{const pid=currentPitcherId(live,'away');return compactTeamPanel(g.gamePk,'away',name(away),displayBattingSide==='away'?'Batting now':'Next half',displayBattingSide==='away'?displayCurrentProb:displayNextProb,displayBattingSide==='away'?displayCurrentConf:displayNextConf,displayBattingSide==='away'?displayCurrentDist:displayNextDist,awayNext,{id:pid,name:name(playerObj(box,'away',pid)?.person),pitches:pitcherPitches(box,pid,'away'),line:pitcherGameLine(box,'away',pid),title:pitcherAppearanceTitle(box,'away',pid)},displayBattingSide==='away'?displayRunsScored:0);})()}${(()=>{const pid=currentPitcherId(live,'home');return compactTeamPanel(g.gamePk,'home',name(home),displayBattingSide==='home'?'Batting now':'Next half',displayBattingSide==='home'?displayCurrentProb:displayNextProb,displayBattingSide==='home'?displayCurrentConf:displayNextConf,displayBattingSide==='home'?displayCurrentDist:displayNextDist,homeNext,{id:pid,name:name(playerObj(box,'home',pid)?.person),pitches:pitcherPitches(box,pid,'home'),line:pitcherGameLine(box,'home',pid),title:pitcherAppearanceTitle(box,'home',pid)},displayBattingSide==='home'?displayRunsScored:0);})()}</div>
+    <div class="compact-team-grid">${(()=>{const pid=currentPitcherId(live,'away')||gd.probablePitchers?.away?.id||g.teams?.away?.probablePitcher?.id;return compactTeamPanel(g.gamePk,'away',name(away),displayBattingSide==='away'?'Batting now':'Next half',displayBattingSide==='away'?displayCurrentProb:displayNextProb,displayBattingSide==='away'?displayCurrentConf:displayNextConf,displayBattingSide==='away'?displayCurrentDist:displayNextDist,awayNext,{id:pid,name:name(playerObj(box,'away',pid)?.person),pitches:pitcherPitches(box,pid,'away'),line:pitcherGameLine(box,'away',pid),title:pitcherAppearanceTitle(box,'away',pid)},displayBattingSide==='away'?displayRunsScored:0);})()}${(()=>{const pid=currentPitcherId(live,'home')||gd.probablePitchers?.home?.id||g.teams?.home?.probablePitcher?.id;return compactTeamPanel(g.gamePk,'home',name(home),displayBattingSide==='home'?'Batting now':'Next half',displayBattingSide==='home'?displayCurrentProb:displayNextProb,displayBattingSide==='home'?displayCurrentConf:displayNextConf,displayBattingSide==='home'?displayCurrentDist:displayNextDist,homeNext,{id:pid,name:name(playerObj(box,'home',pid)?.person),pitches:pitcherPitches(box,pid,'home'),line:pitcherGameLine(box,'home',pid),title:pitcherAppearanceTitle(box,'home',pid)},displayBattingSide==='home'?displayRunsScored:0);})()}</div>
     <div class="compact-actions"><details><summary>Compare odds</summary><div class="details-body">${compactOddsInput(g.gamePk,'away',displayBattingSide==='away'?displayCurrentProb:displayNextProb,displayBattingSide==='away'?displayCurrentConf:displayNextConf,name(away))}${compactOddsInput(g.gamePk,'home',displayBattingSide==='home'?displayCurrentProb:displayNextProb,displayBattingSide==='home'?displayCurrentConf:displayNextConf,name(home))}</div></details><details><summary>Game details</summary><div class="details-body"><div class="compact-diag-grid"><span>Last: ${esc(last||'—')}</span><span>Venue: ${esc(gd.venue?.name||g.venue?.name||'—')}</span><span>Game ${esc(g.gamePk)}</span><span>${savantStatusHTML(g.gamePk)}</span></div></div></details></div>`:`
     <div class="gamehead"><strong>${esc(gd.venue?.name||g.venue?.name||'MLB')}</strong><span class="badge ${phase}">${esc(inningText)}</span></div>
     <div class="teams"><div class="team">${esc(name(away))} <span class="badge">${esc(awayRecord)}</span></div><div class="score">${awayRuns}</div><div class="team">${esc(name(home))} <span class="badge">${esc(homeRecord)}</span></div><div class="score">${homeRuns}</div></div>
