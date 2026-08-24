@@ -12,16 +12,24 @@ from half_inning_transition_operator import (
     CLASSES,CAP,N_RUN,N_ACTIVE,N_OUTS,N_BASES,_idx,compile_event_matrices
 )
 
+DEFAULT_UNRESOLVED_TOL=1e-12
+EMERGENCY_MAX_REMAINING_PA=72
+
 
 def live_half_inning_distribution(
     lineup_probs, current_batter_idx, outs, bases_mask, runs_already, table,
-    current_pa_probs=None, max_remaining_pa=36
+    current_pa_probs=None, unresolved_tolerance=DEFAULT_UNRESOLVED_TOL,
+    emergency_max_remaining_pa=EMERGENCY_MAX_REMAINING_PA
 ):
     """Return final-half run distribution and next-inning leadoff distribution.
 
     Parameters use the observed live state. `current_pa_probs`, when supplied,
     is the six-outcome probability vector conditional on the current pitch count.
     Runs already scored are a deterministic floor in the final-half distribution.
+
+    The engine no longer stops at a fixed research PA depth. It propagates until
+    remaining active probability mass is <= `unresolved_tolerance`, using only a
+    high emergency ceiling as a numerical safety guard.
     """
     probs=np.asarray(lineup_probs,dtype=np.float64)
     if probs.shape!=(9,len(CLASSES)): raise ValueError('lineup_probs must be (9,6)')
@@ -29,6 +37,8 @@ def live_half_inning_distribution(
     if not (0<=outs<=2): raise ValueError('outs must be 0..2')
     if not (0<=bases_mask<=7): raise ValueError('bases_mask must be 0..7')
     if runs_already<0: raise ValueError('runs_already must be nonnegative')
+    if unresolved_tolerance<=0: raise ValueError('unresolved_tolerance must be positive')
+    if emergency_max_remaining_pa<1: raise ValueError('emergency_max_remaining_pa must be positive')
     probs=probs/probs.sum(axis=1,keepdims=True)
     first=None
     if current_pa_probs is not None:
@@ -41,15 +51,21 @@ def live_half_inning_distribution(
     active=np.zeros(N_ACTIVE,dtype=np.float64)
     active[_idx(outs,bases_mask,min(CAP,runs_already))]=1.0
     joint=np.zeros((N_RUN,9),dtype=np.float64)
+    depth_used=0
+    converged=False
 
-    for depth in range(max_remaining_pa):
+    for depth in range(emergency_max_remaining_pa):
         batter=(current_batter_idx+depth)%9
         pa=first if depth==0 and first is not None else probs[batter]
         ended=np.einsum('i,e,eir->r',active,pa,B,optimize=True)
         next_leadoff=(batter+1)%9
         joint[:,next_leadoff]+=ended
         active=np.einsum('i,e,eij->j',active,pa,A,optimize=True)
-        if not np.any(active): break
+        depth_used=depth+1
+        remaining=float(active.sum())
+        if remaining<=unresolved_tolerance:
+            converged=True
+            break
 
     unresolved=active.reshape(N_OUTS,N_BASES,N_RUN).sum(axis=(0,1))
     final_run_dist=joint.sum(axis=1)+unresolved
@@ -67,6 +83,10 @@ def live_half_inning_distribution(
         'runs_already_floor':int(runs_already),
         'entry_state':{'outs':int(outs),'bases_mask':int(bases_mask),'current_batter_idx':int(current_batter_idx)},
         'count_conditioned_first_pa':first is not None,
+        'converged':bool(converged),
+        'remaining_pa_iterations':int(depth_used),
+        'unresolved_tolerance':float(unresolved_tolerance),
+        'emergency_max_remaining_pa':int(emergency_max_remaining_pa),
     }
 
 
