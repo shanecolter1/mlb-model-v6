@@ -2,8 +2,11 @@ name: Deployment between-inning model export
 on:
   push:
     branches: [deploy-full-empirical]
+    paths:
+      - '.github/workflows/deployment_between_export.yml'
+      - 'deployment-export-trigger.txt'
 permissions:
-  contents: read
+  contents: write
 jobs:
   export:
     runs-on: ubuntu-latest
@@ -44,8 +47,10 @@ jobs:
           Path('between-inning-production.json').write_text(json.dumps(out,indent=2))
           print(json.dumps({'status':'PASS','coef_count':len(out['coef'])},indent=2))
           PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: between-inning-production
-          path: between-inning-production.json
-          retention-days: 30
+      - name: Persist deployment export
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add between-inning-production.json
+          git commit -m 'Persist browser-safe between-inning deployment model' || exit 0
+          git push
