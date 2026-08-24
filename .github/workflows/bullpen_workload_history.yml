@@ -1,0 +1,37 @@
+name: Bullpen workload history analysis
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'analysis/bullpen_workload_history.py'
+      - '.github/workflows/bullpen_workload_history.yml'
+  workflow_dispatch:
+concurrency:
+  group: bullpen-workload-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build-workload-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: empirical-batter-pitcher-blend
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Build leakage-safe bullpen workload history
+        shell: bash
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_workload_history.py | tee bullpen_workload_history.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bullpen-workload-history-${{ github.sha }}
+          path: |
+            bullpen_workload_history.log
+            data/derived/model_calibration/bullpen_transitions/bullpen_workload_history_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_workload_summary_2025.json
+          retention-days: 30

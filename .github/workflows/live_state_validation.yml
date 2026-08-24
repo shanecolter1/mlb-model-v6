@@ -1,0 +1,39 @@
+name: Live half-inning state validation
+
+on:
+  pull_request:
+    paths:
+      - 'analysis/live_half_inning_state_engine.py'
+      - 'analysis/test_live_half_inning_state_engine.py'
+      - '.github/workflows/live_state_validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live_state_gate:
+    name: Arbitrary live-state equivalence and latency
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install --disable-pip-version-check numpy
+      - name: Run live-state gate
+        run: |
+          set -euo pipefail
+          python analysis/test_live_half_inning_state_engine.py | tee live_state_validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-state-validation-${{ github.sha }}
+          path: |
+            live_state_validation.log
+            data/derived/model_calibration/batter_pitcher_blend/live_state_validation.json
+          retention-days: 30

@@ -1,0 +1,49 @@
+name: Historical live-state tail validation
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'analysis/historical_live_state_tail_gate.py'
+      - 'analysis/live_half_inning_state_engine.py'
+      - '.github/workflows/historical_live_state_tail.yml'
+  workflow_dispatch:
+concurrency:
+  group: historical-live-tail-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  historical-tail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: empirical-batter-pitcher-blend
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Restore frozen Stage-1 artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pa-calibration-e9756777e15b92fc61c8a0448584b169796d7e7d
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: 32666502350
+          path: .stage1
+      - name: Restore calibration state
+        run: |
+          mkdir -p data/derived/model_calibration/batter_pitcher_blend
+          cp -R .stage1/data/derived/model_calibration/batter_pitcher_blend/. data/derived/model_calibration/batter_pitcher_blend/ 2>/dev/null || cp -R .stage1/. data/derived/model_calibration/batter_pitcher_blend/
+      - name: Run historical realistic-state tail gate
+        shell: bash
+        run: |
+          set -o pipefail
+          python analysis/historical_live_state_tail_gate.py | tee historical_live_tail.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: historical-live-tail-${{ github.sha }}
+          path: |
+            historical_live_tail.log
+            data/derived/model_calibration/batter_pitcher_blend/historical_live_state_tail_validation.json
+          retention-days: 30
