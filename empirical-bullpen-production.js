@@ -69,7 +69,6 @@ function inInningRemovalProbability(live,side,pid){
 }
 function betweenInningRemovalProbability(live,side,pid){
   const m=modelCache.hazards?.between_inning_removal;if(!m)return null;const ls=live?.linescore||{},box=live?.boxscore?.teams?.[side]||{};const ids=(box.pitchers||[]).map(Number),starter=ids[0]===Number(pid)?1:0;const stats=box.players?.[`ID${pid}`]?.stats?.pitching||{};const bf=Number(stats.battersFaced||0),pitches=Number(stats.numberOfPitches||0);
-  // The exporter preserves the fitted feature order. Missing features remain null and are imputed by the frozen preprocessing statistics.
   return transformHazard(m,[Number(ls.currentInning||1),bf,scoreDiff(live,side),pitches,String(starter)]);
 }
 function currentHalfMixture(args){
@@ -79,5 +78,7 @@ function nextHalfProjection(original,live,pitchingSide,battingLineup,startIdx,pr
   warmContext(live,pitchingSide);const pid=currentPid(live,pitchingSide);if(!pid)return original(live,pitchingSide,battingLineup,startIdx,pregameSeed);const remove=betweenInningRemovalProbability(live,pitchingSide,pid);if(remove==null)return original(live,pitchingSide,battingLineup,startIdx,pregameSeed);
   const continueDist=window.runDistribution(battingLineup,startIdx,pid,0,0,null);const bullpenDist=window.runDistribution(battingLineup,startIdx,null,0,0,null);const cont=clamp(1-remove,0,1);const out=continueDist.map((v,i)=>cont*Number(v||0)+(1-cont)*Number(bullpenDist[i]||0));return {dist:out,pitcherId:pid,continueProb:cont,mode:'empirical-between-inning'};
 }
+const originalProjected=typeof window.projectedNextHalfDistribution==='function'?window.projectedNextHalfDistribution:null;
+if(originalProjected){window.projectedNextHalfDistribution=function(live,pitchingSide,battingLineup,startIdx,pregameSeed=null){return nextHalfProjection(originalProjected,live,pitchingSide,battingLineup,startIdx,pregameSeed)}}
 window.empiricalBullpenEngine={warmContext,currentHalfMixture,nextHalfProjection,inInningRemovalProbability,betweenInningRemovalProbability,weightedRunDistribution,version:'validated-2025-hazards+frozen-2026-reliever-choice'};
 })();
