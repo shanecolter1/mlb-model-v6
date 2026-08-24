@@ -1,0 +1,46 @@
+name: Bullpen between-inning hazard validation
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'analysis/bullpen_between_inning_history.py'
+      - 'analysis/fit_bullpen_between_inning_hazard.py'
+      - '.github/workflows/bullpen_between_inning_hazard.yml'
+  workflow_dispatch:
+concurrency:
+  group: bullpen-between-inning-hazard-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  fit-between-inning-hazard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: empirical-batter-pitcher-blend
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy scikit-learn
+      - name: Build corrected between-inning history
+        shell: bash
+        run: |
+          set -euo pipefail
+          python analysis/bullpen_between_inning_history.py | tee bullpen_between_inning_history.log
+      - name: Fit and validate between-inning removal hazard
+        shell: bash
+        run: |
+          set -euo pipefail
+          python analysis/fit_bullpen_between_inning_hazard.py | tee bullpen_between_inning_hazard.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bullpen-between-inning-hazard-${{ github.sha }}
+          path: |
+            bullpen_between_inning_history.log
+            bullpen_between_inning_hazard.log
+            data/derived/model_calibration/bullpen_transitions/bullpen_between_inning_boundaries_2025.csv
+            data/derived/model_calibration/bullpen_transitions/bullpen_between_inning_summary_2025.json
+            data/derived/model_calibration/bullpen_transitions/between_inning_hazard/between_inning_removal_hazard_validation.json
+            data/derived/model_calibration/bullpen_transitions/between_inning_hazard/between_inning_removal_hazard_model.pkl
+          retention-days: 30
