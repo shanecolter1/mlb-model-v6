@@ -40,47 +40,28 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-
-          paths = [
-              'index.html',
-              'empirical-state-production.js',
-              'empirical-bullpen-production.js',
-              'bullpen-production-models.json',
-              'netlify.toml',
-              'netlify/functions/mlb.js',
-              'netlify/functions/savant.js',
-              'netlify/functions/i2-run-environment.js',
-          ]
+          paths=['index.html','empirical-state-production.js','empirical-bullpen-production.js','bullpen-production-models.json','netlify.toml','netlify/functions/mlb.js','netlify/functions/savant.js','netlify/functions/i2-run-environment.js']
           files=[]
           for p in paths:
               path=Path(p)
-              if not path.is_file() or path.stat().st_size == 0:
-                  raise SystemExit(f'Missing required 1Tap file: {p}')
+              if not path.is_file() or path.stat().st_size == 0: raise SystemExit(f'Missing required 1Tap file: {p}')
               files.append({'path':p,'content':path.read_text(encoding='utf-8')})
-
-          manifest={
-              'schema_version':'1tap/1.0',
-              'name':'MLB Live Command Center V11.13 Full Empirical',
-              'description':'Complete V11.13 production deployment with the existing dashboard UI plus approved empirical state-dependent propagation, historical count-state integration, empirical PA transitions, bullpen workload/context, in-inning removal hazard, reliever-selection probabilities, and approved between-inning removal model.',
-              'commit_message':'Deploy V11.13 full empirical live probability engine',
-              'files':files,
-              'netlify':{
-                  'enabled':True,
-                  'site_name':'mlb-live-command-center',
-                  'build_command':'',
-                  'publish_dir':'.',
-                  'functions_dir':'netlify/functions'
-              }
-          }
+          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Full Empirical','description':'Complete V11.13 production deployment with the existing dashboard UI plus approved empirical state-dependent propagation, historical count-state integration, empirical PA transitions, bullpen workload/context, in-inning removal hazard, reliever-selection probabilities, and approved between-inning removal model.','commit_message':'Deploy V11.13 full empirical live probability engine','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
           out=Path('deploy/MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap.json')
           out.write_text(json.dumps(manifest,indent=2),encoding='utf-8')
-          # Validate round-trip and required contract.
           check=json.loads(out.read_text(encoding='utf-8'))
           assert check['schema_version']=='1tap/1.0'
           assert check['netlify']['site_name']=='mlb-live-command-center'
           assert {x['path'] for x in check['files']}==set(paths)
           print(json.dumps({'status':'PASS','manifest':str(out),'files':len(files),'bytes':out.stat().st_size},indent=2))
           PY
+      - name: Upload phone-downloadable manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap
+          path: deploy/MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap.json
+          if-no-files-found: error
+          retention-days: 30
       - name: Persist patched dashboard and manifest
         run: |
           git config user.name github-actions[bot]
