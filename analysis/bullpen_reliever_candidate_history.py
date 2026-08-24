@@ -5,11 +5,9 @@ Architecture:
 1) defense club comes directly from Retrosheet `pitteam` at the decision boundary;
 2) eligible candidates come from MLB Stats API ACTIVE roster for that exact game date;
 3) MLBAM ids are mapped to Retrosheet ids with the public Chadwick Register;
-4) prior same-club appearances/BF/rest are features only, never the eligibility rule;
-5) current-game future appearances/statistics are never used to construct candidates.
-
-Validation trigger note: this file is intentionally persisted on the development branch
-so PR-based CI validates the exact-date roster reconstruction before reliever-choice fitting.
+4) historical usage supplies only pre-decision workload/role features;
+5) same-game state is measured only through the current decision boundary;
+6) current-game future appearances/statistics are never used to construct candidates.
 """
 from __future__ import annotations
 import csv, io, json, urllib.request
@@ -22,7 +20,6 @@ import half_inning_scoring_gate as core
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'data/derived/model_calibration/bullpen_transitions'
 MIN_TEAM_COVERAGE=.999
-MIN_ID_CROSSWALK=.985
 MIN_ACTUAL_IN_POOL=.97
 UA='mlb-model-v6 bullpen roster reconstruction'
 
@@ -76,38 +73,55 @@ def fetch_active_pitchers(team_id,day_iso,mlb_to_retro):
         try:mid=int(person['id'])
         except Exception:continue
         retro=mlb_to_retro.get(mid)
-        if retro:candidates.append((retro,mid))
-        else:unmapped+=1
+        if not retro:unmapped+=1;continue
+        ph=person.get('pitchHand') or {}
+        candidates.append((retro,mid,clean(ph.get('code')).upper() or None))
     return candidates,unmapped,len(data.get('roster',[]))
+
+def score_diff_for_defense(r):
+    """Retrosheet score_v/score_h are pre-play scores. Positive means defense leads."""
+    sv=iv(r,'score_v',-999); sh=iv(r,'score_h',-999); tb=iv(r,'top_bot',-1)
+    if sv==-999 or sh==-999 or tb not in (0,1):return None
+    # top: home defends; bottom: visitor defends
+    return (sh-sv) if tb==0 else (sv-sh)
 
 def main():
     rows=core.fetch_rows_2025(); tmap=team_map(); retro_to_mlb,mlb_to_retro,cw_rows=chadwick_maps()
     diag=Counter(); events=[]; games=[]
-    # First pass: collect game usage and all true pitcher-change decisions.
     i=0
     while i<len(rows):
         day,gid=rows[i]['_day'],rows[i]['_gid'];j=i
         while j<len(rows) and rows[j]['_day']==day and rows[j]['_gid']==gid:j+=1
         game=[r for r in rows[i:j] if core.truth(r.get('pa'))]
         if not game:i=j;continue
-        usage=defaultdict(lambda:defaultdict(int))
+        usage=defaultdict(lambda:defaultdict(int)); first_inning=defaultdict(dict)
+        # State used before each event: pitchers already seen for this defense in this game.
+        seen_so_far=defaultdict(set)
         for n,r in enumerate(game):
             tb=iv(r,'top_bot',-1);pid=clean(r.get('pitcher'));team=clean(r.get('pitteam')).upper()
             if tb not in (0,1) or not pid:continue
-            if team:usage[team][pid]+=1
-            if n+1>=len(game):continue
-            nxt=game[n+1];tb2=iv(nxt,'top_bot',-1);npid=clean(nxt.get('pitcher'))
-            if not npid:continue
-            inn=iv(r,'inning',iv(r,'inn_ct',-1));inn2=iv(nxt,'inning',iv(nxt,'inn_ct',-1))
-            kind=None
-            if tb2==tb and inn2==inn and npid!=pid:kind='in_inning'
-            elif tb2==tb and inn2==inn+1 and npid!=pid:kind='between_inning'
-            if kind is not None:
-                events.append({'game_id':gid,'day':day,'date':ymd(day),'defense_team':team,'transition_kind':kind,
-                    'inning':inn,'outgoing_pitcher_id':pid,'actual_next_pitcher_id':npid})
-        games.append((day,gid,usage));i=j
+            inn=iv(r,'inning',iv(r,'inn_ct',-1))
+            if team:
+                usage[team][pid]+=1
+                if pid not in first_inning[team]:first_inning[team][pid]=inn
+            if n+1<len(game):
+                nxt=game[n+1];tb2=iv(nxt,'top_bot',-1);npid=clean(nxt.get('pitcher'))
+                if npid:
+                    inn2=iv(nxt,'inning',iv(nxt,'inn_ct',-1));kind=None
+                    if tb2==tb and inn2==inn and npid!=pid:kind='in_inning'
+                    elif tb2==tb and inn2==inn+1 and npid!=pid:kind='between_inning'
+                    if kind is not None:
+                        # Decision state is the next PA pre-state for in-inning; for between-inning,
+                        # use first PA of next defensive inning, whose score is known at the decision boundary.
+                        decision=nxt
+                        events.append({'game_id':gid,'day':day,'date':ymd(day),'defense_team':team,
+                            'transition_kind':kind,'inning':inn,'decision_inning':inn2,
+                            'defensive_score_diff':score_diff_for_defense(decision),
+                            'outgoing_pitcher_id':pid,'actual_next_pitcher_id':npid,
+                            'already_used_ids':sorted(seen_so_far[team] | {pid})})
+            seen_so_far[team].add(pid)
+        games.append((day,gid,usage,first_inning));i=j
 
-    # Authoritative team-id mapping from pitteam.
     needed={(e['defense_team'],e['date']) for e in events if e['defense_team']}
     valid=[];missing_team=[]
     for team,d in sorted(needed):
@@ -116,67 +130,78 @@ def main():
         else:valid.append((team,d,tid))
     diag['unique_team_dates']=len(needed);diag['team_dates_mapped']=len(valid);diag['team_dates_unmapped']=len(needed)-len(valid)
 
-    # Fetch exact-date active rosters concurrently; cache one result per club-date.
-    roster_cache={}; roster_unmapped=0; roster_total_players=0
+    roster_cache={}; roster_unmapped=0
     with ThreadPoolExecutor(max_workers=12) as ex:
         fut={ex.submit(fetch_active_pitchers,tid,d,mlb_to_retro):(team,d) for team,d,tid in valid}
         for f in as_completed(fut):
             key=fut[f]
             try:
-                cand,unm,total=f.result();roster_cache[key]=cand;roster_unmapped+=unm;roster_total_players+=total
+                cand,unm,total=f.result();roster_cache[key]=cand;roster_unmapped+=unm
             except Exception as err:
                 roster_cache[key]=[];diag['roster_fetch_failures']+=1;diag[f'roster_error_{type(err).__name__}']+=1
 
-    # Rolling historical usage is now feature enrichment only.
-    hist=defaultdict(deque); usage_by_game={gid:(day,usage) for day,gid,usage in games}; event_by_game=defaultdict(list)
+    hist=defaultdict(deque); event_by_game=defaultdict(list)
     for e in events:event_by_game[e['game_id']].append(e)
     out=[]
-    for day,gid,usage in games:
-        # features available strictly before current game
+    for day,gid,usage,first_inning in games:
         priors={}
         for team in usage:
             dq=hist[team]
             while dq and day-dq[0][0]>30:dq.popleft()
-            p=defaultdict(lambda:{'apps':0,'bf':0,'last_day':None})
+            p=defaultdict(lambda:{'apps':0,'bf':0,'last_day':None,'late_apps':0,'save_like_apps':0})
             seen=set()
-            for d,pgid,pid,bf in dq:
+            for d,pgid,pid,bf,firstinn,save_like in dq:
                 k=(pgid,pid)
                 if k in seen:continue
                 seen.add(k);z=p[pid];z['apps']+=1;z['bf']+=bf;z['last_day']=d if z['last_day'] is None else max(z['last_day'],d)
+                z['late_apps']+=int(firstinn>=7);z['save_like_apps']+=int(save_like)
             priors[team]=p
         for e in event_by_game.get(gid,[]):
-            team=e['defense_team']; pool=roster_cache.get((team,e['date']),[])
+            team=e['defense_team']; pool=roster_cache.get((team,e['date']),[]);already=set(e['already_used_ids'])
             candidates=[]
-            for retro,mid in pool:
+            for retro,mid,throws in pool:
                 if retro==e['outgoing_pitcher_id']:continue
-                z=priors.get(team,{}).get(retro,{'apps':0,'bf':0,'last_day':None})
+                z=priors.get(team,{}).get(retro,{'apps':0,'bf':0,'last_day':None,'late_apps':0,'save_like_apps':0})
                 rest=(day-z['last_day']) if z['last_day'] is not None else None
-                candidates.append({'pitcher_id':retro,'mlbam_id':mid,'prior_apps_30d':z['apps'],'prior_bf_30d':z['bf'],'prior_rest_days':rest})
+                apps=max(1,z['apps'])
+                candidates.append({'pitcher_id':retro,'mlbam_id':mid,'throws':throws,
+                    'prior_apps_30d':z['apps'],'prior_bf_30d':z['bf'],'prior_rest_days':rest,
+                    'prior_late_inning_share_30d':z['late_apps']/apps if z['apps'] else 0.0,
+                    'prior_save_like_share_30d':z['save_like_apps']/apps if z['apps'] else 0.0,
+                    'already_used_this_game':int(retro in already)})
             actual_in=any(c['pitcher_id']==e['actual_next_pitcher_id'] for c in candidates)
             diag['change_events']+=1;diag['actual_in_candidate_pool']+=int(actual_in);diag['nonempty_candidate_pool']+=int(bool(candidates))
-            row=dict(e);row.update({'actual_next_in_candidate_pool':int(actual_in),'candidate_count':len(candidates),'candidates_json':json.dumps(candidates,separators=(',',':'))})
-            row.pop('day',None);out.append(row)
-        # update only after every decision in the current game has been emitted
+            diag['score_state_present']+=int(e['defensive_score_diff'] is not None)
+            row={k:v for k,v in e.items() if k not in ('day','already_used_ids')}
+            row.update({'actual_next_in_candidate_pool':int(actual_in),'candidate_count':len(candidates),'candidates_json':json.dumps(candidates,separators=(',',':'))})
+            out.append(row)
+        # Update historical role/workload only after all current-game decisions are emitted.
         for team,pusage in usage.items():
-            for pid,bf in pusage.items():hist[team].append((day,gid,pid,bf))
+            # save-like is a coarse pregame role proxy from first inning of appearance only; no future use in same game.
+            for pid,bf in pusage.items():
+                fi=first_inning[team].get(pid,-1);save_like=(fi>=9)
+                hist[team].append((day,gid,pid,bf,fi,save_like))
 
     OUT.mkdir(parents=True,exist_ok=True);path=OUT/'bullpen_reliever_candidate_sets_2025.csv'
-    fields=['game_id','date','defense_team','transition_kind','inning','outgoing_pitcher_id','actual_next_pitcher_id','actual_next_in_candidate_pool','candidate_count','candidates_json']
+    fields=['game_id','date','defense_team','transition_kind','inning','decision_inning','defensive_score_diff','outgoing_pitcher_id','actual_next_pitcher_id','actual_next_in_candidate_pool','candidate_count','candidates_json']
     with path.open('w',newline='') as f:w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(out)
     team_cov=diag['team_dates_mapped']/diag['unique_team_dates'] if diag['unique_team_dates'] else 0
     actual_cov=diag['actual_in_candidate_pool']/diag['change_events'] if diag['change_events'] else 0
     nonempty=diag['nonempty_candidate_pool']/diag['change_events'] if diag['change_events'] else 0
-    crosswalk_cov=(len(mlb_to_retro)/(len(mlb_to_retro)+roster_unmapped)) if (len(mlb_to_retro)+roster_unmapped) else 0
+    score_cov=diag['score_state_present']/diag['change_events'] if diag['change_events'] else 0
     rep={'market_blind':True,
          'candidate_definition':'MLB Stats API active roster on exact historical game date; pitchers only; current-game future usage prohibited',
          'team_source':'Retrosheet pitteam at decision boundary','id_crosswalk_source':'Chadwick Register key_retro <-> key_mlbam',
          'rows':len(out),'team_id_coverage':team_cov,'nonempty_candidate_pool_rate':nonempty,
-         'actual_reliever_candidate_coverage':actual_cov,'chadwick_crosswalk_rows':cw_rows,'roster_pitchers_without_retro_id':roster_unmapped,
+         'actual_reliever_candidate_coverage':actual_cov,'score_state_coverage':score_cov,
+         'chadwick_crosswalk_rows':cw_rows,'roster_pitchers_without_retro_id':roster_unmapped,
+         'new_decision_features':['defensive_score_diff','decision_inning','already_used_this_game','pitcher throws','prior late-inning share','prior save-like share'],
          'diagnostics':dict(diag),'missing_team_codes':sorted(set(missing_team)),
          'promotion_gates':{'team_id_coverage_ge_0_999':team_cov>=MIN_TEAM_COVERAGE,
                             'actual_reliever_candidate_coverage_ge_0_97':actual_cov>=MIN_ACTUAL_IN_POOL,
-                            'nonempty_candidate_pool_ge_0_99':nonempty>=.99},
-         'governance':'eligibility comes from exact-date active roster; prior team usage supplies workload/role features only; no candidate is added because he later appeared in the current game'}
+                            'nonempty_candidate_pool_ge_0_99':nonempty>=.99,
+                            'score_state_coverage_ge_0_999':score_cov>=.999},
+         'governance':'eligibility comes from exact-date active roster; all workload/role/same-game features are available by decision time; no candidate is added because he later appeared in the current game'}
     (OUT/'bullpen_reliever_candidate_summary_2025.json').write_text(json.dumps(rep,indent=2));print(json.dumps(rep,indent=2))
     if not all(rep['promotion_gates'].values()):raise SystemExit('Reliever candidate-set gate blocked')
 if __name__=='__main__':main()
