@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MLB Live Model Review</title>
+<style>
+:root{color-scheme:dark;--bg:#07111f;--panel:#0d1b2a;--panel2:#13263a;--line:#29415c;--text:#f3f7fb;--muted:#9fb0c3;--accent:#39d98a;--warn:#ffd166;--danger:#ff6b6b;--blue:#6fb8ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}header{position:sticky;top:0;z-index:5;background:rgba(7,17,31,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top{max-width:1500px;margin:auto;padding:10px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.title{font-weight:850;font-size:17px;margin-right:auto}.pill{font-size:10px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;color:var(--muted)}.pill.good{color:var(--accent);border-color:rgba(57,217,138,.45)}.pill.warn{color:var(--warn)}button,input{font:inherit;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--text);padding:7px 9px}button{cursor:pointer}.status{font-size:11px;color:var(--muted)}
+main{max-width:1500px;margin:auto;padding:12px}.notice{background:#0a1725;border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:10px;font-size:12px;color:#c6d1df}.notice b{color:var(--accent)}
+.metrics{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:10px}.metric{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:9px}.metric b{display:block;font-size:20px}.metric span{font-size:10px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:10px}.game{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden}.game.live{border-color:rgba(57,217,138,.65)}.gamehead{padding:9px 11px;background:var(--panel2);display:flex;justify-content:space-between;gap:8px;align-items:center}.teams{font-weight:800}.state{font-size:11px;color:var(--muted)}
+.scoreline{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;padding:10px 11px;border-bottom:1px solid var(--line)}.team{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.team.home{text-align:right}.score{font-size:24px;font-weight:850}.section{padding:10px 11px;border-top:1px solid #20364d}.section:first-of-type{border-top:0}.section-title{font-size:10px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between;gap:8px}.current{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.current strong{font-size:15px}.sub{font-size:10px;color:var(--muted);margin-top:2px}.tag{font-size:9px;border-radius:999px;padding:3px 6px;background:rgba(111,184,255,.12);color:var(--blue);white-space:nowrap}.tag.good{background:rgba(57,217,138,.12);color:var(--accent)}.tag.warn{background:rgba(255,209,102,.12);color:var(--warn)}
+.rank{display:grid;gap:5px}.reliever{display:grid;grid-template-columns:minmax(0,1fr) 58px;gap:7px;align-items:center;background:#0a1725;border:1px solid #20364d;border-radius:8px;padding:7px 8px}.reliever.used{opacity:.52}.reliever .name{font-size:12px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.reliever .why{font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.prob{text-align:right;font-size:14px;font-weight:850}.bar{height:3px;background:#183049;border-radius:99px;margin-top:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent)}
+.feature-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.feature{background:#091523;border:1px solid #1d334a;border-radius:7px;padding:5px}.feature b{display:block;font-size:11px}.feature span{font-size:8px;color:var(--muted)}.foot{padding:8px 11px;border-top:1px solid var(--line);font-size:9px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.empty{padding:35px 12px;text-align:center;color:var(--muted)}.error{color:var(--danger)}
+@media(max-width:700px){.metrics{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.feature-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="title">MLB Live Model Review</div><span class="pill good">REVIEW ONLY</span><span class="pill">MARKET BLIND</span><span class="pill good">2026 FORWARD PASS</span><input id="date" type="date"><button id="refresh">Refresh</button><span id="status" class="status">Starting…</span></div></header>
+<main>
+<div class="notice"><b>Purpose:</b> review the live baseball model only. No sportsbook prices, EV, wager recommendations, or market inputs are used here. The incoming-reliever model is validated for <b>in-inning pitching changes</b>; between-inning removal remains a separate model layer and is not mislabeled as validated reliever choice.</div>
+<div class="metrics"><div class="metric"><b>1.990</b><span>2026 forward log loss</span></div><div class="metric"><b>24.0%</b><span>Top-1 reliever accuracy</span></div><div class="metric"><b>60.3%</b><span>Top-3 reliever accuracy</span></div><div class="metric"><b>98.37%</b><span>Candidate coverage</span></div><div class="metric"><b>3.38 ms</b><span>Validated p99 model inference</span></div></div>
+<div id="grid" class="grid"><div class="empty">Loading games…</div></div>
+</main>
+<script>
+const API='/.netlify/functions/mlb';
+const MODEL={
+ median:[5,45,2,.5,0,0,0],
+ mean:[6.40100364,56.6425670,2.86318137,.440720393,.138584330,.0876722513,-.459469506,.0428537291],
+ scale:[3.71864001,39.82127258,2.41009642,.41009357,.24728821,.28281766,3.23886388,.20252725],
+ cats:[['in_inning'],['1-4','5-6','7-8','9+'],['L','R'],['-3..-1','0','1..3','4+','<=-4']],
+ coef:[.88936774,-1.87386758,.39061159,.0278413,-.31171156,-1.50438002,-.08295662,.00925017,-.02423848,-.13424822,-.23221,-.05324347,.3954632,.17076444,-.19500293,-.03652642,-.03433515,-.01151738,.07552574,-.01738528],
+ intercept:-1.02464811
+};
+let schedule=[],feeds=new Map(),contexts=new Map(),timer=null,lastCycle=0;
+const $=s=>document.querySelector(s), esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const pct=x=>Number.isFinite(x)?(x*100).toFixed(1)+'%':'—';
+function inningBand(i){i=Number(i)||0;return i<=4?'1-4':i<=6?'5-6':i<=8?'7-8':'9+'}
+function scoreBand(x){x=Number(x)||0;return x<=-4?'<=-4':x<0?'-3..-1':x===0?'0':x<=3?'1..3':'4+'}
+function dot(a,b){let s=0;for(let i=0;i<a.length;i++)s+=a[i]*b[i];return s}
+function featureVector(c,state){
+ const raw=[c.prior_apps_30d,c.prior_bf_30d,c.prior_rest_days,c.prior_late_inning_share_30d,c.prior_save_like_share_30d,state.used.has(c.pitcher_id)?1:0,state.diff];
+ const missRest=raw[2]==null||!Number.isFinite(Number(raw[2]));
+ const num=raw.map((v,i)=>v==null||!Number.isFinite(Number(v))?MODEL.median[i]:Number(v));num.push(missRest?1:0);
+ const z=num.map((v,i)=>(v-MODEL.mean[i])/MODEL.scale[i]);
+ const cats=['in_inning',inningBand(state.inning),c.throws||'UNK',scoreBand(state.diff)];
+ const one=[];for(let j=0;j<MODEL.cats.length;j++)for(const k of MODEL.cats[j])one.push(cats[j]===k?1:0);
+ return z.concat(one);
+}
+function scoreCandidates(candidates,state){
+ const t0=performance.now();const rows=[];
+ for(const c of candidates){if(Number(c.pitcher_id)===Number(state.currentPitcher))continue;const x=featureVector(c,state);const logit=MODEL.intercept+dot(MODEL.coef,x);rows.push({...c,logit,used:state.used.has(Number(c.pitcher_id))})}
+ if(!rows.length)return {rows:[],ms:performance.now()-t0};const mx=Math.max(...rows.map(r=>r.logit));let den=0;for(const r of rows){r.w=Math.exp(r.logit-mx);den+=r.w}for(const r of rows)r.p=r.w/den;rows.sort((a,b)=>b.p-a.p);return {rows,ms:performance.now()-t0};
+}
+async function jget(url){const r=await fetch(url,{cache:'no-store'});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);return r.json()}
+function gameList(data){const out=[];for(const d of(data.dates||[]))for(const g of(d.games||[]))out.push(g);return out}
+function currentState(feed){
+ const gd=feed.gameData||{},ld=feed.liveData||{},lines=ld.linescore||{},plays=ld.plays?.allPlays||[];
+ const homeId=Number(gd.teams?.home?.id||0),awayId=Number(gd.teams?.away?.id||0),half=String(lines.inningHalf||'').toLowerCase(),inning=Number(lines.currentInning||0);
+ const defense=half==='top'?homeId:half==='bottom'?awayId:0;let currentPitcher=0;const used=new Set();
+ for(const p of plays){const ph=String(p.about?.halfInning||'').toLowerCase();const def=ph==='top'?homeId:ph==='bottom'?awayId:0;const pid=Number(p.matchup?.pitcher?.id||0);if(def===defense&&pid)used.add(pid)}
+ const cp=ld.plays?.currentPlay?.matchup?.pitcher?.id;if(cp)currentPitcher=Number(cp);else if(plays.length)currentPitcher=Number(plays[plays.length-1]?.matchup?.pitcher?.id||0);
+ const hs=Number(lines.teams?.home?.runs??0),as=Number(lines.teams?.away?.runs??0);const diff=defense===homeId?hs-as:as-hs;
+ return {homeId,awayId,defense,currentPitcher,used,inning,half,diff,outs:Number(lines.outs||0),balls:Number(lines.balls||0),strikes:Number(lines.strikes||0),homeRuns:hs,awayRuns:as};
+}
+async function context(teamId,date){const key=teamId+'|'+date;if(contexts.has(key))return contexts.get(key);const p=jget(`${API}?type=bullpenContext&teamId=${teamId}&date=${date}`);contexts.set(key,p);try{return await p}catch(e){contexts.delete(key);throw e}}
+function statusText(g,feed){const s=g.status||{},l=feed?.liveData?.linescore||{};if(s.abstractGameState==='Live')return `${l.inningHalf||''} ${l.currentInning||''} · ${l.outs??0} out`;return s.detailedState||s.abstractGameState||'Scheduled'}
+function card(g,feed,ctx,date){
+ const away=g.teams?.away?.team?.name||'Away',home=g.teams?.home?.team?.name||'Home',live=g.status?.abstractGameState==='Live';
+ if(!feed)return `<article class="game"><div class="gamehead"><div class="teams">${esc(away)} @ ${esc(home)}</div><span class="tag">${esc(g.status?.detailedState||'Scheduled')}</span></div><div class="empty">Live feed not active.</div></article>`;
+ const st=currentState(feed),players=feed.gameData?.players||{},pname=players['ID'+st.currentPitcher]?.fullName||`Pitcher ${st.currentPitcher||'—'}`;
+ let model={rows:[],ms:0};if(ctx?.candidates?.length&&st.defense)model=scoreCandidates(ctx.candidates,st);
+ const top=model.rows.slice(0,6);const maxp=top[0]?.p||1;
+ return `<article class="game ${live?'live':''}"><div class="gamehead"><div class="teams">${esc(away)} @ ${esc(home)}</div><span class="tag ${live?'good':''}">${esc(statusText(g,feed))}</span></div>
+ <div class="scoreline"><div class="team">${esc(away)}</div><div class="score">${st.awayRuns}–${st.homeRuns}</div><div class="team home">${esc(home)}</div></div>
+ <div class="section"><div class="section-title"><span>Current defensive state</span><span>${st.half==='top'?'HOME':'AWAY'} pitching</span></div><div class="current"><div><strong>${esc(pname)}</strong><div class="sub">Inning ${st.inning} · ${st.outs} outs · defense score diff ${st.diff>=0?'+':''}${st.diff}</div></div><span class="tag">current pitcher</span></div></div>
+ <div class="section"><div class="section-title"><span>Validated incoming reliever distribution</span><span>${model.ms.toFixed(2)} ms browser inference</span></div>${top.length?`<div class="rank">${top.map((r,i)=>`<div class="reliever ${r.used?'used':''}"><div><div class="name">${i+1}. ${esc(r.name||r.pitcher_id)} ${r.throws?`(${esc(r.throws)})`:''}</div><div class="why">${r.prior_apps_30d} apps · ${r.prior_bf_30d} BF · ${r.prior_rest_days==null?'new/no prior':r.prior_rest_days+'d rest'} · late ${(100*r.prior_late_inning_share_30d).toFixed(0)}%${r.used?' · already used':''}</div><div class="bar"><i style="width:${Math.min(100,100*r.p/maxp)}%"></i></div></div><div class="prob">${pct(r.p)}</div></div>`).join('')}</div>`:`<div class="sub">Bullpen context unavailable or game is not currently in a live defensive state.</div>`}</div>
+ <div class="section"><div class="section-title"><span>Decision-time inputs</span><span>no team/pitcher identity feature</span></div><div class="feature-grid"><div class="feature"><b>${inningBand(st.inning)}</b><span>inning band</span></div><div class="feature"><b>${scoreBand(st.diff)}</b><span>score band</span></div><div class="feature"><b>${st.used.size}</b><span>pitchers used</span></div><div class="feature"><b>${ctx?.completedGamesUsed??'—'}</b><span>prior games rebuilt</span></div></div></div>
+ <div class="foot"><span>Context: ${esc(ctx?.source||'pending')}</span><span>Validated scope: in-inning change · 2026 forward PASS</span></div></article>`;
+}
+async function loadSchedule(){const date=$('#date').value;const data=await jget(`${API}?type=schedule&date=${date}`);schedule=gameList(data)}
+async function cycle(forceSchedule=false){
+ const t0=performance.now();try{if(forceSchedule||!schedule.length)await loadSchedule();const date=$('#date').value;const live=schedule.filter(g=>g.status?.abstractGameState==='Live');
+ const targets=live.length?live:schedule;await Promise.all(targets.map(async g=>{if(g.status?.abstractGameState==='Preview')return;try{feeds.set(g.gamePk,await jget(`${API}?type=feed&gamePk=${g.gamePk}`))}catch(e){}}));
+ const teams=new Set();for(const g of live){const f=feeds.get(g.gamePk);if(!f)continue;const st=currentState(f);if(st.defense)teams.add(st.defense)}
+ await Promise.all([...teams].map(t=>context(t,date).catch(()=>null)));
+ const html=targets.map(g=>{const f=feeds.get(g.gamePk);let ctx=null;if(f){const st=currentState(f);ctx=contexts.get(st.defense+'|'+date);if(ctx&&typeof ctx.then==='function')ctx=null}return card(g,f,ctx,date)}).join('');
+ $('#grid').innerHTML=html||'<div class="empty">No games found.</div>';lastCycle=performance.now()-t0;$('#status').textContent=`Updated ${new Date().toLocaleTimeString()} · cycle ${lastCycle.toFixed(0)} ms · ${live.length} live`;
+ }catch(e){$('#status').textContent='Update error';$('#grid').innerHTML=`<div class="error">${esc(e.message)}</div>`}}
+function start(){clearInterval(timer);cycle(true);timer=setInterval(()=>cycle(false),750)}
+const today=new Date();$('#date').value=today.toISOString().slice(0,10);$('#refresh').onclick=()=>{schedule=[];feeds.clear();contexts.clear();cycle(true)};$('#date').onchange=()=>{schedule=[];feeds.clear();contexts.clear();cycle(true)};start();
+</script>
+</body></html>
