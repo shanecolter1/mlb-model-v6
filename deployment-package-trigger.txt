@@ -1,2 +1,3 @@
 full empirical native 1tap manifest trigger 2026-08-24 audited-final
 netlify git-link probe 2026-08-24T05:40-05:00
+rebuild after live-context/data-route repairs 2026-08-24T19:45-05:00
