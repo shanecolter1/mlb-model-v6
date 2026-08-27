@@ -1,7 +1,8 @@
 (() => {
   'use strict';
 
-  // Display-only park context. This module MUST NOT write to any prediction/model state.
+  // Display-only park context. This module MUST NOT write to prediction/model state.
+  // It intentionally does not observe or patch dashboard renders/polling.
   const CITY_BY_VENUE = {
     'american family field':'Milwaukee, WI',
     'angel stadium':'Anaheim, CA',
@@ -135,17 +136,10 @@
       header.appendChild(line);
     }
 
-    const parts = [venue];
-    if (location) parts.push(location);
-    line.textContent = parts.join(' · ');
-    if (row && Number.isFinite(Number(row.percentile))) {
-      const sep = document.createTextNode(' · ');
-      const span = document.createElement('span');
-      span.className = 'park-pct';
-      span.textContent = `Park offense ${ordinal(row.percentile)} pct`;
-      line.appendChild(sep);
-      line.appendChild(span);
-    }
+    const pct = row && Number.isFinite(Number(row.percentile)) ? ` · Park offense ${ordinal(row.percentile)} pct` : '';
+    const next = `${venue}${location ? ` · ${location}` : ''}${pct}`;
+    // Avoid unnecessary DOM writes. This is especially important while games are live.
+    if (line.textContent !== next) line.textContent = next;
   }
 
   function updateAll() {
@@ -153,14 +147,11 @@
     document.querySelectorAll('[data-game-card]').forEach(updateCard);
   }
 
-  function startObserver() {
-    updateAll();
-    const observer = new MutationObserver(() => updateAll());
-    observer.observe(document.body, { childList: true, subtree: true });
-  }
-
   document.addEventListener('DOMContentLoaded', async () => {
     await loadParkPercentiles();
-    startObserver();
+    updateAll();
+    // Low-frequency display refresh only. No MutationObserver, no dashboard-render
+    // monkey patch, and no effect on the live-data controller.
+    setInterval(updateAll, 5000);
   });
 })();
