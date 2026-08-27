@@ -4,7 +4,6 @@ on:
     branches: [main]
     paths:
       - 'analysis/apply_full_empirical_runtime_patch.py'
-      - 'production-data-orchestrator.js'
       - 'park-display.js'
       - 'empirical-state-production.js'
       - 'empirical-bullpen-production.js'
@@ -25,13 +24,12 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Apply full empirical runtime include
+      - name: Apply single-controller empirical runtime patch
         run: python analysis/apply_full_empirical_runtime_patch.py
       - name: Verify required runtime files
         run: |
           set -euo pipefail
           test -s index.html
-          test -s production-data-orchestrator.js
           test -s park-display.js
           test -s empirical-state-production.js
           test -s empirical-bullpen-production.js
@@ -40,28 +38,27 @@ jobs:
           test -s netlify/functions/mlb.js
           test -s netlify/functions/savant.js
           test -s netlify/functions/i2-run-environment.js
-          grep -q 'production-data-orchestrator.js' index.html
+          ! grep -q 'production-data-orchestrator.js' index.html
+          grep -q 'const LIVE_TIMEOUT_MS=4000;' index.html
           grep -q 'park-display.js' index.html
           grep -q 'empirical-state-production.js' index.html
           grep -q 'empirical-bullpen-production.js' index.html
-          grep -q 'LIVE_REQUEST_TIMEOUT_MS=4000' production-data-orchestrator.js
-          grep -q 'preloadAllActiveRosterContext' production-data-orchestrator.js
-          grep -q "level:'FULL'" production-data-orchestrator.js
           grep -q 'displayOnly: true' netlify/functions/savant.js
           grep -q 'Park offense' park-display.js
+          ! grep -q 'MutationObserver' park-display.js
       - name: Build native 1Tap 1.0 manifest
         run: |
           mkdir -p deploy
           python - <<'PY'
           import json
           from pathlib import Path
-          paths=['index.html','production-data-orchestrator.js','park-display.js','empirical-state-production.js','empirical-bullpen-production.js','bullpen-production-models.json','netlify.toml','netlify/functions/mlb.js','netlify/functions/savant.js','netlify/functions/i2-run-environment.js']
+          paths=['index.html','park-display.js','empirical-state-production.js','empirical-bullpen-production.js','bullpen-production-models.json','netlify.toml','netlify/functions/mlb.js','netlify/functions/savant.js','netlify/functions/i2-run-environment.js']
           files=[]
           for p in paths:
               path=Path(p)
               if not path.is_file() or path.stat().st_size == 0: raise SystemExit(f'Missing required 1Tap file: {p}')
               files.append({'path':p,'content':path.read_text(encoding='utf-8')})
-          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Audited Hybrid + Park Percentile Display','description':'V11.13 production dashboard with audited hybrid polling/cache architecture and all approved empirical prediction components preserved. Adds display-only venue/location plus Baseball Savant three-year rolling park-offense percentile to both pregame and live game headers. Raw park factors are not passed into prediction calculations.','commit_message':'Deploy venue and display-only Savant park percentile with audited hybrid empirical runtime','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
+          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Single-Controller + Full Empirical','description':'Restores the proven V11.13 single-controller MLB polling architecture, hardens only the live request timeout to 4 seconds, preserves all approved empirical state/count/PA-transition/bullpen/removal/reliever-choice prediction components, and retains display-only venue/location plus Baseball Savant park-offense percentile without a MutationObserver or polling monkey patch.','commit_message':'Restore stable single-controller live feed with full empirical engine','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
           out=Path('deploy/MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap.json')
           out.write_text(json.dumps(manifest,indent=2),encoding='utf-8')
           check=json.loads(out.read_text(encoding='utf-8'))
@@ -83,5 +80,5 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add index.html deploy/MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap.json
-          git commit -m 'Build full empirical 1Tap manifest' || exit 0
+          git commit -m 'Build single-controller full empirical 1Tap manifest' || exit 0
           git push
