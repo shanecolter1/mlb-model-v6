@@ -45,7 +45,7 @@ function normalizeRows(rows) {
   return rows.map(row => Object.fromEntries(Object.entries(row).map(([k, v]) => [k, numberOrNull(v)])));
 }
 
-async function cachedFetch(url, ttlMs) {
+async function cachedFetch(url, ttlMs, accept = 'text/csv,*/*') {
   const hit = memoryCache.get(url);
   if (hit && Date.now() - hit.savedAt < ttlMs) return { ...hit, cache: 'memory' };
   const controller = new AbortController();
@@ -53,7 +53,7 @@ async function cachedFetch(url, ttlMs) {
   try {
     const response = await fetch(url, {
       signal: controller.signal,
-      headers: { accept: 'text/csv,*/*', 'user-agent': UA, referer: `${SAVANT}/statcast_search` }
+      headers: { accept, 'user-agent': UA, referer: `${SAVANT}/statcast_search` }
     });
     const text = await response.text();
     if (!response.ok) throw new Error(`Baseball Savant returned ${response.status}`);
@@ -61,6 +61,42 @@ async function cachedFetch(url, ttlMs) {
     memoryCache.set(url, value);
     return { ...value, cache: 'origin' };
   } finally { clearTimeout(timeout); }
+}
+
+function parseEmbeddedParkData(html) {
+  // Baseball Savant's park-factor leaderboard embeds its table payload in a
+  // JavaScript assignment named `data`. Keep this parser deliberately narrow:
+  // it reads only venue_name + index_woba and never feeds the prediction engine.
+  const patterns = [
+    /(?:^|\n)\s*data\s*=\s*(\[[^\n]*\])\s*;/,
+    /\bdata\s*=\s*(\[[\s\S]*?\])\s*;\s*(?:\n|$)/
+  ];
+  for (const pattern of patterns) {
+    const m = html.match(pattern);
+    if (!m) continue;
+    try {
+      const parsed = JSON.parse(m[1]);
+      if (Array.isArray(parsed)) return parsed;
+    } catch (_) {}
+  }
+  throw new Error('Unable to parse Baseball Savant park-factor payload');
+}
+
+function parkPercentiles(rows) {
+  const clean = rows.map(row => ({
+    venue: String(row.venue_name || row.venue || '').trim(),
+    factor: Number(row.index_woba ?? row.index_wOBA ?? row.park_factor)
+  })).filter(x => x.venue && Number.isFinite(x.factor));
+  if (!clean.length) return [];
+  const values = clean.map(x => x.factor).sort((a, b) => a - b);
+  const n = values.length;
+  return clean.map(x => {
+    const less = values.filter(v => v < x.factor).length;
+    const equal = values.filter(v => v === x.factor).length;
+    // Midrank percentile is stable for tied rounded park factors.
+    const percentile = Math.round(100 * (less + 0.5 * equal) / n);
+    return { venue: x.venue, percentile, factor: x.factor };
+  }).sort((a, b) => b.factor - a.factor || a.venue.localeCompare(b.venue));
 }
 
 exports.handler = async function(event) {
@@ -78,6 +114,27 @@ exports.handler = async function(event) {
       });
     }
 
+    if (q.type === 'parkFactors') {
+      const year = /^\d{4}$/.test(q.year || '') ? q.year : String(new Date().getFullYear());
+      const url = `${SAVANT}/leaderboard/statcast-park-factors?type=year&year=${encodeURIComponent(year)}&batSide=&stat=index_wOBA&condition=All&rolling=3&parks=mlb`;
+      const result = await cachedFetch(url, 6 * 60 * 60 * 1000, 'text/html,*/*');
+      const raw = parseEmbeddedParkData(result.text);
+      const parks = parkPercentiles(raw);
+      return send(200, {
+        source: 'Baseball Savant Statcast Park Factors',
+        type: 'parkFactors',
+        year,
+        rollingYears: 3,
+        metric: 'index_wOBA',
+        displayOnly: true,
+        fetchedAt: result.savedAt,
+        cache: result.cache,
+        parks
+      }, {
+        'cache-control': 'public, max-age=900, s-maxage=21600, stale-while-revalidate=86400'
+      });
+    }
+
     if (q.type === 'game') {
       if (!/^\d+$/.test(q.gamePk || '')) return send(400, { error: 'Invalid gamePk' });
       const url = `${SAVANT}/statcast_search/csv?all=true&type=details&game_pk=${encodeURIComponent(q.gamePk)}`;
@@ -89,7 +146,7 @@ exports.handler = async function(event) {
       });
     }
 
-    return send(400, { error: 'Use type=leaderboard or type=game' });
+    return send(400, { error: 'Use type=leaderboard, type=parkFactors, or type=game' });
   } catch (error) {
     return send(502, { error: 'Unable to reach Baseball Savant', detail: String(error && error.message ? error.message : error) }, {
       'cache-control': 'no-store'
