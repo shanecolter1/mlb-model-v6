@@ -5,6 +5,7 @@ on:
     paths:
       - 'analysis/apply_full_empirical_runtime_patch.py'
       - 'production-data-orchestrator.js'
+      - 'park-display.js'
       - 'empirical-state-production.js'
       - 'empirical-bullpen-production.js'
       - 'bullpen-production-models.json'
@@ -31,6 +32,7 @@ jobs:
           set -euo pipefail
           test -s index.html
           test -s production-data-orchestrator.js
+          test -s park-display.js
           test -s empirical-state-production.js
           test -s empirical-bullpen-production.js
           test -s bullpen-production-models.json
@@ -39,24 +41,27 @@ jobs:
           test -s netlify/functions/savant.js
           test -s netlify/functions/i2-run-environment.js
           grep -q 'production-data-orchestrator.js' index.html
+          grep -q 'park-display.js' index.html
           grep -q 'empirical-state-production.js' index.html
           grep -q 'empirical-bullpen-production.js' index.html
           grep -q 'LIVE_REQUEST_TIMEOUT_MS=4000' production-data-orchestrator.js
           grep -q 'preloadAllActiveRosterContext' production-data-orchestrator.js
           grep -q "level:'FULL'" production-data-orchestrator.js
+          grep -q 'displayOnly: true' netlify/functions/savant.js
+          grep -q 'Park offense' park-display.js
       - name: Build native 1Tap 1.0 manifest
         run: |
           mkdir -p deploy
           python - <<'PY'
           import json
           from pathlib import Path
-          paths=['index.html','production-data-orchestrator.js','empirical-state-production.js','empirical-bullpen-production.js','bullpen-production-models.json','netlify.toml','netlify/functions/mlb.js','netlify/functions/savant.js','netlify/functions/i2-run-environment.js']
+          paths=['index.html','production-data-orchestrator.js','park-display.js','empirical-state-production.js','empirical-bullpen-production.js','bullpen-production-models.json','netlify.toml','netlify/functions/mlb.js','netlify/functions/savant.js','netlify/functions/i2-run-environment.js']
           files=[]
           for p in paths:
               path=Path(p)
               if not path.is_file() or path.stat().st_size == 0: raise SystemExit(f'Missing required 1Tap file: {p}')
               files.append({'path':p,'content':path.read_text(encoding='utf-8')})
-          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Audited Hybrid Data + Full Empirical','description':'V11.13 production dashboard with audited hybrid polling/cache architecture: canonical MLB live snapshots, 4-second live timeout, rapid bounded retries, proactive complete active-roster pregame MLB-stat and Statcast caching, cache invalidation on matchup changes, FULL/DEGRADED/PRIOR model-input quality classification, plus all approved empirical state/count/PA-transition/bullpen/removal/reliever-choice probability components.','commit_message':'Deploy audited hybrid data polling with full empirical engine','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
+          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Audited Hybrid + Park Percentile Display','description':'V11.13 production dashboard with audited hybrid polling/cache architecture and all approved empirical prediction components preserved. Adds display-only venue/location plus Baseball Savant three-year rolling park-offense percentile to both pregame and live game headers. Raw park factors are not passed into prediction calculations.','commit_message':'Deploy venue and display-only Savant park percentile with audited hybrid empirical runtime','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
           out=Path('deploy/MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap.json')
           out.write_text(json.dumps(manifest,indent=2),encoding='utf-8')
           check=json.loads(out.read_text(encoding='utf-8'))
