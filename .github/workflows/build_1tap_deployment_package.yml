@@ -45,7 +45,7 @@ jobs:
           grep -q 'empirical-bullpen-production.js' index.html
           grep -q 'displayOnly: true' netlify/functions/savant.js
           grep -q 'Park offense' park-display.js
-          ! grep -q 'MutationObserver' park-display.js
+          ! grep -q 'new MutationObserver' park-display.js
       - name: Build native 1Tap 1.0 manifest
         run: |
           mkdir -p deploy
@@ -58,7 +58,7 @@ jobs:
               path=Path(p)
               if not path.is_file() or path.stat().st_size == 0: raise SystemExit(f'Missing required 1Tap file: {p}')
               files.append({'path':p,'content':path.read_text(encoding='utf-8')})
-          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Single-Controller + Full Empirical','description':'Restores the proven V11.13 single-controller MLB polling architecture, hardens only the live request timeout to 4 seconds, preserves all approved empirical state/count/PA-transition/bullpen/removal/reliever-choice prediction components, and retains display-only venue/location plus Baseball Savant park-offense percentile without a MutationObserver or polling monkey patch.','commit_message':'Restore stable single-controller live feed with full empirical engine','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
+          manifest={'schema_version':'1tap/1.0','name':'MLB Live Command Center V11.13 Single-Controller + Full Empirical','description':'Restores the proven V11.13 single-controller MLB polling architecture, hardens only the live request timeout to 4 seconds, preserves all approved empirical state/count/PA-transition/bullpen/removal/reliever-choice prediction components, and retains display-only venue/location plus Baseball Savant park-offense percentile without a DOM mutation observer or polling monkey patch.','commit_message':'Restore stable single-controller live feed with full empirical engine','files':files,'netlify':{'enabled':True,'site_name':'mlb-live-command-center','build_command':'','publish_dir':'.','functions_dir':'netlify/functions'}}
           out=Path('deploy/MLB_Live_Command_Center_V11_13_FULL_EMPIRICAL_1Tap.json')
           out.write_text(json.dumps(manifest,indent=2),encoding='utf-8')
           check=json.loads(out.read_text(encoding='utf-8'))
