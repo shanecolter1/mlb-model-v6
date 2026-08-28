@@ -501,7 +501,7 @@ const BETWEEN_BATTERS_MS=1000;
 const BREAK_POLL_MS=2000;
 const TURNOVER_CONFIRM_POLL_MS=750;
 const DELAY_POLL_MS=20000;
-const LIVE_TIMEOUT_MS=1800;
+const LIVE_TIMEOUT_MS=4000;
 const LIVE_WATCHDOG_TICK_MS=2000;
 const LIVE_STALE_RESTART_MS=5000;
 const LIVE_WATCHDOG_RESTART_COOLDOWN_MS=6000;
@@ -2216,7 +2216,6 @@ document.addEventListener('visibilitychange',()=>{
 });
 restoreOvernightState();restoreDailyCache();refreshSchedule(true).then(setTimer);
 </script>
-<script src="/production-data-orchestrator.js"></script>
 <script src="/park-display.js"></script>
 <script src="/empirical-state-production.js"></script>
 <script src="/empirical-bullpen-production.js"></script>
