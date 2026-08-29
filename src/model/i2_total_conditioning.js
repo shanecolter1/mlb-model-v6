@@ -105,3 +105,5 @@ export function conditionI2Projection({
     },
   };
 }
+
+// requested daily run trigger 2026-08-29T19:05Z
