@@ -76,6 +76,7 @@ jobs:
           MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_DATE: ${{ steps.params.outputs.date }}
           I2_RUN_ENVIRONMENT: data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '1'
         shell: bash
         run: |
           set -euo pipefail
@@ -134,3 +135,4 @@ jobs:
 # single-game ATL-MIL retrigger 2026-08-21T17:50Z
 # requested daily run trigger 2026-08-29T18:55Z
 # merged PR trigger 2026-08-29
+# recovery run uses validated existing run-environment artifact if deployed endpoint is unavailable
