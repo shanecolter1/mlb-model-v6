@@ -1,26 +1,40 @@
 #!/usr/bin/env python3
-"""Build leakage-safe batting-order path and bullpen context features.
+"""Build leakage-safe all-inning batting-order and bullpen context features.
+
+Batting-order treatment is fully empirical. No smoothing is applied to the
+production batting-order probabilities. In addition to strict prior-date team
+features, the build emits all-inning descriptive and walk-forward validation
+artifacts so the observed I1-I9 lineup-path distributions can be audited before
+use in predictive models.
 
 Outputs
 -------
 - batting_order_path_asof.parquet
-    Team/inning prior distribution of the lineup slot expected to lead off an
-    inning, estimated only from games strictly before the target date.
+    Raw team/inning prior-date distribution of the lineup slot that led off an
+    inning. Rows with no prior team/inning history retain NA probabilities.
+- batting_order_empirical_all_innings.parquet
+    Overall 2021-2025 empirical start-slot counts/probabilities for I1-I9.
+- batting_order_empirical_by_season.parquet
+    Same distributions by season for stability analysis.
+- batting_order_transition_empirical.parquet
+    Empirical transition distribution from the prior inning's starting slot to
+    the next inning's starting slot, by destination inning.
+- batting_order_walkforward_validation.parquet
+    Leave-one-season-forward validation against the uniform 1/9 benchmark.
+- batting_order_stability.parquet
+    Season-to-full-sample absolute probability drift diagnostics.
 - bullpen_team_asof.parquet
-    Team bullpen quality and recent workload/availability proxies based only on
-    relief appearances strictly before the target date.
 - bullpen_pitcher_asof.parquet
-    Reliever-level quality/workload histories for downstream roster-aware use.
 
-Historical final-feed lineup/starter identities are used only to classify what
-actually happened in completed historical games. They are not represented as
-verified pregame identities. Same-day earlier games are intentionally excluded.
+Historical final-feed lineup/starter identities classify completed historical
+outcomes only; they are not claimed as verified pregame identities. Same-day
+prior games are intentionally excluded from as-of predictors.
 """
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 import json
+from pathlib import Path
 import numpy as np
 import pandas as pd
 
@@ -35,7 +49,8 @@ def parse_args():
     p.add_argument("--lineups", type=Path, required=True)
     p.add_argument("--starters", type=Path, required=True)
     p.add_argument("--output-dir", type=Path, required=True)
-    p.add_argument("--shrink-strength", type=float, default=75.0)
+    p.add_argument("--shrink-strength", type=float, default=75.0,
+                   help="Bullpen quality shrinkage only; never used for batting-order probabilities.")
     return p.parse_args()
 
 
@@ -46,6 +61,7 @@ def read(path: Path) -> pd.DataFrame:
 def prep_pa(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     x = df.copy()
     x["game_date"] = pd.to_datetime(x["game_date"], errors="coerce").dt.normalize()
+    x["season"] = x["game_date"].dt.year.astype("Int64")
     x["inning"] = pd.to_numeric(x["inning"], errors="coerce").astype("Int64")
     for e in EVENTS:
         x[f"ev_{e}"] = (x["event"].astype(str) == e).astype("int16")
@@ -56,8 +72,8 @@ def prep_pa(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
     return x, [f"ev_{e}" for e in EVENTS + DERIVED]
 
 
-def build_order_path(pa: pd.DataFrame, lineups: pd.DataFrame) -> pd.DataFrame:
-    """Historical team/inning lead-off slot probabilities with strict date lag."""
+def inning_start_observations(pa: pd.DataFrame, lineups: pd.DataFrame) -> pd.DataFrame:
+    """One observed batting-order start slot per team-game-inning."""
     lu = lineups.copy()
     lu["game_date"] = pd.to_datetime(lu["game_date"], errors="coerce").dt.normalize()
     lu["batting_order_slot"] = pd.to_numeric(lu["batting_order_slot"], errors="coerce")
@@ -65,7 +81,7 @@ def build_order_path(pa: pd.DataFrame, lineups: pd.DataFrame) -> pd.DataFrame:
 
     first = (pa.dropna(subset=["game_id", "batting_team_id", "inning", "batter_id", "play_index"])
              .sort_values(["game_id", "batting_team_id", "inning", "play_index"])
-             .groupby(["game_id", "game_date", "batting_team_id", "inning"], as_index=False)
+             .groupby(["game_id", "game_date", "season", "batting_team_id", "inning"], as_index=False)
              .first())
     first = first.merge(
         slot_map,
@@ -75,48 +91,135 @@ def build_order_path(pa: pd.DataFrame, lineups: pd.DataFrame) -> pd.DataFrame:
     )
     first = first[first["inning"].between(1, 9) & first["batting_order_slot"].between(1, 9)].copy()
     first["team_id"] = first["batting_team_id"]
+    first["batting_order_slot"] = first["batting_order_slot"].astype(int)
+    return first[["game_id", "game_date", "season", "team_id", "inning", "batting_order_slot"]]
 
-    # Daily counts let us exclude all same-day information from predictors.
-    d = (first.groupby(["team_id", "inning", "game_date", "batting_order_slot"])
-         .size().rename("n").reset_index())
+
+def empirical_distribution(first: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
+    counts = first.groupby(group_cols + ["batting_order_slot"]).size().rename("n").reset_index()
+    totals = counts.groupby(group_cols)["n"].transform("sum")
+    counts["probability"] = counts["n"] / totals
+    counts["sample_n"] = totals
+    # Wilson 95% interval: descriptive uncertainty, not smoothing.
+    z = 1.959963984540054
+    p = counts["probability"].astype(float)
+    n = counts["sample_n"].astype(float)
+    denom = 1.0 + z*z/n
+    center = (p + z*z/(2*n)) / denom
+    half = z*np.sqrt((p*(1-p)/n) + z*z/(4*n*n)) / denom
+    counts["wilson95_low"] = (center-half).clip(0, 1)
+    counts["wilson95_high"] = (center+half).clip(0, 1)
+    return counts
+
+
+def build_order_path_asof(first: pd.DataFrame) -> pd.DataFrame:
+    """Raw team/inning empirical probabilities using strictly prior dates."""
+    daily = (first.groupby(["team_id", "inning", "game_date", "batting_order_slot"])
+             .size().rename("n").reset_index())
     dates = first[["team_id", "game_date"]].drop_duplicates()
     rows = []
-
-    # League inning prior, strictly before each date.
-    ld = (first.groupby(["inning", "game_date", "batting_order_slot"])
-          .size().rename("n").reset_index())
-    league_prior = {}
-    for inn in range(1, 10):
-        z = ld[ld["inning"] == inn]
-        for date in sorted(first["game_date"].dropna().unique()):
-            h = z[z["game_date"] < date]
-            counts = h.groupby("batting_order_slot")["n"].sum() if len(h) else pd.Series(dtype=float)
-            total = float(counts.sum())
-            league_prior[(inn, pd.Timestamp(date))] = {s: (float(counts.get(s, 0)) / total if total else 1/9) for s in range(1, 10)}
-
     for team, td in dates.groupby("team_id", sort=False):
-        team_hist = d[d["team_id"] == team]
+        hist = daily[daily["team_id"] == team]
         for date in sorted(td["game_date"].dropna().unique()):
+            date = pd.Timestamp(date)
             for inn in range(1, 10):
-                h = team_hist[(team_hist["inning"] == inn) & (team_hist["game_date"] < date)]
+                h = hist[(hist["inning"] == inn) & (hist["game_date"] < date)]
                 counts = h.groupby("batting_order_slot")["n"].sum() if len(h) else pd.Series(dtype=float)
-                n = float(counts.sum())
-                # Modest inning-specific team shrinkage to lagged league distribution.
-                alpha = 20.0
-                lp = league_prior.get((inn, pd.Timestamp(date)), {s: 1/9 for s in range(1,10)})
-                probs = {s: (float(counts.get(s, 0)) + alpha * lp[s]) / (n + alpha) for s in range(1, 10)}
+                n = int(counts.sum())
                 rec = {
                     "team_id": team,
-                    "as_of_date": pd.Timestamp(date),
+                    "as_of_date": date,
                     "inning": inn,
-                    "prior_team_inning_games": int(n),
-                    "reliability": n / (n + alpha),
-                    "expected_start_slot": sum(s * probs[s] for s in range(1, 10)),
-                    "source_class": "retrospective_outcomes_strictly_prior_date",
+                    "prior_team_inning_games": n,
+                    "reliability": 1.0 if n > 0 else 0.0,
+                    "source_class": "raw_empirical_outcomes_strictly_prior_date_no_smoothing",
                 }
-                for s in range(1, 10):
-                    rec[f"p_start_slot_{s}"] = probs[s]
+                if n:
+                    probs = {s: float(counts.get(s, 0)) / n for s in range(1, 10)}
+                    rec["expected_start_slot"] = sum(s * probs[s] for s in range(1, 10))
+                    for s in range(1, 10):
+                        rec[f"p_start_slot_{s}"] = probs[s]
+                else:
+                    rec["expected_start_slot"] = np.nan
+                    for s in range(1, 10):
+                        rec[f"p_start_slot_{s}"] = np.nan
                 rows.append(rec)
+    return pd.DataFrame(rows)
+
+
+def build_transitions(first: pd.DataFrame) -> pd.DataFrame:
+    x = first.sort_values(["game_id", "team_id", "inning"]).copy()
+    x["prev_inning"] = x.groupby(["game_id", "team_id"])["inning"].shift(1)
+    x["prev_start_slot"] = x.groupby(["game_id", "team_id"])["batting_order_slot"].shift(1)
+    x = x[(x["inning"] >= 2) & (x["prev_inning"] == x["inning"] - 1)].copy()
+    x["prev_start_slot"] = x["prev_start_slot"].astype(int)
+    g = (x.groupby(["inning", "prev_start_slot", "batting_order_slot"])
+         .size().rename("n").reset_index())
+    g["sample_n"] = g.groupby(["inning", "prev_start_slot"])["n"].transform("sum")
+    g["probability"] = g["n"] / g["sample_n"]
+    return g
+
+
+def walkforward_validate(first: pd.DataFrame) -> pd.DataFrame:
+    """Forward season validation of raw empirical inning distributions.
+
+    Evaluation uses a tiny numerical floor only to make log loss finite when a
+    previously unseen slot occurs. The floor is NOT used in production feature
+    probabilities and is reported explicitly.
+    """
+    eps = 1e-12
+    seasons = sorted(int(s) for s in first["season"].dropna().unique())
+    rows = []
+    for test_season in seasons[1:]:
+        train = first[first["season"] < test_season]
+        test = first[first["season"] == test_season]
+        for inn in range(1, 10):
+            tr = train[train["inning"] == inn]
+            te = test[test["inning"] == inn]
+            if tr.empty or te.empty:
+                continue
+            c = tr["batting_order_slot"].value_counts()
+            probs = {s: float(c.get(s, 0)) / len(tr) for s in range(1, 10)}
+            y = te["batting_order_slot"].astype(int).to_numpy()
+            pp = np.array([max(probs[int(s)], eps) for s in y], dtype=float)
+            empirical_logloss = float(-np.log(pp).mean())
+            uniform_logloss = float(np.log(9.0))
+            empirical_brier = float(np.mean([
+                sum((probs[s] - (1.0 if s == int(obs) else 0.0))**2 for s in range(1,10))
+                for obs in y
+            ]))
+            uniform_brier = float(8.0/9.0)
+            rows.append({
+                "train_through_season": test_season - 1,
+                "test_season": test_season,
+                "inning": inn,
+                "train_n": int(len(tr)),
+                "test_n": int(len(te)),
+                "empirical_log_loss": empirical_logloss,
+                "uniform_log_loss": uniform_logloss,
+                "log_loss_improvement": uniform_logloss - empirical_logloss,
+                "empirical_brier": empirical_brier,
+                "uniform_brier": uniform_brier,
+                "brier_improvement": uniform_brier - empirical_brier,
+                "evaluation_probability_floor": eps,
+            })
+    return pd.DataFrame(rows)
+
+
+def build_stability(overall: pd.DataFrame, by_season: pd.DataFrame) -> pd.DataFrame:
+    ref = overall[["inning", "batting_order_slot", "probability"]].rename(columns={"probability":"full_probability"})
+    x = by_season.merge(ref, on=["inning", "batting_order_slot"], how="left")
+    x["abs_probability_drift"] = (x["probability"] - x["full_probability"]).abs()
+    rows = []
+    for (season, inn), g in x.groupby(["season", "inning"]):
+        rows.append({
+            "season": int(season),
+            "inning": int(inn),
+            "sample_n": int(g["sample_n"].max()),
+            "max_abs_probability_drift": float(g["abs_probability_drift"].max()),
+            "mean_abs_probability_drift": float(g["abs_probability_drift"].mean()),
+            "l1_distribution_distance": float(g["abs_probability_drift"].sum()),
+        })
     return pd.DataFrame(rows)
 
 
@@ -153,7 +256,6 @@ def build_bullpen_pitcher(pa: pd.DataFrame, metrics: list[str], strength: float)
             z = g.set_index("game_date")[cols].rolling(f"{days}D", closed="left").sum().fillna(0).reset_index()
             for c in cols:
                 base[f"{days}d_{c}"] = z[c].values
-        # Availability/workload proxies.
         for days in (1, 2, 3, 7, 14):
             z = g.set_index("game_date")[["opportunities"]].rolling(f"{days}D", closed="left").sum().fillna(0).reset_index()
             base[f"relief_bf_{days}d"] = z["opportunities"].values
@@ -210,12 +312,24 @@ def main():
     lineups = read(a.lineups)
     starters = read(a.starters)
 
-    order = build_order_path(pa, lineups)
+    first = inning_start_observations(pa, lineups)
+    order = build_order_path_asof(first)
+    overall = empirical_distribution(first, ["inning"])
+    by_season = empirical_distribution(first, ["season", "inning"])
+    transitions = build_transitions(first)
+    walkforward = walkforward_validate(first)
+    stability = build_stability(overall, by_season)
+
     classified = classify_relief(pa, starters)
     bp_pitcher = build_bullpen_pitcher(classified, metrics, a.shrink_strength)
     bp_team = build_bullpen_team(classified, metrics, a.shrink_strength * 2)
 
     order.to_parquet(a.output_dir / "batting_order_path_asof.parquet", index=False)
+    overall.to_parquet(a.output_dir / "batting_order_empirical_all_innings.parquet", index=False)
+    by_season.to_parquet(a.output_dir / "batting_order_empirical_by_season.parquet", index=False)
+    transitions.to_parquet(a.output_dir / "batting_order_transition_empirical.parquet", index=False)
+    walkforward.to_parquet(a.output_dir / "batting_order_walkforward_validation.parquet", index=False)
+    stability.to_parquet(a.output_dir / "batting_order_stability.parquet", index=False)
     bp_pitcher.to_parquet(a.output_dir / "bullpen_pitcher_asof.parquet", index=False)
     bp_team.to_parquet(a.output_dir / "bullpen_team_asof.parquet", index=False)
 
@@ -224,8 +338,16 @@ def main():
         "same_day_prior_games_included": False,
         "market_data_used": False,
         "pregame_identity_claimed": False,
+        "batting_order_smoothing_used": False,
+        "batting_order_method": "raw empirical all-inning start-slot and transition frequencies",
+        "batting_order_validation": "Wilson intervals + season stability + forward-season log-loss/Brier validation",
         "outputs": {
             "batting_order_path_rows": int(len(order)),
+            "batting_order_empirical_rows": int(len(overall)),
+            "batting_order_by_season_rows": int(len(by_season)),
+            "batting_order_transition_rows": int(len(transitions)),
+            "batting_order_walkforward_rows": int(len(walkforward)),
+            "batting_order_stability_rows": int(len(stability)),
             "bullpen_pitcher_rows": int(len(bp_pitcher)),
             "bullpen_team_rows": int(len(bp_team)),
         },
