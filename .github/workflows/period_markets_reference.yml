@@ -1,0 +1,52 @@
+name: Build MLB period markets reference
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/period_markets_reference.yml'
+      - 'src/pipeline/build_period_markets_reference.mjs'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'YYYY-MM-DD'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-reference:
+    runs-on: ubuntu-latest
+    env:
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve date
+        id: params
+        shell: bash
+        run: |
+          DATE_INPUT='${{ inputs.date }}'
+          if [ -z "$DATE_INPUT" ]; then DATE_INPUT="$(date -u +%F)"; fi
+          echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
+      - name: Query period markets and build reference
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          PERIOD_RAW: data/runtime/i2/${{ steps.params.outputs.date }}_period_markets_raw.json
+          PERIOD_MD: docs/period_markets/${{ steps.params.outputs.date }}_mlb_period_markets.md
+          PERIOD_CSV: docs/period_markets/${{ steps.params.outputs.date }}_mlb_period_markets.csv
+        run: node src/pipeline/build_period_markets_reference.mjs
+      - name: Commit reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE="${{ steps.params.outputs.date }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git add "data/runtime/i2/${DATE}_period_markets_raw.json" "docs/period_markets/${DATE}_mlb_period_markets.md" "docs/period_markets/${DATE}_mlb_period_markets.csv"
+          git commit -m "Update MLB period markets reference ${DATE}" || exit 0
+          git pull --rebase origin main
+          git push origin HEAD:main
