@@ -1,23 +1,23 @@
-const DEFAULT_BASE_URL = 'https://api.the-odds-api.com/v4';
+const DEFAULT_BASE_URL = 'https://api.theoddsapi.com';
 
 export const SPORTSBOOK_DATA_SOURCE = Object.freeze({
   provider: 'THE_ODDS_API',
+  providerHost: 'theoddsapi.com',
   baseUrl: DEFAULT_BASE_URL,
   apiKeyEnv: 'ODDS_API_KEY',
-  policyVersion: '1.1.0',
+  policyVersion: '1.2.0',
 });
 
 export const REQUIRED_POST_FREEZE_BOOKS = Object.freeze([
-  Object.freeze({ displayName: 'FanDuel', key: 'fanduel', region: 'us', supported: true }),
-  Object.freeze({ displayName: 'DraftKings', key: 'draftkings', region: 'us', supported: true }),
-  Object.freeze({ displayName: 'Hard Rock Bet', key: 'hardrockbet', region: 'us2', supported: true }),
-  Object.freeze({ displayName: 'bet365', key: null, region: null, supported: false, note: 'No US MLB bookmaker key currently listed by The Odds API; report unavailable unless provider support is added.' }),
-  Object.freeze({ displayName: 'Fanatics', key: 'fanatics', region: 'us', supported: true }),
-  Object.freeze({ displayName: 'Caesars', key: 'williamhill_us', region: 'us', supported: true }),
-  Object.freeze({ displayName: 'BetMGM', key: 'betmgm', region: 'us', supported: true }),
-  Object.freeze({ displayName: 'Kalshi', key: 'kalshi', region: 'us_ex', supported: true }),
-  Object.freeze({ displayName: 'Polymarket', key: 'polymarket', region: 'us_ex', supported: true }),
-  Object.freeze({ displayName: 'Pinnacle', key: 'pinnacle', region: 'eu', supported: true, note: 'The Odds API notes Pinnacle prices may be delayed because they are sourced from its public website.' }),
+  Object.freeze({ displayName: 'FanDuel', key: 'fanduel' }),
+  Object.freeze({ displayName: 'DraftKings', key: 'draftkings' }),
+  Object.freeze({ displayName: 'Hard Rock Bet', key: 'hardrockbet' }),
+  Object.freeze({ displayName: 'Fanatics', key: 'fanatics' }),
+  Object.freeze({ displayName: 'Caesars', key: 'caesars' }),
+  Object.freeze({ displayName: 'BetMGM', key: 'betmgm' }),
+  Object.freeze({ displayName: 'Kalshi', key: 'kalshi' }),
+  Object.freeze({ displayName: 'Polymarket', key: 'polymarket' }),
+  Object.freeze({ displayName: 'Pinnacle', key: 'pinnacle' }),
 ]);
 
 export const MARKET_ISOLATION = Object.freeze({
@@ -40,9 +40,8 @@ function requireApiKey(apiKey = process.env[SPORTSBOOK_DATA_SOURCE.apiKeyEnv]) {
   return value;
 }
 
-function buildUrl(pathname, params = {}, apiKey) {
+function buildUrl(pathname, params = {}) {
   const url = new URL(`${SPORTSBOOK_DATA_SOURCE.baseUrl}${pathname}`);
-  url.searchParams.set('apiKey', requireApiKey(apiKey));
   for (const [key, value] of Object.entries(params)) {
     if (value === undefined || value === null || value === '') continue;
     url.searchParams.set(key, String(value));
@@ -51,80 +50,102 @@ function buildUrl(pathname, params = {}, apiKey) {
 }
 
 export async function fetchOddsApiJson(pathname, params = {}, options = {}) {
-  const url = buildUrl(pathname, params, options.apiKey);
+  const apiKey = requireApiKey(options.apiKey);
+  const url = buildUrl(pathname, params);
   const response = await fetch(url, {
     headers: {
       accept: 'application/json',
-      'user-agent': options.userAgent || 'MLB-Model-Sportsbook-Data/1.1',
+      'x-api-key': apiKey,
+      'user-agent': options.userAgent || 'MLB-Model-Sportsbook-Data/1.2',
     },
   });
-  if (!response.ok) throw new Error(`The Odds API ${response.status} ${response.statusText}`);
-  return response.json();
+  const text = await response.text();
+  if (!response.ok) {
+    let detail = '';
+    try {
+      const parsed = JSON.parse(text);
+      detail = parsed?.detail || parsed?.message || parsed?.error || '';
+    } catch {}
+    throw new Error(`The Odds API ${response.status} ${response.statusText}${detail ? `: ${detail}` : ''}`);
+  }
+  return text ? JSON.parse(text) : null;
+}
+
+function unwrapEvents(payload) {
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.data)) return payload.data;
+  return [];
+}
+
+function normalizeBookEntries(event) {
+  const books = Array.isArray(event?.books) ? event.books : [];
+  return books.map(entry => ({
+    key: String(entry.book || entry.key || '').toLowerCase(),
+    market: String(entry.market || '').toLowerCase(),
+    updatedAt: entry.updated_at || entry.last_update || null,
+    outcomes: Array.isArray(entry.outcomes) ? entry.outcomes : [],
+    raw: entry,
+  }));
 }
 
 export async function fetchMlbDraftKingsFullGameTotals(options = {}) {
-  const events = await fetchOddsApiJson('/sports/baseball_mlb/odds', {
-    regions: options.regions || 'us',
+  const payload = await fetchOddsApiJson('/odds/', {
+    sport_key: 'baseball_mlb',
     markets: 'totals',
     bookmakers: 'draftkings',
     oddsFormat: 'american',
-    dateFormat: 'iso',
+    commenceTimeFrom: options.commenceTimeFrom,
+    commenceTimeTo: options.commenceTimeTo,
   }, options);
 
-  return (events || []).flatMap(event => {
-    const book = (event.bookmakers || []).find(x => x.key === 'draftkings');
-    if (!book) return [];
-    const market = (book.markets || []).find(x => x.key === 'totals');
-    if (!market) return [];
-    const over = (market.outcomes || []).find(x => String(x.name).toLowerCase() === 'over');
-    const under = (market.outcomes || []).find(x => String(x.name).toLowerCase() === 'under');
-    const point = Number(over?.point ?? under?.point);
+  return unwrapEvents(payload).flatMap(event => {
+    const entry = normalizeBookEntries(event).find(x => x.key === 'draftkings' && x.market === 'totals');
+    if (!entry) return [];
+    const over = entry.outcomes.find(x => String(x.name || '').toLowerCase() === 'over');
+    const under = entry.outcomes.find(x => String(x.name || '').toLowerCase() === 'under');
+    const point = Number(over?.point ?? over?.line ?? under?.point ?? under?.line);
     if (!Number.isFinite(point)) return [];
     return [{
-      eventId: String(event.id), commenceTime: event.commence_time, awayTeam: event.away_team,
-      homeTeam: event.home_team, fullGameTotal: point, bookmaker: 'draftkings',
-      lastUpdate: book.last_update || market.last_update || null,
+      eventId: String(event.event_id || event.id || ''),
+      commenceTime: event.start_time || event.commence_time || null,
+      awayTeam: event.away_team,
+      homeTeam: event.home_team,
+      fullGameTotal: point,
+      bookmaker: 'draftkings',
+      lastUpdate: entry.updatedAt,
     }];
   });
 }
 
-export async function fetchSportsbookMarkets({ sportKey = 'baseball_mlb', eventId, bookmakers, markets, regions = 'us', apiKey } = {}) {
+export async function fetchSportsbookMarkets({ sportKey = 'baseball_mlb', eventId, bookmakers, markets, regions, apiKey } = {}) {
   if (!eventId) throw new Error('eventId is required for post-freeze event market retrieval');
-  if (!markets) throw new Error('markets is required for post-freeze event market retrieval');
-  return fetchOddsApiJson(`/sports/${sportKey}/events/${eventId}/odds`, {
-    regions, bookmakers, markets, oddsFormat: 'american', dateFormat: 'iso',
+  const payload = await fetchOddsApiJson('/odds/', {
+    sport_key: sportKey,
+    event_id: eventId,
+    bookmakers,
+    markets,
+    regions,
+    oddsFormat: 'american',
   }, { apiKey });
+  return unwrapEvents(payload)[0] || null;
 }
 
 export async function fetchRequiredPostFreezeMarkets({ sportKey = 'baseball_mlb', eventId, markets, apiKey } = {}) {
-  if (!eventId) throw new Error('eventId is required for post-freeze event market retrieval');
-  if (!markets) throw new Error('markets is required for post-freeze event market retrieval');
+  const event = await fetchSportsbookMarkets({ sportKey, eventId, markets, apiKey });
+  const entries = normalizeBookEntries(event);
+  return REQUIRED_POST_FREEZE_BOOKS.flatMap(config => {
+    const matched = entries.filter(x => x.key === config.key && (!markets || String(markets).split(',').includes(x.market)));
+    if (!matched.length) return [];
+    return [{ displayName: config.displayName, bookmakerKey: config.key, availability: 'AVAILABLE', markets: matched.map(x => x.raw) }];
+  });
+}
 
-  const supported = REQUIRED_POST_FREEZE_BOOKS.filter(x => x.supported && x.key);
-  const byRegion = new Map();
-  for (const book of supported) {
-    if (!byRegion.has(book.region)) byRegion.set(book.region, []);
-    byRegion.get(book.region).push(book.key);
-  }
+export function extractBookMarketEntries(event) {
+  return normalizeBookEntries(event);
+}
 
-  const responses = await Promise.all([...byRegion.entries()].map(async ([region, keys]) => ({
-    region,
-    data: await fetchSportsbookMarkets({ sportKey, eventId, bookmakers: keys.join(','), markets, regions: region, apiKey }),
-  })));
-
-  const returnedBooks = new Map();
-  for (const { data } of responses) {
-    for (const book of data?.bookmakers || []) returnedBooks.set(book.key, book);
-  }
-
-  return REQUIRED_POST_FREEZE_BOOKS.map(config => ({
-    displayName: config.displayName,
-    bookmakerKey: config.key,
-    region: config.region,
-    availability: !config.supported ? 'UNSUPPORTED_BY_CANONICAL_SOURCE' : returnedBooks.has(config.key) ? 'AVAILABLE' : 'NOT_RETURNED_FOR_EVENT_MARKET',
-    note: config.note || null,
-    bookmaker: config.key ? returnedBooks.get(config.key) || null : null,
-  }));
+export function unwrapOddsEvents(payload) {
+  return unwrapEvents(payload);
 }
 
 export function assertPreFreezeIsolation(record) {
