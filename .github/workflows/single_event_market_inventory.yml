@@ -11,7 +11,7 @@ on:
       event_id:
         description: 'TheOddsAPI MLB event_id'
         required: false
-        default: '799823f7421c5a5c018435aa85a7b250'
+        default: '369e8c1f02400fd5e4528e7397bdcde6'
 
 permissions:
   contents: write
@@ -28,15 +28,15 @@ jobs:
           node-version: '22'
       - name: Build inventory
         env:
-          EVENT_ID: ${{ inputs.event_id || '799823f7421c5a5c018435aa85a7b250' }}
+          EVENT_ID: ${{ inputs.event_id || '369e8c1f02400fd5e4528e7397bdcde6' }}
         run: node src/pipeline/build_single_event_market_inventory.mjs
       - name: Commit inventory
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
-          git add docs/market_inventory/2026-08-30_hou_nym_all_markets.md data/runtime/i2/2026-08-30_hou_nym_all_markets_raw.json
+          git add docs/market_inventory/2026-08-30_lad_det_all_markets.md data/runtime/i2/2026-08-30_lad_det_all_markets_raw.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Save HOU-NYM all-market proxy inventory"
+          git commit -m "Save LAD-DET all-market proxy inventory"
           git pull --rebase origin main
           git push origin HEAD:main
