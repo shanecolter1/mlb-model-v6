@@ -47,15 +47,20 @@ jobs:
           import pandas as pd
           p = pd.read_parquet('/tmp/mlb_processed/plate_appearances.parquet')
           e = pd.read_parquet('/tmp/baseball_asof/entity_asof_fast.parquet')
-          assert len(p) > 0
-          assert len(e) > 0
+          i = pd.read_parquet('/tmp/mlb_processed/inning_results.parquet')
+          assert len(p) > 0 and len(e) > 0 and len(i) > 0
           assert {'batter','pitcher'} <= set(e['entity_type'].dropna().unique())
           assert e['as_of_date'].notna().all()
           assert (e.filter(like='reliability').fillna(0).to_numpy() >= 0).all()
-          print({'plate_appearances': len(p), 'entity_snapshots': len(e), 'status': 'PASS'})
+          assert {'inning','away_runs','home_runs','full_inning_runs','away_half_played','home_half_played'} <= set(i.columns)
+          calc = i['away_runs'].fillna(0) + i['home_runs'].fillna(0)
+          assert (calc == i['full_inning_runs']).all()
+          print({'plate_appearances': len(p), 'entity_snapshots': len(e), 'inning_rows': len(i), 'status': 'PASS'})
           PY
       - uses: actions/upload-artifact@v4
         with:
           name: asof-feature-store-smoke
-          path: /tmp/baseball_asof/
+          path: |
+            /tmp/baseball_asof/
+            /tmp/mlb_processed/inning_results.parquet
           retention-days: 7
