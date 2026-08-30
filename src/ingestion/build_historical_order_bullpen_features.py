@@ -7,6 +7,11 @@ features, the build emits all-inning descriptive and walk-forward validation
 artifacts so the observed I1-I9 lineup-path distributions can be audited before
 use in predictive models.
 
+Observed batting-order slots are reconstructed from each team's chronological
+plate-appearance sequence within a game. Because substitutions inherit the
+replaced player's batting-order position, PA ordinal modulo nine preserves the
+lineup slot without relying on the final-feed player identity list.
+
 Outputs
 -------
 - batting_order_path_asof.parquet
@@ -26,9 +31,9 @@ Outputs
 - bullpen_team_asof.parquet
 - bullpen_pitcher_asof.parquet
 
-Historical final-feed lineup/starter identities classify completed historical
-outcomes only; they are not claimed as verified pregame identities. Same-day
-prior games are intentionally excluded from as-of predictors.
+Historical final-feed starter identities classify completed historical outcomes
+only; they are not claimed as verified pregame identities. Same-day prior games
+are intentionally excluded from as-of predictors.
 """
 from __future__ import annotations
 
@@ -73,26 +78,28 @@ def prep_pa(df: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
 
 
 def inning_start_observations(pa: pd.DataFrame, lineups: pd.DataFrame) -> pd.DataFrame:
-    """One observed batting-order start slot per team-game-inning."""
-    lu = lineups.copy()
-    lu["game_date"] = pd.to_datetime(lu["game_date"], errors="coerce").dt.normalize()
-    lu["batting_order_slot"] = pd.to_numeric(lu["batting_order_slot"], errors="coerce")
-    slot_map = lu[["game_id", "team_id", "player_id", "batting_order_slot"]].drop_duplicates()
+    """One observed batting-order start slot per team-game-inning.
 
-    first = (pa.dropna(subset=["game_id", "batting_team_id", "inning", "batter_id", "play_index"])
-             .sort_values(["game_id", "batting_team_id", "inning", "play_index"])
+    Reconstruct slot from chronological PA ordinal rather than final-feed batter
+    identity. A substitute occupies the batting-order slot of the player replaced,
+    so the team PA sequence remains cyclic 1..9 throughout the game. This avoids
+    losing observations when the final box-score battingOrder contains substitute
+    identities instead of the original starter who took an earlier PA.
+    """
+    del lineups  # retained in the call signature for backward-compatible workflow inputs
+    x = pa.dropna(subset=["game_id", "batting_team_id", "inning", "play_index"]).copy()
+    x = x.sort_values(["game_id", "batting_team_id", "play_index"], kind="stable")
+    x["team_pa_ordinal"] = x.groupby(["game_id", "batting_team_id"]).cumcount()
+    x["batting_order_slot"] = (x["team_pa_ordinal"] % 9) + 1
+
+    first = (x[x["inning"].between(1, 9)]
+             .sort_values(["game_id", "batting_team_id", "inning", "play_index"], kind="stable")
              .groupby(["game_id", "game_date", "season", "batting_team_id", "inning"], as_index=False)
              .first())
-    first = first.merge(
-        slot_map,
-        left_on=["game_id", "batting_team_id", "batter_id"],
-        right_on=["game_id", "team_id", "player_id"],
-        how="left",
-    )
-    first = first[first["inning"].between(1, 9) & first["batting_order_slot"].between(1, 9)].copy()
     first["team_id"] = first["batting_team_id"]
     first["batting_order_slot"] = first["batting_order_slot"].astype(int)
-    return first[["game_id", "game_date", "season", "team_id", "inning", "batting_order_slot"]]
+    first["slot_source"] = "team_plate_appearance_ordinal_mod9"
+    return first[["game_id", "game_date", "season", "team_id", "inning", "batting_order_slot", "slot_source"]]
 
 
 def empirical_distribution(first: pd.DataFrame, group_cols: list[str]) -> pd.DataFrame:
@@ -339,6 +346,7 @@ def main():
         "market_data_used": False,
         "pregame_identity_claimed": False,
         "batting_order_smoothing_used": False,
+        "batting_order_slot_source": "chronological team PA ordinal modulo 9; substitution-safe",
         "batting_order_method": "raw empirical all-inning start-slot and transition frequencies",
         "batting_order_validation": "Wilson intervals + season stability + forward-season log-loss/Brier validation",
         "outputs": {
