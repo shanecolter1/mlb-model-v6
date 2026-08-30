@@ -1,0 +1,42 @@
+name: Build single-event MLB market inventory
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/pipeline/build_single_event_market_inventory.mjs'
+      - '.github/workflows/single_event_market_inventory.yml'
+  workflow_dispatch:
+    inputs:
+      event_id:
+        description: 'TheOddsAPI MLB event_id'
+        required: false
+        default: '799823f7421c5a5c018435aa85a7b250'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build inventory
+        env:
+          EVENT_ID: ${{ inputs.event_id || '799823f7421c5a5c018435aa85a7b250' }}
+        run: node src/pipeline/build_single_event_market_inventory.mjs
+      - name: Commit inventory
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git add docs/market_inventory/2026-08-30_hou_nym_all_markets.md data/runtime/i2/2026-08-30_hou_nym_all_markets_raw.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Save HOU-NYM all-market proxy inventory"
+          git pull --rebase origin main
+          git push origin HEAD:main
