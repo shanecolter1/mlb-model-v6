@@ -1,0 +1,86 @@
+name: Extend 2021-2025 order and bullpen features
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/ingestion/build_historical_order_bullpen_features.py
+      - .github/workflows/extend_2021_2025_order_bullpen_features.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  extend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download normalized season artifacts from successful foundation build
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-*
+          path: /tmp/season_artifacts
+
+      - name: Merge normalized 2021-2025 data
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Build batting-order and bullpen features
+        run: |
+          python src/ingestion/build_historical_order_bullpen_features.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --lineups /tmp/mlb_2021_2025/lineups.parquet \
+            --starters /tmp/mlb_2021_2025/starters.parquet \
+            --output-dir /tmp/order_bullpen \
+            --shrink-strength 75
+
+      - name: Feature integrity audit
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/order_bullpen')
+          o=pd.read_parquet(root/'batting_order_path_asof.parquet')
+          bt=pd.read_parquet(root/'bullpen_team_asof.parquet')
+          bp=pd.read_parquet(root/'bullpen_pitcher_asof.parquet')
+          m=json.loads((root/'manifest.json').read_text())
+          assert len(o)>10000, len(o)
+          assert len(bt)>5000, len(bt)
+          assert len(bp)>10000, len(bp)
+          assert o['inning'].between(1,9).all()
+          pcols=[f'p_start_slot_{i}' for i in range(1,10)]
+          sums=o[pcols].sum(axis=1)
+          assert ((sums-1).abs()<1e-6).all()
+          assert o['expected_start_slot'].between(1,9).all()
+          assert m['market_data_used'] is False
+          assert m['same_day_prior_games_included'] is False
+          assert m['pregame_identity_claimed'] is False
+          for df in (o,bt,bp):
+              assert df['as_of_date'].notna().all()
+          for df in (bt,bp):
+              rel=[c for c in df.columns if c.endswith('_reliability')]
+              assert rel
+              assert ((df[rel].fillna(0)>=0)&(df[rel].fillna(0)<=1)).all().all()
+          print({'order_rows':len(o),'bullpen_team_rows':len(bt),'bullpen_pitcher_rows':len(bp),'status':'PASS'})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-order-bullpen-features-2021-2025
+          path: /tmp/order_bullpen/
+          retention-days: 30
+          compression-level: 6
