@@ -4,8 +4,21 @@ export const SPORTSBOOK_DATA_SOURCE = Object.freeze({
   provider: 'THE_ODDS_API',
   baseUrl: DEFAULT_BASE_URL,
   apiKeyEnv: 'ODDS_API_KEY',
-  policyVersion: '1.0.0',
+  policyVersion: '1.1.0',
 });
+
+export const REQUIRED_POST_FREEZE_BOOKS = Object.freeze([
+  Object.freeze({ displayName: 'FanDuel', key: 'fanduel', region: 'us', supported: true }),
+  Object.freeze({ displayName: 'DraftKings', key: 'draftkings', region: 'us', supported: true }),
+  Object.freeze({ displayName: 'Hard Rock Bet', key: 'hardrockbet', region: 'us2', supported: true }),
+  Object.freeze({ displayName: 'bet365', key: null, region: null, supported: false, note: 'No US MLB bookmaker key currently listed by The Odds API; report unavailable unless provider support is added.' }),
+  Object.freeze({ displayName: 'Fanatics', key: 'fanatics', region: 'us', supported: true }),
+  Object.freeze({ displayName: 'Caesars', key: 'williamhill_us', region: 'us', supported: true }),
+  Object.freeze({ displayName: 'BetMGM', key: 'betmgm', region: 'us', supported: true }),
+  Object.freeze({ displayName: 'Kalshi', key: 'kalshi', region: 'us_ex', supported: true }),
+  Object.freeze({ displayName: 'Polymarket', key: 'polymarket', region: 'us_ex', supported: true }),
+  Object.freeze({ displayName: 'Pinnacle', key: 'pinnacle', region: 'eu', supported: true, note: 'The Odds API notes Pinnacle prices may be delayed because they are sourced from its public website.' }),
+]);
 
 export const MARKET_ISOLATION = Object.freeze({
   preFreeze: Object.freeze({
@@ -17,6 +30,7 @@ export const MARKET_ISOLATION = Object.freeze({
   postFreeze: Object.freeze({
     allowed: true,
     purpose: 'MARKET_ENUMERATION_PRICE_EV_ONLY',
+    requiredBooks: REQUIRED_POST_FREEZE_BOOKS,
   }),
 });
 
@@ -41,12 +55,10 @@ export async function fetchOddsApiJson(pathname, params = {}, options = {}) {
   const response = await fetch(url, {
     headers: {
       accept: 'application/json',
-      'user-agent': options.userAgent || 'MLB-Model-Sportsbook-Data/1.0',
+      'user-agent': options.userAgent || 'MLB-Model-Sportsbook-Data/1.1',
     },
   });
-  if (!response.ok) {
-    throw new Error(`The Odds API ${response.status} ${response.statusText}`);
-  }
+  if (!response.ok) throw new Error(`The Odds API ${response.status} ${response.statusText}`);
   return response.json();
 }
 
@@ -69,12 +81,8 @@ export async function fetchMlbDraftKingsFullGameTotals(options = {}) {
     const point = Number(over?.point ?? under?.point);
     if (!Number.isFinite(point)) return [];
     return [{
-      eventId: String(event.id),
-      commenceTime: event.commence_time,
-      awayTeam: event.away_team,
-      homeTeam: event.home_team,
-      fullGameTotal: point,
-      bookmaker: 'draftkings',
+      eventId: String(event.id), commenceTime: event.commence_time, awayTeam: event.away_team,
+      homeTeam: event.home_team, fullGameTotal: point, bookmaker: 'draftkings',
       lastUpdate: book.last_update || market.last_update || null,
     }];
   });
@@ -84,26 +92,47 @@ export async function fetchSportsbookMarkets({ sportKey = 'baseball_mlb', eventI
   if (!eventId) throw new Error('eventId is required for post-freeze event market retrieval');
   if (!markets) throw new Error('markets is required for post-freeze event market retrieval');
   return fetchOddsApiJson(`/sports/${sportKey}/events/${eventId}/odds`, {
-    regions,
-    bookmakers,
-    markets,
-    oddsFormat: 'american',
-    dateFormat: 'iso',
+    regions, bookmakers, markets, oddsFormat: 'american', dateFormat: 'iso',
   }, { apiKey });
+}
+
+export async function fetchRequiredPostFreezeMarkets({ sportKey = 'baseball_mlb', eventId, markets, apiKey } = {}) {
+  if (!eventId) throw new Error('eventId is required for post-freeze event market retrieval');
+  if (!markets) throw new Error('markets is required for post-freeze event market retrieval');
+
+  const supported = REQUIRED_POST_FREEZE_BOOKS.filter(x => x.supported && x.key);
+  const byRegion = new Map();
+  for (const book of supported) {
+    if (!byRegion.has(book.region)) byRegion.set(book.region, []);
+    byRegion.get(book.region).push(book.key);
+  }
+
+  const responses = await Promise.all([...byRegion.entries()].map(async ([region, keys]) => ({
+    region,
+    data: await fetchSportsbookMarkets({ sportKey, eventId, bookmakers: keys.join(','), markets, regions: region, apiKey }),
+  })));
+
+  const returnedBooks = new Map();
+  for (const { data } of responses) {
+    for (const book of data?.bookmakers || []) returnedBooks.set(book.key, book);
+  }
+
+  return REQUIRED_POST_FREEZE_BOOKS.map(config => ({
+    displayName: config.displayName,
+    bookmakerKey: config.key,
+    region: config.region,
+    availability: !config.supported ? 'UNSUPPORTED_BY_CANONICAL_SOURCE' : returnedBooks.has(config.key) ? 'AVAILABLE' : 'NOT_RETURNED_FOR_EVENT_MARKET',
+    note: config.note || null,
+    bookmaker: config.key ? returnedBooks.get(config.key) || null : null,
+  }));
 }
 
 export function assertPreFreezeIsolation(record) {
   const keys = Object.keys(record || {});
   const allowed = new Set(MARKET_ISOLATION.preFreeze.allowedFields);
   const forbidden = keys.filter(key => !allowed.has(key));
-  if (forbidden.length) {
-    throw new Error(`Pre-freeze sportsbook payload contains forbidden fields: ${forbidden.join(', ')}`);
-  }
-  if (record.bookmaker !== MARKET_ISOLATION.preFreeze.allowedBookmaker) {
-    throw new Error(`Pre-freeze bookmaker must be ${MARKET_ISOLATION.preFreeze.allowedBookmaker}`);
-  }
-  if (!Number.isFinite(Number(record.fullGameTotal))) {
-    throw new Error('Pre-freeze fullGameTotal must be numeric');
-  }
+  if (forbidden.length) throw new Error(`Pre-freeze sportsbook payload contains forbidden fields: ${forbidden.join(', ')}`);
+  if (record.bookmaker !== MARKET_ISOLATION.preFreeze.allowedBookmaker) throw new Error(`Pre-freeze bookmaker must be ${MARKET_ISOLATION.preFreeze.allowedBookmaker}`);
+  if (!Number.isFinite(Number(record.fullGameTotal))) throw new Error('Pre-freeze fullGameTotal must be numeric');
   return true;
 }
