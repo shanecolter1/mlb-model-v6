@@ -38,7 +38,7 @@ jobs:
             --input-root /tmp/season_artifacts \
             --output-dir /tmp/mlb_2021_2025
 
-      - name: Build batting-order and bullpen features
+      - name: Build empirical all-inning batting-order and bullpen features
         run: |
           python src/ingestion/build_historical_order_bullpen_features.py \
             --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
@@ -47,7 +47,7 @@ jobs:
             --output-dir /tmp/order_bullpen \
             --shrink-strength 75
 
-      - name: Feature integrity audit
+      - name: Feature and statistical validation audit
         run: |
           python - <<'PY'
           import json
@@ -55,17 +55,46 @@ jobs:
           from pathlib import Path
           root=Path('/tmp/order_bullpen')
           o=pd.read_parquet(root/'batting_order_path_asof.parquet')
+          e=pd.read_parquet(root/'batting_order_empirical_all_innings.parquet')
+          es=pd.read_parquet(root/'batting_order_empirical_by_season.parquet')
+          t=pd.read_parquet(root/'batting_order_transition_empirical.parquet')
+          w=pd.read_parquet(root/'batting_order_walkforward_validation.parquet')
+          s=pd.read_parquet(root/'batting_order_stability.parquet')
           bt=pd.read_parquet(root/'bullpen_team_asof.parquet')
           bp=pd.read_parquet(root/'bullpen_pitcher_asof.parquet')
           m=json.loads((root/'manifest.json').read_text())
+
           assert len(o)>10000, len(o)
           assert len(bt)>5000, len(bt)
           assert len(bp)>10000, len(bp)
-          assert o['inning'].between(1,9).all()
+          assert set(e['inning'].unique()) == set(range(1,10))
+          assert set(es['season'].unique()) >= {2021,2022,2023,2024,2025}
+          assert set(t['inning'].unique()) == set(range(2,10))
+          assert set(w['test_season'].unique()) >= {2022,2023,2024,2025}
+          assert set(s['inning'].unique()) == set(range(1,10))
+
+          # Raw empirical probabilities must sum to one wherever history exists.
           pcols=[f'p_start_slot_{i}' for i in range(1,10)]
-          sums=o[pcols].sum(axis=1)
-          assert ((sums-1).abs()<1e-6).all()
-          assert o['expected_start_slot'].between(1,9).all()
+          hist=o[o['prior_team_inning_games']>0]
+          sums=hist[pcols].sum(axis=1)
+          assert ((sums-1).abs()<1e-10).all()
+          nohist=o[o['prior_team_inning_games']==0]
+          assert nohist[pcols].isna().all().all()
+          assert m['batting_order_smoothing_used'] is False
+
+          # Overall and transition empirical distributions must normalize exactly.
+          chk=e.groupby('inning')['probability'].sum()
+          assert ((chk-1).abs()<1e-12).all(), chk
+          tch=t.groupby(['inning','prev_start_slot'])['probability'].sum()
+          assert ((tch-1).abs()<1e-12).all(), tch
+          assert (e['sample_n']>1000).all()
+          assert ((e['wilson95_low']>=0)&(e['wilson95_high']<=1)).all()
+
+          # Walk-forward metrics must be finite and benchmark fields complete.
+          for c in ['empirical_log_loss','uniform_log_loss','empirical_brier','uniform_brier']:
+              assert w[c].notna().all()
+          assert (w['train_n']>0).all() and (w['test_n']>0).all()
+
           assert m['market_data_used'] is False
           assert m['same_day_prior_games_included'] is False
           assert m['pregame_identity_claimed'] is False
@@ -75,7 +104,23 @@ jobs:
               rel=[c for c in df.columns if c.endswith('_reliability')]
               assert rel
               assert ((df[rel].fillna(0)>=0)&(df[rel].fillna(0)<=1)).all().all()
-          print({'order_rows':len(o),'bullpen_team_rows':len(bt),'bullpen_pitcher_rows':len(bp),'status':'PASS'})
+
+          print({
+            'order_rows':len(o),
+            'empirical_rows':len(e),
+            'transition_rows':len(t),
+            'walkforward_rows':len(w),
+            'bullpen_team_rows':len(bt),
+            'bullpen_pitcher_rows':len(bp),
+            'batting_order_smoothing_used':m['batting_order_smoothing_used'],
+            'status':'PASS'
+          })
+          print('ALL-INNING EMPIRICAL DISTRIBUTION')
+          print(e[['inning','batting_order_slot','n','probability','wilson95_low','wilson95_high']].to_string(index=False))
+          print('WALK-FORWARD SUMMARY')
+          print(w.groupby('inning')[['log_loss_improvement','brier_improvement']].mean().to_string())
+          print('SEASON STABILITY SUMMARY')
+          print(s.groupby('inning')[['max_abs_probability_drift','mean_abs_probability_drift','l1_distribution_distance']].mean().to_string())
           PY
 
       - uses: actions/upload-artifact@v4
