@@ -53,3 +53,5 @@ exports.handler = async function(event) {
     return send(502, { error: String(error?.message || error), events: [] });
   }
 };
+
+// Operational no-logic-change trigger for 2026-08-30 I2 daily run.

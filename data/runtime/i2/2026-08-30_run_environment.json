@@ -1,0 +1,24 @@
+{
+  "date": "2026-08-30",
+  "capturedAt": "2026-08-30T14:25:00Z",
+  "source": "DraftKings full-game totals point only; recovery artifact after deployed isolated endpoint returned 404",
+  "scope": "FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES",
+  "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+  "note": "Recovery artifact contains DraftKings full-game total points only and no prices, moneylines, run lines, derivative markets, implied probabilities, consensus, movement, betting percentages, or commentary.",
+  "events": [
+    {"eventId":"recovery-mia-wsh","commenceTime":"2026-08-30T16:15:00Z","awayTeam":"Miami Marlins","homeTeam":"Washington Nationals","fullGameTotal":9.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":9.0,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-col-atl","commenceTime":"2026-08-30T17:35:00Z","awayTeam":"Colorado Rockies","homeTeam":"Atlanta Braves","fullGameTotal":8.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-bos-nyy","commenceTime":"2026-08-30T17:35:00Z","awayTeam":"Boston Red Sox","homeTeam":"New York Yankees","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.0,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-sea-tor","commenceTime":"2026-08-30T17:37:00Z","awayTeam":"Seattle Mariners","homeTeam":"Toronto Blue Jays","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.0,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-kc-cle","commenceTime":"2026-08-30T17:40:00Z","awayTeam":"Kansas City Royals","homeTeam":"Cleveland Guardians","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":7.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-lad-det","commenceTime":"2026-08-30T17:40:00Z","awayTeam":"Los Angeles Dodgers","homeTeam":"Detroit Tigers","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":7.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-sd-tb","commenceTime":"2026-08-30T17:40:00Z","awayTeam":"San Diego Padres","homeTeam":"Tampa Bay Rays","fullGameTotal":7.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":7.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-cws-min","commenceTime":"2026-08-30T18:10:00Z","awayTeam":"Chicago White Sox","homeTeam":"Minnesota Twins","fullGameTotal":8.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-tex-mil","commenceTime":"2026-08-30T18:10:00Z","awayTeam":"Texas Rangers","homeTeam":"Milwaukee Brewers","fullGameTotal":8.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-pit-stl","commenceTime":"2026-08-30T18:15:00Z","awayTeam":"Pittsburgh Pirates","homeTeam":"St. Louis Cardinals","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.0,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-hou-nym","commenceTime":"2026-08-30T19:10:00Z","awayTeam":"Houston Astros","homeTeam":"New York Mets","fullGameTotal":9.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":9.0,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-bal-ath","commenceTime":"2026-08-30T20:05:00Z","awayTeam":"Baltimore Orioles","homeTeam":"Athletics","fullGameTotal":10.5,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":10.5,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-phi-laa","commenceTime":"2026-08-30T20:07:00Z","awayTeam":"Philadelphia Phillies","homeTeam":"Los Angeles Angels","fullGameTotal":8.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":8.0,"latestBookmakerUpdate":null},
+    {"eventId":"recovery-cin-chc","commenceTime":"2026-08-30T23:20:00Z","awayTeam":"Cincinnati Reds","homeTeam":"Chicago Cubs","fullGameTotal":9.0,"bookmaker":"draftkings","firstSeenAt":"2026-08-30T14:25:00Z","lastSeenAt":"2026-08-30T14:25:00Z","latestObservedTotal":9.0,"latestBookmakerUpdate":null}
+  ]
+}
