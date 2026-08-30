@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/i2_daily_run.yml'
+      - 'src/market/sportsbook_data_source.mjs'
       - 'src/pipeline/run_i2_today.mjs'
       - 'src/pipeline/run_i2_today_upstream_wrapper.mjs'
       - 'src/pipeline/run_i2_full_slate_override.mjs'
@@ -36,6 +37,9 @@ concurrency:
 jobs:
   run-i2-slate:
     runs-on: ubuntu-latest
+    env:
+      SPORTSBOOK_DATA_SOURCE: THE_ODDS_API
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -73,10 +77,9 @@ jobs:
 
       - name: Capture required total-conditioned run environment
         env:
-          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_DATE: ${{ steps.params.outputs.date }}
           I2_RUN_ENVIRONMENT: data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json
-          I2_RUN_ENVIRONMENT_ATTEMPTS: '1'
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
         shell: bash
         run: |
           set -euo pipefail
@@ -135,4 +138,4 @@ jobs:
 # single-game ATL-MIL retrigger 2026-08-21T17:50Z
 # requested daily run trigger 2026-08-29T18:55Z
 # merged PR trigger 2026-08-29
-# recovery run uses validated existing run-environment artifact if deployed endpoint is unavailable
+# sportsbook data source centralized on The Odds API 2026-08-30
