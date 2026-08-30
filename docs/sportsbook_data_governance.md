@@ -38,16 +38,29 @@ The pre-freeze artifact scope must remain `FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES`
 
 ### Post-freeze
 
-After model probabilities are written to the frozen prediction artifact, The Odds API may be used for sportsbook market enumeration and pricing. This includes FanDuel, DraftKings, and other supported books and derivative markets. Post-freeze sportsbook data may be used only to:
+After model probabilities are written to the frozen prediction artifact, The Odds API may be used for sportsbook market enumeration and pricing. Post-freeze sportsbook data may be used only to enumerate available wagers, retrieve prices, calculate break-even probability, compare price with frozen fair probability/fair odds, calculate EV, and apply qualification/staking rules. Post-freeze market data must never be fed back into the frozen baseball probability engine.
 
-- enumerate available wagers
-- retrieve prices
-- calculate break-even probability
-- compare price with frozen fair probability/fair odds
-- calculate EV
-- apply qualification and staking rules
+For every model output, retrieve and display an availability/price field for each of these requested books/markets:
 
-Post-freeze market data must never be fed back into the frozen baseball probability engine.
+1. FanDuel (`fanduel`, US)
+2. DraftKings (`draftkings`, US)
+3. Hard Rock Bet (`hardrockbet`, US2)
+4. bet365
+5. Fanatics (`fanatics`, US)
+6. Caesars (`williamhill_us`, US)
+7. BetMGM (`betmgm`, US)
+8. Kalshi (`kalshi`, US exchange)
+9. Polymarket (`polymarket`, US exchange)
+10. Pinnacle (`pinnacle`, EU)
+
+If a requested source does not return the requested event/market, the output must explicitly show `NOT_RETURNED_FOR_EVENT_MARKET`. If the canonical provider does not support the requested source for the relevant sport/region, show `UNSUPPORTED_BY_CANONICAL_SOURCE`. Never silently omit a requested source and never replace it with another book.
+
+Current canonical-provider notes:
+- The Odds API presently lists Kalshi and Polymarket as US exchanges.
+- Pinnacle is listed under the EU region; The Odds API notes that its Pinnacle data is sourced from the public website and may therefore be delayed.
+- The Odds API does not presently list a US MLB bet365 bookmaker key. Until that changes, bet365 must remain visible in output as `UNSUPPORTED_BY_CANONICAL_SOURCE`, rather than being scraped or substituted.
+
+For each available source, output the exact market name/point, Under price, Over price, provider update timestamp, model probability, break-even probability, fair odds, and EV for each side when mathematically applicable.
 
 ## Source hierarchy
 
