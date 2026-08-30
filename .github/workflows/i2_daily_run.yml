@@ -11,6 +11,7 @@ on:
       - 'src/pipeline/run_i2_full_slate_override.mjs'
       - 'src/pipeline/run_i2_total_conditioned.mjs'
       - 'src/pipeline/fetch_i2_run_environment.mjs'
+      - 'src/pipeline/probe_i2_event_markets.mjs'
       - 'src/model/i2_total_conditioning.js'
       - 'data/derived/i2/i2_total_conditioned_prior.json'
       - 'netlify/functions/i2-run-environment.js'
@@ -101,16 +102,29 @@ jobs:
           set -euo pipefail
           node src/pipeline/run_i2_total_conditioned.mjs
 
-      - name: Commit prediction and run-environment artifacts safely
+      - name: Probe post-freeze event-level sportsbook markets
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
+          I2_MARKET_CATALOG: data/runtime/i2/${{ steps.params.outputs.date }}_event_market_catalog.json
+        shell: bash
+        run: |
+          set -euo pipefail
+          node src/pipeline/probe_i2_event_markets.mjs
+
+      - name: Commit prediction, run-environment, and market-catalog artifacts safely
         shell: bash
         run: |
           set -euo pipefail
           ART="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json"
           ENV_ART="data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json"
+          MARKET_ART="data/runtime/i2/${{ steps.params.outputs.date }}_event_market_catalog.json"
           TMP="/tmp/i2_frozen_predictions.json"
           ENV_TMP="/tmp/i2_run_environment.json"
+          MARKET_TMP="/tmp/i2_event_market_catalog.json"
           cp "$ART" "$TMP"
           cp "$ENV_ART" "$ENV_TMP"
+          cp "$MARKET_ART" "$MARKET_TMP"
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
 
@@ -119,12 +133,13 @@ jobs:
             git reset --hard origin/main
             cp "$TMP" "$ART"
             cp "$ENV_TMP" "$ENV_ART"
-            git add "$ART" "$ENV_ART"
+            cp "$MARKET_TMP" "$MARKET_ART"
+            git add "$ART" "$ENV_ART" "$MARKET_ART"
             if git diff --cached --quiet; then
-              echo 'No prediction or run-environment changes.'
+              echo 'No prediction, run-environment, or market-catalog changes.'
               exit 0
             fi
-            git commit -m "Update total-conditioned I2 projections ${{ steps.params.outputs.date }}"
+            git commit -m "Update total-conditioned I2 projections and market catalog ${{ steps.params.outputs.date }}"
             if git push origin HEAD:main; then
               exit 0
             fi
@@ -139,3 +154,4 @@ jobs:
 # requested daily run trigger 2026-08-29T18:55Z
 # merged PR trigger 2026-08-29
 # sportsbook data source centralized on The Odds API 2026-08-30
+# event-level derivative market probe 2026-08-30
