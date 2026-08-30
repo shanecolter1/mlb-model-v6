@@ -1,0 +1,61 @@
+name: As-of feature store smoke test
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/ingestion/build_asof_entity_rates_fast.py
+      - src/ingestion/fetch_mlb_statsapi.py
+      - src/ingestion/normalize_mlb_feeds.py
+      - .github/workflows/asof_feature_store_smoke.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Fetch small official MLB sample
+        run: |
+          python src/ingestion/fetch_mlb_statsapi.py \
+            --start-date 2025-04-01 \
+            --end-date 2025-04-03 \
+            --output-dir /tmp/mlb_raw \
+            --sleep 0.05
+      - name: Normalize sample
+        run: |
+          python src/ingestion/normalize_mlb_feeds.py \
+            --raw-dir /tmp/mlb_raw \
+            --output-dir /tmp/mlb_processed
+      - name: Build vectorized as-of entity rates
+        run: |
+          python src/ingestion/build_asof_entity_rates_fast.py \
+            --plate-appearances /tmp/mlb_processed/plate_appearances.parquet \
+            --output /tmp/baseball_asof/entity_asof_fast.parquet \
+            --shrink-strength 50
+      - name: Integrity checks
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          p = pd.read_parquet('/tmp/mlb_processed/plate_appearances.parquet')
+          e = pd.read_parquet('/tmp/baseball_asof/entity_asof_fast.parquet')
+          assert len(p) > 0
+          assert len(e) > 0
+          assert {'batter','pitcher'} <= set(e['entity_type'].dropna().unique())
+          assert e['as_of_date'].notna().all()
+          assert (e.filter(like='reliability').fillna(0).to_numpy() >= 0).all()
+          print({'plate_appearances': len(p), 'entity_snapshots': len(e), 'status': 'PASS'})
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asof-feature-store-smoke
+          path: /tmp/baseball_asof/
+          retention-days: 7
