@@ -1,6 +1,6 @@
 {
   "date": "2026-08-30",
-  "capturedAt": "2026-08-30T17:01:16.194Z",
+  "capturedAt": "2026-08-30T18:56:17.986Z",
   "source": "THE_ODDS_API",
   "sourcePolicyVersion": "1.2.0",
   "scope": "FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES",
@@ -33,9 +33,9 @@
       "fullGameTotal": 7.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 5.5,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 6.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-col-atl",
@@ -69,9 +69,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 4.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "75e7ebd9013ed49bf10e2b6864286236",
@@ -81,9 +81,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 8,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 4.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-sea-tor",
@@ -105,9 +105,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 8,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 5.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-kc-cle",
@@ -146,6 +146,18 @@
       "latestBookmakerUpdate": null
     },
     {
+      "eventId": "726da57c20b076baecbbed501a78e728",
+      "commenceTime": "2026-08-30T17:41:00Z",
+      "awayTeam": "San Diego Padres",
+      "homeTeam": "Tampa Bay Rays",
+      "fullGameTotal": 7,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-08-30T16:38:28.200Z",
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 6.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
+    },
+    {
       "eventId": "c30933ae1af977f17e3c51c0dc107680",
       "commenceTime": "2026-08-30T17:41:00Z",
       "awayTeam": "Kansas City Royals",
@@ -153,9 +165,9 @@
       "fullGameTotal": 7.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 7.5,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 9.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "369e8c1f02400fd5e4528e7397bdcde6",
@@ -165,21 +177,9 @@
       "fullGameTotal": 7.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
       "latestObservedTotal": 7.5,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
-    },
-    {
-      "eventId": "726da57c20b076baecbbed501a78e728",
-      "commenceTime": "2026-08-30T17:41:00Z",
-      "awayTeam": "San Diego Padres",
-      "homeTeam": "Tampa Bay Rays",
-      "fullGameTotal": 7,
-      "bookmaker": "draftkings",
-      "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 7,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-cws-min",
@@ -213,9 +213,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 9,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 9.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "a91d64137833f64718d0174df935abdb",
@@ -225,9 +225,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 9.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-pit-stl",
@@ -249,9 +249,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
-      "latestObservedTotal": 8,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
+      "latestObservedTotal": 7.5,
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-hou-nym",
@@ -273,9 +273,9 @@
       "fullGameTotal": 9,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
       "latestObservedTotal": 9,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-bal-ath",
@@ -297,9 +297,9 @@
       "fullGameTotal": 10,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
       "latestObservedTotal": 10,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "cd304593a01b05fbfdceca7ab3654067",
@@ -309,9 +309,9 @@
       "fullGameTotal": 7.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
       "latestObservedTotal": 7.5,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     },
     {
       "eventId": "recovery-phi-laa",
@@ -345,9 +345,9 @@
       "fullGameTotal": 9,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-08-30T16:38:28.200Z",
-      "lastSeenAt": "2026-08-30T17:01:16.194Z",
+      "lastSeenAt": "2026-08-30T18:56:17.986Z",
       "latestObservedTotal": 9,
-      "latestBookmakerUpdate": "2026-08-30T17:00:08Z"
+      "latestBookmakerUpdate": "2026-08-30T18:55:04Z"
     }
   ]
 }
