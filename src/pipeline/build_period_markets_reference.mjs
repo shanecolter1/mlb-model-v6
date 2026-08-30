@@ -13,7 +13,7 @@ const csvPath = process.env.PERIOD_CSV || `docs/period_markets/${date}_mlb_perio
 async function getJson(endpoint, params = {}) {
   const url = new URL(endpoint, API_BASE);
   for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== null && v !== '') url.searchParams.set(k, String(v));
-  const r = await fetch(url, { headers: { accept: 'application/json', 'x-api-key': apiKey, 'user-agent': 'MLB-I2-Period-Markets-Reference/1.0' } });
+  const r = await fetch(url, { headers: { accept: 'application/json', 'x-api-key': apiKey, 'user-agent': 'MLB-I2-Period-Markets-Reference/1.1' } });
   const text = await r.text();
   let body;
   try { body = JSON.parse(text); } catch { body = { raw: text }; }
@@ -39,7 +39,8 @@ for (const ev of events) {
 
 const rows = [];
 for (const probe of probes) {
-  const data = Array.isArray(probe.response?.data) ? probe.response.data : [];
+  const rawData = probe.response?.data;
+  const data = Array.isArray(rawData) ? rawData : rawData && typeof rawData === 'object' ? [rawData] : [];
   for (const item of data) {
     for (const market of item.markets || []) {
       for (const book of market.books || []) {
@@ -50,6 +51,7 @@ for (const probe of probes) {
           start_time: item.start_time || probe.start_time,
           market: market.market,
           sportsbook: book.book,
+          updated_at: book.updated_at || null,
           outcomes,
         });
       }
@@ -92,11 +94,11 @@ md.push('');
 for (const book of books) {
   md.push(`### ${book}`);
   const bookRows = rows.filter(r => r.sportsbook === book).sort((a,b) => String(a.start_time).localeCompare(String(b.start_time)) || a.market.localeCompare(b.market));
-  md.push('| Matchup | Market | Outcomes | Updated/Start |');
+  md.push('| Matchup | Market | Outcomes | Updated |');
   md.push('|---|---|---|---|');
   for (const r of bookRows) {
     const outcomeText = r.outcomes.map(o => [o.name, o.point !== undefined ? `line ${o.point}` : null, o.price !== undefined ? `price ${o.price}` : null].filter(Boolean).join(' ')).join('; ');
-    md.push(`| ${esc(r.matchup)} | ${esc(r.market)} | ${esc(outcomeText)} | ${esc(r.start_time)} |`);
+    md.push(`| ${esc(r.matchup)} | ${esc(r.market)} | ${esc(outcomeText)} | ${esc(r.updated_at || '')} |`);
   }
   md.push('');
 }
@@ -109,11 +111,11 @@ for (const p of probes) {
   md.push(`| ${esc(`${p.away_team} @ ${p.home_team}`)} | ${esc(p.event_id)} | ${p.error ? 'ERROR' : 'OK'} | ${esc(aw.events_in_window ?? '')} | ${esc(aw.next_event_at ?? '')} |`);
 }
 
-const csvHeader = ['event_id','matchup','start_time','sportsbook','market','outcome_name','point','price'];
+const csvHeader = ['event_id','matchup','start_time','sportsbook','market','updated_at','outcome_name','point','price'];
 const csvLines = [csvHeader.join(',')];
 const q = v => `"${String(v ?? '').replaceAll('"','""')}"`;
 for (const r of rows) {
-  for (const o of r.outcomes) csvLines.push([r.event_id,r.matchup,r.start_time,r.sportsbook,r.market,o.name,o.point ?? '',o.price ?? ''].map(q).join(','));
+  for (const o of r.outcomes) csvLines.push([r.event_id,r.matchup,r.start_time,r.sportsbook,r.market,r.updated_at || '',o.name,o.point ?? '',o.price ?? ''].map(q).join(','));
 }
 
 const raw = {
