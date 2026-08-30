@@ -1,8 +1,8 @@
 {
   "model": "MLB I2 Under/Over v0.3 Total-Conditioned Research Build",
   "date": "2026-08-30",
-  "cutoff": "2026-08-30T16:38:27Z",
-  "generatedAt": "2026-08-30T16:40:18.976Z",
+  "cutoff": "2026-08-30T17:01:15Z",
+  "generatedAt": "2026-08-30T17:02:57.811Z",
   "trialsPerGame": 50000,
   "marketDataUsed": true,
   "weights": {
@@ -34,8 +34,8 @@
     "Live conditioning currently uses the first observed DraftKings pregame total captured by the isolated run-environment endpoint; it is locked across reruns but is not guaranteed to equal the historical archive opening tick."
   ],
   "remainingGamesAtCutoff": 13,
-  "projectedGames": 9,
-  "pendingOrErroredGames": 4,
+  "projectedGames": 10,
+  "pendingOrErroredGames": 3,
   "ranking": [
     {
       "rank": 1,
@@ -438,6 +438,63 @@
     },
     {
       "rank": 8,
+      "gamePk": 823580,
+      "matchup": "Houston Astros @ New York Mets",
+      "gameDate": "2026-08-30T19:10:00Z",
+      "under05Pct": 54.63,
+      "over05Pct": 45.37,
+      "fairUnder": -120,
+      "fairOver": 120,
+      "awayStarter": "Ethan Pecko",
+      "homeStarter": "Zac Thornton",
+      "awayStarterStats": {
+        "wins": 0,
+        "losses": 0,
+        "record": "0-0",
+        "era": "7.88",
+        "whip": "1.88",
+        "inningsPitched": "8.0",
+        "strikeOuts": 5,
+        "walks": 7,
+        "homeRunsAllowed": 2,
+        "battersFaced": 39,
+        "gamesStarted": 2
+      },
+      "homeStarterStats": {
+        "wins": 3,
+        "losses": 4,
+        "record": "3-4",
+        "era": "2.88",
+        "whip": "1.15",
+        "inningsPitched": "56.1",
+        "strikeOuts": 40,
+        "walks": 14,
+        "homeRunsAllowed": 6,
+        "battersFaced": 223,
+        "gamesStarted": 10
+      },
+      "top2ScorePct": 25.29,
+      "bottom2ScorePct": 26.88,
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 9,
+        "bucket": "9.0",
+        "totalPriorOverPct": 44.1,
+        "totalPriorUnderPct": 55.9,
+        "totalPriorN": 1839,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-08-30T14:25:00Z",
+        "latestObservedTotal": 9,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.05142193718441687,
+        "equalHalfLogitShift": 0.019519060515622688
+      }
+    },
+    {
+      "rank": 9,
       "gamePk": 824876,
       "matchup": "Colorado Rockies @ Atlanta Braves",
       "gameDate": "2026-08-30T17:35:00Z",
@@ -494,7 +551,7 @@
       }
     },
     {
-      "rank": 9,
+      "rank": 10,
       "gamePk": 823662,
       "matchup": "Chicago White Sox @ Minnesota Twins",
       "gameDate": "2026-08-30T18:10:00Z",
@@ -669,7 +726,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.49,
       "homeMeanPitchesEnteringI2": 16.43,
-      "underRank": 8,
+      "underRank": 9,
       "baseballOnlyRaw": {
         "under05": 0.5464,
         "over05": 0.4536,
@@ -1090,7 +1147,7 @@
         "gamesStarted": 26
       },
       "venueProfile": null,
-      "status": "Pre-Game",
+      "status": "Delayed Start",
       "dataAudit": {
         "awayStarterBF": 640,
         "homeStarterBF": 612,
@@ -1629,7 +1686,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.52,
       "homeMeanPitchesEnteringI2": 16.59,
-      "underRank": 9,
+      "underRank": 10,
       "baseballOnlyRaw": {
         "under05": 0.5367,
         "over05": 0.46330000000000005,
@@ -1949,7 +2006,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.91,
       "homeMeanPitchesEnteringI2": 15.99,
-      "underRank": 7,
+      "underRank": 8,
       "baseballOnlyRaw": {
         "under05": 0.54868,
         "over05": 0.45132000000000005,
@@ -1998,7 +2055,7 @@
       "away": "Houston Astros",
       "home": "New York Mets",
       "venue": "Citi Field",
-      "lineupConfirmed": false,
+      "lineupConfirmed": true,
       "awayLineup": [
         "Jeremy Peña",
         "Yordan Alvarez",
@@ -2010,7 +2067,17 @@
         "Cam Smith",
         "Nick Allen"
       ],
-      "homeLineup": [],
+      "homeLineup": [
+        "Francisco Lindor",
+        "Juan Soto",
+        "Bo Bichette",
+        "Carson Benge",
+        "Jared Young",
+        "Luis Robert Jr.",
+        "A.J. Ewing",
+        "Marcus Semien",
+        "Luis Torrens"
+      ],
       "awayStarter": "Ethan Pecko",
       "homeStarter": "Zac Thornton",
       "awayStarterStats": {
@@ -2052,7 +2119,95 @@
         "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
-      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "trials": 50000,
+      "under05": 0.5462872021526142,
+      "over05": 0.4537127978473859,
+      "under05Pct": 54.63,
+      "over05Pct": 45.37,
+      "fairUnder": -120,
+      "fairOver": 120,
+      "fullI2Exact": {
+        "0": 54.63,
+        "1": 20.44,
+        "2": 11.94,
+        "3": 6.47,
+        "4+": 6.53
+      },
+      "fullI2Cumulative": {
+        "1+": 45.37,
+        "2+": 24.93,
+        "3+": 12.99,
+        "4+": 6.53
+      },
+      "top2ScorePct": 25.29,
+      "bottom2ScorePct": 26.88,
+      "awayI2StartSlotPct": {
+        "1": 0.81,
+        "2": 0.27,
+        "3": 0.1,
+        "4": 34.54,
+        "5": 30,
+        "6": 18.4,
+        "7": 9.54,
+        "8": 4.4,
+        "9": 1.93
+      },
+      "homeI2StartSlotPct": {
+        "1": 0.88,
+        "2": 0.39,
+        "3": 0.17,
+        "4": 34.57,
+        "5": 28.67,
+        "6": 18.5,
+        "7": 9.83,
+        "8": 4.77,
+        "9": 2.22
+      },
+      "awayMeanPitchesEnteringI2": 16.24,
+      "homeMeanPitchesEnteringI2": 16.59,
+      "underRank": 7,
+      "baseballOnlyRaw": {
+        "under05": 0.55228,
+        "over05": 0.44772,
+        "under05Pct": 55.23,
+        "over05Pct": 44.77,
+        "fairUnder": -123,
+        "fairOver": 123,
+        "fullI2Exact": {
+          "0": 55.23,
+          "1": 20.17,
+          "2": 11.78,
+          "3": 6.38,
+          "4+": 6.44
+        },
+        "fullI2Cumulative": {
+          "1+": 44.77,
+          "2+": 24.6,
+          "3+": 12.82,
+          "4+": 6.44
+        },
+        "top2ScorePct": 24.92,
+        "bottom2ScorePct": 26.5
+      },
+      "runEnvironmentConditioned": true,
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 9,
+        "bucket": "9.0",
+        "totalPriorOverPct": 44.1,
+        "totalPriorUnderPct": 55.9,
+        "totalPriorN": 1839,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-08-30T14:25:00Z",
+        "latestObservedTotal": 9,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.05142193718441687,
+        "equalHalfLogitShift": 0.019519060515622688
+      }
     },
     {
       "gamePk": 824959,
@@ -2062,7 +2217,17 @@
       "venue": "Sutter Health Park",
       "lineupConfirmed": false,
       "awayLineup": [],
-      "homeLineup": [],
+      "homeLineup": [
+        "Henry Bolte",
+        "Jeff McNeil",
+        "Zack Gelof",
+        "Lawrence Butler",
+        "Donovan Walton",
+        "Tommy White",
+        "Carlos Cortes",
+        "Brian Serven",
+        "Alika Williams"
+      ],
       "awayStarter": "Chris Bassitt",
       "homeStarter": "Jeffrey Springs",
       "awayStarterStats": {
@@ -2092,7 +2257,7 @@
         "gamesStarted": 24
       },
       "venueProfile": null,
-      "status": "Scheduled",
+      "status": "Pre-Game",
       "dataAudit": {
         "awayStarterBF": 335,
         "homeStarterBF": 527,
@@ -2214,8 +2379,8 @@
   "sourcePriorityAudit": {
     "rule": "USER_DATA_FIRST",
     "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
-    "upstreamAttempts": 211,
-    "upstreamSuccesses": 211,
+    "upstreamAttempts": 229,
+    "upstreamSuccesses": 229,
     "officialFallbacks": 0,
     "fallbackEvents": [],
     "unmappedOfficialCalls": 0
@@ -2465,6 +2630,46 @@
     },
     {
       "rank": 7,
+      "gamePk": 823580,
+      "matchup": "Houston Astros @ New York Mets",
+      "gameDate": "2026-08-30T19:10:00Z",
+      "under05Pct": 55.23,
+      "over05Pct": 44.77,
+      "fairUnder": -123,
+      "fairOver": 123,
+      "awayStarter": "Ethan Pecko",
+      "homeStarter": "Zac Thornton",
+      "awayStarterStats": {
+        "wins": 0,
+        "losses": 0,
+        "record": "0-0",
+        "era": "7.88",
+        "whip": "1.88",
+        "inningsPitched": "8.0",
+        "strikeOuts": 5,
+        "walks": 7,
+        "homeRunsAllowed": 2,
+        "battersFaced": 39,
+        "gamesStarted": 2
+      },
+      "homeStarterStats": {
+        "wins": 3,
+        "losses": 4,
+        "record": "3-4",
+        "era": "2.88",
+        "whip": "1.15",
+        "inningsPitched": "56.1",
+        "strikeOuts": 40,
+        "walks": 14,
+        "homeRunsAllowed": 6,
+        "battersFaced": 223,
+        "gamesStarted": 10
+      },
+      "top2ScorePct": 24.92,
+      "bottom2ScorePct": 26.5
+    },
+    {
+      "rank": 8,
       "gamePk": 823010,
       "matchup": "Pittsburgh Pirates @ St. Louis Cardinals",
       "gameDate": "2026-08-30T18:15:00Z",
@@ -2504,7 +2709,7 @@
       "bottom2ScorePct": 23.49
     },
     {
-      "rank": 8,
+      "rank": 9,
       "gamePk": 824876,
       "matchup": "Colorado Rockies @ Atlanta Braves",
       "gameDate": "2026-08-30T17:35:00Z",
@@ -2544,7 +2749,7 @@
       "bottom2ScorePct": 24.94
     },
     {
-      "rank": 9,
+      "rank": 10,
       "gamePk": 823662,
       "matchup": "Chicago White Sox @ Minnesota Twins",
       "gameDate": "2026-08-30T18:10:00Z",
@@ -2590,7 +2795,7 @@
   "predictionFrozenBeforeDerivativeMarketRetrieval": true,
   "runEnvironmentConditioning": {
     "required": true,
-    "appliedGames": 9,
+    "appliedGames": 10,
     "missingApprovedTotalGames": 0,
     "missingPriorBucketGames": 0,
     "totalArtifact": "data/runtime/i2/2026-08-30_run_environment.json",

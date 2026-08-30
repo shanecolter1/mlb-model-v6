@@ -1,6 +1,6 @@
 # MLB Business Period Markets Reference — 2026-08-30
 
-Generated: 2026-08-30T17:01:06.318Z
+Generated: 2026-08-30T17:03:00.675Z
 
 Source: TheOddsAPI Business `GET /period-markets/?sport_key=baseball_mlb&event_id=...`, queried separately for every MLB event returned for the date. This is post-freeze market enumeration only and is not used by the I2 prediction engine.
 
