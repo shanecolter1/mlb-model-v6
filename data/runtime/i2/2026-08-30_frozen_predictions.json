@@ -1,8 +1,8 @@
 {
   "model": "MLB I2 Under/Over v0.3 Total-Conditioned Research Build",
   "date": "2026-08-30",
-  "cutoff": "2026-08-30T15:40:54Z",
-  "generatedAt": "2026-08-30T15:42:11.927Z",
+  "cutoff": "2026-08-30T15:48:30Z",
+  "generatedAt": "2026-08-30T15:50:20.655Z",
   "trialsPerGame": 50000,
   "marketDataUsed": true,
   "weights": {
@@ -34,8 +34,8 @@
     "Live conditioning currently uses the first observed DraftKings pregame total captured by the isolated run-environment endpoint; it is locked across reruns but is not guaranteed to equal the historical archive opening tick."
   ],
   "remainingGamesAtCutoff": 14,
-  "projectedGames": 8,
-  "pendingOrErroredGames": 6,
+  "projectedGames": 9,
+  "pendingOrErroredGames": 5,
   "ranking": [
     {
       "rank": 1,
@@ -267,6 +267,63 @@
     },
     {
       "rank": 5,
+      "gamePk": 823010,
+      "matchup": "Pittsburgh Pirates @ St. Louis Cardinals",
+      "gameDate": "2026-08-30T18:15:00Z",
+      "under05Pct": 56.12,
+      "over05Pct": 43.88,
+      "fairUnder": -128,
+      "fairOver": 128,
+      "awayStarter": "Braxton Ashcraft",
+      "homeStarter": "Matthew Liberatore",
+      "awayStarterStats": {
+        "wins": 13,
+        "losses": 5,
+        "record": "13-5",
+        "era": "3.59",
+        "whip": "1.07",
+        "inningsPitched": "155.1",
+        "strikeOuts": 161,
+        "walks": 34,
+        "homeRunsAllowed": 21,
+        "battersFaced": 623,
+        "gamesStarted": 26
+      },
+      "homeStarterStats": {
+        "wins": 5,
+        "losses": 12,
+        "record": "5-12",
+        "era": "5.44",
+        "whip": "1.47",
+        "inningsPitched": "129.0",
+        "strikeOuts": 132,
+        "walks": 45,
+        "homeRunsAllowed": 23,
+        "battersFaced": 563,
+        "gamesStarted": 26
+      },
+      "top2ScorePct": 27.44,
+      "bottom2ScorePct": 22.66,
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "DraftKings full-game totals point only; recovery artifact after deployed isolated endpoint returned 404",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-08-30T14:25:00Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.06597029287134093,
+        "equalHalfLogitShift": -0.0467396882266396
+      }
+    },
+    {
+      "rank": 6,
       "gamePk": 822688,
       "matchup": "Miami Marlins @ Washington Nationals",
       "gameDate": "2026-08-30T16:15:00Z",
@@ -323,7 +380,7 @@
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "gamePk": 823740,
       "matchup": "Texas Rangers @ Milwaukee Brewers",
       "gameDate": "2026-08-30T18:10:00Z",
@@ -380,7 +437,7 @@
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "gamePk": 824876,
       "matchup": "Colorado Rockies @ Atlanta Braves",
       "gameDate": "2026-08-30T17:35:00Z",
@@ -437,7 +494,7 @@
       }
     },
     {
-      "rank": 8,
+      "rank": 9,
       "gamePk": 823662,
       "matchup": "Chicago White Sox @ Minnesota Twins",
       "gameDate": "2026-08-30T18:10:00Z",
@@ -772,7 +829,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.49,
       "homeMeanPitchesEnteringI2": 16.43,
-      "underRank": 7,
+      "underRank": 8,
       "baseballOnlyRaw": {
         "under05": 0.5464,
         "over05": 0.4536,
@@ -1634,7 +1691,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.52,
       "homeMeanPitchesEnteringI2": 16.59,
-      "underRank": 8,
+      "underRank": 9,
       "baseballOnlyRaw": {
         "under05": 0.5367,
         "over05": 0.46330000000000005,
@@ -1843,8 +1900,18 @@
       "away": "Pittsburgh Pirates",
       "home": "St. Louis Cardinals",
       "venue": "Busch Stadium",
-      "lineupConfirmed": false,
-      "awayLineup": [],
+      "lineupConfirmed": true,
+      "awayLineup": [
+        "Jared Triolo",
+        "Oneil Cruz",
+        "Bryan Reynolds",
+        "Rafael Flores Jr.",
+        "Brandon Lowe",
+        "Esmerlyn Valdez",
+        "Jake Mangum",
+        "Spencer Horwitz",
+        "Nick Yorke"
+      ],
       "homeLineup": [
         "Bryan Torres",
         "Iván Herrera",
@@ -1897,7 +1964,95 @@
         "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
-      "modelStatus": "PENDING_CONFIRMED_LINEUP"
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "trials": 50000,
+      "under05": 0.561178703501245,
+      "over05": 0.43882129649875506,
+      "under05Pct": 56.12,
+      "over05Pct": 43.88,
+      "fairUnder": -128,
+      "fairOver": 128,
+      "fullI2Exact": {
+        "0": 56.12,
+        "1": 20.39,
+        "2": 11.53,
+        "3": 6,
+        "4+": 5.96
+      },
+      "fullI2Cumulative": {
+        "1+": 43.88,
+        "2+": 23.49,
+        "3+": 11.96,
+        "4+": 5.96
+      },
+      "top2ScorePct": 27.44,
+      "bottom2ScorePct": 22.66,
+      "awayI2StartSlotPct": {
+        "1": 1.13,
+        "2": 0.47,
+        "3": 0.16,
+        "4": 33.53,
+        "5": 29.14,
+        "6": 18.67,
+        "7": 9.75,
+        "8": 4.93,
+        "9": 2.23
+      },
+      "homeI2StartSlotPct": {
+        "1": 0.6,
+        "2": 0.27,
+        "3": 0.1,
+        "4": 37.07,
+        "5": 29.67,
+        "6": 18.11,
+        "7": 8.72,
+        "8": 3.81,
+        "9": 1.64
+      },
+      "awayMeanPitchesEnteringI2": 16.91,
+      "homeMeanPitchesEnteringI2": 15.99,
+      "underRank": 7,
+      "baseballOnlyRaw": {
+        "under05": 0.54868,
+        "over05": 0.45132000000000005,
+        "under05Pct": 54.87,
+        "over05Pct": 45.13,
+        "fairUnder": -122,
+        "fairOver": 122,
+        "fullI2Exact": {
+          "0": 54.87,
+          "1": 20.97,
+          "2": 11.86,
+          "3": 6.17,
+          "4+": 6.13
+        },
+        "fullI2Cumulative": {
+          "1+": 45.13,
+          "2+": 24.16,
+          "3+": 12.3,
+          "4+": 6.13
+        },
+        "top2ScorePct": 28.38,
+        "bottom2ScorePct": 23.49
+      },
+      "runEnvironmentConditioned": true,
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "DraftKings full-game totals point only; recovery artifact after deployed isolated endpoint returned 404",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-08-30T14:25:00Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.06597029287134093,
+        "equalHalfLogitShift": -0.0467396882266396
+      }
     },
     {
       "gamePk": 823580,
@@ -2111,8 +2266,8 @@
   "sourcePriorityAudit": {
     "rule": "USER_DATA_FIRST",
     "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
-    "upstreamAttempts": 205,
-    "upstreamSuccesses": 205,
+    "upstreamAttempts": 214,
+    "upstreamSuccesses": 214,
     "officialFallbacks": 0,
     "fallbackEvents": [],
     "unmappedOfficialCalls": 0
@@ -2362,6 +2517,46 @@
     },
     {
       "rank": 7,
+      "gamePk": 823010,
+      "matchup": "Pittsburgh Pirates @ St. Louis Cardinals",
+      "gameDate": "2026-08-30T18:15:00Z",
+      "under05Pct": 54.87,
+      "over05Pct": 45.13,
+      "fairUnder": -122,
+      "fairOver": 122,
+      "awayStarter": "Braxton Ashcraft",
+      "homeStarter": "Matthew Liberatore",
+      "awayStarterStats": {
+        "wins": 13,
+        "losses": 5,
+        "record": "13-5",
+        "era": "3.59",
+        "whip": "1.07",
+        "inningsPitched": "155.1",
+        "strikeOuts": 161,
+        "walks": 34,
+        "homeRunsAllowed": 21,
+        "battersFaced": 623,
+        "gamesStarted": 26
+      },
+      "homeStarterStats": {
+        "wins": 5,
+        "losses": 12,
+        "record": "5-12",
+        "era": "5.44",
+        "whip": "1.47",
+        "inningsPitched": "129.0",
+        "strikeOuts": 132,
+        "walks": 45,
+        "homeRunsAllowed": 23,
+        "battersFaced": 563,
+        "gamesStarted": 26
+      },
+      "top2ScorePct": 28.38,
+      "bottom2ScorePct": 23.49
+    },
+    {
+      "rank": 8,
       "gamePk": 824876,
       "matchup": "Colorado Rockies @ Atlanta Braves",
       "gameDate": "2026-08-30T17:35:00Z",
@@ -2401,7 +2596,7 @@
       "bottom2ScorePct": 24.94
     },
     {
-      "rank": 8,
+      "rank": 9,
       "gamePk": 823662,
       "matchup": "Chicago White Sox @ Minnesota Twins",
       "gameDate": "2026-08-30T18:10:00Z",
@@ -2447,7 +2642,7 @@
   "predictionFrozenBeforeDerivativeMarketRetrieval": true,
   "runEnvironmentConditioning": {
     "required": true,
-    "appliedGames": 8,
+    "appliedGames": 9,
     "missingApprovedTotalGames": 0,
     "missingPriorBucketGames": 0,
     "totalArtifact": "data/runtime/i2/2026-08-30_run_environment.json",
