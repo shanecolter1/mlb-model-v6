@@ -63,19 +63,20 @@ def season_prior(daily: pd.DataFrame, metrics: list[str]) -> pd.DataFrame:
     x = daily.copy()
     x["season"] = x["game_date"].dt.year
     cols = metrics + ["opportunities"]
-    # Daily aggregation followed by shift guarantees no same-date leakage, including doubleheaders.
+    additions = {}
     for c in cols:
-        x[f"season_{c}"] = x.groupby(["entity_id","season"], sort=False)[c].transform(lambda s: s.shift(1).fillna(0).cumsum())
-    keep = ["entity_id","game_date"] + [f"season_{c}" for c in cols]
-    return x[keep]
+        additions[f"season_{c}"] = x.groupby(["entity_id","season"], sort=False)[c].transform(
+            lambda s: s.shift(1).fillna(0).cumsum()
+        )
+    z = pd.concat([x[["entity_id","game_date"]].reset_index(drop=True), pd.DataFrame(additions)], axis=1)
+    return z
 
 
 def rolling_prior(daily: pd.DataFrame, metrics: list[str], days: int) -> pd.DataFrame:
     cols = metrics + ["opportunities"]
     parts = []
-    # One group per player is much cheaper than one full-history scan per MLB date.
     for entity_id, g in daily.groupby("entity_id", sort=False):
-        g = g.sort_values("game_date").copy()
+        g = g.sort_values("game_date")
         r = g.set_index("game_date")[cols].rolling(f"{days}D", closed="left").sum().fillna(0)
         r = r.add_prefix(f"{days}d_").reset_index()
         r.insert(0, "entity_id", entity_id)
@@ -86,13 +87,14 @@ def rolling_prior(daily: pd.DataFrame, metrics: list[str], days: int) -> pd.Data
 def add_rates(frame: pd.DataFrame, prefix: str, metrics: list[str], prior: pd.DataFrame, strength: float) -> pd.DataFrame:
     x = frame.merge(prior.reset_index(), on="game_date", how="left")
     opp = pd.to_numeric(x[f"{prefix}_opportunities"], errors="coerce").fillna(0.0)
-    x[f"{prefix}_reliability"] = opp / (opp + strength)
+    additions = {f"{prefix}_reliability": opp / (opp + strength)}
     for c in metrics:
         count = pd.to_numeric(x[f"{prefix}_{c}"], errors="coerce").fillna(0.0)
         lp = pd.to_numeric(x[f"league_{c}"], errors="coerce").fillna(0.0)
-        x[f"{prefix}_{c}_rate_raw"] = count / opp.replace(0, np.nan)
-        x[f"{prefix}_{c}_rate_shrunk"] = (count + strength * lp) / (opp + strength)
-    return x.drop(columns=[f"league_{c}" for c in metrics])
+        additions[f"{prefix}_{c}_rate_raw"] = count / opp.replace(0, np.nan)
+        additions[f"{prefix}_{c}_rate_shrunk"] = (count + strength * lp) / (opp + strength)
+    x = pd.concat([x.drop(columns=[f"league_{c}" for c in metrics]), pd.DataFrame(additions, index=x.index)], axis=1)
+    return x.copy()
 
 
 def build_entity(pa: pd.DataFrame, entity_type: str, metrics: list[str], league: pd.DataFrame, strength: float) -> pd.DataFrame:
@@ -103,9 +105,8 @@ def build_entity(pa: pd.DataFrame, entity_type: str, metrics: list[str], league:
         out = out.merge(rolling_prior(d, metrics, days), on=["entity_id","game_date"], how="left")
     for prefix in ["season"] + [f"{d}d" for d in WINDOWS]:
         out = add_rates(out, prefix, metrics, league, strength)
-    out.insert(1, "entity_type", entity_type)
-    out = out.rename(columns={"game_date":"as_of_date"})
-    return out
+    out = pd.concat([out[["entity_id"]], pd.Series(entity_type, index=out.index, name="entity_type"), out.drop(columns=["entity_id"])], axis=1)
+    return out.rename(columns={"game_date":"as_of_date"})
 
 
 def main():
