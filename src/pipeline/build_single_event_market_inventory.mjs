@@ -4,11 +4,11 @@ import path from 'node:path';
 const API_BASE='https://api.theoddsapi.com';
 const apiKey=String(process.env.ODDS_API_KEY||'').trim();
 if(!apiKey) throw new Error('ODDS_API_KEY is required');
-const eventId=process.env.EVENT_ID||'799823f7421c5a5c018435aa85a7b250';
-const out=process.env.OUT||'docs/market_inventory/2026-08-30_hou_nym_all_markets.md';
-const rawOut=process.env.RAW_OUT||'data/runtime/i2/2026-08-30_hou_nym_all_markets_raw.json';
+const eventId=process.env.EVENT_ID||'369e8c1f02400fd5e4528e7397bdcde6';
+const out=process.env.OUT||'docs/market_inventory/2026-08-30_lad_det_all_markets.md';
+const rawOut=process.env.RAW_OUT||'data/runtime/i2/2026-08-30_lad_det_all_markets_raw.json';
 
-async function get(endpoint,params){const u=new URL(endpoint,API_BASE);for(const[k,v]of Object.entries(params||{}))if(v!==undefined&&v!==null&&v!=='')u.searchParams.set(k,String(v));const r=await fetch(u,{headers:{accept:'application/json','x-api-key':apiKey,'user-agent':'MLB-I2-Single-Event-Market-Inventory/1.0'}});const t=await r.text();let b;try{b=JSON.parse(t)}catch{b={raw:t}};return {status:r.status,ok:r.ok,body:b,url:u.pathname+'?'+u.searchParams.toString()};}
+async function get(endpoint,params){const u=new URL(endpoint,API_BASE);for(const[k,v]of Object.entries(params||{}))if(v!==undefined&&v!==null&&v!=='')u.searchParams.set(k,String(v));const r=await fetch(u,{headers:{accept:'application/json','x-api-key':apiKey,'user-agent':'MLB-I2-Single-Event-Market-Inventory/1.1'}});const t=await r.text();let b;try{b=JSON.parse(t)}catch{b={raw:t}};return {status:r.status,ok:r.ok,body:b,url:u.pathname+'?'+u.searchParams.toString()};}
 
 const core=await get('/odds/',{sport_key:'baseball_mlb',event_id:eventId});
 const period=await get('/period-markets/',{sport_key:'baseball_mlb',event_id:eventId});
