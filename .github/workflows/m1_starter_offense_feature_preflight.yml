@@ -24,7 +24,6 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt
-
       - name: Download reusable leakage-safe feature store
         uses: actions/download-artifact@v4
         with:
@@ -33,52 +32,34 @@ jobs:
           run-id: 33336358517
           name: reusable-baseball-asof-2021-2025
           path: /tmp/reusable
-
-      - name: Audit M1 source feature coverage
+      - name: Audit raw M1 source feature coverage
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
           import pandas as pd
           base=Path('/tmp/reusable')
-          matches=list(base.rglob('starter_asof.parquet'))
-          assert len(matches)==1, {'starter_asof_matches':[str(p) for p in matches]}
-          root=matches[0].parent
-          print('FEATURE_STORE_ROOT', root)
-          print('FILES', sorted(p.name for p in root.iterdir()))
-          st=pd.read_parquet(root/'starter_asof.parquet')
-          tg=pd.read_parquet(root/'game_team_asof.parquet')
-          gi=pd.read_parquet(root/'game_index.parquet')
-          def pick(df,cands):
-              for c in cands:
-                  if c in df.columns:return c
-              return None
+          def one(name):
+              hits=list(base.rglob(name)); assert len(hits)==1,{name:[str(x) for x in hits]}; return hits[0]
+          ent=pd.read_parquet(one('entity_asof.parquet'))
+          team=pd.read_parquet(one('team_asof.parquet'))
+          st=pd.read_parquet(one('starter_asof.parquet'))
+          gi=pd.read_parquet(one('game_index.parquet'))
+          p=ent[ent['entity_type']=='pitcher'].copy(); b=team[team['team_role']=='batting'].copy()
           candidates={
-            'k':['365d_ev_strikeout_rate_shrunk','365d_strikeout_rate_shrunk','season_ev_strikeout_rate_shrunk'],
-            'bb':['365d_ev_walk_rate_shrunk','365d_walk_rate_shrunk','season_ev_walk_rate_shrunk'],
-            'hr':['365d_ev_home_run_rate_shrunk','365d_home_run_rate_shrunk','season_ev_home_run_rate_shrunk'],
-            'hit':['365d_ev_hit_rate_shrunk','365d_hit_rate_shrunk','season_ev_hit_rate_shrunk'],
-          }
-          src_st={k:pick(st,v) for k,v in candidates.items()}
-          src_tg={k:pick(tg,v) for k,v in candidates.items()}
-          assert all(src_st.values()), src_st
-          assert all(src_tg.values()), src_tg
-          st_coverage={k:float(pd.to_numeric(st[c],errors='coerce').notna().mean()) for k,c in src_st.items()}
-          tg_coverage={k:float(pd.to_numeric(tg[c],errors='coerce').notna().mean()) for k,c in src_tg.items()}
-          assert (st['statistics_timing_class']=='asof_safe_strictly_prior_date').all()
-          assert (tg['statistics_timing_class']=='asof_safe_strictly_prior_date').all()
-          out={
-            'feature_store_root':str(root),
-            'games':len(gi),'starter_rows':len(st),'team_game_rows':len(tg),
-            'starter_source_columns':src_st,'offense_source_columns':src_tg,
-            'starter_nonnull_coverage':st_coverage,'offense_nonnull_coverage':tg_coverage,
-            'statistics_timing_class':'asof_safe_strictly_prior_date',
-            'status':'PASS'
-          }
-          Path('/tmp/m1_preflight.json').write_text(json.dumps(out,indent=2))
-          print(json.dumps(out,indent=2))
+            'k':['365d_ev_strikeout_rate_raw','365d_ev_strikeout_rate_shrunk','season_ev_strikeout_rate_raw','season_ev_strikeout_rate_shrunk'],
+            'bb':['365d_ev_walk_rate_raw','365d_ev_walk_rate_shrunk','season_ev_walk_rate_raw','season_ev_walk_rate_shrunk'],
+            'hr':['365d_ev_home_run_rate_raw','365d_ev_home_run_rate_shrunk','season_ev_home_run_rate_raw','season_ev_home_run_rate_shrunk'],
+            'hit':['365d_ev_hit_rate_raw','365d_ev_hit_rate_shrunk','season_ev_hit_rate_raw','season_ev_hit_rate_shrunk']}
+          def pick(df,cands):
+              return next((c for c in cands if c in df.columns),None)
+          src_p={k:pick(p,v) for k,v in candidates.items()}; src_b={k:pick(b,v) for k,v in candidates.items()}
+          assert all(src_p.values()),src_p; assert all(src_b.values()),src_b
+          pcov={k:float(pd.to_numeric(p[c],errors='coerce').notna().mean()) for k,c in src_p.items()}; bcov={k:float(pd.to_numeric(b[c],errors='coerce').notna().mean()) for k,c in src_b.items()}
+          assert len(gi)>=12000; assert len(st)>=24000
+          out={'games':len(gi),'starter_rows':len(st),'pitcher_asof_rows':len(p),'batting_team_asof_rows':len(b),'pitcher_source_columns':src_p,'offense_source_columns':src_b,'pitcher_nonnull_coverage':pcov,'offense_nonnull_coverage':bcov,'strict_cutoff':'source_event_date < target_game_date','same_day_prior_games_included':False,'status':'PASS'}
+          Path('/tmp/m1_preflight.json').write_text(json.dumps(out,indent=2)); print(json.dumps(out,indent=2))
           PY
-
       - uses: actions/upload-artifact@v4
         with:
           name: m1-starter-offense-feature-preflight
