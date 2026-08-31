@@ -41,28 +41,29 @@ def norm_code(x):
     return aliases.get(s,s)
 
 def add_game_number(gi):
-    """Recover doubleheader game number without using outcome information.
+    """Recover Retrosheet game_number without using outcome information.
 
-    The reusable game index preserves game_datetime but not MLB gameNumber. For
-    same-date/same-matchup duplicates, chronological scheduled game time provides
-    the deterministic game-1/game-2 ordering needed to join the Retrosheet master.
-    Single games are game_number=1.
+    Retrosheet uses game_number=0 for a single game and 1/2 for a doubleheader.
+    The reusable game index preserves game_datetime but not that field. Same-date,
+    same-matchup duplicates are therefore ordered chronologically to recover 1/2;
+    singleton matchup-date groups are assigned 0. No score or outcome is used.
     """
     x=gi.copy()
     keys=['game_date','away_team_code','home_team_code']
     if 'game_number' in x.columns:
         x['game_number']=pd.to_numeric(x['game_number'],errors='coerce').astype('Int64')
         return x
+    group_size=x.groupby(keys,dropna=False)['game_id'].transform('size')
     if 'game_datetime' not in x.columns:
-        dup=x.duplicated(keys,keep=False)
-        if dup.any():
+        if (group_size>1).any():
             raise RuntimeError('game_index has same-date matchup duplicates but lacks game_datetime/game_number')
-        x['game_number']=1
+        x['game_number']=0
         return x
     x['_game_datetime_sort']=pd.to_datetime(x['game_datetime'],errors='coerce',utc=True)
-    # game_id is a stable final tie-break only; no scoring/outcome information is used.
     x=x.sort_values(keys+['_game_datetime_sort','game_id'],kind='mergesort').copy()
-    x['game_number']=x.groupby(keys,dropna=False).cumcount()+1
+    group_size=x.groupby(keys,dropna=False)['game_id'].transform('size')
+    seq=x.groupby(keys,dropna=False).cumcount()+1
+    x['game_number']=np.where(group_size.eq(1),0,seq).astype(int)
     return x.drop(columns=['_game_datetime_sort'])
 
 def main():
@@ -82,10 +83,14 @@ def main():
     idx=gi[['game_id','game_date','game_number','away_team_id','home_team_id','away_team_code','home_team_code']].copy()
     join_keys=['game_date','away_team_code','home_team_code','game_number']
     if idx.duplicated(join_keys).any():
-        raise RuntimeError('game_index remains non-unique after doubleheader game-number reconstruction')
+        raise RuntimeError('game_index remains non-unique after Retrosheet game-number reconstruction')
     if m.duplicated(join_keys).any():
         raise RuntimeError('historical master is non-unique on date/teams/game_number')
     joined=m.merge(idx,on=join_keys,how='inner',validate='one_to_one')
+    if len(joined)!=len(m):
+        missing=m.merge(idx[join_keys],on=join_keys,how='left',indicator=True)
+        missing=missing[missing['_merge']=='left_only'][join_keys]
+        raise RuntimeError(f'Historical/game-index join incomplete: matched {len(joined)} of {len(m)} eligible master rows; first missing keys={missing.head(20).to_dict("records")}')
 
     pr=rate_cols(ent[ent.entity_type=='pitcher']); br=rate_cols(team[team.team_role=='batting'])
     p=ent[ent.entity_type=='pitcher'][['entity_id','as_of_date',*pr.values()]].copy().rename(columns={'entity_id':'pitcher_id','as_of_date':'game_date',pr['k']:'starter_k',pr['bb']:'starter_bb',pr['hr']:'starter_hr',pr['hit']:'starter_hit'})
@@ -107,6 +112,6 @@ def main():
     agg['season']=agg.game_date.dt.year.astype(int); agg['starter_identity_timing_class']='retrospective_actual_first_pitcher_unverified_pregame'; agg['statistics_timing_class']='asof_safe_strictly_prior_date'; agg['market_columns_retained']='dk_total_open_total_only'
     agg.to_parquet(a.output,index=False)
     feats=['starter_k_rate','starter_bb_rate','starter_hr_rate','starter_nonhr_hit_rate','opponent_k_rate','opponent_bb_rate','opponent_hr_rate','opponent_nonhr_hit_rate','contact_interaction','power_interaction','baserunner_interaction']
-    manifest={'rows':int(len(agg)),'seasons':sorted(agg.season.unique().tolist()),'eligible_master_rows':int(len(m)),'matched_master_rows':int(len(joined)),'join_keys':join_keys,'doubleheader_disambiguation':'chronological game_datetime within date/away/home; no outcome information','m1_features':feats,'feature_nonnull_coverage':{c:float(agg[c].notna().mean()) for c in feats},'pitcher_source_columns':pr,'offense_source_columns':br,'future_information_in_statistics':False,'starter_identity_pregame_verified':False,'market_data_retained':['dk_total_open_total'],'market_derivative_features_retained':False}
+    manifest={'rows':int(len(agg)),'seasons':sorted(agg.season.unique().tolist()),'eligible_master_rows':int(len(m)),'matched_master_rows':int(len(joined)),'join_keys':join_keys,'doubleheader_disambiguation':'Retrosheet convention: singleton=0; same-date matchup duplicates ordered by game_datetime as 1/2; no outcome information','m1_features':feats,'feature_nonnull_coverage':{c:float(agg[c].notna().mean()) for c in feats},'pitcher_source_columns':pr,'offense_source_columns':br,'future_information_in_statistics':False,'starter_identity_pregame_verified':False,'market_data_retained':['dk_total_open_total'],'market_derivative_features_retained':False}
     a.output.with_suffix('.manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8'); print(json.dumps(manifest,indent=2))
 if __name__=='__main__':main()
