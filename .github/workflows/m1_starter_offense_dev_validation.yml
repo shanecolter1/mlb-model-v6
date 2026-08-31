@@ -39,7 +39,7 @@ jobs:
           P="${{ inputs.historical_master_path || 'data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz' }}"
           if [ ! -f "$P" ]; then
             echo "Historical master is not present in this checkout: $P"
-            echo "The canonical master exists outside this checkout and must be bridged before development validation can run."
+            echo "Canonical master must be bridged into the repository before development validation can run."
             exit 2
           fi
           echo "path=$P" >> "$GITHUB_OUTPUT"
@@ -53,28 +53,18 @@ jobs:
           name: reusable-baseball-asof-2021-2025
           path: /tmp/reusable
 
-      - name: Discover raw as-of tables
-        id: roots
-        shell: bash
+      - name: Verify raw as-of artifact contents
         run: |
-          set -euo pipefail
-          ENTITY=$(find /tmp/reusable -name entity_asof.parquet -print -quit)
-          TEAM=$(find /tmp/reusable -name team_asof.parquet -print -quit)
-          STARTER=$(find /tmp/reusable -name starter_asof.parquet -print -quit)
-          GAMEIDX=$(find /tmp/reusable -name game_index.parquet -print -quit)
-          test -n "$ENTITY" && test -n "$TEAM" && test -n "$STARTER" && test -n "$GAMEIDX"
-          STORE=$(dirname "$STARTER")
-          echo "entity=$ENTITY" >> "$GITHUB_OUTPUT"
-          echo "team=$TEAM" >> "$GITHUB_OUTPUT"
-          echo "store=$STORE" >> "$GITHUB_OUTPUT"
+          test -n "$(find /tmp/reusable -name entity_asof.parquet -print -quit)"
+          test -n "$(find /tmp/reusable -name team_asof.parquet -print -quit)"
+          test -n "$(find /tmp/reusable -name starter_asof.parquet -print -quit)"
+          test -n "$(find /tmp/reusable -name game_index.parquet -print -quit)"
 
       - name: Build game-level M1 matrix
         run: |
           python src/analysis/build_m1_starter_offense_matrix.py \
             --master "${{ steps.master.outputs.path }}" \
-            --feature-store "${{ steps.roots.outputs.store }}" \
-            --entity-asof "${{ steps.roots.outputs.entity }}" \
-            --team-asof "${{ steps.roots.outputs.team }}" \
+            --artifact-root /tmp/reusable \
             --output /tmp/m1/m1_matrix.parquet
 
       - name: Audit matrix before modeling
