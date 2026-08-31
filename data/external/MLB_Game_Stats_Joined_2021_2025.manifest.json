@@ -1,12 +1,14 @@
 {
   "dataset_name": "MLB_Game_Stats_Joined_2021_2025",
-  "version": "2026-08-09",
+  "version": "historical-mlb-2021-2025-v1",
   "coverage": "2021-2025 MLB regular seasons",
   "canonical_filename": "MLB_Game_Stats_Joined_2021_2025.csv.gz",
   "canonical_uncompressed_filename": "MLB_Game_Stats_Joined_2021_2025.csv",
   "release_tag": "historical-mlb-2021-2025-v1",
   "release_asset_target": "GitHub Release asset",
-  "status": "pending_release_asset_upload",
+  "release_url": "https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz",
+  "release_asset_id": 538036504,
+  "status": "available",
   "source_provenance": {
     "retrosheet_regular_season_games": 12148,
     "eligible_draftkings_records_with_opening_total": 10933,
@@ -24,9 +26,16 @@
     "MLB_Game_Stats_Joined_2021_2025.sqlite"
   ],
   "integrity": {
-    "sha256_csv_gz": null,
+    "sha256_csv_gz": "8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5",
+    "release_asset_bytes": 2719310,
+    "github_digest": "sha256:8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5",
     "sha256_csv": null,
-    "note": "Populate checksums immediately after the release assets are uploaded. Consumers must verify a non-null checksum before production use."
+    "note": "GitHub release asset digest verified against the canonical uploaded gzip. Consumers must verify SHA-256 before use."
+  },
+  "research_split": {
+    "development_seasons": [2021, 2022, 2023, 2024],
+    "final_holdout_season": 2025,
+    "holdout_policy": "Do not inspect 2025 model-validation outcomes until architecture and hyperparameters are frozen."
   },
   "governance": {
     "immutable_release": true,
