@@ -1,0 +1,96 @@
+name: All-inning development matrix preflight
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/analysis/all_inning/**
+      - docs/ALL_INNING_ARCHITECTURE_MEMORY.md
+      - docs/ALL_INNING_DEVELOPMENT_MATRIX_CONTRACT.md
+      - .github/workflows/all_inning_development_matrix_preflight.yml
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Resolve and verify historical master
+        id: master
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          EXPECTED_SHA="8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5"
+          P="/tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          curl --fail --location --retry 3 --output "$P" "$URL"
+          ACTUAL_SHA="$(sha256sum "$P" | awk '{print $1}')"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          gzip -t "$P"
+          echo "path=$P" >> "$GITHUB_OUTPUT"
+          echo "Historical master verified: $ACTUAL_SHA"
+
+      - name: Download reusable leakage-safe feature store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+
+      - name: Build canonical 2021-2024 half-inning matrix
+        run: |
+          python src/analysis/all_inning/build_all_inning_development_matrix.py \
+            --master "${{ steps.master.outputs.path }}" \
+            --reusable-root /tmp/reusable \
+            --output /tmp/all_inning/all_inning_development_matrix.parquet
+
+      - name: Hard audit all-inning scope and holdout guard
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          p='/tmp/all_inning/all_inning_development_matrix.parquet'
+          m='/tmp/all_inning/all_inning_development_matrix.manifest.json'
+          x=pd.read_parquet(p)
+          j=json.load(open(m))
+          assert j['status']=='PASS'
+          assert j['max_season'] <= 2024
+          assert j['holdout_target_loaded'] is False
+          assert set(x['inning'].dropna().astype(int)) == set(range(1,10))
+          assert set(x['half'].dropna()) == {'top','bottom'}
+          assert x.duplicated(['game_id','inning','half']).sum()==0
+          assert 'half_played' in x.columns
+          assert 'half_runs' in x.columns
+          assert 'half_scored' in x.columns
+          b9=x[(x.inning==9)&(x.half=='bottom')]
+          assert len(b9)>0
+          print(json.dumps({
+            'status':'PASS',
+            'rows':len(x),
+            'games':int(x.game_id.nunique()),
+            'seasons':sorted(x.season.unique().tolist()),
+            'innings':sorted(x.inning.unique().tolist()),
+            'bottom9_unplayed':int((~b9.half_played).sum()),
+            'holdout_opened':False,
+          }, indent=2))
+          PY
+
+      - name: Upload development matrix preflight artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-development-matrix-preflight
+          path: |
+            /tmp/all_inning/all_inning_development_matrix.parquet
+            /tmp/all_inning/all_inning_development_matrix.manifest.json
+          retention-days: 30

@@ -1,0 +1,129 @@
+name: Build reusable 2021-2025 baseball as-of store
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - .github/workflows/build_2021_2025_reusable_asof_store.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-normalize:
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2021, 2022, 2023, 2024, 2025]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Fetch regular-season official MLB feeds
+        run: |
+          python src/ingestion/fetch_mlb_statsapi.py \
+            --start-date "${{ matrix.season }}-01-01" \
+            --end-date "${{ matrix.season }}-12-31" \
+            --game-types R \
+            --output-dir "/tmp/mlb_raw_${{ matrix.season }}" \
+            --sleep 0.05
+      - name: Normalize season
+        run: |
+          python src/ingestion/normalize_mlb_feeds.py \
+            --raw-dir "/tmp/mlb_raw_${{ matrix.season }}" \
+            --output-dir "/tmp/normalized_${{ matrix.season }}"
+      - name: Season integrity audit
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/normalized_${{ matrix.season }}')
+          g=pd.read_parquet(root/'games.parquet')
+          p=pd.read_parquet(root/'plate_appearances.parquet')
+          i=pd.read_parquet(root/'inning_results.parquet')
+          assert len(g) > 2000, len(g)
+          assert len(p) > 100000, len(p)
+          assert len(i) > 15000, len(i)
+          assert g['game_id'].nunique() == len(g)
+          calc=i['away_runs'].fillna(0)+i['home_runs'].fillna(0)
+          assert (calc==i['full_inning_runs']).all()
+          print({'season':${{ matrix.season }},'games':len(g),'pa':len(p),'inning_rows':len(i),'status':'PASS'})
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: normalized-mlb-${{ matrix.season }}
+          path: /tmp/normalized_${{ matrix.season }}/
+          retention-days: 30
+          compression-level: 6
+
+  merge-build:
+    needs: acquire-normalize
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: normalized-mlb-*
+          path: /tmp/season_artifacts
+      - name: Merge normalized seasons
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+      - name: Build leakage-safe player and pitcher histories
+        run: |
+          python src/ingestion/build_asof_entity_rates_fast.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --output /tmp/baseball_asof/entity_asof.parquet \
+            --shrink-strength 50
+      - name: Build leakage-safe team histories
+        run: |
+          python src/ingestion/build_asof_team_rates_fast.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --output /tmp/baseball_asof/team_asof.parquet \
+            --shrink-strength 200
+      - name: Assemble modular reusable store
+        run: |
+          python src/ingestion/assemble_reusable_asof_store.py \
+            --processed-dir /tmp/mlb_2021_2025 \
+            --entity-asof /tmp/baseball_asof/entity_asof.parquet \
+            --team-asof /tmp/baseball_asof/team_asof.parquet \
+            --output-dir /tmp/baseball_asof/store
+      - name: Final leakage and integrity audit
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/baseball_asof/store')
+          m=json.loads((root/'manifest.json').read_text())
+          assert m['market_data_used'] is False
+          assert m['same_day_prior_games_included'] is False
+          gi=pd.read_parquet(root/'game_index.parquet')
+          io=pd.read_parquet(root/'inning_outcomes.parquet')
+          la=pd.read_parquet(root/'lineup_asof.parquet')
+          sa=pd.read_parquet(root/'starter_asof.parquet')
+          assert gi['game_id'].nunique() >= 12000
+          assert len(io) >= 100000
+          assert set(la['identity_timing_class'].unique()) == {'retrospective_final_feed_unverified_pregame'}
+          assert set(sa['identity_timing_class'].unique()) == {'retrospective_actual_first_pitcher_unverified_pregame'}
+          print({'games':len(gi),'inning_outcomes':len(io),'lineup_rows':len(la),'starter_rows':len(sa),'status':'PASS'})
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: reusable-baseball-asof-2021-2025
+          path: |
+            /tmp/baseball_asof/store/
+            /tmp/baseball_asof/entity_asof.parquet
+            /tmp/baseball_asof/team_asof.parquet
+            /tmp/mlb_2021_2025/merge_manifest.json
+          retention-days: 30
+          compression-level: 6

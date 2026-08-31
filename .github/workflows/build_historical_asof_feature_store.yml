@@ -1,0 +1,78 @@
+name: Build historical baseball as-of feature store
+
+on:
+  workflow_dispatch:
+    inputs:
+      processed_dir:
+        description: "Normalized MLB processed-data directory"
+        required: true
+        default: "data/processed/mlb"
+      min_season:
+        description: "First season"
+        required: true
+        default: "2021"
+      max_season:
+        description: "Last season"
+        required: true
+        default: "2025"
+      shrink_strength:
+        description: "Empirical-Bayes prior strength in PA/BF"
+        required: true
+        default: "50"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Verify normalized source tables
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          root = Path("${{ inputs.processed_dir }}")
+          required = ["games", "plate_appearances", "lineups", "starters", "results"]
+          missing = [n for n in required if not (root/f"{n}.parquet").exists() and not (root/f"{n}.csv").exists()]
+          if missing:
+              raise SystemExit(f"Missing normalized source tables: {missing}")
+          print("source tables present")
+          PY
+
+      - name: Build leakage-safe feature store
+        run: |
+          python src/ingestion/build_historical_asof_feature_store.py \
+            --processed-dir "${{ inputs.processed_dir }}" \
+            --output-dir data/derived/baseball_asof \
+            --min-season "${{ inputs.min_season }}" \
+            --max-season "${{ inputs.max_season }}" \
+            --shrink-strength "${{ inputs.shrink_strength }}"
+
+      - name: Basic leakage and integrity audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root = Path("data/derived/baseball_asof")
+          m = json.loads((root/"manifest.json").read_text())
+          assert m["market_data_used"] is False
+          assert m["strict_cutoff"] == "event_date < target_game_date"
+          gf = pd.read_parquet(root/"game_asof_features.parquet")
+          eo = pd.read_parquet(root/"entity_asof.parquet")
+          assert gf["game_id"].notna().all()
+          assert eo["as_of_date"].notna().all()
+          print(json.dumps({"games": len(gf), "entity_rows": len(eo), "status": "PASS"}, indent=2))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-baseball-asof-${{ inputs.min_season }}-${{ inputs.max_season }}
+          path: data/derived/baseball_asof/
+          retention-days: 30

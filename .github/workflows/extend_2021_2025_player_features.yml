@@ -1,0 +1,77 @@
+name: Extend 2021-2025 historical player features
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/ingestion/build_historical_player_derived_features.py
+      - .github/workflows/extend_2021_2025_player_features.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  extend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download normalized season artifacts from successful foundation build
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-*
+          path: /tmp/season_artifacts
+
+      - name: Merge normalized 2021-2025 data
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Build platoon and starter workload features
+        run: |
+          python src/ingestion/build_historical_player_derived_features.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --games /tmp/mlb_2021_2025/games.parquet \
+            --starters /tmp/mlb_2021_2025/starters.parquet \
+            --output-dir /tmp/player_derived \
+            --shrink-strength 50
+
+      - name: Derived feature audit
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/player_derived')
+          b=pd.read_parquet(root/'batter_platoon_asof.parquet')
+          p=pd.read_parquet(root/'pitcher_platoon_asof.parquet')
+          s=pd.read_parquet(root/'starter_workload_asof.parquet')
+          assert len(b)>10000
+          assert len(p)>5000
+          assert len(s)>5000
+          assert set(b['split_hand'].dropna().unique()) <= {'L','R'}
+          assert set(p['split_hand'].dropna().unique()) <= {'L','R'}
+          for df in (b,p,s):
+              assert df['as_of_date'].notna().all()
+          rel=[c for c in b.columns if c.endswith('_reliability')]
+          assert rel
+          assert ((b[rel].fillna(0)>=0)&(b[rel].fillna(0)<=1)).all().all()
+          print({'batter_platoon_rows':len(b),'pitcher_platoon_rows':len(p),'starter_workload_rows':len(s),'status':'PASS'})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-player-derived-features-2021-2025
+          path: /tmp/player_derived/
+          retention-days: 30
+          compression-level: 6

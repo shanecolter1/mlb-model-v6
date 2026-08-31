@@ -1,0 +1,126 @@
+name: M2 starter bullpen development validation
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/analysis/build_m2_starter_bullpen_matrix.py
+      - src/analysis/m2_starter_bullpen_research.py
+      - src/analysis/build_m1_starter_offense_matrix.py
+      - .github/workflows/m2_starter_bullpen_dev_validation.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Resolve and verify historical master
+        id: master
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          EXPECTED_SHA="8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5"
+          P="/tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          curl --fail --location --retry 3 --output "$P" "$URL"
+          ACTUAL_SHA="$(sha256sum "$P" | awk '{print $1}')"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          gzip -t "$P"
+          echo "Historical master SHA-256 verified: $ACTUAL_SHA"
+          echo "path=$P" >> "$GITHUB_OUTPUT"
+
+      - name: Download reusable leakage-safe M1 feature store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+
+      - name: Build fixed M1 matrix
+        run: |
+          python src/analysis/build_m1_starter_offense_matrix.py \
+            --master "${{ steps.master.outputs.path }}" \
+            --artifact-root /tmp/reusable \
+            --output /tmp/m2/m1_matrix.parquet
+
+      - name: Download normalized 2021-2025 baseball artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-*
+          path: /tmp/season_artifacts
+
+      - name: Merge normalized seasons
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Build leakage-safe M2 matrix
+        run: |
+          python src/analysis/build_m2_starter_bullpen_matrix.py \
+            --m1-matrix /tmp/m2/m1_matrix.parquet \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --starters /tmp/mlb_2021_2025/starters.parquet \
+            --output /tmp/m2/m2_matrix.parquet
+
+      - name: Audit M2 matrix before modeling
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          x=pd.read_parquet('/tmp/m2/m2_matrix.parquet')
+          m=json.load(open('/tmp/m2/m2_matrix.manifest.json'))
+          assert len(x)==10911, len(x)
+          assert m['m1_rows']==10911
+          assert m['same_day_prior_games_included'] is False
+          assert m['future_information_in_statistics'] is False
+          assert m['bullpen_shrinkage_used'] is False
+          assert m['market_data_added_by_m2'] is False
+          assert (x['m2_statistics_timing_class']=='asof_safe_strictly_prior_date_same_day_excluded').all()
+          dev=x[x['season'].between(2021,2024)]
+          c=[z for z in x.columns if z.startswith('starter_i2_') or z.startswith('bullpen_')]
+          cov={z:float(dev[z].notna().mean()) for z in c}
+          print(json.dumps({'rows':len(x),'development_rows':len(dev),'feature_coverage':cov,'status':'PASS'},indent=2))
+          PY
+
+      - name: Run 2021-2024 M1 vs M2 development validation
+        run: |
+          python src/analysis/m2_starter_bullpen_research.py \
+            --input /tmp/m2/m2_matrix.parquet \
+            --output-dir /tmp/m2/results
+
+      - name: Guard 2025 holdout
+        run: |
+          python - <<'PY'
+          import json
+          m=json.load(open('/tmp/m2/results/manifest.json'))
+          assert m['holdout_season']==2025
+          assert m['holdout_opened'] is False
+          print({'holdout_opened':False,'status':m['status'],'promotion_eligible':m['promotion_eligible']})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m2-starter-bullpen-development-validation
+          path: |
+            /tmp/m2/m1_matrix.manifest.json
+            /tmp/m2/m2_matrix.parquet
+            /tmp/m2/m2_matrix.manifest.json
+            /tmp/m2/results/
+          retention-days: 30
+          compression-level: 6

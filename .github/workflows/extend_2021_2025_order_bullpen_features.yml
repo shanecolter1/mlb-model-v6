@@ -1,0 +1,156 @@
+name: Extend 2021-2025 order and bullpen features
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/ingestion/build_historical_order_bullpen_features.py
+      - src/ingestion/build_bullpen_features_lagged.py
+      - .github/workflows/extend_2021_2025_order_bullpen_features.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  extend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download normalized season artifacts from successful foundation build
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-*
+          path: /tmp/season_artifacts
+
+      - name: Merge normalized 2021-2025 data
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Diagnose legacy final-lineup mapping coverage
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/mlb_2021_2025')
+          pa=pd.read_parquet(root/'plate_appearances.parquet')
+          lu=pd.read_parquet(root/'lineups.parquet')
+          pa['game_date']=pd.to_datetime(pa['game_date'], errors='coerce').dt.normalize()
+          pa['season']=pa['game_date'].dt.year
+          pa['inning']=pd.to_numeric(pa['inning'], errors='coerce')
+          lu['batting_order_slot']=pd.to_numeric(lu['batting_order_slot'], errors='coerce')
+          lineup_team_games=lu[['game_id','team_id']].drop_duplicates()
+          slot_map=lu[['game_id','team_id','player_id','batting_order_slot']].drop_duplicates()
+          first=(pa.dropna(subset=['game_id','batting_team_id','inning','batter_id','play_index'])
+                   .sort_values(['game_id','batting_team_id','inning','play_index'])
+                   .groupby(['game_id','game_date','season','batting_team_id','inning'], as_index=False).first())
+          chk=first.merge(slot_map,left_on=['game_id','batting_team_id','batter_id'],right_on=['game_id','team_id','player_id'],how='left',indicator=True)
+          chk['matched']=chk['batting_order_slot'].between(1,9)
+          i2=chk[chk['inning']==2]
+          print('LEGACY FINAL-LINEUP MAPPING DIAGNOSTIC ONLY')
+          print({'lineup_team_games':len(lineup_team_games),'legacy_i2_matched':int(i2['matched'].sum()),'legacy_i2_unmatched':int((~i2['matched']).sum()),'validated_reference_n':24296})
+          PY
+
+      - name: Build empirical all-inning batting-order features
+        run: |
+          python src/ingestion/build_historical_order_bullpen_features.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --lineups /tmp/mlb_2021_2025/lineups.parquet \
+            --starters /tmp/mlb_2021_2025/starters.parquet \
+            --output-dir /tmp/order_bullpen \
+            --shrink-strength 75
+
+      - name: Replace bullpen outputs with strict lagged-prior build
+        run: |
+          python src/ingestion/build_bullpen_features_lagged.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --starters /tmp/mlb_2021_2025/starters.parquet \
+            --output-dir /tmp/order_bullpen \
+            --pitcher-candidate-strength 75 \
+            --team-candidate-strength 150
+
+      - name: Feature and statistical validation audit
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/order_bullpen')
+          o=pd.read_parquet(root/'batting_order_path_asof.parquet')
+          e=pd.read_parquet(root/'batting_order_empirical_all_innings.parquet')
+          es=pd.read_parquet(root/'batting_order_empirical_by_season.parquet')
+          t=pd.read_parquet(root/'batting_order_transition_empirical.parquet')
+          w=pd.read_parquet(root/'batting_order_walkforward_validation.parquet')
+          s=pd.read_parquet(root/'batting_order_stability.parquet')
+          bt=pd.read_parquet(root/'bullpen_team_asof.parquet')
+          bp=pd.read_parquet(root/'bullpen_pitcher_asof.parquet')
+          m=json.loads((root/'manifest.json').read_text())
+          bm=json.loads((root/'bullpen_manifest.json').read_text())
+
+          assert len(o)>10000 and len(bt)>5000 and len(bp)>10000
+          assert set(e['inning'].unique()) == set(range(1,10))
+          assert set(es['season'].unique()) >= {2021,2022,2023,2024,2025}
+          assert set(t['inning'].unique()) == set(range(2,10))
+          assert set(w['test_season'].unique()) >= {2022,2023,2024,2025}
+          assert set(s['inning'].unique()) == set(range(1,10))
+
+          pcols=[f'p_start_slot_{i}' for i in range(1,10)]
+          hist=o[o['prior_team_inning_games']>0]
+          assert ((hist[pcols].sum(axis=1)-1).abs()<1e-10).all()
+          assert o[o['prior_team_inning_games']==0][pcols].isna().all().all()
+          assert m['batting_order_smoothing_used'] is False
+
+          chk=e.groupby('inning')['probability'].sum()
+          assert ((chk-1).abs()<1e-12).all(), chk
+          tch=t.groupby(['inning','prev_start_slot'])['probability'].sum()
+          assert ((tch-1).abs()<1e-12).all(), tch
+          assert (e['sample_n']>1000).all()
+
+          # Corrected reconstruction must have the full historical I2 population.
+          i2n=int(e[e['inning']==2]['n'].sum())
+          assert i2n==24296, i2n
+
+          for c in ['empirical_log_loss','uniform_log_loss','empirical_brier','uniform_brier']:
+              assert w[c].notna().all()
+          assert m['market_data_used'] is False
+          assert m['same_day_prior_games_included'] is False
+          assert m['pregame_identity_claimed'] is False
+
+          # Bullpen leakage gate: lagged league baseline only; candidate shrinkage is not production approved.
+          assert bm['future_aggregate_leakage'] is False
+          assert bm['candidate_shrinkage_production_approved'] is False
+          assert 'strictly before' in bm['league_prior']
+          for df in (bt,bp):
+              assert df['as_of_date'].notna().all()
+              assert (df['league_prior_cutoff']=='strictly before as_of_date').all()
+              assert (df['source_class']=='relief_history_and_league_prior_strictly_prior_date').all()
+              assert any(c.endswith('_rate_raw') for c in df.columns)
+              assert any(c.endswith('_rate_candidate_shrunk') for c in df.columns)
+
+          print({'i2_population':i2n,'bullpen_future_aggregate_leakage':bm['future_aggregate_leakage'],'candidate_shrinkage_production_approved':bm['candidate_shrinkage_production_approved'],'status':'PASS'})
+          print('I2 EMPIRICAL DISTRIBUTION')
+          print(e[e['inning']==2][['batting_order_slot','n','probability','wilson95_low','wilson95_high']].to_string(index=False))
+          print('WALK-FORWARD SUMMARY')
+          print(w.groupby('inning')[['log_loss_improvement','brier_improvement']].mean().to_string())
+          print('2025 FINAL FORWARD HOLDOUT — DESCRIPTIVE BATTING-ORDER AUDIT ONLY')
+          print(w[w['test_season']==2025].to_string(index=False))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-order-bullpen-features-2021-2025
+          path: /tmp/order_bullpen/
+          retention-days: 30
+          compression-level: 6
