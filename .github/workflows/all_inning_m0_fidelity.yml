@@ -1,0 +1,76 @@
+name: All-inning M0 fidelity audit
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - 'src/analysis/all_inning/m0_total_inning_fidelity_audit.py'
+      - '.github/workflows/all_inning_m0_fidelity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+
+      - name: Download canonical master
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          EXPECTED_SHA="8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5"
+          P="/tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          curl --fail --location --retry 3 --output "$P" "$URL"
+          test "$(sha256sum "$P" | awk '{print $1}')" = "$EXPECTED_SHA"
+          gzip -t "$P"
+
+      - name: Download canonical half matrix artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33438737085
+          name: all-inning-half-matrix-development-2021-2024
+          path: /tmp/half
+
+      - name: Run M0 fidelity audit
+        run: |
+          python src/analysis/all_inning/m0_total_inning_fidelity_audit.py \
+            --half-matrix /tmp/half/half_inning_development.parquet \
+            --master /tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz \
+            --output-dir /tmp/m0
+
+      - name: Hard audit governance
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          j=json.load(open('/tmp/m0/m0_fidelity_manifest.json'))
+          b=pd.read_csv('/tmp/m0/m0_total_x_inning_empirical_2021_2024.csv')
+          assert j['status']=='PASS'
+          assert j['holdout_opened'] is False
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['smoothing_used'] is False
+          assert j['shrinkage_used'] is False
+          assert j['pooling_used'] is False
+          assert j['fidelity_mismatches']==0
+          assert set(b.inning.unique())==set(range(1,10))
+          assert (b.probability_sum.sub(1).abs() < 1e-12).all()
+          print(j)
+          PY
+
+      - name: Upload M0 audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m0-fidelity-2021-2024
+          path: /tmp/m0/
+          retention-days: 30
