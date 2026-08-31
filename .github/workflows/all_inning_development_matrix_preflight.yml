@@ -2,6 +2,14 @@ name: All-inning development matrix preflight
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/analysis/all_inning/**
+      - docs/ALL_INNING_ARCHITECTURE_MEMORY.md
+      - docs/ALL_INNING_DEVELOPMENT_MATRIX_CONTRACT.md
+      - .github/workflows/all_inning_development_matrix_preflight.yml
 
 permissions:
   contents: read
