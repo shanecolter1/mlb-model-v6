@@ -1,0 +1,71 @@
+name: All-inning M1 PA matchup matrix
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - 'src/analysis/all_inning/build_m1_pa_matchup_matrix.py'
+      - '.github/workflows/all_inning_m1_pa_matrix.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download normalized 2021-2024 PA artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+      - name: Download reusable as-of store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+      - name: Build M1 PA matchup research matrix
+        run: |
+          python src/analysis/all_inning/build_m1_pa_matchup_matrix.py \
+            --normalized-root /tmp/normalized \
+            --reusable-root /tmp/reusable \
+            --output /tmp/m1/m1_pa_matchup_development.parquet
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m1/m1_pa_matchup_development.manifest.json'))
+          x=pd.read_parquet('/tmp/m1/m1_pa_matchup_development.parquet')
+          assert j['status']=='PASS'
+          assert j['holdout_opened'] is False
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert set(x.season.unique())=={2021,2022,2023,2024}
+          assert set(x.inning.unique())==set(range(1,10))
+          assert j['raw_rates_only'] is True
+          assert j['shrunken_rates_used'] is False
+          assert j['market_data_used'] is False
+          assert set(x.participant_identity_class.unique())=={'retrospective_realized_matchup_oracle_not_pregame_feature'}
+          print({'status':'PASS','rows':len(x)})
+          PY
+      - name: Upload M1 PA matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m1-pa-matchup-development-2021-2024
+          path: |
+            /tmp/m1/m1_pa_matchup_development.parquet
+            /tmp/m1/m1_pa_matchup_development.manifest.json
+          retention-days: 30
