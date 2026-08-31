@@ -1,0 +1,131 @@
+name: M1 starter offense development validation
+
+on:
+  push:
+    branches:
+      - research/baseball-asof-feature-store-build
+    paths:
+      - src/analysis/build_m1_starter_offense_matrix.py
+      - src/analysis/m1_starter_offense_research.py
+      - config/m1_starter_offense_feature_registry.csv
+      - .github/workflows/m1_starter_offense_dev_validation.yml
+  workflow_dispatch:
+    inputs:
+      historical_master_path:
+        description: "Repo path to MLB_Game_Stats_Joined_2021_2025.csv or .csv.gz"
+        required: true
+        default: "data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+
+      - name: Resolve historical master
+        id: master
+        shell: bash
+        run: |
+          set -euo pipefail
+          P="${{ inputs.historical_master_path || 'data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz' }}"
+          if [ ! -f "$P" ]; then
+            echo "Historical master is not present in this checkout: $P"
+            echo "The canonical master exists outside this checkout and must be bridged before development validation can run."
+            exit 2
+          fi
+          echo "path=$P" >> "$GITHUB_OUTPUT"
+
+      - name: Download reusable leakage-safe feature store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+
+      - name: Discover raw as-of tables
+        id: roots
+        shell: bash
+        run: |
+          set -euo pipefail
+          ENTITY=$(find /tmp/reusable -name entity_asof.parquet -print -quit)
+          TEAM=$(find /tmp/reusable -name team_asof.parquet -print -quit)
+          STARTER=$(find /tmp/reusable -name starter_asof.parquet -print -quit)
+          GAMEIDX=$(find /tmp/reusable -name game_index.parquet -print -quit)
+          test -n "$ENTITY" && test -n "$TEAM" && test -n "$STARTER" && test -n "$GAMEIDX"
+          STORE=$(dirname "$STARTER")
+          echo "entity=$ENTITY" >> "$GITHUB_OUTPUT"
+          echo "team=$TEAM" >> "$GITHUB_OUTPUT"
+          echo "store=$STORE" >> "$GITHUB_OUTPUT"
+
+      - name: Build game-level M1 matrix
+        run: |
+          python src/analysis/build_m1_starter_offense_matrix.py \
+            --master "${{ steps.master.outputs.path }}" \
+            --feature-store "${{ steps.roots.outputs.store }}" \
+            --entity-asof "${{ steps.roots.outputs.entity }}" \
+            --team-asof "${{ steps.roots.outputs.team }}" \
+            --output /tmp/m1/m1_matrix.parquet
+
+      - name: Audit matrix before modeling
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          p='/tmp/m1/m1_matrix.parquet'
+          x=pd.read_parquet(p)
+          req=['season','game_date','dk_total_open_total','inning2_total_runs',
+               'starter_k_rate','starter_bb_rate','starter_hr_rate','starter_nonhr_hit_rate',
+               'opponent_k_rate','opponent_bb_rate','opponent_hr_rate','opponent_nonhr_hit_rate',
+               'contact_interaction','power_interaction','baserunner_interaction']
+          missing=[c for c in req if c not in x.columns]
+          assert not missing, missing
+          assert set(x['season'].dropna().astype(int).unique()).issuperset({2021,2022,2023,2024})
+          assert (x['statistics_timing_class']=='asof_safe_strictly_prior_date').all()
+          out={
+            'rows':int(len(x)),
+            'seasons':sorted(x['season'].dropna().astype(int).unique().tolist()),
+            'opening_total_nonnull':int(x['dk_total_open_total'].notna().sum()),
+            'i2_outcome_nonnull':int(x['inning2_total_runs'].notna().sum()),
+            'status':'PASS'
+          }
+          print(json.dumps(out,indent=2))
+          PY
+
+      - name: Run 2021-2024 M0 vs M1 development validation
+        run: |
+          python src/analysis/m1_starter_offense_research.py \
+            --input /tmp/m1/m1_matrix.parquet \
+            --registry config/m1_starter_offense_feature_registry.csv \
+            --output-dir /tmp/m1/results
+
+      - name: Guard 2025 holdout
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('/tmp/m1/results/manifest.json').read_text())
+          assert m['holdout_season']==2025
+          assert m['holdout_opened'] is False
+          assert m['status']=='DEVELOPMENT_COMPLETE'
+          print({'holdout_opened':False,'status':'PASS'})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m1-starter-offense-development-validation
+          path: |
+            /tmp/m1/m1_matrix.parquet
+            /tmp/m1/m1_matrix.manifest.json
+            /tmp/m1/results/
+          retention-days: 30
+          compression-level: 6
