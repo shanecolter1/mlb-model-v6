@@ -1,0 +1,60 @@
+name: All-inning M2 pitcher-state validation
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - 'src/analysis/all_inning/m2_pitcher_state_validation.py'
+      - '.github/workflows/all_inning_m2_pitcher_state_validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+      - name: Run M2 pitcher-state validation
+        run: |
+          python src/analysis/all_inning/m2_pitcher_state_validation.py \
+            --normalized-root /tmp/normalized \
+            --output-dir /tmp/m2
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m2/manifest.json'))
+          x=pd.read_parquet('/tmp/m2/m2_pitcher_state_matrix.parquet')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert j['smoothing_used'] is False
+          assert j['shrinkage_used'] is False
+          assert set(x.inning.unique())==set(range(1,10))
+          assert x.loc[x.inning==1,'starter_begins_inning'].mean() > 0.999
+          print(j)
+          PY
+      - name: Upload M2 results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m2-pitcher-state-validation-2021-2024
+          path: /tmp/m2/
+          retention-days: 30
