@@ -1,0 +1,117 @@
+name: M3 batting order development validation
+
+on:
+  push:
+    branches: [research/baseball-asof-feature-store-build]
+    paths:
+      - src/analysis/build_m3_batting_order_matrix.py
+      - src/analysis/m3_batting_order_research.py
+      - .github/workflows/m3_batting_order_dev_validation.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Resolve and verify historical master
+        id: master
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          EXPECTED_SHA="8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5"
+          P="/tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          curl --fail --location --retry 3 --output "$P" "$URL"
+          ACTUAL_SHA="$(sha256sum "$P" | awk '{print $1}')"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          gzip -t "$P"
+          echo "path=$P" >> "$GITHUB_OUTPUT"
+          echo "Historical master SHA-256 verified: $ACTUAL_SHA"
+
+      - name: Download reusable leakage-safe feature store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+
+      - name: Download validated batting-order path artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33343249371
+          name: historical-order-bullpen-features-2021-2025
+          path: /tmp/order
+
+      - name: Build fixed M1 matrix
+        run: |
+          python src/analysis/build_m1_starter_offense_matrix.py \
+            --master "${{ steps.master.outputs.path }}" \
+            --artifact-root /tmp/reusable \
+            --output /tmp/m3/m1_matrix.parquet
+
+      - name: Build leakage-safe M3 batting-order matrix
+        run: |
+          python src/analysis/build_m3_batting_order_matrix.py \
+            --m1-matrix /tmp/m3/m1_matrix.parquet \
+            --reusable-root /tmp/reusable \
+            --order-root /tmp/order \
+            --output /tmp/m3/m3_matrix.parquet
+
+      - name: Audit M3 matrix before modeling
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          x=pd.read_parquet('/tmp/m3/m3_matrix.parquet')
+          m=json.load(open('/tmp/m3/m3_matrix.manifest.json'))
+          assert len(x)==10911, len(x)
+          assert m['m1_rows']==10911
+          assert m['statistics_strictly_prior_date'] is True
+          assert m['same_day_prior_games_in_statistics'] is False
+          assert m['batting_order_smoothing_added'] is False
+          assert m['market_data_added_by_m3'] is False
+          assert (x['m3_statistics_timing_class']=='asof_safe_strictly_prior_date').all()
+          dev=x[x.season.between(2021,2024)]
+          f=m['m3_candidate_features']
+          print(json.dumps({'rows':len(x),'development_rows':len(dev),'feature_coverage':{c:float(dev[c].notna().mean()) for c in f},'status':'PASS'},indent=2))
+          PY
+
+      - name: Run 2021-2024 M1 vs M3 development validation
+        run: |
+          python src/analysis/m3_batting_order_research.py \
+            --input /tmp/m3/m3_matrix.parquet \
+            --output-dir /tmp/m3/results
+
+      - name: Guard 2025 holdout
+        run: |
+          python - <<'PY'
+          import json
+          m=json.load(open('/tmp/m3/results/manifest.json'))
+          assert m['holdout_season']==2025
+          assert m['holdout_opened'] is False
+          print({'holdout_opened':False,'status':m['status'],'promotion_eligible':m['promotion_eligible']})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: m3-batting-order-development-validation
+          path: |
+            /tmp/m3/m1_matrix.manifest.json
+            /tmp/m3/m3_matrix.parquet
+            /tmp/m3/m3_matrix.manifest.json
+            /tmp/m3/results/
+          retention-days: 30
+          compression-level: 6
