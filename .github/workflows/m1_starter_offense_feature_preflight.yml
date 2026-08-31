@@ -40,7 +40,11 @@ jobs:
           import json
           from pathlib import Path
           import pandas as pd
-          root=Path('/tmp/reusable')
+          base=Path('/tmp/reusable')
+          matches=list(base.rglob('starter_asof.parquet'))
+          assert len(matches)==1, {'starter_asof_matches':[str(p) for p in matches]}
+          root=matches[0].parent
+          print('FEATURE_STORE_ROOT', root)
           print('FILES', sorted(p.name for p in root.iterdir()))
           st=pd.read_parquet(root/'starter_asof.parquet')
           tg=pd.read_parquet(root/'game_team_asof.parquet')
@@ -64,6 +68,7 @@ jobs:
           assert (st['statistics_timing_class']=='asof_safe_strictly_prior_date').all()
           assert (tg['statistics_timing_class']=='asof_safe_strictly_prior_date').all()
           out={
+            'feature_store_root':str(root),
             'games':len(gi),'starter_rows':len(st),'team_game_rows':len(tg),
             'starter_source_columns':src_st,'offense_source_columns':src_tg,
             'starter_nonnull_coverage':st_coverage,'offense_nonnull_coverage':tg_coverage,
