@@ -1,0 +1,59 @@
+name: All-inning M1 PA skill validation
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - 'src/analysis/all_inning/m1_pa_skill_validation.py'
+      - '.github/workflows/all_inning_m1_pa_skill_validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download all-inning M1 PA matchup matrix
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33450762451
+          name: all-inning-m1-pa-matchup-development-2021-2024
+          path: /tmp/m1
+      - name: Run chronological PA skill validation
+        run: |
+          python src/analysis/all_inning/m1_pa_skill_validation.py \
+            --matrix /tmp/m1/m1_pa_matchup_development.parquet \
+            --output-dir /tmp/m1_validation
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m1_validation/manifest.json'))
+          b=pd.read_csv('/tmp/m1_validation/m1_pa_skill_best_by_event.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['test_folds']==[2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert j['automatic_production_promotion'] is False
+          assert set(b.event)=={'k','baserunner','hr','nonhr_hit'}
+          print(j)
+          PY
+      - name: Upload validation results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m1-pa-skill-validation-2021-2024
+          path: /tmp/m1_validation/
+          retention-days: 30
