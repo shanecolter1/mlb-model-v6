@@ -1,0 +1,79 @@
+name: All-inning canonical half matrix development
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Download and verify canonical historical master
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          EXPECTED_SHA="8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5"
+          P="/tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          curl --fail --location --retry 3 --output "$P" "$URL"
+          ACTUAL_SHA="$(sha256sum "$P" | awk '{print $1}')"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          gzip -t "$P"
+          echo "Historical master SHA-256 verified: $ACTUAL_SHA"
+
+      - name: Download reusable leakage-safe feature store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+
+      - name: Build canonical I1-I9 half-inning development matrix
+        run: |
+          python src/analysis/all_inning/build_half_inning_research_matrix.py \
+            --master /tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz \
+            --reusable-root /tmp/reusable \
+            --output /tmp/all_inning/half_inning_development.parquet \
+            --max-development-season 2024
+
+      - name: Hard audit holdout and half-inning semantics
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          p='/tmp/all_inning/half_inning_development.parquet'
+          m='/tmp/all_inning/half_inning_development.manifest.json'
+          x=pd.read_parquet(p)
+          j=json.load(open(m))
+          assert j['holdout_opened'] is False
+          assert max(x['season']) <= 2024
+          assert set(x['inning'].unique()).issubset(set(range(1,10)))
+          assert set(x['half'].unique()) == {'top','bottom'}
+          assert not x.duplicated(['game_id','inning','half']).any()
+          assert x.loc[~x['half_played'],'runs_half'].isna().all()
+          assert x.loc[~x['half_played'],'scored_half'].isna().all()
+          assert x['dk_total_open_total'].notna().all()
+          print({'rows':len(x),'played':int(x.half_played.sum()),'seasons':sorted(x.season.unique().tolist()),'status':'PASS'})
+          PY
+
+      - name: Upload canonical development matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-half-matrix-development-2021-2024
+          path: |
+            /tmp/all_inning/half_inning_development.parquet
+            /tmp/all_inning/half_inning_development.manifest.json
+          retention-days: 30
