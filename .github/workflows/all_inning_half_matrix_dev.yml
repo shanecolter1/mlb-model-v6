@@ -1,6 +1,9 @@
 name: All-inning canonical half matrix development
 
 on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
   workflow_dispatch:
 
 permissions:
