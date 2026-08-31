@@ -1,0 +1,13 @@
+feature,family,mechanism,status
+starter_k_rate,starter_quality,strikeout suppression,candidate
+starter_bb_rate,starter_quality,baserunner creation,candidate
+starter_hr_rate,starter_quality,power allowance,candidate
+starter_nonhr_hit_rate,starter_quality,contact and hit allowance,candidate
+opponent_k_rate,offense_quality,offensive strikeout tendency,candidate
+opponent_bb_rate,offense_quality,offensive baserunner creation,candidate
+opponent_hr_rate,offense_quality,offensive power,candidate
+opponent_nonhr_hit_rate,offense_quality,offensive contact and hit production,candidate
+platoon_advantage_share,matchup_interaction,handedness matchup,candidate
+contact_interaction,matchup_interaction,pitcher strikeout x hitter contact,candidate
+power_interaction,matchup_interaction,pitcher HR allowance x hitter power,candidate
+baserunner_interaction,matchup_interaction,pitcher walk allowance x hitter baserunner skill,candidate
