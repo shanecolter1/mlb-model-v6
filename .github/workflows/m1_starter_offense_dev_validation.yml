@@ -8,13 +8,14 @@ on:
       - src/analysis/build_m1_starter_offense_matrix.py
       - src/analysis/m1_starter_offense_research.py
       - config/m1_starter_offense_feature_registry.csv
+      - data/external/MLB_Game_Stats_Joined_2021_2025.manifest.json
       - .github/workflows/m1_starter_offense_dev_validation.yml
   workflow_dispatch:
     inputs:
-      historical_master_path:
-        description: "Repo path to MLB_Game_Stats_Joined_2021_2025.csv or .csv.gz"
-        required: true
-        default: "data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+      historical_master_source:
+        description: "Optional repo path or URL for MLB_Game_Stats_Joined_2021_2025.csv.gz"
+        required: false
+        default: "https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
 
 permissions:
   actions: read
@@ -31,17 +32,30 @@ jobs:
           python-version: '3.12'
       - run: pip install -r requirements.txt
 
-      - name: Resolve historical master
+      - name: Resolve and verify historical master
         id: master
         shell: bash
         run: |
           set -euo pipefail
-          P="${{ inputs.historical_master_path || 'data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz' }}"
-          if [ ! -f "$P" ]; then
-            echo "Historical master is not present in this checkout: $P"
-            echo "Canonical master must be bridged into the repository before development validation can run."
+          DEFAULT_URL="https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+          EXPECTED_SHA="8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5"
+          SRC="${{ inputs.historical_master_source || '' }}"
+          if [ -z "$SRC" ]; then SRC="$DEFAULT_URL"; fi
+
+          if [[ "$SRC" =~ ^https?:// ]]; then
+            P="/tmp/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+            curl --fail --location --retry 3 --output "$P" "$SRC"
+          elif [ -f "$SRC" ]; then
+            P="$SRC"
+          else
+            echo "Historical master source not found: $SRC"
             exit 2
           fi
+
+          ACTUAL_SHA="$(sha256sum "$P" | awk '{print $1}')"
+          test "$ACTUAL_SHA" = "$EXPECTED_SHA"
+          gzip -t "$P"
+          echo "Historical master SHA-256 verified: $ACTUAL_SHA"
           echo "path=$P" >> "$GITHUB_OUTPUT"
 
       - name: Download reusable leakage-safe feature store
