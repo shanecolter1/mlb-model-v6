@@ -30,7 +30,7 @@ def find_one(root,name):
     if len(hits)!=1: raise RuntimeError(f'{name} expected once under {root}; found {hits}')
     return hits[0]
 
-def add_metric_rates(out, entity, prefix):
+def add_metric_rates(entity, prefix):
     e=entity.copy()
     for metric, parts in METRICS.items():
         cols=[f'{prefix}_{p}_rate_raw' for p in parts]
@@ -57,7 +57,6 @@ def main():
     pa['inning']=pd.to_numeric(pa.inning,errors='coerce').astype(int)
     if (pa.season>=2025).any(): raise RuntimeError('2025 holdout leakage')
 
-    # PA-level event targets.
     ev=pa['event'].astype(str)
     pa['y_k']=(ev=='strikeout').astype('int8')
     pa['y_baserunner']=ev.isin(['walk','hit_by_pitch']).astype('int8')
