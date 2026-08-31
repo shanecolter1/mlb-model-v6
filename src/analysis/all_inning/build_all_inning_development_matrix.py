@@ -97,6 +97,13 @@ def prepare_game_index(game_index: pd.DataFrame) -> pd.DataFrame:
     return add_game_number(g)
 
 
+def pick_col(df: pd.DataFrame, candidates: list[str], label: str) -> str:
+    for c in candidates:
+        if c in df.columns:
+            return c
+    raise RuntimeError(f'inning_outcomes missing {label}; tried {candidates}; columns={list(df.columns)}')
+
+
 def build_half_spine(master: pd.DataFrame, game_index: pd.DataFrame, inning_outcomes: pd.DataFrame) -> pd.DataFrame:
     g = prepare_game_index(game_index)
     join = ['game_date','away_team_code','home_team_code','game_number']
@@ -115,15 +122,19 @@ def build_half_spine(master: pd.DataFrame, game_index: pd.DataFrame, inning_outc
         raise RuntimeError(f'historical/game-index join incomplete: matched {len(gm)} of {len(master)}; first missing={miss.head(20).to_dict("records")}')
 
     io = inning_outcomes.copy()
-    io['inning'] = pd.to_numeric(io['inning'], errors='coerce').astype('Int64')
-    io = io[io['inning'].between(1,9) & io['game_id'].isin(gm['game_id'])].copy()
-    required = ['game_id','inning','away_runs','home_runs','away_half_played','home_half_played']
-    miss = [c for c in required if c not in io.columns]
-    if miss:
-        raise RuntimeError(f'inning_outcomes missing {miss}')
+    inning_col = pick_col(io, ['inning','inning_inning'], 'inning')
+    away_runs_col = pick_col(io, ['away_runs_inning','away_runs'], 'away inning runs')
+    home_runs_col = pick_col(io, ['home_runs_inning','home_runs'], 'home inning runs')
+    away_played_col = pick_col(io, ['away_half_played'], 'away_half_played')
+    home_played_col = pick_col(io, ['home_half_played'], 'home_half_played')
+    io['_inning'] = pd.to_numeric(io[inning_col], errors='coerce').astype('Int64')
+    io = io[io['_inning'].between(1,9) & io['game_id'].isin(gm['game_id'])].copy()
 
     base = gm[['game_id','game_date','season','away_team_id','home_team_id','away_team_code','home_team_code','game_number','dk_total_open_total']].copy()
-    z = io[required].merge(base, on='game_id', how='inner', validate='many_to_one')
+    io_keep = io[['game_id','_inning',away_runs_col,home_runs_col,away_played_col,home_played_col]].rename(columns={
+        '_inning':'inning', away_runs_col:'away_inning_runs', home_runs_col:'home_inning_runs',
+        away_played_col:'away_half_played', home_played_col:'home_half_played'})
+    z = io_keep.merge(base, on='game_id', how='inner', validate='many_to_one')
     rows = []
     for r in z.itertuples(index=False):
         common = {
@@ -139,8 +150,8 @@ def build_half_spine(master: pd.DataFrame, game_index: pd.DataFrame, inning_outc
             'game_number': int(r.game_number),
         }
         for half, runs_name, played_name, batting, pitching in [
-            ('top','away_runs','away_half_played','away_team_id','home_team_id'),
-            ('bottom','home_runs','home_half_played','home_team_id','away_team_id')]:
+            ('top','away_inning_runs','away_half_played','away_team_id','home_team_id'),
+            ('bottom','home_inning_runs','home_half_played','home_team_id','away_team_id')]:
             played = bool(getattr(r, played_name))
             val = pd.to_numeric(pd.Series([getattr(r, runs_name)]), errors='coerce').iloc[0]
             rows.append({**common,
