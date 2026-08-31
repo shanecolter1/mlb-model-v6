@@ -1,0 +1,53 @@
+name: M3 batting order preflight
+
+on:
+  push:
+    branches: [research/baseball-asof-feature-store-build]
+    paths:
+      - .github/workflows/m3_batting_order_preflight.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Download batting-order artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33343249371
+          name: historical-order-bullpen-features-2021-2025
+          path: /tmp/order
+      - name: Download reusable feature store
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          name: reusable-baseball-asof-2021-2025
+          path: /tmp/reusable
+      - name: Inspect schemas
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd, json
+          def one(root,name):
+              h=list(Path(root).rglob(name)); assert len(h)==1,(name,h); return h[0]
+          for root,name in [('/tmp/order','batting_order_path_asof.parquet'),('/tmp/reusable','lineup_asof.parquet'),('/tmp/reusable','game_index.parquet')]:
+              p=one(root,name); x=pd.read_parquet(p)
+              print('\nTABLE',name,'ROWS',len(x))
+              print('COLUMNS',json.dumps(x.columns.tolist()))
+              print('DTYPES',json.dumps({c:str(x[c].dtype) for c in x.columns}))
+              print('HEAD')
+              print(x.head(3).to_json(orient='records',date_format='iso'))
+          PY
