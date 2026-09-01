@@ -1,0 +1,75 @@
+name: All-inning M4 matchup-state event fidelity
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m4_state_to_event_fidelity.py'
+      - '.github/workflows/all_inning_m4_state_to_event_fidelity.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+
+      - name: Merge development seasons only
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/normalized \
+            --output-dir /tmp/dev_2021_2024
+
+      - name: Download integrated M4 development artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33464716603
+          name: all-inning-m4-integrated-matchup-residual-fast-2021-2024
+          path: /tmp/m4integrated
+
+      - name: Validate probabilistic matchup state against PA events
+        run: |
+          python src/analysis/all_inning/m4_state_to_event_fidelity.py \
+            --plate-appearances /tmp/dev_2021_2024/plate_appearances.parquet \
+            --half-features /tmp/m4integrated/m4_integrated_half_matchup_features.parquet \
+            --output-dir /tmp/m4event
+
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m4event/manifest.json'))
+          c=pd.read_csv('/tmp/m4event/m4_event_fidelity_confirmation_2024.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons_loaded']==[2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert set(c.event)=={'k','baserunner','hr','nonhr_hit'}
+          print(j)
+          PY
+
+      - name: Upload event fidelity results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m4-state-to-event-fidelity-2022-2024
+          path: /tmp/m4event/
+          retention-days: 30
