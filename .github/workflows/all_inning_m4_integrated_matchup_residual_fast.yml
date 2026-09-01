@@ -1,0 +1,123 @@
+name: All-inning M4 integrated matchup residual fast
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m4_integrated_matchup_residual_fast.py'
+      - '.github/workflows/all_inning_m4_integrated_matchup_residual_fast.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+
+      - name: Merge development seasons only
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/normalized \
+            --output-dir /tmp/dev_2021_2024
+
+      - name: Download canonical half-inning development matrix
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33438697888
+          name: all-inning-half-matrix-development-2021-2024
+          path: /tmp/half
+
+      - name: Download M2 state
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33451896048
+          name: all-inning-m2-pitcher-state-validation-2021-2024
+          path: /tmp/m2
+
+      - name: Download M2 calibration
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33460531166
+          name: all-inning-m2-pitcher-state-calibration-2021-2024
+          path: /tmp/m2cal
+
+      - name: Download M3 state
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33460586741
+          name: all-inning-m3-batter-path-development-2021-2024
+          path: /tmp/m3
+
+      - name: Re-materialize validated joint starter-slot state
+        run: |
+          python src/analysis/all_inning/m4_joint_starter_slot_validation.py \
+            --m2 /tmp/m2/m2_pitcher_state_matrix.parquet \
+            --m3 /tmp/m3/m3_batter_path_state_matrix.parquet \
+            --m2-calibration /tmp/m2cal/m2_calibrated_begin_best_by_inning.csv \
+            --output-dir /tmp/m4joint
+
+      - name: Download validated bullpen skill-mixture specification
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33461834209
+          name: all-inning-m4-bullpen-skill-mixture-validation-2021-2024
+          path: /tmp/bpskill
+
+      - name: Build integrated matchup features and residual validation
+        run: |
+          python src/analysis/all_inning/m4_integrated_matchup_residual_fast.py \
+            --plate-appearances /tmp/dev_2021_2024/plate_appearances.parquet \
+            --starters /tmp/dev_2021_2024/starters.parquet \
+            --half-matrix /tmp/half/half_inning_development.parquet \
+            --joint-state /tmp/m4joint/m4_joint_starter_slot_state_matrix.parquet \
+            --bullpen-best /tmp/bpskill/m4_bullpen_skill_mixture_best_by_inning.csv \
+            --output-dir /tmp/m4integrated
+
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m4integrated/manifest.json'))
+          f=pd.read_csv('/tmp/m4integrated/m4_integrated_residual_folds.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons_loaded']==[2021,2022,2023,2024]
+          assert j['residual_test_years']==[2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert set(f.test_year.astype(int))=={2023,2024}
+          print(j)
+          PY
+
+      - name: Upload integrated matchup validation
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m4-integrated-matchup-residual-fast-2021-2024
+          path: /tmp/m4integrated/
+          retention-days: 30
