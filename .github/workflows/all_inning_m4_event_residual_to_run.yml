@@ -1,0 +1,84 @@
+name: All-inning M4 event residual to run translation
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m4_event_residual_to_run_validation.py'
+      - '.github/workflows/all_inning_m4_event_residual_to_run.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+          merge-multiple: false
+      - name: Merge development seasons only
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/normalized \
+            --output-dir /tmp/dev_2021_2024
+      - name: Download integrated M4 point-feature artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33464716603
+          name: all-inning-m4-integrated-matchup-residual-fast-2021-2024
+          path: /tmp/m4integrated
+      - name: Download canonical half-inning matrix
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33438697888
+          name: all-inning-half-matrix-development-2021-2024
+          path: /tmp/half
+      - name: Download state-to-event confirmation
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33465062099
+          name: all-inning-m4-state-to-event-fidelity-2022-2024
+          path: /tmp/event
+      - name: Run event residual to run translation
+        run: |
+          python src/analysis/all_inning/m4_event_residual_to_run_validation.py \
+            --plate-appearances /tmp/dev_2021_2024/plate_appearances.parquet \
+            --half-features /tmp/m4integrated/m4_integrated_half_matchup_features.parquet \
+            --all-half-matrix /tmp/half/half_inning_development.parquet \
+            --event-confirmation /tmp/event/m4_event_fidelity_confirmation_2024.csv \
+            --output-dir /tmp/m4eventrun
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json
+          j=json.load(open('/tmp/m4eventrun/manifest.json'))
+          assert j['status']=='PASS'
+          assert j['development_seasons_loaded']==[2022,2023,2024]
+          assert j['confirmation_year']==2024
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          print(j)
+          PY
+      - name: Upload event-to-run results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m4-event-residual-to-run-2022-2024
+          path: /tmp/m4eventrun/
+          retention-days: 30
