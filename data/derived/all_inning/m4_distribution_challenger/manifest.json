@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "architecture": "M4_full_latent_matchup_distribution_vs_point_vector",
+  "source_workflow_run": 33495871559,
+  "source_commit": "61634d0c7ba85da9f0b03fb03790f00559fe9b6f",
+  "development_source_seasons": [2021, 2022, 2023, 2024],
+  "selection_year": 2023,
+  "confirmation_year": 2024,
+  "holdout_season": 2025,
+  "holdout_opened": false,
+  "distribution_definition": "transform each joint slot x starter/reliever-identity state then probability-mix; no pre-transform collapse",
+  "point_definition": "probability-weight matchup skill first, then nonlinear transform",
+  "market_data_used": false,
+  "confirmation": [
+    {"event":"k","n_pa":173516,"selected_ridge":0.0,"point_logloss":0.5315956182050933,"distribution_logloss":0.5316010436656387,"distribution_minus_point_logloss_improvement":-5.425460545382954e-06,"point_brier":0.17398398864059383,"distribution_brier":0.17398607049752496,"distribution_minus_point_brier_improvement":-2.081856931124282e-06},
+    {"event":"baserunner","n_pa":173516,"selected_ridge":0.0,"point_logloss":0.3055291724088711,"distribution_logloss":0.30554038775015263,"distribution_minus_point_logloss_improvement":-1.1215341281511915e-05,"point_brier":0.08316743235919986,"distribution_brier":0.08316965688648034,"distribution_minus_point_brier_improvement":-2.2245272804782834e-06},
+    {"event":"hr","n_pa":173516,"selected_ridge":0.0,"point_logloss":0.1343892313764852,"distribution_logloss":0.13440123534424478,"distribution_minus_point_logloss_improvement":-1.200396775957735e-05,"point_brier":0.029048490486131527,"distribution_brier":0.029050685036684308,"distribution_minus_point_brier_improvement":-2.1945505527809495e-06},
+    {"event":"nonhr_hit","n_pa":173516,"selected_ridge":1000.0,"point_logloss":0.48248143755784895,"distribution_logloss":0.4824857305120997,"distribution_minus_point_logloss_improvement":-4.2929542507508245e-06,"point_brier":0.15233905144234308,"distribution_brier":0.15234040993427866,"distribution_minus_point_brier_improvement":-1.358491935582462e-06}
+  ],
+  "distribution_wins_all_events_logloss": false,
+  "distribution_wins_all_events_brier": false,
+  "automatic_production_promotion": false,
+  "roadmap_interpretation": "This is an event-layer M4-D vs M4-P challenger result. It does not substitute for the required inning run-distribution comparison against locked M0, and the event feature set remains subject to systematic 2021-2024 empirical feature-family screening before freeze."
+}
