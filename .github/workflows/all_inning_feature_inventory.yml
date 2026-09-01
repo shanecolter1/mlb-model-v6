@@ -1,0 +1,69 @@
+name: All-inning empirical feature inventory
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - '.github/workflows/all_inning_feature_inventory.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+          merge-multiple: false
+      - name: Merge development seasons only
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/normalized \
+            --output-dir /tmp/dev_2021_2024
+      - name: Inventory leakage-safe development fields
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+          root=Path('/tmp/dev_2021_2024')
+          out={}
+          for p in sorted(root.glob('*.parquet')):
+              x=pd.read_parquet(p)
+              out[p.stem]={
+                  'rows': int(len(x)),
+                  'columns': list(x.columns),
+                  'dtypes': {c:str(x[c].dtype) for c in x.columns},
+                  'years': sorted(pd.to_datetime(x['game_date'],errors='coerce').dt.year.dropna().astype(int).unique().tolist()) if 'game_date' in x else []
+              }
+          report={
+              'development_seasons':[2021,2022,2023,2024],
+              'holdout_opened':False,
+              'market_data_used':False,
+              'tables':out,
+          }
+          Path('/tmp/feature_inventory.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+          print(json.dumps(report,indent=2))
+          PY
+      - name: Publish inventory
+        run: |
+          mkdir -p data/derived/all_inning/feature_inventory
+          cp /tmp/feature_inventory.json data/derived/all_inning/feature_inventory/normalized_2021_2024_schema.json
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/derived/all_inning/feature_inventory/normalized_2021_2024_schema.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record 2021-2024 all-inning feature inventory'
+            git push
+          fi
