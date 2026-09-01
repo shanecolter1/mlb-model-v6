@@ -1,0 +1,56 @@
+name: All-inning M3 transition propagation validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m3_transition_propagation_validation.py'
+      - '.github/workflows/all_inning_m3_transition_propagation_validation.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download M3 development artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33460586741
+          name: all-inning-m3-batter-path-development-2021-2024
+          path: /tmp/m3
+      - name: Validate recursive batting path propagation
+        run: |
+          python src/analysis/all_inning/m3_transition_propagation_validation.py \
+            --realized-slots /tmp/m3/m3_realized_start_slots.parquet \
+            --output-dir /tmp/m3transition
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m3transition/manifest.json'))
+          s=pd.read_csv('/tmp/m3transition/m3_transition_propagation_summary.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['smoothing_used'] is False
+          assert j['market_data_used'] is False
+          assert set(s.inning.astype(int))==set(range(1,10))
+          print(j)
+          PY
+      - name: Upload transition results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m3-transition-propagation-validation-2021-2024
+          path: /tmp/m3transition/
+          retention-days: 30
