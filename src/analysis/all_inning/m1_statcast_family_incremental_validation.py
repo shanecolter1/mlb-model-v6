@@ -36,8 +36,10 @@ def sigmoid(z): return 1/(1+np.exp(-np.clip(z,-35,35)))
 def ll(y,p):
     p=np.clip(p,EPS,1-EPS); return float(-(y*np.log(p)+(1-y)*np.log(1-p)).mean())
 def br(y,p): return float(np.mean((y-p)**2))
-def fit_logistic(X,y,ridge=0.0,max_iter=35):
-    b=np.zeros(X.shape[1]); pen=np.eye(X.shape[1]); pen[0,0]=0
+def fit_logistic(X,y,ridge=0.0,penalty_start=None,max_iter=35):
+    b=np.zeros(X.shape[1]); pen=np.zeros((X.shape[1],X.shape[1]))
+    if penalty_start is not None and ridge>0:
+        for j in range(int(penalty_start),X.shape[1]): pen[j,j]=1.0
     for _ in range(max_iter):
         p=sigmoid(X@b); w=np.maximum(p*(1-p),1e-7)
         g=X.T@(p-y)+ridge*(pen@b); H=X.T@(X*w[:,None])+ridge*pen+1e-8*np.eye(X.shape[1])
@@ -66,6 +68,15 @@ def core_matrix(df,event,window):
 
 def family_cols(family,window): return [s.format(w=window) for s in FAMILY_TEMPLATES[family]]
 
+def add_pitch_mix_interactions(tr,te,window,Ftr,Fte):
+    for side in ['fb','breaking','offspeed']:
+        mix=tr[f'pitcher_{window}_mix_{side}'].to_numpy(float); mixte=te[f'pitcher_{window}_mix_{side}'].to_numpy(float)
+        for response in ['whiff_rate','xwoba_contact']:
+            bv=tr[f'batter_{window}_{side}_{response}'].to_numpy(float); bvte=te[f'batter_{window}_{side}_{response}'].to_numpy(float)
+            v=mix*bv; vt=mixte*bvte; mu=v.mean(); sd=v.std(); sd=sd if np.isfinite(sd) and sd>=1e-10 else 1.0
+            Ftr=np.column_stack([Ftr,(v-mu)/sd]); Fte=np.column_stack([Fte,(vt-mu)/sd])
+    return Ftr,Fte
+
 def evaluate(x,event,family,window,year,ridge):
     ycol='y_'+event; ratecols=[f'batter_{window}_{event}_rate',f'pitcher_{window}_{event}_rate']; fcols=family_cols(family,window)
     needed=['season','inning','batter_side','pitcher_hand',ycol]+ratecols+fcols
@@ -74,18 +85,10 @@ def evaluate(x,event,family,window,year,ridge):
     ytr=tr[ycol].to_numpy(float); yte=te[ycol].to_numpy(float)
     Ctr=core_matrix(tr,event,window); Cte=core_matrix(te,event,window)
     Ftr,Fte=standardize(tr,te,fcols)
-    # Candidate interactions for pitch mix are mechanistic products of batter response and opposing pitcher usage.
-    if family=='pitch_mix_matchup':
-        for side in ['fb','breaking','offspeed']:
-            mix=tr[f'pitcher_{window}_mix_{side}'].to_numpy(float); mixte=te[f'pitcher_{window}_mix_{side}'].to_numpy(float)
-            wh=tr[f'batter_{window}_{side}_whiff_rate'].to_numpy(float); whte=te[f'batter_{window}_{side}_whiff_rate'].to_numpy(float)
-            xw=tr[f'batter_{window}_{side}_xwoba_contact'].to_numpy(float); xwte=te[f'batter_{window}_{side}_xwoba_contact'].to_numpy(float)
-            # standardize interaction products from training statistics only
-            for a,b in [(mix,wh),(mix,xw)]:
-                v=a*b; vt=mixte*(whte if b is wh else xwte); mu=v.mean(); sd=v.std(); sd=sd if np.isfinite(sd) and sd>=1e-10 else 1.0
-                Ftr=np.column_stack([Ftr,(v-mu)/sd]); Fte=np.column_stack([Fte,(vt-mu)/sd])
-    b0=fit_logistic(Ctr,ytr,0.0); p0=sigmoid(Cte@b0)
-    Xtr=np.column_stack([Ctr,Ftr]); Xte=np.column_stack([Cte,Fte]); b1=fit_logistic(Xtr,ytr,ridge); p1=sigmoid(Xte@b1)
+    if family=='pitch_mix_matchup': Ftr,Fte=add_pitch_mix_interactions(tr,te,window,Ftr,Fte)
+    b0=fit_logistic(Ctr,ytr,0.0,None); p0=sigmoid(Cte@b0)
+    Xtr=np.column_stack([Ctr,Ftr]); Xte=np.column_stack([Cte,Fte])
+    b1=fit_logistic(Xtr,ytr,ridge,Ctr.shape[1]); p1=sigmoid(Xte@b1)
     return {'event':event,'family':family,'window':window,'ridge':ridge,'test_year':year,'n_train':len(tr),'n_test':len(te),
       'core_logloss':ll(yte,p0),'challenger_logloss':ll(yte,p1),'logloss_improvement':ll(yte,p0)-ll(yte,p1),
       'core_brier':br(yte,p0),'challenger_brier':br(yte,p1),'brier_improvement':br(yte,p0)-br(yte,p1)}
@@ -110,9 +113,7 @@ def main():
     if folds.empty: raise RuntimeError('no evaluable candidate folds')
     s=folds.groupby(['event','family','window','ridge'],as_index=False).agg(
       dev_mean_logloss_improvement=('logloss_improvement','mean'),dev_worst_logloss_improvement=('logloss_improvement','min'),
-      dev_mean_brier_improvement=('brier_improvement','mean'),dev_worst_brier_improvement=('brier_improvement','min'),
-      dev_min_test_n=('n_test','min'))
-    # Select only on 2022-2023, separately within each event x family.
+      dev_mean_brier_improvement=('brier_improvement','mean'),dev_worst_brier_improvement=('brier_improvement','min'),dev_min_test_n=('n_test','min'))
     selected=s.sort_values(['event','family','dev_mean_logloss_improvement','dev_worst_logloss_improvement','dev_mean_brier_improvement'],ascending=[True,True,False,False,False]).groupby(['event','family'],as_index=False).head(1).copy()
     confirmations=[]
     for r in selected.itertuples():
@@ -127,9 +128,8 @@ def main():
     manifest={'status':'PASS','architecture':'M1_incremental_statcast_feature_family_screen','development_seasons':[2021,2022,2023,2024],
       'selection_test_years':[2022,2023],'confirmation_year':2024,'holdout_season':2025,'holdout_opened':False,'market_data_used':False,
       'core':'validated event rates + inning effects; confirmed handedness terms additionally retained for K/baserunner/HR',
-      'families':list(FAMILY_TEMPLATES),'windows':WINDOWS,'ridge_candidates':RIDGES,
+      'families':list(FAMILY_TEMPLATES),'windows':WINDOWS,'ridge_candidates':RIDGES,'ridge_penalty_scope':'incremental Statcast coefficients only; validated core remains unpenalized',
       'comparison_rows':'identical complete-case rows within each family/window; no imputation','automatic_production_promotion':False,
-      'candidate_rule':'positive logloss in both 2022 and 2023 selection folds plus positive 2024 confirmation in logloss and Brier',
-      'confirmation':conf.to_dict('records')}
+      'candidate_rule':'positive logloss in both 2022 and 2023 selection folds plus positive 2024 confirmation in logloss and Brier','confirmation':conf.to_dict('records')}
     (a.output_dir/'manifest.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8'); print(conf[['event','family','window','ridge','dev_mean_logloss_improvement','dev_worst_logloss_improvement','logloss_improvement','brier_improvement','earns_incremental_candidate_status']].to_string(index=False)); print(json.dumps({k:v for k,v in manifest.items() if k!='confirmation'},indent=2))
 if __name__=='__main__': main()
