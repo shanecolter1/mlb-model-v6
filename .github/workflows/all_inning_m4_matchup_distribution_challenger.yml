@@ -81,6 +81,7 @@ jobs:
           path: /tmp/bpskill
       - name: Run point-vector vs full-distribution challenger
         run: |
+          sed -i 's/\.to_numpy(float); sd=/\.to_numpy(float).copy(); sd=/g; s/\.to_numpy(float); sd\[/\.to_numpy(float).copy(); sd[/g' src/analysis/all_inning/m4_matchup_distribution_challenger.py
           python src/analysis/all_inning/m4_matchup_distribution_challenger.py \
             --plate-appearances /tmp/dev_2021_2024/plate_appearances.parquet \
             --starters /tmp/dev_2021_2024/starters.parquet \
