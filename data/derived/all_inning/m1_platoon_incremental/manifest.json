@@ -1,0 +1,102 @@
+{
+  "status": "PASS",
+  "architecture": "M1_platoon_incremental_feature_family_screen",
+  "development_seasons": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "selection_folds": [
+    2022,
+    2023
+  ],
+  "confirmation_year": 2024,
+  "holdout_season": 2025,
+  "holdout_opened": false,
+  "market_data_used": false,
+  "core": "inning effects + batter rate + pitcher rate + batter*pitcher interaction for the same PA event",
+  "candidate_family": "handedness/platoon indicators and interactions",
+  "windows": [
+    "season",
+    "30d",
+    "90d",
+    "365d"
+  ],
+  "specs": [
+    "same_hand",
+    "handedness",
+    "handedness_rate_interactions"
+  ],
+  "automatic_production_promotion": false,
+  "confirmation": [
+    {
+      "event": "k",
+      "window": "365d",
+      "spec": "handedness",
+      "test_year": 2024,
+      "n_train": 525795,
+      "n_test": 177175,
+      "core_logloss": 0.5248261323680143,
+      "challenger_logloss": 0.5246687985985865,
+      "incremental_logloss_improvement": 0.0001573337694278365,
+      "core_brier": 0.17164392871379291,
+      "challenger_brier": 0.17159496126435544,
+      "incremental_brier_improvement": 4.8967449437470334e-05,
+      "challenger_terms": "batter_left|pitcher_left|left_interaction",
+      "confirmed_logloss_positive": true,
+      "confirmed_brier_positive": true
+    },
+    {
+      "event": "baserunner",
+      "window": "30d",
+      "spec": "handedness",
+      "test_year": 2024,
+      "n_train": 502542,
+      "n_test": 167262,
+      "core_logloss": 0.3044437859291025,
+      "challenger_logloss": 0.30413630653065005,
+      "incremental_logloss_improvement": 0.0003074793984524371,
+      "core_brier": 0.08290081422516808,
+      "challenger_brier": 0.08284574705331625,
+      "incremental_brier_improvement": 5.50671718518303e-05,
+      "challenger_terms": "batter_left|pitcher_left|left_interaction",
+      "confirmed_logloss_positive": true,
+      "confirmed_brier_positive": true
+    },
+    {
+      "event": "hr",
+      "window": "365d",
+      "spec": "handedness",
+      "test_year": 2024,
+      "n_train": 525795,
+      "n_test": 177175,
+      "core_logloss": 0.13360351845679116,
+      "challenger_logloss": 0.13351649114896116,
+      "incremental_logloss_improvement": 8.702730783000101e-05,
+      "core_brier": 0.029017812986562305,
+      "challenger_brier": 0.029013610256418503,
+      "incremental_brier_improvement": 4.2027301438013476e-06,
+      "challenger_terms": "batter_left|pitcher_left|left_interaction",
+      "confirmed_logloss_positive": true,
+      "confirmed_brier_positive": true
+    },
+    {
+      "event": "nonhr_hit",
+      "window": "season",
+      "spec": "handedness_rate_interactions",
+      "test_year": 2024,
+      "n_train": 513254,
+      "n_test": 170649,
+      "core_logloss": 0.48245572097293965,
+      "challenger_logloss": 0.4825108754483312,
+      "incremental_logloss_improvement": -5.515447539156115e-05,
+      "core_brier": 0.15237644247126766,
+      "challenger_brier": 0.15239182766381182,
+      "incremental_brier_improvement": -1.5385192544153936e-05,
+      "challenger_terms": "batter_left|pitcher_left|left_interaction|b_x_bL|b_x_pL|p_x_bL|p_x_pL",
+      "confirmed_logloss_positive": false,
+      "confirmed_brier_positive": false
+    }
+  ]
+}

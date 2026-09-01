@@ -1,0 +1,5 @@
+event,window,spec,test_year,n_train,n_test,core_logloss,challenger_logloss,incremental_logloss_improvement,core_brier,challenger_brier,incremental_brier_improvement,challenger_terms,confirmed_logloss_positive,confirmed_brier_positive
+k,365d,handedness,2024,525795,177175,0.5248261323680143,0.5246687985985865,0.0001573337694278365,0.17164392871379291,0.17159496126435544,4.8967449437470334e-05,batter_left|pitcher_left|left_interaction,True,True
+baserunner,30d,handedness,2024,502542,167262,0.3044437859291025,0.30413630653065005,0.0003074793984524371,0.08290081422516808,0.08284574705331625,5.50671718518303e-05,batter_left|pitcher_left|left_interaction,True,True
+hr,365d,handedness,2024,525795,177175,0.13360351845679116,0.13351649114896116,8.702730783000101e-05,0.029017812986562305,0.029013610256418503,4.2027301438013476e-06,batter_left|pitcher_left|left_interaction,True,True
+nonhr_hit,season,handedness_rate_interactions,2024,513254,170649,0.48245572097293965,0.4825108754483312,-5.515447539156115e-05,0.15237644247126766,0.15239182766381182,-1.5385192544153936e-05,batter_left|pitcher_left|left_interaction|b_x_bL|b_x_pL|p_x_bL|p_x_pL,False,False
