@@ -1,0 +1,69 @@
+name: All-inning M1 platoon incremental validation
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m1_platoon_incremental_validation.py'
+      - '.github/workflows/all_inning_m1_platoon_incremental_validation.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download all-inning M1 PA matchup matrix
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33450762451
+          name: all-inning-m1-pa-matchup-development-2021-2024
+          path: /tmp/m1
+      - name: Run platoon incremental feature screen
+        run: |
+          python src/analysis/all_inning/m1_platoon_incremental_validation.py \
+            --matrix /tmp/m1/m1_pa_matchup_development.parquet \
+            --output-dir /tmp/platoon
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/platoon/manifest.json'))
+          c=pd.read_csv('/tmp/platoon/m1_platoon_confirmation_2024.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['selection_folds']==[2022,2023]
+          assert j['confirmation_year']==2024
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert set(c.event)=={'k','baserunner','hr','nonhr_hit'}
+          print(j)
+          print(c.to_string(index=False))
+          PY
+      - name: Publish inspectable summary
+        run: |
+          mkdir -p data/derived/all_inning/m1_platoon_incremental
+          cp /tmp/platoon/manifest.json data/derived/all_inning/m1_platoon_incremental/
+          cp /tmp/platoon/m1_platoon_selected_by_event.csv data/derived/all_inning/m1_platoon_incremental/
+          cp /tmp/platoon/m1_platoon_confirmation_2024.csv data/derived/all_inning/m1_platoon_incremental/
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/derived/all_inning/m1_platoon_incremental
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record M1 platoon incremental results'
+            git push
+          fi
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m1-platoon-incremental-2021-2024
+          path: /tmp/platoon/
+          retention-days: 30
