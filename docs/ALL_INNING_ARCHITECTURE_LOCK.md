@@ -166,7 +166,10 @@ The previous I2-only M2 and M3 runs are archived as failed specific formulations
 - The first integrated matchup residual test collapsed the joint distribution to expected/point-vector features. Its failure does NOT constitute a rejection of the full matchup distribution.
 - An inning-specific point-vector residual challenger improved only I2 and I4 on 2024 confirmation and was negative in aggregate; it is not promoted globally.
 - Direct PA-event fidelity testing of the probabilistic pregame matchup state remained positive on 2024 confirmation for K, baserunner, HR, and non-HR hit. Therefore useful baseball matchup information survives the M2/M3/M4 uncertainty layer; downstream event-to-run translation remains an active research question.
-- The full M4-D matchup-distribution challenger is mandatory before concluding the matchup layer has failed or before architecture freeze.
+- The initial full M4-D matchup-distribution challenger was implemented correctly and completed on the original K/baserunner/HR/non-HR-hit representation. It was microscopically worse than M4-P on 2024 PA-event confirmation, so it did not earn promotion with that feature set. This is not a rejection of the distributional architecture; M4-P and M4-D must be rerun after the broader feature set is frozen.
+- Handedness/platoon information confirmed incremental PA-event value for K, baserunner, and HR. The selected non-HR-hit platoon specification failed 2024 confirmation and is not retained.
+- The corrected Statcast marginal screen held the validated 365-day M1 core comparator fixed. Discipline/contact, contact-quality/expected, velocity/spin/extension, and pitch-mix families each earned marginal candidate status for all four PA-event targets on the prescribed chronological screen.
+- The joint redundancy gate retained all four Statcast families for K; contact-quality/expected, discipline/contact, and velocity/spin/extension for baserunner, HR, and non-HR hit. HR pitch-mix was removed because its conditional 2024 Brier contribution was negative. These are 2021-2024 development-selected M1 inputs for downstream testing, not production promotion and not evidence that M4 or the run layer improves M0.
 
 ## Chronological validation and holdout
 
@@ -233,8 +236,8 @@ Legacy I2 paths remain operational until explicit promotion/migration.
 4. Build and validate pitcher-state model by inning. COMPLETE FOR STARTER SURVIVAL; BULLPEN IDENTITY/SKILL MIXTURE VALIDATED.
 5. Build and validate batter/order-state model by inning. COMPLETE; UNCONDITIONAL M3 RETAINED OVER RECURSIVE TRANSITION REPLACEMENT.
 6. Assemble joint pitcher x batter matchup state distribution. COMPLETE AT STATE-CONSTRUCTION LEVEL.
-7. Run explicit M4-P point-vector versus M4-D full-distribution comparison from the same joint states. IN PROGRESS / REQUIRED GATE.
-8. Systematically screen additional pitcher/batter statistic families for incremental PA-event predictive value on 2021-2024 only; integrate only validated additions into both P and D branches.
+7. Run explicit M4-P point-vector versus M4-D full-distribution comparison from the same joint states. COMPLETE FOR THE INITIAL CORE FEATURE SET; RERUN REQUIRED AFTER FINAL FEATURE SELECTION.
+8. Systematically screen additional pitcher/batter statistic families for incremental PA-event predictive value on 2021-2024 only; integrate only validated additions into both P and D branches. IN PROGRESS: PLATOON AND INITIAL STATCAST FAMILY/REDUNDANCY GATES COMPLETE; REMAINING PA-HISTORY, RELIABILITY/SHRINKAGE, AND AVAILABLE STATCAST EXTENSIONS MUST STILL BE TESTED.
 9. Translate the validated matchup event distribution into half-inning and full-inning P0/P1/P2/P3/P4+ relative to locked M0.
 10. Compare chronologically by inning and aggregate; champion remains M0 unless challenger improves according to locked empirical governance.
 11. Freeze feature set, state representation, hyperparameters, residual scaling, and distribution architecture.

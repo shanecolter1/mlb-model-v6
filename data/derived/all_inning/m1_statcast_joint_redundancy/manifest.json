@@ -1,0 +1,164 @@
+{
+  "status": "PASS",
+  "architecture": "M1_joint_statcast_subset_and_conditional_redundancy_gate",
+  "development_seasons": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "marginal_window_ridge_selection_year": 2022,
+  "joint_subset_selection_year": 2023,
+  "confirmation_year": 2024,
+  "final_feature_selection_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "confirmation_role": "2024 confirms the 2023-selected subset before any conditional pruning",
+  "stable_subset_role": "2021-2024 development-selected input for downstream M4; not final-holdout evidence",
+  "holdout_season": 2025,
+  "holdout_opened": false,
+  "market_data_used": false,
+  "core_specs": {
+    "k": {
+      "window": "365d",
+      "spec": "additive_interaction"
+    },
+    "baserunner": {
+      "window": "365d",
+      "spec": "additive_interaction"
+    },
+    "hr": {
+      "window": "365d",
+      "spec": "additive_interaction"
+    },
+    "nonhr_hit": {
+      "window": "365d",
+      "spec": "additive"
+    }
+  },
+  "comparison_rows": "common complete-case intersection across all eligible families within event/year",
+  "subset_rule": "minimum 2023 log loss; Brier then smaller subset are tie-breakers",
+  "conditional_rule": "selected family must improve log loss in 2023 and 2024 and Brier in 2024 versus its leave-one-family-out ablation",
+  "automatic_production_promotion": false,
+  "event_status": [
+    {
+      "event": "k",
+      "marginal_candidates": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "selected_families_2023": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "selection_2023_logloss_improvement": 0.0014892940487093442,
+      "confirmation_2024_logloss_improvement": 0.0016438818241917286,
+      "confirmation_2024_brier_improvement": 0.0005902730939959799,
+      "full_subset_confirmed": true,
+      "stable_families_2021_2024": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "families_removed_by_conditional_gate": [],
+      "stable_subset_2023_logloss_improvement": 0.0014892940487093442,
+      "stable_subset_2024_logloss_improvement": 0.0016438818241917286,
+      "stable_subset_2024_brier_improvement": 0.0005902730939959799,
+      "joint_feature_set_development_selected": true
+    },
+    {
+      "event": "baserunner",
+      "marginal_candidates": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "selected_families_2023": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "velocity_spin_extension"
+      ],
+      "selection_2023_logloss_improvement": 0.0009077618758331352,
+      "confirmation_2024_logloss_improvement": 0.0007804134413459951,
+      "confirmation_2024_brier_improvement": 0.000136923118177798,
+      "full_subset_confirmed": true,
+      "stable_families_2021_2024": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "velocity_spin_extension"
+      ],
+      "families_removed_by_conditional_gate": [],
+      "stable_subset_2023_logloss_improvement": 0.0009624623871907212,
+      "stable_subset_2024_logloss_improvement": 0.0008431973607299081,
+      "stable_subset_2024_brier_improvement": 0.00014852957203262407,
+      "joint_feature_set_development_selected": true
+    },
+    {
+      "event": "hr",
+      "marginal_candidates": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "selected_families_2023": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "selection_2023_logloss_improvement": 0.0011643879020530878,
+      "confirmation_2024_logloss_improvement": 0.0008322129174475335,
+      "confirmation_2024_brier_improvement": 5.2168252957330435e-05,
+      "full_subset_confirmed": true,
+      "stable_families_2021_2024": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "velocity_spin_extension"
+      ],
+      "families_removed_by_conditional_gate": [
+        "pitch_mix_matchup"
+      ],
+      "stable_subset_2023_logloss_improvement": 0.001279660021108936,
+      "stable_subset_2024_logloss_improvement": 0.0009399454223983916,
+      "stable_subset_2024_brier_improvement": 4.0703016684004445e-05,
+      "joint_feature_set_development_selected": true
+    },
+    {
+      "event": "nonhr_hit",
+      "marginal_candidates": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "pitch_mix_matchup",
+        "velocity_spin_extension"
+      ],
+      "selected_families_2023": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "velocity_spin_extension"
+      ],
+      "selection_2023_logloss_improvement": 0.0010843239102593105,
+      "confirmation_2024_logloss_improvement": 0.0008273001479590647,
+      "confirmation_2024_brier_improvement": 0.0002471054635020953,
+      "full_subset_confirmed": true,
+      "stable_families_2021_2024": [
+        "contact_quality_expected",
+        "discipline_contact",
+        "velocity_spin_extension"
+      ],
+      "families_removed_by_conditional_gate": [],
+      "stable_subset_2023_logloss_improvement": 0.001118986495064478,
+      "stable_subset_2024_logloss_improvement": 0.0008801223752717968,
+      "stable_subset_2024_brier_improvement": 0.00026688721497036827,
+      "joint_feature_set_development_selected": true
+    }
+  ]
+}
