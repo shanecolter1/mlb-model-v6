@@ -1,0 +1,57 @@
+name: All-inning M2 pitcher-state calibration
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m2_pitcher_state_calibration.py'
+      - '.github/workflows/all_inning_m2_pitcher_state_calibration.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download M2 state artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33451896048
+          name: all-inning-m2-pitcher-state-validation-2021-2024
+          path: /tmp/m2_state
+      - name: Calibrate M2 state probabilities
+        run: |
+          python src/analysis/all_inning/m2_pitcher_state_calibration.py \
+            --matrix /tmp/m2_state/m2_pitcher_state_matrix.parquet \
+            --output-dir /tmp/m2_calibration
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json, pandas as pd
+          j=json.load(open('/tmp/m2_calibration/manifest.json'))
+          b=pd.read_csv('/tmp/m2_calibration/m2_calibrated_begin_best_by_inning.csv')
+          s=pd.read_csv('/tmp/m2_calibration/m2_calibrated_share_best_by_inning.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert set(b.inning)==set(range(2,10))
+          assert set(s.inning)==set(range(1,10))
+          print(j)
+          PY
+      - name: Upload calibration results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m2-pitcher-state-calibration-2021-2024
+          path: /tmp/m2_calibration/
+          retention-days: 30
