@@ -1,0 +1,65 @@
+name: All-inning M3 batter-path development
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m3_batter_path_development.py'
+      - '.github/workflows/all_inning_m3_batter_path_development.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+      - name: Merge development seasons only
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/normalized \
+            --output-dir /tmp/dev_2021_2024
+      - name: Build and validate M3 batter path
+        run: |
+          python src/analysis/all_inning/m3_batter_path_development.py \
+            --plate-appearances /tmp/dev_2021_2024/plate_appearances.parquet \
+            --lineups /tmp/dev_2021_2024/lineups.parquet \
+            --output-dir /tmp/m3
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m3/manifest.json'))
+          x=pd.read_parquet('/tmp/m3/m3_batter_path_state_matrix.parquet')
+          s=pd.read_csv('/tmp/m3/m3_walkforward_summary_by_inning.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['smoothing_used'] is False
+          assert j['shrinkage_used'] is False
+          assert j['market_data_used'] is False
+          assert set(x.inning.astype(int).unique())==set(range(1,10))
+          assert set(s.inning.astype(int))==set(range(1,10))
+          print(j)
+          PY
+      - name: Upload M3 results
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m3-batter-path-development-2021-2024
+          path: /tmp/m3/
+          retention-days: 30
