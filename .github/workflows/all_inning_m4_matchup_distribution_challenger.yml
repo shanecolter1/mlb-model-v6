@@ -4,10 +4,9 @@ on:
     branches: [research/all-inning-engine-rebuild]
     paths:
       - 'src/analysis/all_inning/m4_matchup_distribution_challenger.py'
-      - '.github/workflows/all_inning_m4_matchup_distribution_challenger.yml'
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
   actions: read
 jobs:
   validate:
@@ -104,21 +103,6 @@ jobs:
           print(j)
           print(x.to_string(index=False))
           PY
-      - name: Publish inspectable research summary
-        run: |
-          mkdir -p data/derived/all_inning/m4_distribution_challenger
-          cp /tmp/m4dist/manifest.json data/derived/all_inning/m4_distribution_challenger/manifest.json
-          cp /tmp/m4dist/m4_distribution_vs_point_2024.csv data/derived/all_inning/m4_distribution_challenger/m4_distribution_vs_point_2024.csv
-          if [ -f /tmp/m4dist/m4_distribution_vs_point_by_inning_2024.csv ]; then
-            cp /tmp/m4dist/m4_distribution_vs_point_by_inning_2024.csv data/derived/all_inning/m4_distribution_challenger/
-          fi
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add data/derived/all_inning/m4_distribution_challenger
-          if ! git diff --cached --quiet; then
-            git commit -m 'Record M4 distribution challenger results'
-            git push
-          fi
       - name: Upload distribution challenger
         uses: actions/upload-artifact@v4
         with:
