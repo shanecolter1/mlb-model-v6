@@ -50,6 +50,12 @@ jobs:
           assert j['development_seasons']==[2021,2022,2023,2024]
           assert j['selection_year']==2022 and j['development_validation_year']==2023 and j['confirmation_year']==2024
           assert j['holdout_opened'] is False and j['market_data_used'] is False
+          assert j['core_specs']=={
+            'k':{'window':'365d','spec':'additive_interaction'},
+            'baserunner':{'window':'365d','spec':'additive_interaction'},
+            'hr':{'window':'365d','spec':'additive_interaction'},
+            'nonhr_hit':{'window':'365d','spec':'additive'},
+          }
           assert len(s)==16
           assert set(s.event)=={'k','baserunner','hr','nonhr_hit'}
           print(s.to_string(index=False))
