@@ -1,0 +1,61 @@
+name: All-inning M4 inning-specific residual diagnostic
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m4_integrated_inning_specific_validation.py'
+      - '.github/workflows/all_inning_m4_inning_specific_residual.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+
+      - name: Download integrated M4 development artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33464716603
+          name: all-inning-m4-integrated-matchup-residual-fast-2021-2024
+          path: /tmp/m4integrated
+
+      - name: Validate inning-specific residual weights
+        run: |
+          python src/analysis/all_inning/m4_integrated_inning_specific_validation.py \
+            --integrated-full /tmp/m4integrated/m4_integrated_full_inning_features.parquet \
+            --output-dir /tmp/m4inning
+
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m4inning/manifest.json'))
+          c=pd.read_csv('/tmp/m4inning/m4_inning_specific_confirmation_2024.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons_loaded']==[2022,2023,2024]
+          assert j['ridge_selection_year']==2023
+          assert j['confirmation_year']==2024
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert set(c.inning.astype(int))==set(range(1,10))
+          print(j)
+          PY
+
+      - name: Upload inning-specific diagnostic
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m4-inning-specific-residual-2022-2024
+          path: /tmp/m4inning/
+          retention-days: 30
