@@ -1,0 +1,61 @@
+name: All-inning M1 Statcast family incremental validation
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - src/analysis/all_inning/m1_statcast_family_incremental_validation.py
+      - .github/workflows/all_inning_m1_statcast_family_incremental_validation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33450762451
+          name: all-inning-m1-pa-matchup-development-2021-2024
+          path: /tmp/m1
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33504815582
+          name: all-inning-statcast-asof-features-2021-2024
+          path: /tmp/asof
+      - name: Run chronological feature-family challenger
+        run: |
+          python src/analysis/all_inning/m1_statcast_family_incremental_validation.py \
+            --m1-matrix /tmp/m1/m1_pa_matchup_development.parquet \
+            --batter-asof /tmp/asof/statcast_batter_asof.parquet \
+            --pitcher-asof /tmp/asof/statcast_pitcher_asof.parquet \
+            --output-dir /tmp/statcast_gate
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/statcast_gate/manifest.json'))
+          s=pd.read_csv('/tmp/statcast_gate/m1_statcast_family_gate_status.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['selection_year']==2022 and j['development_validation_year']==2023 and j['confirmation_year']==2024
+          assert j['holdout_opened'] is False and j['market_data_used'] is False
+          assert len(s)==16
+          assert set(s.event)=={'k','baserunner','hr','nonhr_hit'}
+          print(s.to_string(index=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m1-statcast-family-incremental-2021-2024
+          path: /tmp/statcast_gate/
+          retention-days: 30
