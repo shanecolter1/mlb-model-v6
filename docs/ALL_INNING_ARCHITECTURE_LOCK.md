@@ -72,11 +72,13 @@ Batter-path probability must first be validated against realized historical star
 
 ### Matchup assembly
 
-For each half inning and inning i:
+Pitcher state and batting-order state must NOT be assumed independent. Development testing rejected the simple factorization P(pitcher state) x P(start slot), with stable dependence especially in middle and late innings. The matchup layer therefore uses an empirically fitted joint/conditional state distribution:
 
-P(pitcher, batter sequence | pregame) = P(pitcher state | i, pregame) x P(batter/order state | i, pregame)
+P(pitcher state, batter/order state | inning i, pregame)
 
-Use this state distribution to construct expected pitcher x batter event characteristics. The common matchup feature family includes, subject to empirical validation:
+The current development joint-state layer conditions batting-order state on starter-survival/bullpen state with inning-specific dependence strength selected chronologically on 2022-2024 folds. Any future richer dependence structure must also earn promotion empirically.
+
+Use the joint state distribution to construct expected pitcher x batter event characteristics. The common matchup feature family includes, subject to empirical validation:
 - strikeout
 - walk/HBP/baserunner
 - HR/power
@@ -84,6 +86,12 @@ Use this state distribution to construct expected pitcher x batter event charact
 - platoon
 
 No manually assigned matchup weight receives production status.
+
+### Bullpen state representation
+
+When the bullpen branch is active, exact reliever identity is represented probabilistically rather than assumed known. Late-inning first-reliever identity ranking is empirically useful, but early-inning exact-identity stability is mixed. Therefore the matchup engine must support a probability-weighted bullpen skill mixture.
+
+The validated bullpen skill state uses strictly prior-date pitcher histories and probability-weighted K, baserunner, HR, and non-HR-hit skill vectors. Exact identity may be used only where its development evidence supports it; otherwise use the broader skill mixture.
 
 ## Development sequence
 
@@ -95,11 +103,22 @@ M2: validate inning-specific pitcher-state probabilities across I1-I9.
 
 M3: validate inning-specific batting-order/batter-state probabilities across I1-I9.
 
-M4: assemble probability-weighted pitcher x batter matchup states and test incremental residual run signal versus M0/M1.
+M4: assemble probability-weighted joint pitcher x batter matchup states and test incremental residual run signal versus M0/M1.
 
 M5+: add park, environment, umpire, or other variables only if they improve chronological out-of-sample performance beyond the total-conditioned baseline and validated matchup engine.
 
 The previous I2-only M2 and M3 runs are archived as failed specific formulations only. They do not reject pitcher-state or batting-order-state modeling.
+
+## Locked development findings through M4 state research
+
+- M0 fidelity is verified across I1-I9 against the canonical historical outcomes.
+- M1 PA-level retrospective matchup-skill testing identified stable predictive signal in K, baserunner, HR, and non-HR-hit dimensions using strictly prior-date histories.
+- M2 starter-survival probabilities require empirical calibration/partial pooling; raw pitcher-specific retention probabilities are too extreme.
+- M2 calibrated starter-survival models use development-selected history windows/weights, with 2025 untouched.
+- M3 raw unconditional inning start-slot distributions remain the governing batter-path representation.
+- Recursive transition propagation from I1 through I9 was tested directly against unconditional M3 distributions. It was effectively neutral through I5, trivially positive in I6 and I8, and worse in I7 and I9. It is therefore NOT promoted as a wholesale replacement for the unconditional M3 representation.
+- Pitcher state and batting-order state are empirically dependent and must be modeled jointly/conditionally rather than factorized.
+- Bullpen skill-mixture fidelity is validated as the preferred fallback when exact reliever identity is uncertain.
 
 ## Chronological validation and holdout
 
@@ -160,12 +179,12 @@ Legacy I2 paths remain operational until explicit promotion/migration.
 
 ## Immediate implementation order
 
-1. Build canonical half-inning research matrix for I1-I9 from leakage-safe historical sources.
-2. Verify M0 implementation fidelity across all nine innings.
-3. Generalize M1 matchup-skill research across all innings.
-4. Build and validate pitcher-state model by inning.
-5. Build and validate batter/order-state model by inning.
-6. Assemble pitcher x batter matchup distributions.
+1. Build canonical half-inning research matrix for I1-I9 from leakage-safe historical sources. COMPLETE.
+2. Verify M0 implementation fidelity across all nine innings. COMPLETE.
+3. Generalize M1 matchup-skill research across all innings. COMPLETE FOR DEVELOPMENT SIGNAL IDENTIFICATION.
+4. Build and validate pitcher-state model by inning. COMPLETE FOR STARTER SURVIVAL; BULLPEN IDENTITY/SKILL MIXTURE VALIDATED.
+5. Build and validate batter/order-state model by inning. COMPLETE; UNCONDITIONAL M3 RETAINED OVER RECURSIVE TRANSITION REPLACEMENT.
+6. Assemble pitcher x batter matchup distributions using the joint state representation. NEXT.
 7. Fit residual run effects and discrete run distributions chronologically.
 8. Freeze architecture.
 9. Open 2025 holdout once.
