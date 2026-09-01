@@ -47,8 +47,8 @@ def primitives(x):
     z['fb_velo_sum']=velo.where(fb&velo.notna(),0.0).fillna(0.0); z['fb_velo_n']=(fb&velo.notna()).astype(float)
     z['fb_spin_sum']=spin.where(fb&spin.notna(),0.0).fillna(0.0); z['fb_spin_n']=(fb&spin.notna()).astype(float)
     z['extension_sum']=ext.fillna(0.0); z['extension_n']=ext.notna().astype(float)
-    z['bip_n']=bip.astype(float); z['ev_sum']=ev.fillna(0.0); z['hardhit_n']=(bip&(ev>=95.0)).astype(float)  # Statcast hard-hit definition
-    z['barrel_n']=(bip&(lsa==6)).astype(float)  # Statcast launch-speed-angle category 6 = barrel
+    z['bip_n']=bip.astype(float); z['ev_sum']=ev.fillna(0.0); z['hardhit_n']=(bip&(ev>=95.0)).astype(float)
+    z['barrel_n']=(bip&(lsa==6)).astype(float)
     z['la_sum']=la.fillna(0.0); z['xwoba_contact_sum']=xw.fillna(0.0); z['xwoba_contact_n']=xw.notna().astype(float); z['xba_contact_sum']=xba.fillna(0.0); z['xba_contact_n']=xba.notna().astype(float)
     return z
 
@@ -98,11 +98,11 @@ def main():
     if years!=[2021,2022,2023,2024]: raise RuntimeError(f'Statcast development seasons must be exactly 2021-2024; found {years}')
     parts=[pd.read_parquet(p) for p in files]; x=pd.concat(parts,ignore_index=True); x['game_date']=pd.to_datetime(x.game_date,errors='coerce').dt.normalize(); x=x[x.game_type.astype(str).isin(['R','F','D','L','W'])].copy()
     if (x.game_date.dt.year>=2025).any(): raise RuntimeError('2025 holdout leakage')
-    z=primitives(x)
+    z=primitives(x).rename(columns={'batter':'batter_id','pitcher':'pitcher_id'})
     m=pd.read_parquet(a.m1_matrix); m['game_date']=pd.to_datetime(m.game_date,errors='coerce').dt.normalize(); m['season']=pd.to_numeric(m.season,errors='coerce').astype(int)
     if (m.season>=2025).any(): raise RuntimeError('2025 holdout leakage in M1 targets')
     bt=m[['batter_id','game_date']].drop_duplicates(); pt=m[['pitcher_id','game_date']].drop_duplicates()
-    bd=make_daily(z,'batter'); pdaily=make_daily(z,'pitcher')
+    bd=make_daily(z,'batter_id'); pdaily=make_daily(z,'pitcher_id')
     bf=asof_for_targets(bd,bt,'batter_id','batter_'); pf=asof_for_targets(pdaily,pt,'pitcher_id','pitcher_')
     bf.to_parquet(a.output_dir/'statcast_batter_asof.parquet',index=False); pf.to_parquet(a.output_dir/'statcast_pitcher_asof.parquet',index=False)
     manifest={
