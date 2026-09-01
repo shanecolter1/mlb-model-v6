@@ -1,0 +1,74 @@
+name: All-inning M4 joint starter-slot validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m4_joint_starter_slot_validation.py'
+      - '.github/workflows/all_inning_m4_joint_starter_slot_validation.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download M2 state
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33451896048
+          name: all-inning-m2-pitcher-state-validation-2021-2024
+          path: /tmp/m2
+      - name: Download M2 calibration
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33460531166
+          name: all-inning-m2-pitcher-state-calibration-2021-2024
+          path: /tmp/m2cal
+      - name: Download M3 state
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33460586741
+          name: all-inning-m3-batter-path-development-2021-2024
+          path: /tmp/m3
+      - name: Validate joint state
+        run: |
+          python src/analysis/all_inning/m4_joint_starter_slot_validation.py \
+            --m2 /tmp/m2/m2_pitcher_state_matrix.parquet \
+            --m3 /tmp/m3/m3_batter_path_state_matrix.parquet \
+            --m2-calibration /tmp/m2cal/m2_calibrated_begin_best_by_inning.csv \
+            --output-dir /tmp/m4joint
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m4joint/manifest.json'))
+          b=pd.read_csv('/tmp/m4joint/m4_joint_state_best_gamma_by_inning.csv')
+          x=pd.read_parquet('/tmp/m4joint/m4_joint_starter_slot_state_matrix.parquet')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert set(b.inning)==set(range(2,10))
+          assert set(x.inning.astype(int).unique())==set(range(1,10))
+          print(j)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m4-joint-starter-slot-state-2021-2024
+          path: /tmp/m4joint/
+          retention-days: 30
