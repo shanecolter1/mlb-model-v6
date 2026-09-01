@@ -3,20 +3,16 @@
 
 Development only: 2021-2024. 2025 is never loaded.
 
-The raw M2 state-history model demonstrated useful rank/Brier information but
+The raw M2 state-history model demonstrated useful Brier/rank information but
 poor log loss because unsmoothed player histories can become extreme. This
-script tests transparent empirical-Bayes partial pooling strengths rather than
-assuming a shrinkage rule.
+script therefore tests transparent partial-pooling blend weights between the
+training-fold inning baseline and the strictly-prior-date raw player history:
 
-For starter-begins-inning (binary):
-  p = (prior_successes + strength * fold_inning_baseline) / (prior_starts + strength)
+  calibrated = baseline + weight * (raw_history - baseline)
 
-For starter PA share (continuous [0,1]):
-  mu = (prior_share_sum + strength * fold_inning_mean) / (prior_starts + strength)
-
-Window and strength are selected only on chronological 2022/2023/2024 folds.
-A baseline-only candidate is included, so player history is retained only when
-it beats the training-fold inning baseline. No production promotion occurs here.
+Weight=0 is the baseline-only candidate. Weight=1 is the uncalibrated raw
+history. Window and weight are selected only on chronological 2022/2023/2024
+folds. No production promotion occurs here.
 """
 from __future__ import annotations
 
@@ -27,58 +23,44 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-WINDOWS = ["season", "30d", "90d", "365d"]
-STRENGTHS = [0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0, 100.0, 200.0, 500.0]
-TEST_YEARS = [2022, 2023, 2024]
-EPS = 1e-12
+WINDOWS=["season","30d","90d","365d"]
+WEIGHTS=[0.0,0.05,0.10,0.20,0.30,0.40,0.50,0.60,0.75,1.0]
+TEST_YEARS=[2022,2023,2024]
+EPS=1e-12
 
 
-def logloss(y, p):
-    p = np.clip(np.asarray(p, float), EPS, 1 - EPS)
-    y = np.asarray(y, float)
-    return float(-(y * np.log(p) + (1 - y) * np.log(1 - p)).mean())
+def logloss(y,p):
+    y=np.asarray(y,float); p=np.clip(np.asarray(p,float),EPS,1-EPS)
+    return float(-(y*np.log(p)+(1-y)*np.log(1-p)).mean())
 
+def mse(y,p):
+    y=np.asarray(y,float); p=np.asarray(p,float)
+    return float(np.mean((p-y)**2))
 
-def brier(y, p):
-    y = np.asarray(y, float); p = np.asarray(p, float)
-    return float(np.mean((p - y) ** 2))
-
-
-def mae(y, p):
-    y = np.asarray(y, float); p = np.asarray(p, float)
-    return float(np.mean(np.abs(p - y)))
-
-
-def prior_cols(window):
-    prefix = "season" if window == "season" else window
-    return f"{prefix}_starts_prior", f"{prefix}_begins_prior", f"{prefix}_share_prior"
+def mae(y,p):
+    y=np.asarray(y,float); p=np.asarray(p,float)
+    return float(np.mean(np.abs(p-y)))
 
 
 def evaluate_binary(x):
-    rows = []
-    for inning in range(2, 10):
+    rows=[]
+    for inning in range(2,10):
         for year in TEST_YEARS:
-            tr = x[(x.season < year) & (x.inning == inning)].copy()
-            te = x[(x.season == year) & (x.inning == inning)].copy()
-            base = float(tr.starter_begins_inning.mean())
-            y = te.starter_begins_inning.to_numpy(float)
-            p0 = np.full(len(te), base)
-            base_ll = logloss(y, p0); base_br = brier(y, p0)
-            rows.append({"target":"starter_begins_inning","window":"baseline_only","strength":np.inf,
-                         "inning":inning,"test_year":year,"n_test":len(te),"history_coverage":0.0,
-                         "baseline_logloss":base_ll,"model_logloss":base_ll,
-                         "baseline_brier":base_br,"model_brier":base_br,
-                         "logloss_improvement":0.0,"brier_improvement":0.0})
+            tr=x[(x.season<year)&(x.inning==inning)]
+            te=x[(x.season==year)&(x.inning==inning)]
+            base=float(tr.starter_begins_inning.mean())
+            y=te.starter_begins_inning.to_numpy(float)
+            p0=np.full(len(te),base); base_ll=logloss(y,p0); base_br=mse(y,p0)
             for w in WINDOWS:
-                ncol, scol, _ = prior_cols(w)
-                n = pd.to_numeric(te[ncol], errors="coerce").to_numpy(float)
-                s = pd.to_numeric(te[scol], errors="coerce").to_numpy(float)
-                valid = np.isfinite(n) & np.isfinite(s) & (n > 0)
-                for strength in STRENGTHS:
-                    p = np.full(len(te), base, dtype=float)
-                    p[valid] = (s[valid] + strength * base) / (n[valid] + strength)
-                    ll = logloss(y,p); br = brier(y,p)
-                    rows.append({"target":"starter_begins_inning","window":w,"strength":strength,
+                col=f"{w}_starter_begin_rate"
+                raw=pd.to_numeric(te[col],errors="coerce").to_numpy(float)
+                valid=np.isfinite(raw)
+                for weight in WEIGHTS:
+                    p=np.full(len(te),base,float)
+                    p[valid]=base+weight*(raw[valid]-base)
+                    p=np.clip(p,EPS,1-EPS)
+                    ll=logloss(y,p); br=mse(y,p)
+                    rows.append({"target":"starter_begins_inning","window":w,"weight":weight,
                                  "inning":inning,"test_year":year,"n_test":len(te),
                                  "history_coverage":float(valid.mean()),"baseline_logloss":base_ll,
                                  "model_logloss":ll,"baseline_brier":base_br,"model_brier":br,
@@ -87,59 +69,52 @@ def evaluate_binary(x):
 
 
 def evaluate_share(x):
-    rows = []
-    for inning in range(1, 10):
+    rows=[]
+    for inning in range(1,10):
         for year in TEST_YEARS:
-            tr = x[(x.season < year) & (x.inning == inning)].copy()
-            te = x[(x.season == year) & (x.inning == inning)].copy()
-            base = float(tr.starter_pa_share.mean())
-            y = te.starter_pa_share.to_numpy(float)
-            p0 = np.full(len(te), base)
-            base_mse = brier(y,p0); base_mae = mae(y,p0)
-            rows.append({"target":"starter_pa_share","window":"baseline_only","strength":np.inf,
-                         "inning":inning,"test_year":year,"n_test":len(te),"history_coverage":0.0,
-                         "baseline_mse":base_mse,"model_mse":base_mse,
-                         "baseline_mae":base_mae,"model_mae":base_mae,
-                         "mse_improvement":0.0,"mae_improvement":0.0})
+            tr=x[(x.season<year)&(x.inning==inning)]
+            te=x[(x.season==year)&(x.inning==inning)]
+            base=float(tr.starter_pa_share.mean())
+            y=te.starter_pa_share.to_numpy(float)
+            p0=np.full(len(te),base); base_mse=mse(y,p0); base_mae=mae(y,p0)
             for w in WINDOWS:
-                ncol, _, shcol = prior_cols(w)
-                n = pd.to_numeric(te[ncol], errors="coerce").to_numpy(float)
-                ss = pd.to_numeric(te[shcol], errors="coerce").to_numpy(float)
-                valid = np.isfinite(n) & np.isfinite(ss) & (n > 0)
-                for strength in STRENGTHS:
-                    p = np.full(len(te), base, dtype=float)
-                    p[valid] = (ss[valid] + strength * base) / (n[valid] + strength)
-                    p = np.clip(p,0,1)
-                    mse = brier(y,p); ma = mae(y,p)
-                    rows.append({"target":"starter_pa_share","window":w,"strength":strength,
+                col=f"{w}_starter_pa_share_mean"
+                raw=pd.to_numeric(te[col],errors="coerce").to_numpy(float)
+                valid=np.isfinite(raw)
+                for weight in WEIGHTS:
+                    p=np.full(len(te),base,float)
+                    p[valid]=base+weight*(raw[valid]-base)
+                    p=np.clip(p,0,1)
+                    mm=mse(y,p); aa=mae(y,p)
+                    rows.append({"target":"starter_pa_share","window":w,"weight":weight,
                                  "inning":inning,"test_year":year,"n_test":len(te),
                                  "history_coverage":float(valid.mean()),"baseline_mse":base_mse,
-                                 "model_mse":mse,"baseline_mae":base_mae,"model_mae":ma,
-                                 "mse_improvement":base_mse-mse,"mae_improvement":base_mae-ma})
+                                 "model_mse":mm,"baseline_mae":base_mae,"model_mae":aa,
+                                 "mse_improvement":base_mse-mm,"mae_improvement":base_mae-aa})
     return pd.DataFrame(rows)
 
 
 def summarize_binary(f):
-    s=(f.groupby(["window","strength","inning"],dropna=False,as_index=False)
+    s=(f.groupby(["window","weight","inning"],as_index=False)
        .agg(mean_logloss_improvement=("logloss_improvement","mean"),
             worst_year_logloss_improvement=("logloss_improvement","min"),
             mean_brier_improvement=("brier_improvement","mean"),
             worst_year_brier_improvement=("brier_improvement","min"),
             mean_history_coverage=("history_coverage","mean")))
-    s["all_years_logloss_nonnegative"] = s.worst_year_logloss_improvement >= -1e-12
+    s["all_years_logloss_nonnegative"]=s.worst_year_logloss_improvement>=-1e-12
     best=(s.sort_values(["inning","mean_logloss_improvement"],ascending=[True,False])
           .groupby("inning",as_index=False).head(1).sort_values("inning"))
     return s,best
 
 
 def summarize_share(f):
-    s=(f.groupby(["window","strength","inning"],dropna=False,as_index=False)
+    s=(f.groupby(["window","weight","inning"],as_index=False)
        .agg(mean_mse_improvement=("mse_improvement","mean"),
             worst_year_mse_improvement=("mse_improvement","min"),
             mean_mae_improvement=("mae_improvement","mean"),
             worst_year_mae_improvement=("mae_improvement","min"),
             mean_history_coverage=("history_coverage","mean")))
-    s["all_years_mse_nonnegative"] = s.worst_year_mse_improvement >= -1e-12
+    s["all_years_mse_nonnegative"]=s.worst_year_mse_improvement>=-1e-12
     best=(s.sort_values(["inning","mean_mse_improvement"],ascending=[True,False])
           .groupby("inning",as_index=False).head(1).sort_values("inning"))
     return s,best
@@ -149,10 +124,15 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument("--matrix",type=Path,required=True); ap.add_argument("--output-dir",type=Path,required=True)
     a=ap.parse_args(); a.output_dir.mkdir(parents=True,exist_ok=True)
     x=pd.read_parquet(a.matrix)
-    seasons=set(pd.to_numeric(x.season,errors="coerce").dropna().astype(int).unique())
-    if seasons != {2021,2022,2023,2024}: raise RuntimeError(f"expected development seasons only, got {seasons}")
-    if (pd.to_numeric(x.season,errors="coerce")>=2025).any(): raise RuntimeError("2025 holdout leakage")
-    if set(pd.to_numeric(x.inning,errors="coerce").dropna().astype(int).unique()) != set(range(1,10)): raise RuntimeError("I1-I9 incomplete")
+    x["season"]=pd.to_numeric(x.season,errors="coerce").astype(int)
+    x["inning"]=pd.to_numeric(x.inning,errors="coerce").astype(int)
+    if set(x.season.unique())!={2021,2022,2023,2024}: raise RuntimeError("development seasons must be exactly 2021-2024")
+    if (x.season>=2025).any(): raise RuntimeError("2025 holdout leakage")
+    if set(x.inning.unique())!=set(range(1,10)): raise RuntimeError("I1-I9 incomplete")
+    required=[]
+    for w in WINDOWS: required += [f"{w}_starter_begin_rate",f"{w}_starter_pa_share_mean"]
+    missing=[c for c in required if c not in x.columns]
+    if missing: raise RuntimeError(f"missing M2 raw-rate columns: {missing}")
 
     bf=evaluate_binary(x); bs,bb=summarize_binary(bf)
     sf=evaluate_share(x); ss,sb=summarize_share(sf)
@@ -167,13 +147,14 @@ def main():
       "status":"PASS","architecture":"M2_pitcher_state_empirical_partial_pooling",
       "development_seasons":[2021,2022,2023,2024],"test_folds":TEST_YEARS,
       "holdout_season":2025,"holdout_opened":False,
-      "candidate_windows":WINDOWS,"candidate_prior_strengths":STRENGTHS,
-      "baseline_candidate_included":True,
+      "candidate_windows":WINDOWS,"candidate_history_weights":WEIGHTS,
+      "baseline_candidate_included":True,"raw_history_candidate_included":True,
+      "pooling_formula":"baseline + weight * (raw_history - baseline)",
       "pooling_center":"training-fold inning empirical mean",
       "history_timing":"inherited strictly-prior-date M2 state matrix",
       "market_data_used":False,"automatic_production_promotion":False,
-      "best_begin_calibration_by_inning":bb.replace({np.inf:"baseline_only"}).to_dict("records"),
-      "best_share_calibration_by_inning":sb.replace({np.inf:"baseline_only"}).to_dict("records"),
+      "best_begin_calibration_by_inning":bb.to_dict("records"),
+      "best_share_calibration_by_inning":sb.to_dict("records"),
       "note":"Empirical calibration research only. Selection uses 2022-2024 chronological folds; 2025 remains untouched."
     }
     (a.output_dir/"manifest.json").write_text(json.dumps(manifest,indent=2),encoding="utf-8")
