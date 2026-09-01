@@ -1,0 +1,226 @@
+{
+  "development_seasons": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_opened": false,
+  "market_data_used": false,
+  "tables": {
+    "games": {
+      "rows": 9720,
+      "columns": [
+        "game_id",
+        "game_date",
+        "game_datetime",
+        "status",
+        "home_team_id",
+        "home_team",
+        "away_team_id",
+        "away_team",
+        "venue_id",
+        "venue_name",
+        "raw_feed_path",
+        "source_partition"
+      ],
+      "dtypes": {
+        "game_id": "int64",
+        "game_date": "str",
+        "game_datetime": "str",
+        "status": "str",
+        "home_team_id": "int64",
+        "home_team": "str",
+        "away_team_id": "int64",
+        "away_team": "str",
+        "venue_id": "float64",
+        "venue_name": "str",
+        "raw_feed_path": "str",
+        "source_partition": "str"
+      },
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "inning_results": {
+      "rows": 88420,
+      "columns": [
+        "game_id",
+        "game_date",
+        "inning",
+        "away_runs",
+        "home_runs",
+        "away_half_played",
+        "home_half_played",
+        "full_inning_runs",
+        "source_class",
+        "source_partition"
+      ],
+      "dtypes": {
+        "game_id": "int64",
+        "game_date": "str",
+        "inning": "int64",
+        "away_runs": "float64",
+        "home_runs": "float64",
+        "away_half_played": "bool",
+        "home_half_played": "bool",
+        "full_inning_runs": "int64",
+        "source_class": "str",
+        "source_partition": "str"
+      },
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "lineups": {
+      "rows": 174924,
+      "columns": [
+        "game_id",
+        "game_date",
+        "team_side",
+        "team_id",
+        "batting_order_slot",
+        "player_id",
+        "name",
+        "source_class",
+        "pregame_availability_unverified",
+        "plate_appearances",
+        "source_partition"
+      ],
+      "dtypes": {
+        "game_id": "int64",
+        "game_date": "str",
+        "team_side": "str",
+        "team_id": "int64",
+        "batting_order_slot": "int64",
+        "player_id": "int64",
+        "name": "str",
+        "source_class": "str",
+        "pregame_availability_unverified": "bool",
+        "plate_appearances": "object",
+        "source_partition": "str"
+      },
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "plate_appearances": {
+      "rows": 732039,
+      "columns": [
+        "game_id",
+        "game_date",
+        "play_index",
+        "inning",
+        "half_inning",
+        "batting_team_id",
+        "pitching_team_id",
+        "batter_id",
+        "batter_name",
+        "batter_side",
+        "pitcher_id",
+        "pitcher_name",
+        "pitcher_hand",
+        "raw_event",
+        "event",
+        "rbi",
+        "is_complete",
+        "source_partition"
+      ],
+      "dtypes": {
+        "game_id": "int64",
+        "game_date": "str",
+        "play_index": "int64",
+        "inning": "int64",
+        "half_inning": "str",
+        "batting_team_id": "int64",
+        "pitching_team_id": "int64",
+        "batter_id": "int64",
+        "batter_name": "str",
+        "batter_side": "str",
+        "pitcher_id": "int64",
+        "pitcher_name": "str",
+        "pitcher_hand": "str",
+        "raw_event": "str",
+        "event": "str",
+        "rbi": "int64",
+        "is_complete": "bool",
+        "source_partition": "str"
+      },
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "results": {
+      "rows": 9695,
+      "columns": [
+        "game_id",
+        "game_date",
+        "home_runs",
+        "away_runs",
+        "home_win",
+        "run_margin",
+        "total_runs",
+        "source_partition"
+      ],
+      "dtypes": {
+        "game_id": "int64",
+        "game_date": "str",
+        "home_runs": "int64",
+        "away_runs": "int64",
+        "home_win": "int64",
+        "run_margin": "int64",
+        "total_runs": "int64",
+        "source_partition": "str"
+      },
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    "starters": {
+      "rows": 19436,
+      "columns": [
+        "game_id",
+        "game_date",
+        "team_side",
+        "team_id",
+        "pitcher_id",
+        "name",
+        "source_class",
+        "pregame_availability_unverified",
+        "source_partition"
+      ],
+      "dtypes": {
+        "game_id": "int64",
+        "game_date": "str",
+        "team_side": "str",
+        "team_id": "int64",
+        "pitcher_id": "int64",
+        "name": "str",
+        "source_class": "str",
+        "pregame_availability_unverified": "bool",
+        "source_partition": "str"
+      },
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    }
+  }
+}
