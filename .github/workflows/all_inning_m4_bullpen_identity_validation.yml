@@ -1,0 +1,61 @@
+name: All-inning M4 bullpen identity validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/all_inning/m4_bullpen_identity_validation.py'
+      - '.github/workflows/all_inning_m4_bullpen_identity_validation.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download normalized 2021-2024 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33336358517
+          pattern: normalized-mlb-202[1-4]
+          path: /tmp/normalized
+      - name: Merge development seasons only
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/normalized \
+            --output-dir /tmp/dev_2021_2024
+      - name: Validate bullpen identity mixture
+        run: |
+          python src/analysis/all_inning/m4_bullpen_identity_validation.py \
+            --plate-appearances /tmp/dev_2021_2024/plate_appearances.parquet \
+            --starters /tmp/dev_2021_2024/starters.parquet \
+            --output-dir /tmp/m4bp
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/m4bp/manifest.json'))
+          b=pd.read_csv('/tmp/m4bp/m4_bullpen_identity_best_by_inning.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['holdout_opened'] is False
+          assert j['legacy_quality_shrinkage_used'] is False
+          assert j['market_data_used'] is False
+          assert set(b.inning).issubset(set(range(2,10)))
+          print(j)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m4-bullpen-identity-validation-2021-2024
+          path: /tmp/m4bp/
+          retention-days: 30
