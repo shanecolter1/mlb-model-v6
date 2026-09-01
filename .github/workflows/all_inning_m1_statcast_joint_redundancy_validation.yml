@@ -1,0 +1,83 @@
+name: All-inning M1 Statcast joint redundancy validation
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - src/analysis/all_inning/m1_statcast_joint_redundancy_validation.py
+      - .github/workflows/all_inning_m1_statcast_joint_redundancy_validation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33450762451
+          name: all-inning-m1-pa-matchup-development-2021-2024
+          path: /tmp/m1
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33504815582
+          name: all-inning-statcast-asof-features-2021-2024
+          path: /tmp/asof
+      - name: Download corrected marginal Statcast screen
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33507353129
+          name: all-inning-m1-statcast-family-incremental-2021-2024
+          path: /tmp/marginal
+      - name: Run joint subset and conditional redundancy gate
+        run: |
+          python src/analysis/all_inning/m1_statcast_joint_redundancy_validation.py \
+            --m1-matrix /tmp/m1/m1_pa_matchup_development.parquet \
+            --batter-asof /tmp/asof/statcast_batter_asof.parquet \
+            --pitcher-asof /tmp/asof/statcast_pitcher_asof.parquet \
+            --selected-specs /tmp/marginal/m1_statcast_family_selected_specs.csv \
+            --output-dir /tmp/joint_gate
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+          j=json.load(open('/tmp/joint_gate/manifest.json'))
+          c=pd.read_csv('/tmp/joint_gate/m1_statcast_joint_confirmation_2024.csv')
+          s=pd.read_csv('/tmp/joint_gate/m1_statcast_joint_stable_subset_metrics.csv')
+          assert j['status']=='PASS'
+          assert j['development_seasons']==[2021,2022,2023,2024]
+          assert j['marginal_window_ridge_selection_year']==2022
+          assert j['joint_subset_selection_year']==2023
+          assert j['confirmation_year']==2024
+          assert j['final_feature_selection_years']==[2022,2023,2024]
+          assert j['holdout_opened'] is False and j['market_data_used'] is False
+          assert j['core_specs']=={
+            'k':{'window':'365d','spec':'additive_interaction'},
+            'baserunner':{'window':'365d','spec':'additive_interaction'},
+            'hr':{'window':'365d','spec':'additive_interaction'},
+            'nonhr_hit':{'window':'365d','spec':'additive'},
+          }
+          assert set(c.event)=={'k','baserunner','hr','nonhr_hit'}
+          assert set(s.event)=={'k','baserunner','hr','nonhr_hit'}
+          assert set(s.test_year)=={2023,2024}
+          print(c.to_string(index=False))
+          print(j['event_status'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m1-statcast-joint-redundancy-2021-2024
+          path: /tmp/joint_gate/
+          retention-days: 30

@@ -89,6 +89,8 @@ def main():
     for d in [x,b,p]: d['game_date']=pd.to_datetime(d.game_date,errors='coerce').dt.normalize()
     x['season']=pd.to_numeric(x.season,errors='raise').astype(int)
     if set(x.season.unique())!={2021,2022,2023,2024} or (x.season>=2025).any(): raise RuntimeError('development seasons must be exactly 2021-2024')
+    if set(pd.to_numeric(x.inning,errors='raise').astype(int).unique())!=set(range(1,10)): raise RuntimeError('I1-I9 coverage incomplete')
+    if 'market_data_used' not in x or x.market_data_used.astype(bool).any(): raise RuntimeError('market isolation audit failed')
     x=x.merge(b,on=['batter_id','game_date'],how='left',validate='many_to_one').merge(p,on=['pitcher_id','game_date'],how='left',validate='many_to_one')
     selection=[]
     for e in EVENTS:
