@@ -1,0 +1,58 @@
+name: All-inning Statcast development source
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/ingestion/fetch_all_inning_statcast_development.py'
+      - '.github/workflows/all_inning_statcast_development_source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  fetch:
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2021, 2022, 2023, 2024]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          pip install -r requirements.txt
+          pip install 'pybaseball>=2.2.7,<3'
+      - name: Fetch Statcast development season
+        run: |
+          python src/ingestion/fetch_all_inning_statcast_development.py \
+            --season ${{ matrix.season }} \
+            --output-dir /tmp/statcast_${{ matrix.season }} \
+            --chunk-days 14
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,os,pandas as pd
+          y=int(os.environ['SEASON'])
+          root=f'/tmp/statcast_{y}'
+          j=json.load(open(f'{root}/manifest.json'))
+          x=pd.read_parquet(f'{root}/statcast_pitches_{y}.parquet')
+          assert y in [2021,2022,2023,2024]
+          assert j['status']=='PASS'
+          assert j['holdout_opened'] is False
+          assert j['market_data_used'] is False
+          assert len(x)>0
+          if 'game_date' in x:
+            assert pd.to_datetime(x.game_date,errors='coerce').dt.year.dropna().max() <= 2024
+          print({k:v for k,v in j.items() if k!='chunks'})
+          PY
+        env:
+          SEASON: ${{ matrix.season }}
+      - name: Upload Statcast season
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-statcast-${{ matrix.season }}
+          path: /tmp/statcast_${{ matrix.season }}/
+          retention-days: 30
