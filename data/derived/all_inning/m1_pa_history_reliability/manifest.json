@@ -1,0 +1,312 @@
+{
+  "status": "PASS",
+  "architecture": "M1_PA_history_reliability_incremental_and_joint_gate",
+  "development_seasons": [
+    2021,
+    2022,
+    2023,
+    2024
+  ],
+  "candidate_specification_selection_year": 2022,
+  "joint_subset_selection_year": 2023,
+  "development_confirmation_year": 2024,
+  "final_feature_selection_years": [
+    2022,
+    2023,
+    2024
+  ],
+  "holdout_season": 2025,
+  "holdout_opened": false,
+  "market_data_used": false,
+  "target_innings": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "events_run": [
+    "k",
+    "baserunner",
+    "hr",
+    "nonhr_hit"
+  ],
+  "statistics_timing": "strictly prior date; same-day PA history excluded",
+  "raw_365d_core_reproduction_max_abs_error": {
+    "k_batter": 0.0,
+    "k_pitcher": 0.0,
+    "baserunner_batter": 1.1102230246251565e-16,
+    "baserunner_pitcher": 5.551115123125783e-17,
+    "hr_batter": 0.0,
+    "hr_pitcher": 0.0,
+    "nonhr_hit_batter": 1.1102230246251565e-16,
+    "nonhr_hit_pitcher": 1.1102230246251565e-16
+  },
+  "comparator": "validated 365d event-rate core + retained platoon terms + event-specific stable Statcast families",
+  "statcast_stable_families": {
+    "k": [
+      "contact_quality_expected",
+      "discipline_contact",
+      "pitch_mix_matchup",
+      "velocity_spin_extension"
+    ],
+    "baserunner": [
+      "contact_quality_expected",
+      "discipline_contact",
+      "velocity_spin_extension"
+    ],
+    "hr": [
+      "contact_quality_expected",
+      "discipline_contact",
+      "velocity_spin_extension"
+    ],
+    "nonhr_hit": [
+      "contact_quality_expected",
+      "discipline_contact",
+      "velocity_spin_extension"
+    ]
+  },
+  "feature_families": [
+    "target_rate_history",
+    "cross_event_profile",
+    "outcome_composition",
+    "sample_reliability"
+  ],
+  "windows_by_family": {
+    "target_rate_history": [
+      "30d",
+      "90d",
+      "365d",
+      "season"
+    ],
+    "cross_event_profile": [
+      "90d",
+      "365d",
+      "season"
+    ],
+    "outcome_composition": [
+      "365d",
+      "season"
+    ],
+    "sample_reliability": [
+      "90d",
+      "365d",
+      "season"
+    ]
+  },
+  "alpha_candidates_by_family": {
+    "target_rate_history": [
+      0.0,
+      25.0,
+      100.0,
+      400.0
+    ],
+    "cross_event_profile": [
+      0.0,
+      25.0,
+      100.0,
+      400.0
+    ],
+    "outcome_composition": [
+      0.0,
+      25.0,
+      100.0,
+      400.0
+    ],
+    "sample_reliability": [
+      25.0,
+      100.0,
+      400.0
+    ]
+  },
+  "ridge_candidates": [
+    0.0,
+    10.0,
+    100.0,
+    1000.0
+  ],
+  "shrinkage_prior": "strictly prior-date league event rate for the same registered window",
+  "fixed_shrinkage_used": false,
+  "comparison_rows": "identical complete-case rows across all registered specifications within each event/family/year; common intersection across families for joint selection",
+  "marginal_rule": "specification selected on 2022; positive log loss in 2022, 2023, 2024 and positive 2024 Brier earns marginal candidate status",
+  "joint_subset_rule": "minimum 2023 log loss; Brier then smaller subset as tie-breakers",
+  "conditional_rule": "family must improve log loss in 2023 and 2024 and Brier in 2024 versus leave-one-family-out ablation",
+  "automatic_production_promotion": false,
+  "participant_identity_use": "retrospective realized matchup oracle for M1 skill validation only",
+  "event_status": [
+    {
+      "event": "k",
+      "selected_specifications_2022": {
+        "cross_event_profile": {
+          "window": "365d",
+          "alpha": 100.0,
+          "ridge": 1000.0
+        },
+        "outcome_composition": {
+          "window": "365d",
+          "alpha": 25.0,
+          "ridge": 0.0
+        },
+        "sample_reliability": {
+          "window": "365d",
+          "alpha": 100.0,
+          "ridge": 100.0
+        },
+        "target_rate_history": {
+          "window": "365d",
+          "alpha": 25.0,
+          "ridge": 0.0
+        }
+      },
+      "selected_families_2023": [
+        "cross_event_profile",
+        "sample_reliability"
+      ],
+      "confirmation_2024_logloss_improvement": 0.0005735049143652526,
+      "confirmation_2024_brier_improvement": 0.00020024675657459579,
+      "stable_families_2021_2024": [
+        "sample_reliability"
+      ],
+      "families_removed_by_conditional_gate": [
+        "cross_event_profile"
+      ],
+      "stable_subset_2023_logloss_improvement": 0.0009486690993025793,
+      "stable_subset_2024_logloss_improvement": 0.000584588504485728,
+      "stable_subset_2024_brier_improvement": 0.00020374217255197946,
+      "joint_feature_set_development_selected": true
+    },
+    {
+      "event": "baserunner",
+      "selected_specifications_2022": {
+        "cross_event_profile": {
+          "window": "season",
+          "alpha": 400.0,
+          "ridge": 1000.0
+        },
+        "outcome_composition": {
+          "window": "365d",
+          "alpha": 100.0,
+          "ridge": 100.0
+        },
+        "sample_reliability": {
+          "window": "365d",
+          "alpha": 400.0,
+          "ridge": 1000.0
+        },
+        "target_rate_history": {
+          "window": "365d",
+          "alpha": 100.0,
+          "ridge": 0.0
+        }
+      },
+      "selected_families_2023": [
+        "cross_event_profile",
+        "sample_reliability"
+      ],
+      "confirmation_2024_logloss_improvement": 0.0007012500555891865,
+      "confirmation_2024_brier_improvement": 0.00011895881054188595,
+      "stable_families_2021_2024": [
+        "cross_event_profile",
+        "sample_reliability"
+      ],
+      "families_removed_by_conditional_gate": [],
+      "stable_subset_2023_logloss_improvement": 0.0008437786586473206,
+      "stable_subset_2024_logloss_improvement": 0.0007012500555891865,
+      "stable_subset_2024_brier_improvement": 0.00011895881054188595,
+      "joint_feature_set_development_selected": true
+    },
+    {
+      "event": "hr",
+      "selected_specifications_2022": {
+        "cross_event_profile": {
+          "window": "365d",
+          "alpha": 100.0,
+          "ridge": 0.0
+        },
+        "outcome_composition": {
+          "window": "season",
+          "alpha": 100.0,
+          "ridge": 0.0
+        },
+        "sample_reliability": {
+          "window": "90d",
+          "alpha": 400.0,
+          "ridge": 100.0
+        },
+        "target_rate_history": {
+          "window": "season",
+          "alpha": 100.0,
+          "ridge": 0.0
+        }
+      },
+      "selected_families_2023": [
+        "cross_event_profile",
+        "target_rate_history"
+      ],
+      "confirmation_2024_logloss_improvement": 0.00011908238852714748,
+      "confirmation_2024_brier_improvement": 2.7478360230960563e-05,
+      "stable_families_2021_2024": [
+        "cross_event_profile",
+        "target_rate_history"
+      ],
+      "families_removed_by_conditional_gate": [],
+      "stable_subset_2023_logloss_improvement": 9.92936029299285e-05,
+      "stable_subset_2024_logloss_improvement": 0.00011908238852714748,
+      "stable_subset_2024_brier_improvement": 2.7478360230960563e-05,
+      "joint_feature_set_development_selected": true
+    },
+    {
+      "event": "nonhr_hit",
+      "selected_specifications_2022": {
+        "cross_event_profile": {
+          "window": "365d",
+          "alpha": 25.0,
+          "ridge": 1000.0
+        },
+        "outcome_composition": {
+          "window": "365d",
+          "alpha": 25.0,
+          "ridge": 1000.0
+        },
+        "sample_reliability": {
+          "window": "365d",
+          "alpha": 400.0,
+          "ridge": 1000.0
+        },
+        "target_rate_history": {
+          "window": "365d",
+          "alpha": 100.0,
+          "ridge": 1000.0
+        }
+      },
+      "selected_families_2023": [
+        "cross_event_profile",
+        "sample_reliability",
+        "target_rate_history"
+      ],
+      "confirmation_2024_logloss_improvement": 0.00018645841455733336,
+      "confirmation_2024_brier_improvement": 5.959014356587966e-05,
+      "stable_families_2021_2024": [
+        "cross_event_profile",
+        "sample_reliability"
+      ],
+      "families_removed_by_conditional_gate": [
+        "target_rate_history"
+      ],
+      "stable_subset_2023_logloss_improvement": 0.0001526237978626277,
+      "stable_subset_2024_logloss_improvement": 0.00018950439496556726,
+      "stable_subset_2024_brier_improvement": 6.0287786953661104e-05,
+      "joint_feature_set_development_selected": true
+    }
+  ],
+  "execution_phases": {
+    "phase_1": "single reusable strictly-prior-date PA-history build",
+    "phase_2": "four independent event validation jobs run in parallel",
+    "phase_3": "artifact aggregation and cross-event governance audit"
+  },
+  "source_event_artifact_count": 4
+}
