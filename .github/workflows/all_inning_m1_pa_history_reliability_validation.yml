@@ -6,6 +6,7 @@ on:
     paths:
       - src/analysis/all_inning/build_m1_pa_history_asof.py
       - src/analysis/all_inning/m1_pa_history_reliability_validation.py
+      - src/analysis/all_inning/aggregate_m1_pa_history_reliability.py
       - .github/workflows/all_inning_m1_pa_history_reliability_validation.yml
   workflow_dispatch:
 
@@ -14,9 +15,9 @@ permissions:
   actions: read
 
 jobs:
-  validate:
+  build-history:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,6 +32,51 @@ jobs:
           run-id: 33336358517
           pattern: normalized-mlb-202[1-4]
           path: /tmp/normalized
+      - name: Build strictly prior-date PA-history counts
+        run: |
+          python src/analysis/all_inning/build_m1_pa_history_asof.py \
+            --normalized-root /tmp/normalized \
+            --output-dir /tmp/history
+      - name: History governance audit
+        run: |
+          python - <<'PY'
+          import json
+
+          history=json.load(open('/tmp/history/manifest.json'))
+          assert history['status']=='PASS'
+          assert history['development_seasons']==[2021,2022,2023,2024]
+          assert history['same_day_history_included'] is False
+          assert history['fixed_shrinkage_used'] is False
+          assert history['holdout_opened'] is False
+          assert history['market_data_used'] is False
+          assert history['downstream_target_innings']==list(range(1,10))
+          print(history)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-m1-pa-history-asof-2021-2024
+          path: /tmp/history/
+          retention-days: 30
+
+  validate-event:
+    needs: build-history
+    strategy:
+      fail-fast: false
+      matrix:
+        event: [k, baserunner, hr, nonhr_hit]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download reusable PA-history phase
+        uses: actions/download-artifact@v4
+        with:
+          name: all-inning-m1-pa-history-asof-2021-2024
+          path: /tmp/history
       - uses: actions/download-artifact@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -45,12 +91,9 @@ jobs:
           run-id: 33504815582
           name: all-inning-statcast-asof-features-2021-2024
           path: /tmp/statcast
-      - name: Build strictly prior-date PA-history counts
-        run: |
-          python src/analysis/all_inning/build_m1_pa_history_asof.py \
-            --normalized-root /tmp/normalized \
-            --output-dir /tmp/history
-      - name: Run chronological PA-history and reliability challenger
+      - name: Run chronological event challenger
+        env:
+          EVENT: ${{ matrix.event }}
         run: |
           python src/analysis/all_inning/m1_pa_history_reliability_validation.py \
             --m1-matrix /tmp/m1/m1_pa_matchup_development.parquet \
@@ -62,41 +105,87 @@ jobs:
             --history-manifest /tmp/history/manifest.json \
             --statcast-selected-specs data/derived/all_inning/m1_statcast_family_incremental/m1_statcast_family_selected_specs.csv \
             --statcast-joint-manifest data/derived/all_inning/m1_statcast_joint_redundancy/manifest.json \
-            --output-dir /tmp/pa_history_gate
-      - name: Governance audit
+            --events "$EVENT" \
+            --output-dir "/tmp/pa_history_gate_$EVENT"
+      - name: Event governance audit
+        env:
+          EVENT: ${{ matrix.event }}
         run: |
           python - <<'PY'
           import json
+          import os
           import pandas as pd
 
-          history=json.load(open('/tmp/history/manifest.json'))
-          gate=json.load(open('/tmp/pa_history_gate/manifest.json'))
-          marginal=pd.read_csv('/tmp/pa_history_gate/m1_pa_history_marginal_status.csv')
-          stable=pd.read_csv('/tmp/pa_history_gate/m1_pa_history_joint_stable_metrics.csv')
-          assert history['status']=='PASS'
-          assert history['development_seasons']==[2021,2022,2023,2024]
-          assert history['same_day_history_included'] is False
-          assert history['fixed_shrinkage_used'] is False
-          assert history['holdout_opened'] is False and history['market_data_used'] is False
+          event=os.environ['EVENT']
+          root=f'/tmp/pa_history_gate_{event}'
+          gate=json.load(open(f'{root}/manifest.json'))
+          marginal=pd.read_csv(f'{root}/m1_pa_history_marginal_status.csv')
+          stable=pd.read_csv(f'{root}/m1_pa_history_joint_stable_metrics.csv')
           assert gate['status']=='PASS'
+          assert gate['events_run']==[event]
           assert gate['development_seasons']==[2021,2022,2023,2024]
           assert gate['candidate_specification_selection_year']==2022
           assert gate['joint_subset_selection_year']==2023
           assert gate['development_confirmation_year']==2024
-          assert gate['holdout_opened'] is False and gate['market_data_used'] is False
+          assert gate['holdout_opened'] is False
+          assert gate['market_data_used'] is False
           assert gate['fixed_shrinkage_used'] is False
           assert gate['target_innings']==list(range(1,10))
           assert max(gate['raw_365d_core_reproduction_max_abs_error'].values()) <= 1e-12
-          assert len(marginal)==16
-          assert set(marginal.event)=={'k','baserunner','hr','nonhr_hit'}
-          assert set(stable.test_year)=={2023,2024}
+          assert len(marginal)==4 and set(marginal.event)=={event}
+          assert len(stable)==2 and set(stable.test_year)=={2023,2024}
           print(marginal.to_string(index=False))
           print(stable.to_string(index=False))
           PY
       - uses: actions/upload-artifact@v4
         with:
+          name: all-inning-m1-pa-history-event-${{ matrix.event }}-2021-2024
+          path: /tmp/pa_history_gate_${{ matrix.event }}/
+          retention-days: 30
+
+  aggregate:
+    needs: validate-event
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download event phase artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: all-inning-m1-pa-history-event-*-2021-2024
+          path: /tmp/event_results
+          merge-multiple: false
+      - name: Aggregate and audit event results
+        run: |
+          python src/analysis/all_inning/aggregate_m1_pa_history_reliability.py \
+            --input-root /tmp/event_results \
+            --output-dir /tmp/pa_history_gate
+      - name: Combined governance audit
+        run: |
+          python - <<'PY'
+          import json
+          import pandas as pd
+
+          root='/tmp/pa_history_gate'
+          gate=json.load(open(f'{root}/manifest.json'))
+          marginal=pd.read_csv(f'{root}/m1_pa_history_marginal_status.csv')
+          stable=pd.read_csv(f'{root}/m1_pa_history_joint_stable_metrics.csv')
+          assert gate['status']=='PASS'
+          assert gate['events_run']==['k','baserunner','hr','nonhr_hit']
+          assert gate['source_event_artifact_count']==4
+          assert gate['holdout_opened'] is False and gate['market_data_used'] is False
+          assert max(gate['raw_365d_core_reproduction_max_abs_error'].values()) <= 1e-12
+          assert len(marginal)==16
+          assert set(marginal.event)=={'k','baserunner','hr','nonhr_hit'}
+          assert len(stable)==8 and set(stable.test_year)=={2023,2024}
+          print(stable.to_string(index=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
           name: all-inning-m1-pa-history-reliability-2021-2024
-          path: |
-            /tmp/history/
-            /tmp/pa_history_gate/
+          path: /tmp/pa_history_gate/
           retention-days: 30

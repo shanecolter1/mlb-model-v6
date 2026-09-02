@@ -99,10 +99,10 @@ def validate_inputs(x: pd.DataFrame, history_manifest: dict) -> None:
         raise RuntimeError("PA-history manifest reports market data")
 
 
-def audit_core_reproduction(x):
+def audit_core_reproduction(x, events):
     """Verify the new 365-day counts exactly reproduce the locked raw rates."""
     errors = {}
-    for event in EVENTS:
+    for event in events:
         for entity in ("batter", "pitcher"):
             old = x[f"{entity}_365d_{event}_rate"].to_numpy(float)
             count = x[f"{entity}_365d_{event}_count"].to_numpy(float)
@@ -484,9 +484,11 @@ def main():
     parser.add_argument("--history-manifest", type=Path, required=True)
     parser.add_argument("--statcast-selected-specs", type=Path, required=True)
     parser.add_argument("--statcast-joint-manifest", type=Path, required=True)
+    parser.add_argument("--events", nargs="+", choices=EVENTS, default=EVENTS)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
+    active_events = list(dict.fromkeys(args.events))
 
     selected_statcast, stable_statcast = load_governance(
         args.statcast_selected_specs, args.statcast_joint_manifest
@@ -501,8 +503,8 @@ def main():
         "pitcher_hand",
         "market_data_used",
     ]
-    m1_columns += [f"y_{event}" for event in EVENTS]
-    for event in EVENTS:
+    m1_columns += [f"y_{event}" for event in active_events]
+    for event in active_events:
         m1_columns += statcast.core_rate_cols(event)
     m1_columns = list(dict.fromkeys(m1_columns))
     x = pd.read_parquet(args.m1_matrix, columns=m1_columns)
@@ -510,13 +512,13 @@ def main():
     validate_inputs(x, history_manifest)
 
     statcast_columns = set()
-    for event in EVENTS:
+    for event in active_events:
         for family, spec in statcast_specs_for_event(
             event, selected_statcast, stable_statcast
         ).items():
             statcast_columns.update(statcast.family_cols(family, spec["window"]))
     history_columns = set()
-    for event in EVENTS:
+    for event in active_events:
         for family in FAMILIES:
             history_columns.update(
                 candidate_source_columns(event, family, WINDOWS_BY_FAMILY[family])
@@ -569,9 +571,9 @@ def main():
         .merge(frames[4], on=["pitcher_id", "game_date"], how="left", validate="many_to_one")
         .merge(frames[5], on="game_date", how="left", validate="many_to_one")
     )
-    core_reproduction_errors = audit_core_reproduction(x)
+    core_reproduction_errors = audit_core_reproduction(x, active_events)
     selection_rows = []
-    for event in EVENTS:
+    for event in active_events:
         specifications = statcast_specs_for_event(event, selected_statcast, stable_statcast)
         for family in FAMILIES:
             print(f"selection 2022: {event}/{family}", flush=True)
@@ -607,7 +609,7 @@ def main():
     ablation_rows = []
     stable_rows = []
     event_status = []
-    for event in EVENTS:
+    for event in active_events:
         print(f"joint subset gate: {event}", flush=True)
         statcast_specifications = statcast_specs_for_event(
             event, selected_statcast, stable_statcast
@@ -761,6 +763,7 @@ def main():
         "holdout_opened": False,
         "market_data_used": False,
         "target_innings": list(range(1, 10)),
+        "events_run": active_events,
         "statistics_timing": "strictly prior date; same-day PA history excluded",
         "raw_365d_core_reproduction_max_abs_error": core_reproduction_errors,
         "comparator": "validated 365d event-rate core + retained platoon terms + event-specific stable Statcast families",
