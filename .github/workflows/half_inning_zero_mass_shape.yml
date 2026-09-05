@@ -1,0 +1,27 @@
+name: Half-inning zero-mass shape
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/half_inning_zero_mass_shape.py'
+      - '.github/workflows/half_inning_zero_mass_shape.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: research/all-inning-engine-rebuild}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install pandas numpy tabulate
+      - run: python src/analysis/half_inning_zero_mass_shape.py
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add analysis/HALF_INNING_ZERO_MASS_SHAPE_2021_2025.md data/derived/all_inning/half_inning_zero_mass_shape_2021_2025.csv data/derived/all_inning/half_inning_zero_mass_shape_by_season_2021_2025.csv data/derived/all_inning/half_inning_target_top_bottom_comparison_2021_2025.csv
+          git diff --cached --quiet || git commit -m 'Add half-inning zero-mass shape results'
+          git push
