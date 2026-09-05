@@ -1,0 +1,66 @@
+name: Zero-mass mechanism oracle validation
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - 'src/analysis/all_inning/zero_mass_mechanism_oracle_validation.py'
+      - '.github/workflows/zero_mass_mechanism_oracle_validation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download M1 PA matchup matrix
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33450762451
+          name: all-inning-m1-pa-matchup-development-2021-2024
+          path: /tmp/m1
+      - name: Download canonical half-inning matrix
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: shanecolter1/mlb-model-v6
+          run-id: 33986708468
+          name: all-inning-half-matrix-development-2021-2024
+          path: /tmp/half
+      - name: Run mechanism screening
+        run: |
+          python src/analysis/all_inning/zero_mass_mechanism_oracle_validation.py \
+            --pa-matrix /tmp/m1/m1_pa_matchup_development.parquet \
+            --half-matrix /tmp/half/half_inning_development.parquet \
+            --output-dir /tmp/zero_mass_mechanism
+      - name: Governance audit
+        run: |
+          python - <<'PY'
+          import json,pandas as pd
+          j=json.load(open('/tmp/zero_mass_mechanism/manifest.json'))
+          r=pd.read_csv('/tmp/zero_mass_mechanism/target_summary.csv')
+          assert j['status']=='PASS'
+          assert j['holdout_opened'] is False
+          assert max(j['development_seasons']) <= 2024
+          assert j['not_production_betting_model'] is True
+          assert len(r) >= 3
+          print(j)
+          PY
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: zero-mass-mechanism-oracle-validation-2021-2024
+          path: /tmp/zero_mass_mechanism/
+          retention-days: 30
