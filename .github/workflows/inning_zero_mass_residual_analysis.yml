@@ -1,0 +1,27 @@
+name: Inning zero-mass residual analysis
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/inning_zero_mass_residual_analysis.py'
+      - '.github/workflows/inning_zero_mass_residual_analysis.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: research/all-inning-engine-rebuild}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: pip install pandas numpy tabulate
+      - run: python src/analysis/inning_zero_mass_residual_analysis.py
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add analysis/INNING_ZERO_MASS_RESIDUAL_ANALYSIS_2021_2025.md data/derived/all_inning/inning_zero_mass_residuals_2021_2025.csv data/derived/all_inning/inning_zero_mass_residuals_by_season_2021_2025.csv
+          git diff --cached --quiet || git commit -m 'Add inning zero-mass residual results'
+          git push
