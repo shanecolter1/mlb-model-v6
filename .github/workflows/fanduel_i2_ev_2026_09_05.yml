@@ -19,28 +19,31 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Pull FanDuel second-inning markets and compute EV
+      - name: Pull FanDuel second-inning markets and compute EV from reconciled shadow board
         shell: bash
         run: |
           node --input-type=module - <<'NODE'
           import fs from 'node:fs';
           const date='2026-09-05';
           const probs={
-            'Tampa Bay Rays @ Texas Rangers':{u:.665,o:.335},
-            'New York Yankees @ San Diego Padres':{u:.610,o:.390},
-            'Washington Nationals @ Los Angeles Dodgers':{u:.605,o:.395},
-            'Boston Red Sox @ Baltimore Orioles':{u:.600,o:.400},
-            'San Francisco Giants @ New York Mets':{u:.592,o:.408},
-            'Atlanta Braves @ Philadelphia Phillies':{u:.590,o:.410},
-            'Athletics @ Seattle Mariners':{u:.588,o:.412},
-            'Los Angeles Angels @ Pittsburgh Pirates':{u:.585,o:.415},
-            'Detroit Tigers @ Cleveland Guardians':{u:.580,o:.420},
-            'Chicago Cubs @ Miami Marlins':{u:.570,o:.430},
-            'Arizona Diamondbacks @ Houston Astros':{u:.545,o:.455},
-            'Minnesota Twins @ Chicago White Sox':{u:.540,o:.460},
-            'Milwaukee Brewers @ Cincinnati Reds':{u:.495,o:.505},
-            'Toronto Blue Jays @ Kansas City Royals':{u:.480,o:.520},
-            'St. Louis Cardinals @ Colorado Rockies':{u:.455,o:.545}
+            'Tampa Bay Rays @ Texas Rangers':{u:.6713,o:.3287},
+            'Washington Nationals @ Los Angeles Dodgers':{u:.6495,o:.3505},
+            'Detroit Tigers @ Cleveland Guardians':{u:.6456,o:.3544},
+            'New York Yankees @ San Diego Padres':{u:.5850,o:.4150},
+            'San Francisco Giants @ New York Mets':{u:.5796,o:.4204},
+            'Los Angeles Angels @ Pittsburgh Pirates':{u:.5769,o:.4231},
+            'Boston Red Sox @ Baltimore Orioles':{u:.5658,o:.4342},
+            'Atlanta Braves @ Philadelphia Phillies':{u:.5636,o:.4364},
+            'Minnesota Twins @ Chicago White Sox':{u:.5566,o:.4434},
+            'Chicago Cubs @ Miami Marlins':{u:.5541,o:.4459},
+            'Arizona Diamondbacks @ Houston Astros':{u:.5456,o:.4544},
+            'Athletics @ Seattle Mariners':{u:.5442,o:.4558},
+            'Milwaukee Brewers @ Cincinnati Reds':{u:.5432,o:.4568},
+            'Toronto Blue Jays @ Kansas City Royals':{u:.5011,o:.4989},
+            'St. Louis Cardinals @ Colorado Rockies':{u:.4381,o:.5619}
+          };
+          const empiricalStatus={
+            'Athletics @ Seattle Mariners':'MATCHUP_DELTA_OUTSIDE_HISTORICAL_I2_95CI'
           };
           const key=process.env.ODDS_API_KEY;
           if(!key) throw new Error('ODDS_API_KEY missing');
@@ -55,7 +58,7 @@ jobs:
           function dec(a){return a>0?1+a/100:1+100/Math.abs(a)}
           function be(a){return a>0?100/(a+100):Math.abs(a)/(Math.abs(a)+100)}
           function ev(p,a){return p*(dec(a)-1)-(1-p)}
-          const eventsResp=await get('/odds/',{sport_key:'baseball_mlb',markets:'h2h',commenceTimeFrom:`${date}T00:00:00Z`,commenceTimeTo:`${date}T23:59:59Z`});
+          const eventsResp=await get('/odds/',{sport_key:'baseball_mlb',markets:'h2h',commenceTimeFrom:'2026-09-05T00:00:00Z',commenceTimeTo:'2026-09-06T06:00:00Z'});
           const events=Array.isArray(eventsResp.data)?eventsResp.data:[];
           const out=[];
           for(const e of events){
@@ -70,7 +73,7 @@ jobs:
                   const matchup=`${item.away_team||e.away_team} @ ${item.home_team||e.home_team}`;
                   const pr=probs[matchup];
                   for(const o of b.outcomes||[]){
-                    out.push({matchup,market:marketName,book:b.book,updated_at:b.updated_at||null,outcome:o.name,point:o.point??null,price:o.price??null,modelProb:pr?(/under/i.test(String(o.name))?pr.u:/over/i.test(String(o.name))?pr.o:null):null});
+                    out.push({matchup,market:marketName,book:b.book,updated_at:b.updated_at||null,outcome:o.name,point:o.point??null,price:o.price??null,modelProb:pr?(/under/i.test(String(o.name))?pr.u:/over/i.test(String(o.name))?pr.o:null):null,empiricalReconciliationStatus:empiricalStatus[matchup]||'CONSISTENT_WITH_HISTORICAL_I2_95CI'});
                   }
                 }
               }
@@ -78,7 +81,7 @@ jobs:
           }
           const second=out.filter(r=>!r.error && /(?:2|second)/i.test(String(r.market)) && /inning/i.test(String(r.market)));
           for(const r of second){if(Number.isFinite(Number(r.price))&&r.modelProb!=null){r.breakEven=be(Number(r.price));r.edge=r.modelProb-r.breakEven;r.ev=ev(r.modelProb,Number(r.price));}}
-          const payload={date,generatedAt:new Date().toISOString(),source:'The Odds API Business period-markets',book:'FanDuel',allFanDuelRows:out,secondInningRows:second};
+          const payload={date,generatedAt:new Date().toISOString(),sourceProjection:'data/runtime/i2/2026-09-05_preliminary_full_workflow_shadow.json',source:'The Odds API Business period-markets',book:'FanDuel',marketStage:'POST_PROJECTION_SHADOW_EV',probabilitiesFrozenBeforeMarketPull:true,allFanDuelRows:out,secondInningRows:second};
           fs.mkdirSync('data/runtime/i2',{recursive:true});
           fs.writeFileSync('data/runtime/i2/2026-09-05_fanduel_i2_ev.json',JSON.stringify(payload,null,2));
           console.log(JSON.stringify(second,null,2));
@@ -86,9 +89,17 @@ jobs:
       - name: Commit result
         shell: bash
         run: |
+          set -euo pipefail
+          ART=data/runtime/i2/2026-09-05_fanduel_i2_ev.json
+          cp "$ART" /tmp/fd.json
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main
-          git add data/runtime/i2/2026-09-05_fanduel_i2_ev.json
-          git commit -m "Capture FanDuel I2 EV 2026-09-05" || exit 0
-          git push
+          for x in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/fd.json "$ART"
+            git add "$ART"
+            git commit -m "Capture FanDuel I2 EV 2026-09-05" || exit 0
+            git push origin HEAD:main && exit 0
+          done
+          exit 1
