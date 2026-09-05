@@ -22,8 +22,8 @@ jobs:
       - name: Pull FanDuel second-inning markets and compute EV
         shell: bash
         run: |
-          node - <<'NODE'
-          const fs = require('fs');
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
           const date='2026-09-05';
           const probs={
             'Tampa Bay Rays @ Texas Rangers':{u:.665,o:.335},
@@ -76,7 +76,7 @@ jobs:
               }
             }
           }
-          const second=out.filter(r=>!r.error && /2|second/i.test(String(r.market)) && /inning/i.test(String(r.market)));
+          const second=out.filter(r=>!r.error && /(?:2|second)/i.test(String(r.market)) && /inning/i.test(String(r.market)));
           for(const r of second){if(Number.isFinite(Number(r.price))&&r.modelProb!=null){r.breakEven=be(Number(r.price));r.edge=r.modelProb-r.breakEven;r.ev=ev(r.modelProb,Number(r.price));}}
           const payload={date,generatedAt:new Date().toISOString(),source:'The Odds API Business period-markets',book:'FanDuel',allFanDuelRows:out,secondInningRows:second};
           fs.mkdirSync('data/runtime/i2',{recursive:true});
