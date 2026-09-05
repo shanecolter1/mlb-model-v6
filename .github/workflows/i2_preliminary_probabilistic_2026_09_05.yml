@@ -1,0 +1,250 @@
+name: I2 preliminary probabilistic 2026-09-05
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_preliminary_probabilistic_2026_09_05.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  preliminary-i2:
+    runs-on: ubuntu-latest
+    env:
+      DATE: '2026-09-05'
+      MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+      SPORTSBOOK_DATA_SOURCE: THE_ODDS_API
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      SAMPLE_COUNT: '12'
+      I2_TRIALS: '10000'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build probabilistic preliminary lineup samples from official MLB history
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, urllib.request, urllib.parse, datetime, math, random, os
+          from collections import defaultdict
+
+          DATE=os.environ['DATE']
+          N=int(os.environ['SAMPLE_COUNT'])
+          target=datetime.date.fromisoformat(DATE)
+          start=target-datetime.timedelta(days=16)
+          end=target-datetime.timedelta(days=1)
+          UA='MLB-I2-Preliminary-Lineup-Engine/1.0'
+          random.seed(20260905)
+
+          def get(url):
+              req=urllib.request.Request(url,headers={'Accept':'application/json','User-Agent':UA})
+              with urllib.request.urlopen(req,timeout=30) as r: return json.load(r)
+
+          def schedule(**params):
+              return get('https://statsapi.mlb.com/api/v1/schedule?'+urllib.parse.urlencode(params))
+
+          today=schedule(sportId=1,date=DATE,hydrate='probablePitcher,team')
+          games=[g for d in today.get('dates',[]) for g in d.get('games',[])]
+
+          def person_hand(pid):
+              if not pid: return None
+              p=get(f'https://statsapi.mlb.com/api/v1/people/{pid}').get('people',[{}])[0]
+              return (p.get('pitchHand') or {}).get('code')
+
+          def active_roster(team_id):
+              data=get(f'https://statsapi.mlb.com/api/v1/teams/{team_id}/roster?rosterType=active&date={DATE}')
+              return {int(x['person']['id']):x['person']['fullName'] for x in data.get('roster',[]) if x.get('person',{}).get('id')}
+
+          def past_games(team_id):
+              s=schedule(sportId=1,teamId=team_id,startDate=start.isoformat(),endDate=end.isoformat(),gameType='R')
+              arr=[g for d in s.get('dates',[]) for g in d.get('games',[])]
+              arr.sort(key=lambda g:g.get('gameDate',''),reverse=True)
+              return arr[:14]
+
+          def history(team_id, active, today_opp_hand):
+              slot_scores=defaultdict(lambda: defaultdict(float))
+              overall=defaultdict(float)
+              records=[]
+              for idx,g in enumerate(past_games(team_id)):
+                  try: feed=get(f"https://statsapi.mlb.com/api/v1.1/game/{g['gamePk']}/feed/live")
+                  except Exception: continue
+                  gd=feed.get('gameData',{}); box=feed.get('liveData',{}).get('boxscore',{}).get('teams',{})
+                  home_id=(gd.get('teams',{}).get('home') or {}).get('id')
+                  side='home' if home_id==team_id else 'away'; opp='away' if side=='home' else 'home'
+                  rows=[]
+                  for p in (box.get(side,{}) or {}).get('players',{}).values():
+                      bo=p.get('battingOrder')
+                      if not bo: continue
+                      try: slot=int(bo)//100
+                      except: continue
+                      pid=(p.get('person') or {}).get('id'); name=(p.get('person') or {}).get('fullName')
+                      if slot in range(1,10) and pid: rows.append((slot,int(pid),name))
+                  rows=sorted(rows)
+                  if len(rows)!=9 or len({x[0] for x in rows})!=9: continue
+                  opp_pitchers=(box.get(opp,{}) or {}).get('pitchers') or []
+                  opp_starter=opp_pitchers[0] if opp_pitchers else None
+                  opp_hand=((gd.get('players',{}).get(f'ID{opp_starter}',{}) or {}).get('pitchHand') or {}).get('code')
+                  game_date=datetime.datetime.fromisoformat(g['gameDate'].replace('Z','+00:00')).date()
+                  days=max(1,(target-game_date).days)
+                  w=math.exp(-0.16*(days-1))
+                  if today_opp_hand and opp_hand==today_opp_hand: w*=1.8
+                  kept=[]
+                  for slot,pid,name in rows:
+                      if pid not in active: continue
+                      slot_scores[pid][slot]+=w
+                      overall[pid]+=w
+                      kept.append((slot,pid,active.get(pid,name)))
+                  records.append({'gamePk':g['gamePk'],'date':game_date.isoformat(),'oppStarterHand':opp_hand,'weight':w,'activePlayersKept':len(kept)})
+              return slot_scores,overall,records
+
+          os.makedirs(f'data/runtime/i2/{DATE}_preliminary_overrides',exist_ok=True)
+          game_meta={}
+          histories={}
+          for g in games:
+              gp=str(g['gamePk']); away=g['teams']['away']['team']; home=g['teams']['home']['team']
+              ap=(g['teams']['away'].get('probablePitcher') or {}); hp=(g['teams']['home'].get('probablePitcher') or {})
+              ah=person_hand(ap.get('id')); hh=person_hand(hp.get('id'))
+              game_meta[gp]={'away':away,'home':home,'awayStarter':ap,'homeStarter':hp,'awayStarterHand':ah,'homeStarterHand':hh,'gameDate':g.get('gameDate')}
+              for team,opp_hand in ((away,hh),(home,ah)):
+                  tid=int(team['id'])
+                  if tid not in histories:
+                      active=active_roster(tid)
+                      ss,ov,recs=history(tid,active,opp_hand)
+                      histories[tid]={'team':team,'active':active,'slotScores':ss,'overall':ov,'records':recs,'todayOppStarterHand':opp_hand}
+
+          def weighted_choice(items,weights):
+              total=sum(weights)
+              if total<=0: return random.choice(items)
+              r=random.random()*total
+              acc=0
+              for item,w in zip(items,weights):
+                  acc+=w
+                  if acc>=r:return item
+              return items[-1]
+
+          def sample_lineup(hist):
+              ss=hist['slotScores']; ov=hist['overall']; active=hist['active']
+              eligible=[pid for pid in ov if pid in active and ov[pid]>0]
+              if len(eligible)<9: raise RuntimeError(f"Not enough active lineup-history hitters for {hist['team']['name']}: {len(eligible)}")
+              used=set(); out=[]
+              for slot in range(1,10):
+                  candidates=[pid for pid in eligible if pid not in used]
+                  weights=[ss[pid].get(slot,0.0)+0.035*ov[pid] for pid in candidates]
+                  pid=weighted_choice(candidates,weights)
+                  used.add(pid); out.append(active[pid])
+              return out
+
+          samples=[]
+          for sidx in range(N):
+              payload={'governance':{'sourceStatus':'PRELIMINARY_PROBABILISTIC_MLB_HISTORY','note':'Sampled from recent official MLB batting orders, recency-weighted and opposing-starter-hand weighted, filtered to exact-date active roster. Not feed-confirmed.'},'games':{}}
+              for gp,m in game_meta.items():
+                  payload['games'][gp]={'matchup':f"{m['away']['name']} @ {m['home']['name']}", 'away':sample_lineup(histories[int(m['away']['id'])]), 'home':sample_lineup(histories[int(m['home']['id'])])}
+              path=f'data/runtime/i2/{DATE}_preliminary_overrides/sample_{sidx+1:02d}.json'
+              with open(path,'w') as f: json.dump(payload,f,indent=2)
+              samples.append(path)
+
+          def probs_for(hist):
+              ss=hist['slotScores']; ov=hist['overall']; active=hist['active']; out={}
+              for pid in ov:
+                  if pid not in active: continue
+                  denom=sum(ss[pid].values())
+                  if denom<=0: continue
+                  out[active[pid]]={str(slot):round(ss[pid].get(slot,0)/denom,4) for slot in range(1,10) if ss[pid].get(slot,0)>0}
+              return out
+
+          audit={'date':DATE,'source':'Official MLB Stats API recent batting orders + exact-date active roster','method':'recency weight exp(-0.16*(days-1)); same starter hand x1.8; slot sampling without replacement; 3.5% overall-frequency smoothing','sampleCount':N,'games':game_meta,'teams':{str(tid):{'team':h['team'],'todayOppStarterHand':h['todayOppStarterHand'],'historyGames':h['records'],'playerSlotProbabilities':probs_for(h)} for tid,h in histories.items()}}
+          with open(f'data/runtime/i2/{DATE}_preliminary_lineup_probability_audit.json','w') as f: json.dump(audit,f,indent=2)
+          print(json.dumps({'games':len(games),'teams':len(histories),'samples':N},indent=2))
+          PY
+
+      - name: Capture approved full-game-total-point run environment
+        shell: bash
+        env:
+          I2_DATE: ${{ env.DATE }}
+          I2_RUN_ENVIRONMENT: data/runtime/i2/${{ env.DATE }}_preliminary_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: |
+          set -euo pipefail
+          node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Run I2 model across lineup samples
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq -w 1 "$SAMPLE_COUNT"); do
+            echo "Running preliminary lineup sample $i/$SAMPLE_COUNT"
+            I2_DATE="$DATE" \
+            I2_CUTOFF="${DATE}T23:59:59Z" \
+            I2_TRIALS="$I2_TRIALS" \
+            I2_OUTPUT="data/runtime/i2/${DATE}_preliminary_sample_${i}.json" \
+            I2_LINEUP_OVERRIDES="data/runtime/i2/${DATE}_preliminary_overrides/sample_${i}.json" \
+            I2_RUN_ENVIRONMENT="data/runtime/i2/${DATE}_preliminary_run_environment.json" \
+            I2_TOTAL_PRIOR="data/derived/i2/i2_total_conditioned_prior.json" \
+            I2_VENUE_PROFILES="data/runtime/i2/savant_venue_profiles_2026_3yr.json" \
+            node src/pipeline/run_i2_total_conditioned.mjs
+          done
+
+      - name: Aggregate probabilistic preliminary projections
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, glob, statistics, math, os
+          DATE=os.environ['DATE']
+          files=sorted(glob.glob(f'data/runtime/i2/{DATE}_preliminary_sample_*.json'))
+          by={}
+          for fn in files:
+              p=json.load(open(fn))
+              for g in p.get('games',[]):
+                  if not g.get('runEnvironmentConditioned'): continue
+                  gp=str(g['gamePk']); by.setdefault(gp,[]).append(g)
+          def amer(p):
+              if p<=0 or p>=1:return None
+              return round(-100*p/(1-p)) if p>=.5 else round(100*(1-p)/p)
+          games=[]
+          for gp,arr in by.items():
+              vals=[float(x['under05']) for x in arr]
+              mean=sum(vals)/len(vals); over=1-mean
+              exact={}
+              for k in ['0','1','2','3','4+']:
+                  xs=[float(x.get('fullI2Exact',{}).get(k,0))/100 for x in arr]
+                  exact[k]=round(100*sum(xs)/len(xs),2)
+              top=[float(x['top2ScorePct'])/100 for x in arr]; bot=[float(x['bottom2ScorePct'])/100 for x in arr]
+              base=arr[0]
+              games.append({'gamePk':int(gp),'matchup':f"{base['away']} @ {base['home']}",'gameDate':base.get('gameDate'),'samples':len(arr),'under05Pct':round(mean*100,2),'over05Pct':round(over*100,2),'fairUnder':amer(mean),'fairOver':amer(over),'lineupUncertaintySdPct':round((statistics.pstdev(vals) if len(vals)>1 else 0)*100,2),'underRangePct':[round(min(vals)*100,2),round(max(vals)*100,2)],'top2ScorePct':round(sum(top)/len(top)*100,2),'bottom2ScorePct':round(sum(bot)/len(bot)*100,2),'fullI2Exact':exact,'runEnvironment':base.get('runEnvironment'),'predictionClass':'PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW'})
+          games.sort(key=lambda x:x['under05Pct'],reverse=True)
+          for i,g in enumerate(games,1):g['rank']=i
+          payload={'date':DATE,'generatedFrom':'multiple existing I2 engine runs across sampled preliminary batting orders','status':'PRELIMINARY_SHADOW_NOT_BETTING_APPROVED','lineupModel':'Official MLB recent batting-order history + exact-date active roster + recency weighting + opposing starter handedness weighting','sampleFiles':files,'projectedGames':len(games),'games':games,'governance':{'confirmedLineupsRequiredForOfficial':True,'derivativeMarketDataUsed':False,'fullGameTotalPointConditioningUsed':True,'doNotTreatAsFrozenOfficialProjection':True}}
+          with open(f'data/runtime/i2/{DATE}_preliminary_probabilistic_projection.json','w') as f:json.dump(payload,f,indent=2)
+          print(json.dumps({'projectedGames':len(games),'ranking':[{'rank':g['rank'],'matchup':g['matchup'],'under05Pct':g['under05Pct'],'fairUnder':g['fairUnder'],'sd':g['lineupUncertaintySdPct'],'total':g.get('runEnvironment',{}).get('fullGameTotal')} for g in games]},indent=2))
+          PY
+
+      - name: Commit preliminary artifacts safely
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="data/runtime/i2/${DATE}_preliminary_probabilistic_projection.json"
+          AUD="data/runtime/i2/${DATE}_preliminary_lineup_probability_audit.json"
+          ENV="data/runtime/i2/${DATE}_preliminary_run_environment.json"
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git add "$OUT" "$AUD" "$ENV"
+          git commit -m "Add preliminary probabilistic I2 projection ${DATE}" || exit 0
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git pull --rebase origin main
+          done
+          exit 1
