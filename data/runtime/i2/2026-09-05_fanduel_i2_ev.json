@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-05",
+  "generatedAt": "2026-09-05T16:35:36.530Z",
+  "sourceProjection": "data/runtime/i2/2026-09-05_preliminary_full_workflow_shadow.json",
+  "source": "The Odds API Business period-markets",
+  "book": "FanDuel",
+  "marketStage": "POST_PROJECTION_SHADOW_EV",
+  "probabilitiesFrozenBeforeMarketPull": true,
+  "allFanDuelRows": [],
+  "secondInningRows": []
+}
