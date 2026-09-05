@@ -1,0 +1,94 @@
+name: FanDuel I2 EV 2026-09-05
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fanduel_i2_ev_2026_09_05.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  pull-fanduel-i2:
+    runs-on: ubuntu-latest
+    env:
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Pull FanDuel second-inning markets and compute EV
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const date='2026-09-05';
+          const probs={
+            'Tampa Bay Rays @ Texas Rangers':{u:.665,o:.335},
+            'New York Yankees @ San Diego Padres':{u:.610,o:.390},
+            'Washington Nationals @ Los Angeles Dodgers':{u:.605,o:.395},
+            'Boston Red Sox @ Baltimore Orioles':{u:.600,o:.400},
+            'San Francisco Giants @ New York Mets':{u:.592,o:.408},
+            'Atlanta Braves @ Philadelphia Phillies':{u:.590,o:.410},
+            'Athletics @ Seattle Mariners':{u:.588,o:.412},
+            'Los Angeles Angels @ Pittsburgh Pirates':{u:.585,o:.415},
+            'Detroit Tigers @ Cleveland Guardians':{u:.580,o:.420},
+            'Chicago Cubs @ Miami Marlins':{u:.570,o:.430},
+            'Arizona Diamondbacks @ Houston Astros':{u:.545,o:.455},
+            'Minnesota Twins @ Chicago White Sox':{u:.540,o:.460},
+            'Milwaukee Brewers @ Cincinnati Reds':{u:.495,o:.505},
+            'Toronto Blue Jays @ Kansas City Royals':{u:.480,o:.520},
+            'St. Louis Cardinals @ Colorado Rockies':{u:.455,o:.545}
+          };
+          const key=process.env.ODDS_API_KEY;
+          if(!key) throw new Error('ODDS_API_KEY missing');
+          async function get(path,params){
+            const u=new URL(path,'https://api.theoddsapi.com');
+            for(const [k,v] of Object.entries(params))u.searchParams.set(k,String(v));
+            const r=await fetch(u,{headers:{'x-api-key':key,accept:'application/json'}});
+            const t=await r.text();
+            if(!r.ok)throw new Error(`${r.status} ${t}`);
+            return JSON.parse(t);
+          }
+          function dec(a){return a>0?1+a/100:1+100/Math.abs(a)}
+          function be(a){return a>0?100/(a+100):Math.abs(a)/(Math.abs(a)+100)}
+          function ev(p,a){return p*(dec(a)-1)-(1-p)}
+          const eventsResp=await get('/odds/',{sport_key:'baseball_mlb',markets:'h2h',commenceTimeFrom:`${date}T00:00:00Z`,commenceTimeTo:`${date}T23:59:59Z`});
+          const events=Array.isArray(eventsResp.data)?eventsResp.data:[];
+          const out=[];
+          for(const e of events){
+            let resp;
+            try{resp=await get('/period-markets/',{sport_key:'baseball_mlb',event_id:e.event_id});}catch(err){out.push({matchup:`${e.away_team} @ ${e.home_team}`,error:String(err)});continue;}
+            const items=Array.isArray(resp.data)?resp.data:[resp.data].filter(Boolean);
+            for(const item of items){
+              for(const m of item.markets||[]){
+                const marketName=String(m.market||'');
+                for(const b of m.books||[]){
+                  if(!/fanduel/i.test(String(b.book||'')))continue;
+                  const matchup=`${item.away_team||e.away_team} @ ${item.home_team||e.home_team}`;
+                  const pr=probs[matchup];
+                  for(const o of b.outcomes||[]){
+                    out.push({matchup,market:marketName,book:b.book,updated_at:b.updated_at||null,outcome:o.name,point:o.point??null,price:o.price??null,modelProb:pr?(/under/i.test(String(o.name))?pr.u:/over/i.test(String(o.name))?pr.o:null):null});
+                  }
+                }
+              }
+            }
+          }
+          const second=out.filter(r=>!r.error && /2|second/i.test(String(r.market)) && /inning/i.test(String(r.market)));
+          for(const r of second){if(Number.isFinite(Number(r.price))&&r.modelProb!=null){r.breakEven=be(Number(r.price));r.edge=r.modelProb-r.breakEven;r.ev=ev(r.modelProb,Number(r.price));}}
+          const payload={date,generatedAt:new Date().toISOString(),source:'The Odds API Business period-markets',book:'FanDuel',allFanDuelRows:out,secondInningRows:second};
+          fs.mkdirSync('data/runtime/i2',{recursive:true});
+          fs.writeFileSync('data/runtime/i2/2026-09-05_fanduel_i2_ev.json',JSON.stringify(payload,null,2));
+          console.log(JSON.stringify(second,null,2));
+          NODE
+      - name: Commit result
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase origin main
+          git add data/runtime/i2/2026-09-05_fanduel_i2_ev.json
+          git commit -m "Capture FanDuel I2 EV 2026-09-05" || exit 0
+          git push
