@@ -1,0 +1,29 @@
+name: I3 total-8 game-sequence stability
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - 'src/analysis/i3_total8_game_sequence_stability.py'
+      - '.github/workflows/i3_total8_game_sequence_stability.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pandas numpy tabulate
+      - run: python src/analysis/i3_total8_game_sequence_stability.py
+      - name: Commit results
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '418982+github-actions[bot]@users.noreply.github.com'
+          git add analysis/I3_TOTAL8_GAME_SEQUENCE_STABILITY_2021_2025.md data/derived/all_inning/i3_total8_sequence_*.csv
+          git diff --cached --quiet || git commit -m 'Add I3 total-8 game-sequence stability results'
+          git push
