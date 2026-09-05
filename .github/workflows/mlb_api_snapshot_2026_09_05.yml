@@ -1,0 +1,132 @@
+name: MLB Stats API snapshot 2026-09-05
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/mlb_api_snapshot_2026_09_05.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  pull-mlb-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pull official MLB schedule and live feeds
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, urllib.request, urllib.parse, datetime, os
+
+          DATE='2026-09-05'
+          UA='MLB-I2-Official-API-Snapshot/1.0'
+          def get_json(url):
+              req=urllib.request.Request(url, headers={'Accept':'application/json','User-Agent':UA})
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  return json.load(r)
+
+          sched_url='https://statsapi.mlb.com/api/v1/schedule?' + urllib.parse.urlencode({
+              'sportId':1,'date':DATE,'hydrate':'probablePitcher,team,linescore'
+          })
+          sched=get_json(sched_url)
+          games=[]
+          for d in sched.get('dates',[]):
+              for g in d.get('games',[]):
+                  gamePk=g['gamePk']
+                  feed_url=f'https://statsapi.mlb.com/api/v1.1/game/{gamePk}/feed/live'
+                  feed=get_json(feed_url)
+                  gd=feed.get('gameData',{})
+                  ld=feed.get('liveData',{})
+                  box=ld.get('boxscore',{}).get('teams',{})
+                  players=gd.get('players',{})
+
+                  def lineup(side):
+                      team_box=box.get(side,{})
+                      out=[]
+                      for key,p in team_box.get('players',{}).items():
+                          bo=p.get('battingOrder')
+                          if bo is None: continue
+                          try:
+                              slot=int(bo)//100
+                          except Exception:
+                              continue
+                          person=p.get('person',{})
+                          pid=person.get('id')
+                          name=person.get('fullName') or players.get(f'ID{pid}',{}).get('fullName')
+                          out.append({
+                              'slot':slot,'playerId':pid,'name':name,
+                              'position':p.get('position',{}).get('abbreviation'),
+                              'battingOrderRaw':bo
+                          })
+                      out.sort(key=lambda x:x['slot'])
+                      return out
+
+                  home=gd.get('teams',{}).get('home',{})
+                  away=gd.get('teams',{}).get('away',{})
+                  home_lineup=lineup('home')
+                  away_lineup=lineup('away')
+                  probable=g.get('teams',{})
+                  rec={
+                      'gamePk':gamePk,
+                      'gameDate':g.get('gameDate'),
+                      'status':g.get('status',{}),
+                      'venue':g.get('venue',{}),
+                      'awayTeam':{'id':away.get('id'),'name':away.get('name')},
+                      'homeTeam':{'id':home.get('id'),'name':home.get('name')},
+                      'awayProbablePitcher':probable.get('away',{}).get('probablePitcher'),
+                      'homeProbablePitcher':probable.get('home',{}).get('probablePitcher'),
+                      'awayLineupConfirmed':len(away_lineup)==9,
+                      'homeLineupConfirmed':len(home_lineup)==9,
+                      'awayLineup':away_lineup,
+                      'homeLineup':home_lineup,
+                      'source':{'schedule':sched_url,'feed':feed_url}
+                  }
+                  games.append(rec)
+
+          player_ids=sorted({x['playerId'] for g in games for side in ('awayLineup','homeLineup') for x in g[side] if x.get('playerId')})
+          starter_ids=sorted({p.get('id') for g in games for p in (g.get('awayProbablePitcher') or {},g.get('homeProbablePitcher') or {}) if p.get('id')})
+          ids=sorted(set(player_ids+starter_ids))
+          people_stats={}
+          for i in range(0,len(ids),50):
+              chunk=ids[i:i+50]
+              url='https://statsapi.mlb.com/api/v1/people?' + urllib.parse.urlencode({
+                  'personIds':','.join(map(str,chunk)),
+                  'hydrate':'stats(group=[hitting,pitching],type=[season],season=2026)'
+              })
+              data=get_json(url)
+              for person in data.get('people',[]):
+                  rec={'id':person.get('id'),'name':person.get('fullName'),'hitting':{},'pitching':{}}
+                  for sb in person.get('stats',[]):
+                      group=(sb.get('group') or {}).get('displayName')
+                      stat=((sb.get('splits') or [{}])[0]).get('stat',{}) if sb.get('splits') else {}
+                      if group=='hitting': rec['hitting']=stat
+                      elif group=='pitching': rec['pitching']=stat
+                  people_stats[str(person.get('id'))]=rec
+
+          payload={
+              'date':DATE,
+              'capturedAtUtc':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'source':'Official MLB Stats API',
+              'scheduleUrl':sched_url,
+              'gameCount':len(games),
+              'games':games,
+              'peopleStats':people_stats
+          }
+          os.makedirs('data/runtime/i2',exist_ok=True)
+          with open('data/runtime/i2/2026-09-05_mlb_api_snapshot.json','w') as f:
+              json.dump(payload,f,indent=2)
+          print(json.dumps({'gameCount':len(games),'confirmedBoth':sum(g['awayLineupConfirmed'] and g['homeLineupConfirmed'] for g in games),'capturedAtUtc':payload['capturedAtUtc']},indent=2))
+          PY
+      - name: Commit snapshot
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+          git add data/runtime/i2/2026-09-05_mlb_api_snapshot.json
+          git commit -m "Capture MLB Stats API snapshot 2026-09-05" || exit 0
+          git push
