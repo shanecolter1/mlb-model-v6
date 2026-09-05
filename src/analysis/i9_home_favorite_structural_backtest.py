@@ -1,70 +1,46 @@
 import pandas as pd
 import numpy as np
 from pathlib import Path
-
 URL='https://github.com/shanecolter1/mlb-model-v6/releases/download/historical-mlb-2021-2025-v1/MLB_Game_Stats_Joined_2021_2025.csv.gz'
-OUT=Path('data/derived/all_inning'); OUT.mkdir(parents=True, exist_ok=True)
-AN=Path('analysis'); AN.mkdir(parents=True, exist_ok=True)
-
-df=pd.read_csv(URL, compression='gzip', low_memory=False)
-use=df[(df['benchmark_matched']==True) & (df['dk_total_open_total'].isin([7.0,7.5,8.0,8.5,9.0]))].copy()
-use=use[pd.to_numeric(use['dk_moneyline_open_homeOdds'], errors='coerce').notna()]
-use['home_ml']=pd.to_numeric(use['dk_moneyline_open_homeOdds'], errors='coerce')
-use['i9_runs']=pd.to_numeric(use['inning9_total_runs'], errors='coerce')
-use['away9']=pd.to_numeric(use['away_inn9'], errors='coerce')
-use['home9']=pd.to_numeric(use['home_inn9'], errors='coerce')
-# I9 reached if top 9 was played. Blank home9 with reached top9 means bottom 9 not played.
-use=use[use['away9'].notna()].copy()
-use['bottom9_skipped']=use['home9'].isna()
-use['i9_under05']=use['i9_runs'].fillna(use['away9']).eq(0)
-use['bottom9_played']=~use['bottom9_skipped']
-
-def fair_american(p):
-    if p<=0 or p>=1: return np.nan
-    return -100*p/(1-p) if p>=0.5 else 100*(1-p)/p
-
-# nested thresholds show the actual strategy effect as favorite strength increases
-thresholds=[-150,-175,-200,-225,-250,-300]
+OUT=Path('data/derived/all_inning'); OUT.mkdir(parents=True,exist_ok=True)
+AN=Path('analysis'); AN.mkdir(parents=True,exist_ok=True)
+df=pd.read_csv(URL,compression='gzip',low_memory=False)
+g=df[(df.benchmark_matched==True)&(pd.to_numeric(df.dk_total_open_total,errors='coerce')==8.0)].copy()
+g['date']=pd.to_datetime(g.game_date); g=g.sort_values(['date','retro_game_id'])
+g['u']=pd.to_numeric(g.inning3_total_runs,errors='coerce').eq(0).astype(int)
+g=g[pd.to_numeric(g.inning3_total_runs,errors='coerce').notna()].copy()
+p=g.u.mean(); n=len(g)
+# sequential non-overlapping block tests
 rows=[]
-for total in [7.0,7.5,8.0,8.5,9.0,'ALL']:
-    base=use if total=='ALL' else use[use['dk_total_open_total']==total]
-    for th in thresholds:
-        g=base[base['home_ml']<=th]
-        if len(g)==0: continue
-        played=g[g['bottom9_played']]
-        p_under=g['i9_under05'].mean()
-        rows.append({
-            'pregame_total':total,'home_favorite_threshold':th,'n':len(g),
-            'bottom9_skipped_pct':100*g['bottom9_skipped'].mean(),
-            'i9_under05_pct':100*p_under,
-            'i9_fair_under_american':fair_american(p_under),
-            'bottom9_played_n':len(played),
-            'under05_if_bottom9_played_pct':100*played['i9_under05'].mean() if len(played) else np.nan,
-            'season_sd_under_pp':100*g.groupby('season')['i9_under05'].mean().std(ddof=1) if g['season'].nunique()>1 else np.nan,
-        })
-res=pd.DataFrame(rows)
-res.to_csv(OUT/'i9_home_favorite_structural_backtest_2021_2025.csv',index=False)
-
-# disjoint favorite tiers for easier interpretation
-bins=[-10000,-300,-250,-225,-200,-175,-150,0]
-labels=['-300 or stronger','-250 to -299','-225 to -249','-200 to -224','-175 to -199','-150 to -174','weaker than -150']
-use['fav_tier']=pd.cut(use['home_ml'], bins=bins, labels=labels, right=False)
-tiers=[]
-for total in [7.0,7.5,8.0,8.5,9.0]:
-  for tier,g in use[use['dk_total_open_total']==total].groupby('fav_tier', observed=True):
-    if len(g)==0: continue
-    p=g['i9_under05'].mean(); played=g[g['bottom9_played']]
-    tiers.append({'pregame_total':total,'home_favorite_tier':str(tier),'n':len(g),'bottom9_skipped_pct':100*g['bottom9_skipped'].mean(),'i9_under05_pct':100*p,'i9_fair_under_american':fair_american(p),'under05_if_bottom9_played_pct':100*played['i9_under05'].mean() if len(played) else np.nan})
-pd.DataFrame(tiers).to_csv(OUT/'i9_home_favorite_disjoint_tiers_2021_2025.csv',index=False)
-
-core=res[(res['n']>=100)].sort_values(['i9_under05_pct','n'],ascending=[False,False]).head(15)
-md=['# I9 Under 0.5 — Home Favorite Structural Backtest (2021–2025)','',
-'## Purpose','Test whether strong pregame home favorites create an exploitable structural I9 Under 0.5 signal because the bottom of the ninth is more likely to be skipped.','',
-'## Important limitation','The canonical historical master contains DraftKings full-game opening totals and moneylines, but **does not contain historical I9 market prices**. Therefore this report establishes historical hit rates, structural decomposition, and fair prices; it does not claim realized sportsbook ROI. A true ROI test requires archived I9 Under 0.5 prices.','',
-'## Method','Sample: matched 2021–2025 games with DraftKings opening totals 7.0–9.0 and a posted opening home moneyline. I9 is counted only when the top of the ninth was reached. A blank home ninth with a reached top ninth is classified as bottom-nine skipped.','',
-'## Strongest threshold cells (N >= 100)','', '| Total | Home ML threshold | N | B9 skipped | I9 U0.5 | Fair U | U0.5 if B9 played | Annual SD |','|---:|---:|---:|---:|---:|---:|---:|---:|']
-for _,r in core.iterrows():
-    md.append(f"| {r['pregame_total']} | {int(r['home_favorite_threshold'])} or stronger | {int(r['n'])} | {r['bottom9_skipped_pct']:.1f}% | {r['i9_under05_pct']:.1f}% | {r['i9_fair_under_american']:.0f} | {r['under05_if_bottom9_played_pct']:.1f}% | {r['season_sd_under_pp']:.2f} pp |")
-md += ['', '## Interpretation','The difference between unconditional I9 Under 0.5 and Under 0.5 conditional on the bottom ninth being played quantifies the structural value created by a skipped home half. Increasing Under probability as the home favorite becomes stronger would support using home-favorite strength as an I9-specific market-state variable.','', '## Pricing test status','Historical I9 prices are not present in the 2021–2025 canonical archive. The fair-price column is the break-even American price implied by the observed hit rate; it is the correct benchmark for evaluating any archived or live I9 Under quote.']
-(AN/'I9_HOME_FAVORITE_STRUCTURAL_BACKTEST_2021_2025.md').write_text('\n'.join(md),encoding='utf-8')
-print(res.to_string(index=False))
+for bs in [25,50,100,250,500]:
+ x=g.u.to_numpy(); rates=np.array([x[i:i+bs].mean() for i in range(0,n,bs) if len(x[i:i+bs])==bs])
+ expected=np.sqrt(p*(1-p)/bs); observed=rates.std(ddof=1); ratio=(observed/expected)**2
+ rows.append([bs,len(rates),rates.mean(),observed,expected,ratio,rates.min(),rates.max()])
+# rolling ranges
+roll=[]
+for w in [25,50,100,250,500]:
+ r=g.u.rolling(w).mean().dropna(); roll.append([w,len(r),r.min(),r.max(),r.std(ddof=1)])
+# linear probability time trend, slope per 1000 games and z
+x=np.arange(n,dtype=float); y=g.u.to_numpy(dtype=float); slope=np.cov(x,y,ddof=0)[0,1]/np.var(x); intercept=y.mean()-slope*x.mean(); resid=y-(intercept+slope*x); se=np.sqrt((resid@resid)/(n-2)/((x-x.mean())@(x-x.mean()))); z=slope/se
+# autocorrelation lags
+acs=[]
+for lag in [1,2,5,10,25,50]: acs.append([lag,pd.Series(y).autocorr(lag=lag)])
+# longest runs
+best0=best1=cur0=cur1=0
+for v in y:
+ if v==0: cur0+=1;cur1=0;best0=max(best0,cur0)
+ else: cur1+=1;cur0=0;best1=max(best1,cur1)
+blocks=pd.DataFrame(rows,columns=['block_games','blocks','mean_under','observed_sd','binomial_expected_sd','dispersion_ratio','min_rate','max_rate'])
+blocks.to_csv(OUT/'i3_total8_game_stability_blocks.csv',index=False)
+pd.DataFrame(roll,columns=['window','windows','min_rate','max_rate','rolling_sd']).to_csv(OUT/'i3_total8_game_stability_rolling.csv',index=False)
+pd.DataFrame(acs,columns=['lag','autocorrelation']).to_csv(OUT/'i3_total8_game_stability_autocorrelation.csv',index=False)
+md=['# I3 Under 0.5 / Pregame Total 8.0 — Game-to-Game Stability','',f'N: {n}',f'Under rate: {100*p:.3f}%',f'Fair odds: {-100*p/(1-p):.1f}',f'Linear time trend: {100*slope*1000:.3f} percentage points per 1,000 games (z={z:.2f})',f'Longest Under streak: {best1}',f'Longest Over streak: {best0}','','## Non-overlapping sequential blocks','','| Games/block | Blocks | Observed SD | Binomial expected SD | Dispersion ratio | Min | Max |','|---:|---:|---:|---:|---:|---:|---:|']
+for _,r in blocks.iterrows(): md.append(f"| {int(r.block_games)} | {int(r.blocks)} | {100*r.observed_sd:.2f} pp | {100*r.binomial_expected_sd:.2f} pp | {r.dispersion_ratio:.3f} | {100*r.min_rate:.1f}% | {100*r.max_rate:.1f}% |")
+md+=['','## Rolling windows','','| Window | Min | Max | Rolling SD |','|---:|---:|---:|---:|']
+for w,c,mn,mx,sd in roll: md.append(f'| {w} | {100*mn:.1f}% | {100*mx:.1f}% | {100*sd:.2f} pp |')
+md+=['','## Serial dependence','','| Lag | Autocorrelation |','|---:|---:|']+[f'| {lag} | {ac:.4f} |' for lag,ac in acs]
+(AN/'I9_HOME_FAVORITE_STRUCTURAL_BACKTEST_2021_2025.md').write_text('\n'.join(md))
+# keep workflow-required legacy csv names intact with the new stability summaries
+blocks.to_csv(OUT/'i9_home_favorite_structural_backtest_2021_2025.csv',index=False)
+pd.DataFrame(roll,columns=['window','windows','min_rate','max_rate','rolling_sd']).to_csv(OUT/'i9_home_favorite_disjoint_tiers_2021_2025.csv',index=False)
+print('\n'.join(md))
