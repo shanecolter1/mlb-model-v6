@@ -1,0 +1,2123 @@
+{
+  "date": "2026-09-05",
+  "status": "PRELIMINARY_SHADOW_FULL_WORKFLOW_EMPIRICALLY_RECONCILED_NOT_BETTING_APPROVED",
+  "sourceProjectionArtifact": "data/runtime/i2/2026-09-05_preliminary_probabilistic_projection_v4.json",
+  "mandatoryWorkflowAudit": {
+    "probabilisticPreliminaryLineups": true,
+    "i1ToI2StateSimulation": true,
+    "empiricalBaseOutTransitions2021_2025": true,
+    "fullGameTotalPointOnlyPreFreeze": true,
+    "totalConditionedHistoricalI2Prior": true,
+    "historicalI2ExactRunBenchmarkReconciliation": true,
+    "historicalI2CumulativeThresholdComparison": true,
+    "historicalWilson95ConsistencyCheck": true,
+    "derivativeI2MarketDataUsed": false,
+    "officialConfirmedLineupGatePassed": false,
+    "outputClass": "SHADOW_ONLY"
+  },
+  "historicalBenchmark": {
+    "name": "MLB_Inning_Benchmark_Tables_2021_2025 Exact Runs I2",
+    "populationGamesTotalRange": 10730,
+    "liveVsHistoryTotalDefinitionCaveat": "Live uses first-observed DraftKings pregame total; historical uses DraftKings opening total."
+  },
+  "projectedGames": 15,
+  "games": [
+    {
+      "gamePk": 822850,
+      "matchup": "Tampa Bay Rays @ Texas Rangers",
+      "gameDate": "2026-09-05T23:05:00Z",
+      "samples": 6,
+      "under05Pct": 67.13,
+      "over05Pct": 32.87,
+      "fairUnder": -204,
+      "fairOver": 204,
+      "lineupUncertaintySdPct": 0.64,
+      "underRangePct": [
+        66.07,
+        67.98
+      ],
+      "top2ScorePct": 18.58,
+      "bottom2ScorePct": 17.55,
+      "fullI2Exact": {
+        "0": 67.14,
+        "1": 16.07,
+        "2": 8.89,
+        "3": 4.17,
+        "4+": 3.75
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7,
+        "bucket": "7.0",
+        "totalPriorOverPct": 36.18,
+        "totalPriorUnderPct": 63.82,
+        "totalPriorN": 655,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 7,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.16880120753868377,
+        "equalHalfLogitShift": -0.2817117742710079
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 1,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "7.0",
+        "n": 655,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 67.14,
+            "historicalPct": 63.82,
+            "deltaPp": 3.32,
+            "historicalWilson95Pct": [
+              60.07,
+              67.41
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 16.07,
+            "historicalPct": 18.47,
+            "deltaPp": -2.4,
+            "historicalWilson95Pct": [
+              15.69,
+              21.63
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 8.89,
+            "historicalPct": 8.85,
+            "deltaPp": 0.04,
+            "historicalWilson95Pct": [
+              6.91,
+              11.28
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 4.17,
+            "historicalPct": 4.73,
+            "deltaPp": -0.56,
+            "historicalWilson95Pct": [
+              3.35,
+              6.64
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 3.75,
+            "historicalPct": 4.12,
+            "deltaPp": -0.37,
+            "historicalWilson95Pct": [
+              2.85,
+              5.93
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 32.86,
+            "historicalPct": 36.18,
+            "deltaPp": -3.32
+          },
+          "2+": {
+            "modelPct": 16.81,
+            "historicalPct": 17.71,
+            "deltaPp": -0.9
+          },
+          "3+": {
+            "modelPct": 7.92,
+            "historicalPct": 8.85,
+            "deltaPp": -0.93
+          },
+          "4+": {
+            "modelPct": 3.75,
+            "historicalPct": 4.12,
+            "deltaPp": -0.37
+          }
+        },
+        "historicalUnder05Pct": 63.82,
+        "modelUnder05Pct": 67.14,
+        "underPriorLiftPp": 3.32,
+        "historicalUnderWilson95Pct": [
+          60.07,
+          67.41
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 3.35
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823904,
+      "matchup": "Washington Nationals @ Los Angeles Dodgers",
+      "gameDate": "2026-09-06T01:10:00Z",
+      "samples": 6,
+      "under05Pct": 64.95,
+      "over05Pct": 35.05,
+      "fairUnder": -185,
+      "fairOver": 185,
+      "lineupUncertaintySdPct": 0.36,
+      "underRangePct": [
+        64.37,
+        65.36
+      ],
+      "top2ScorePct": 18.48,
+      "bottom2ScorePct": 20.32,
+      "fullI2Exact": {
+        "0": 64.95,
+        "1": 16.36,
+        "2": 9.29,
+        "3": 4.78,
+        "4+": 4.62
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7,
+        "bucket": "7.0",
+        "totalPriorOverPct": 36.18,
+        "totalPriorUnderPct": 63.82,
+        "totalPriorN": 655,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 7,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.03361011231511707,
+        "equalHalfLogitShift": -0.2768041498918613
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 2,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "7.0",
+        "n": 655,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 64.95,
+            "historicalPct": 63.82,
+            "deltaPp": 1.13,
+            "historicalWilson95Pct": [
+              60.07,
+              67.41
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 16.36,
+            "historicalPct": 18.47,
+            "deltaPp": -2.11,
+            "historicalWilson95Pct": [
+              15.69,
+              21.63
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 9.29,
+            "historicalPct": 8.85,
+            "deltaPp": 0.44,
+            "historicalWilson95Pct": [
+              6.91,
+              11.28
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 4.78,
+            "historicalPct": 4.73,
+            "deltaPp": 0.05,
+            "historicalWilson95Pct": [
+              3.35,
+              6.64
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 4.62,
+            "historicalPct": 4.12,
+            "deltaPp": 0.5,
+            "historicalWilson95Pct": [
+              2.85,
+              5.93
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 35.05,
+            "historicalPct": 36.18,
+            "deltaPp": -1.13
+          },
+          "2+": {
+            "modelPct": 18.69,
+            "historicalPct": 17.71,
+            "deltaPp": 0.98
+          },
+          "3+": {
+            "modelPct": 9.4,
+            "historicalPct": 8.85,
+            "deltaPp": 0.55
+          },
+          "4+": {
+            "modelPct": 4.62,
+            "historicalPct": 4.12,
+            "deltaPp": 0.5
+          }
+        },
+        "historicalUnder05Pct": 63.82,
+        "modelUnder05Pct": 64.95,
+        "underPriorLiftPp": 1.13,
+        "historicalUnderWilson95Pct": [
+          60.07,
+          67.41
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 2.11
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824389,
+      "matchup": "Detroit Tigers @ Cleveland Guardians",
+      "gameDate": "2026-09-05T22:10:00Z",
+      "samples": 6,
+      "under05Pct": 64.56,
+      "over05Pct": 35.44,
+      "fairUnder": -182,
+      "fairOver": 182,
+      "lineupUncertaintySdPct": 0.3,
+      "underRangePct": [
+        64.02,
+        64.93
+      ],
+      "top2ScorePct": 18.69,
+      "bottom2ScorePct": 20.6,
+      "fullI2Exact": {
+        "0": 64.56,
+        "1": 17.12,
+        "2": 9.33,
+        "3": 4.77,
+        "4+": 4.22
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7,
+        "bucket": "7.0",
+        "totalPriorOverPct": 36.18,
+        "totalPriorUnderPct": 63.82,
+        "totalPriorN": 655,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 7,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.04179027226780635,
+        "equalHalfLogitShift": -0.26664817095233506
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 3,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "7.0",
+        "n": 655,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 64.56,
+            "historicalPct": 63.82,
+            "deltaPp": 0.74,
+            "historicalWilson95Pct": [
+              60.07,
+              67.41
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 17.12,
+            "historicalPct": 18.47,
+            "deltaPp": -1.35,
+            "historicalWilson95Pct": [
+              15.69,
+              21.63
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 9.33,
+            "historicalPct": 8.85,
+            "deltaPp": 0.48,
+            "historicalWilson95Pct": [
+              6.91,
+              11.28
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 4.77,
+            "historicalPct": 4.73,
+            "deltaPp": 0.04,
+            "historicalWilson95Pct": [
+              3.35,
+              6.64
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 4.22,
+            "historicalPct": 4.12,
+            "deltaPp": 0.1,
+            "historicalWilson95Pct": [
+              2.85,
+              5.93
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 35.44,
+            "historicalPct": 36.18,
+            "deltaPp": -0.74
+          },
+          "2+": {
+            "modelPct": 18.32,
+            "historicalPct": 17.71,
+            "deltaPp": 0.61
+          },
+          "3+": {
+            "modelPct": 8.99,
+            "historicalPct": 8.85,
+            "deltaPp": 0.14
+          },
+          "4+": {
+            "modelPct": 4.22,
+            "historicalPct": 4.12,
+            "deltaPp": 0.1
+          }
+        },
+        "historicalUnder05Pct": 63.82,
+        "modelUnder05Pct": 64.56,
+        "underPriorLiftPp": 0.74,
+        "historicalUnderWilson95Pct": [
+          60.07,
+          67.41
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 1.35
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823257,
+      "matchup": "New York Yankees @ San Diego Padres",
+      "gameDate": "2026-09-05T23:15:00Z",
+      "samples": 6,
+      "under05Pct": 58.5,
+      "over05Pct": 41.5,
+      "fairUnder": -141,
+      "fairOver": 141,
+      "lineupUncertaintySdPct": 0.33,
+      "underRangePct": [
+        58.13,
+        59.1
+      ],
+      "top2ScorePct": 24.04,
+      "bottom2ScorePct": 22.98,
+      "fullI2Exact": {
+        "0": 58.5,
+        "1": 19.05,
+        "2": 11.02,
+        "3": 5.74,
+        "4+": 5.68
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7.5,
+        "bucket": "7.5",
+        "totalPriorOverPct": 41.94,
+        "totalPriorUnderPct": 58.06,
+        "totalPriorN": 1612,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 7.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.011979239734197566,
+        "equalHalfLogitShift": -0.056021877192140024
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 4,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "7.5",
+        "n": 1612,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 58.5,
+            "historicalPct": 58.06,
+            "deltaPp": 0.44,
+            "historicalWilson95Pct": [
+              55.64,
+              60.45
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 19.05,
+            "historicalPct": 21.34,
+            "deltaPp": -2.29,
+            "historicalWilson95Pct": [
+              19.41,
+              23.41
+            ],
+            "insideHistoricalWilson95": false
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.02,
+            "historicalPct": 10.61,
+            "deltaPp": 0.41,
+            "historicalWilson95Pct": [
+              9.2,
+              12.21
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 5.74,
+            "historicalPct": 4.84,
+            "deltaPp": 0.9,
+            "historicalWilson95Pct": [
+              3.89,
+              6.0
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 5.68,
+            "historicalPct": 5.15,
+            "deltaPp": 0.53,
+            "historicalWilson95Pct": [
+              4.17,
+              6.34
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 41.5,
+            "historicalPct": 41.94,
+            "deltaPp": -0.44
+          },
+          "2+": {
+            "modelPct": 22.44,
+            "historicalPct": 20.6,
+            "deltaPp": 1.84
+          },
+          "3+": {
+            "modelPct": 11.42,
+            "historicalPct": 9.99,
+            "deltaPp": 1.43
+          },
+          "4+": {
+            "modelPct": 5.68,
+            "historicalPct": 5.15,
+            "deltaPp": 0.53
+          }
+        },
+        "historicalUnder05Pct": 58.06,
+        "modelUnder05Pct": 58.5,
+        "underPriorLiftPp": 0.44,
+        "historicalUnderWilson95Pct": [
+          55.64,
+          60.45
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [
+          "1"
+        ],
+        "exactDistributionTotalVariationPct": 2.28
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823577,
+      "matchup": "San Francisco Giants @ New York Mets",
+      "gameDate": "2026-09-05T20:10:00Z",
+      "samples": 6,
+      "under05Pct": 57.96,
+      "over05Pct": 42.04,
+      "fairUnder": -138,
+      "fairOver": 138,
+      "lineupUncertaintySdPct": 0.62,
+      "underRangePct": [
+        57.22,
+        58.88
+      ],
+      "top2ScorePct": 23.38,
+      "bottom2ScorePct": 24.35,
+      "fullI2Exact": {
+        "0": 57.96,
+        "1": 19.2,
+        "2": 10.98,
+        "3": 6.06,
+        "4+": 5.79
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.01034935877232207,
+        "equalHalfLogitShift": -0.040774447152754356
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 5,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "8.0",
+        "n": 2146,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 57.96,
+            "historicalPct": 57.74,
+            "deltaPp": 0.22,
+            "historicalWilson95Pct": [
+              55.63,
+              59.81
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 19.2,
+            "historicalPct": 19.94,
+            "deltaPp": -0.74,
+            "historicalWilson95Pct": [
+              18.31,
+              21.69
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 10.98,
+            "historicalPct": 10.76,
+            "deltaPp": 0.22,
+            "historicalWilson95Pct": [
+              9.52,
+              12.15
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.06,
+            "historicalPct": 5.73,
+            "deltaPp": 0.33,
+            "historicalWilson95Pct": [
+              4.82,
+              6.8
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 5.79,
+            "historicalPct": 5.82,
+            "deltaPp": -0.03,
+            "historicalWilson95Pct": [
+              4.91,
+              6.9
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 42.04,
+            "historicalPct": 42.26,
+            "deltaPp": -0.22
+          },
+          "2+": {
+            "modelPct": 22.83,
+            "historicalPct": 22.32,
+            "deltaPp": 0.51
+          },
+          "3+": {
+            "modelPct": 11.85,
+            "historicalPct": 11.56,
+            "deltaPp": 0.29
+          },
+          "4+": {
+            "modelPct": 5.79,
+            "historicalPct": 5.82,
+            "deltaPp": -0.03
+          }
+        },
+        "historicalUnder05Pct": 57.74,
+        "modelUnder05Pct": 57.96,
+        "underPriorLiftPp": 0.22,
+        "historicalUnderWilson95Pct": [
+          55.63,
+          59.81
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 0.77
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823335,
+      "matchup": "Los Angeles Angels @ Pittsburgh Pirates",
+      "gameDate": "2026-09-05T22:40:00Z",
+      "samples": 6,
+      "under05Pct": 57.69,
+      "over05Pct": 42.31,
+      "fairUnder": -136,
+      "fairOver": 136,
+      "lineupUncertaintySdPct": 0.58,
+      "underRangePct": [
+        57.1,
+        58.88
+      ],
+      "top2ScorePct": 22.19,
+      "bottom2ScorePct": 25.86,
+      "fullI2Exact": {
+        "0": 57.69,
+        "1": 19.44,
+        "2": 11.22,
+        "3": 6.08,
+        "4+": 5.57
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.016087571763776454,
+        "equalHalfLogitShift": -0.05156089203936165
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 6,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "8.0",
+        "n": 2146,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 57.69,
+            "historicalPct": 57.74,
+            "deltaPp": -0.05,
+            "historicalWilson95Pct": [
+              55.63,
+              59.81
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 19.44,
+            "historicalPct": 19.94,
+            "deltaPp": -0.5,
+            "historicalWilson95Pct": [
+              18.31,
+              21.69
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.22,
+            "historicalPct": 10.76,
+            "deltaPp": 0.46,
+            "historicalWilson95Pct": [
+              9.52,
+              12.15
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.08,
+            "historicalPct": 5.73,
+            "deltaPp": 0.35,
+            "historicalWilson95Pct": [
+              4.82,
+              6.8
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 5.57,
+            "historicalPct": 5.82,
+            "deltaPp": -0.25,
+            "historicalWilson95Pct": [
+              4.91,
+              6.9
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 42.31,
+            "historicalPct": 42.26,
+            "deltaPp": 0.05
+          },
+          "2+": {
+            "modelPct": 22.87,
+            "historicalPct": 22.32,
+            "deltaPp": 0.55
+          },
+          "3+": {
+            "modelPct": 11.65,
+            "historicalPct": 11.56,
+            "deltaPp": 0.09
+          },
+          "4+": {
+            "modelPct": 5.57,
+            "historicalPct": 5.82,
+            "deltaPp": -0.25
+          }
+        },
+        "historicalUnder05Pct": 57.74,
+        "modelUnder05Pct": 57.69,
+        "underPriorLiftPp": -0.05,
+        "historicalUnderWilson95Pct": [
+          55.63,
+          59.81
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 0.8
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824795,
+      "matchup": "Boston Red Sox @ Baltimore Orioles",
+      "gameDate": "2026-09-05T23:05:00Z",
+      "samples": 6,
+      "under05Pct": 56.58,
+      "over05Pct": 43.42,
+      "fairUnder": -130,
+      "fairOver": 130,
+      "lineupUncertaintySdPct": 0.37,
+      "underRangePct": [
+        55.84,
+        57.0
+      ],
+      "top2ScorePct": 25.85,
+      "bottom2ScorePct": 23.69,
+      "fullI2Exact": {
+        "0": 56.58,
+        "1": 19.88,
+        "2": 11.37,
+        "3": 6.15,
+        "4+": 6.03
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.029881654973112598,
+        "equalHalfLogitShift": -0.056062982046177434
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 7,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "8.0",
+        "n": 2146,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 56.58,
+            "historicalPct": 57.74,
+            "deltaPp": -1.16,
+            "historicalWilson95Pct": [
+              55.63,
+              59.81
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 19.88,
+            "historicalPct": 19.94,
+            "deltaPp": -0.06,
+            "historicalWilson95Pct": [
+              18.31,
+              21.69
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.37,
+            "historicalPct": 10.76,
+            "deltaPp": 0.61,
+            "historicalWilson95Pct": [
+              9.52,
+              12.15
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.15,
+            "historicalPct": 5.73,
+            "deltaPp": 0.42,
+            "historicalWilson95Pct": [
+              4.82,
+              6.8
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 6.03,
+            "historicalPct": 5.82,
+            "deltaPp": 0.21,
+            "historicalWilson95Pct": [
+              4.91,
+              6.9
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 43.42,
+            "historicalPct": 42.26,
+            "deltaPp": 1.16
+          },
+          "2+": {
+            "modelPct": 23.55,
+            "historicalPct": 22.32,
+            "deltaPp": 1.23
+          },
+          "3+": {
+            "modelPct": 12.18,
+            "historicalPct": 11.56,
+            "deltaPp": 0.62
+          },
+          "4+": {
+            "modelPct": 6.03,
+            "historicalPct": 5.82,
+            "deltaPp": 0.21
+          }
+        },
+        "historicalUnder05Pct": 57.74,
+        "modelUnder05Pct": 56.58,
+        "underPriorLiftPp": -1.16,
+        "historicalUnderWilson95Pct": [
+          55.63,
+          59.81
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 1.22
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823419,
+      "matchup": "Atlanta Braves @ Philadelphia Phillies",
+      "gameDate": "2026-09-05T22:05:00Z",
+      "samples": 6,
+      "under05Pct": 56.36,
+      "over05Pct": 43.64,
+      "fairUnder": -129,
+      "fairOver": 129,
+      "lineupUncertaintySdPct": 0.73,
+      "underRangePct": [
+        55.17,
+        57.36
+      ],
+      "top2ScorePct": 24.74,
+      "bottom2ScorePct": 25.12,
+      "fullI2Exact": {
+        "0": 56.35,
+        "1": 20.21,
+        "2": 11.57,
+        "3": 6.08,
+        "4+": 5.79
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8.5,
+        "bucket": "8.5",
+        "totalPriorOverPct": 43.85,
+        "totalPriorUnderPct": 56.15,
+        "totalPriorN": 2871,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 8.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.04957075302717595,
+        "equalHalfLogitShift": 0.005748374108318077
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 8,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "8.5",
+        "n": 2871,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 56.35,
+            "historicalPct": 56.15,
+            "deltaPp": 0.2,
+            "historicalWilson95Pct": [
+              54.33,
+              57.95
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 20.21,
+            "historicalPct": 21.39,
+            "deltaPp": -1.18,
+            "historicalWilson95Pct": [
+              19.93,
+              22.92
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.57,
+            "historicalPct": 10.17,
+            "deltaPp": 1.4,
+            "historicalWilson95Pct": [
+              9.12,
+              11.33
+            ],
+            "insideHistoricalWilson95": false
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.08,
+            "historicalPct": 6.44,
+            "deltaPp": -0.36,
+            "historicalWilson95Pct": [
+              5.6,
+              7.4
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 5.79,
+            "historicalPct": 5.85,
+            "deltaPp": -0.06,
+            "historicalWilson95Pct": [
+              5.05,
+              6.77
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 43.65,
+            "historicalPct": 43.85,
+            "deltaPp": -0.2
+          },
+          "2+": {
+            "modelPct": 23.44,
+            "historicalPct": 22.47,
+            "deltaPp": 0.97
+          },
+          "3+": {
+            "modelPct": 11.87,
+            "historicalPct": 12.3,
+            "deltaPp": -0.43
+          },
+          "4+": {
+            "modelPct": 5.79,
+            "historicalPct": 5.85,
+            "deltaPp": -0.06
+          }
+        },
+        "historicalUnder05Pct": 56.15,
+        "modelUnder05Pct": 56.35,
+        "underPriorLiftPp": 0.2,
+        "historicalUnderWilson95Pct": [
+          54.33,
+          57.95
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [
+          "2"
+        ],
+        "exactDistributionTotalVariationPct": 1.6
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824553,
+      "matchup": "Minnesota Twins @ Chicago White Sox",
+      "gameDate": "2026-09-05T23:10:00Z",
+      "samples": 6,
+      "under05Pct": 55.66,
+      "over05Pct": 44.34,
+      "fairUnder": -126,
+      "fairOver": 126,
+      "lineupUncertaintySdPct": 0.38,
+      "underRangePct": [
+        55.05,
+        56.15
+      ],
+      "top2ScorePct": 26.24,
+      "bottom2ScorePct": 24.53,
+      "fullI2Exact": {
+        "0": 55.66,
+        "1": 19.9,
+        "2": 11.78,
+        "3": 6.34,
+        "4+": 6.32
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.10941771280832527,
+        "equalHalfLogitShift": -0.031004677267814806
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 9,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "8.0",
+        "n": 2146,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 55.66,
+            "historicalPct": 57.74,
+            "deltaPp": -2.08,
+            "historicalWilson95Pct": [
+              55.63,
+              59.81
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 19.9,
+            "historicalPct": 19.94,
+            "deltaPp": -0.04,
+            "historicalWilson95Pct": [
+              18.31,
+              21.69
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.78,
+            "historicalPct": 10.76,
+            "deltaPp": 1.02,
+            "historicalWilson95Pct": [
+              9.52,
+              12.15
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.34,
+            "historicalPct": 5.73,
+            "deltaPp": 0.61,
+            "historicalWilson95Pct": [
+              4.82,
+              6.8
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 6.32,
+            "historicalPct": 5.82,
+            "deltaPp": 0.5,
+            "historicalWilson95Pct": [
+              4.91,
+              6.9
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 44.34,
+            "historicalPct": 42.26,
+            "deltaPp": 2.08
+          },
+          "2+": {
+            "modelPct": 24.44,
+            "historicalPct": 22.32,
+            "deltaPp": 2.12
+          },
+          "3+": {
+            "modelPct": 12.66,
+            "historicalPct": 11.56,
+            "deltaPp": 1.1
+          },
+          "4+": {
+            "modelPct": 6.32,
+            "historicalPct": 5.82,
+            "deltaPp": 0.5
+          }
+        },
+        "historicalUnder05Pct": 57.74,
+        "modelUnder05Pct": 55.66,
+        "underPriorLiftPp": -2.08,
+        "historicalUnderWilson95Pct": [
+          55.63,
+          59.81
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 2.12
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823823,
+      "matchup": "Chicago Cubs @ Miami Marlins",
+      "gameDate": "2026-09-05T20:10:00Z",
+      "samples": 6,
+      "under05Pct": 55.41,
+      "over05Pct": 44.59,
+      "fairUnder": -124,
+      "fairOver": 124,
+      "lineupUncertaintySdPct": 0.45,
+      "underRangePct": [
+        54.46,
+        55.76
+      ],
+      "top2ScorePct": 26.86,
+      "bottom2ScorePct": 24.25,
+      "fullI2Exact": {
+        "0": 55.41,
+        "1": 20.01,
+        "2": 11.88,
+        "3": 6.52,
+        "4+": 6.18
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8.5,
+        "bucket": "8.5",
+        "totalPriorOverPct": 43.85,
+        "totalPriorUnderPct": 56.15,
+        "totalPriorN": 2871,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 8.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.06831222857646471,
+        "equalHalfLogitShift": 0.0033807611295171847
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 10,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "8.5",
+        "n": 2871,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 55.41,
+            "historicalPct": 56.15,
+            "deltaPp": -0.74,
+            "historicalWilson95Pct": [
+              54.33,
+              57.95
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 20.01,
+            "historicalPct": 21.39,
+            "deltaPp": -1.38,
+            "historicalWilson95Pct": [
+              19.93,
+              22.92
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.88,
+            "historicalPct": 10.17,
+            "deltaPp": 1.71,
+            "historicalWilson95Pct": [
+              9.12,
+              11.33
+            ],
+            "insideHistoricalWilson95": false
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.52,
+            "historicalPct": 6.44,
+            "deltaPp": 0.08,
+            "historicalWilson95Pct": [
+              5.6,
+              7.4
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 6.18,
+            "historicalPct": 5.85,
+            "deltaPp": 0.33,
+            "historicalWilson95Pct": [
+              5.05,
+              6.77
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 44.59,
+            "historicalPct": 43.85,
+            "deltaPp": 0.74
+          },
+          "2+": {
+            "modelPct": 24.58,
+            "historicalPct": 22.47,
+            "deltaPp": 2.11
+          },
+          "3+": {
+            "modelPct": 12.7,
+            "historicalPct": 12.3,
+            "deltaPp": 0.4
+          },
+          "4+": {
+            "modelPct": 6.18,
+            "historicalPct": 5.85,
+            "deltaPp": 0.33
+          }
+        },
+        "historicalUnder05Pct": 56.15,
+        "modelUnder05Pct": 55.41,
+        "underPriorLiftPp": -0.74,
+        "historicalUnderWilson95Pct": [
+          54.33,
+          57.95
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [
+          "2"
+        ],
+        "exactDistributionTotalVariationPct": 2.11
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824145,
+      "matchup": "Arizona Diamondbacks @ Houston Astros",
+      "gameDate": "2026-09-05T23:15:00Z",
+      "samples": 6,
+      "under05Pct": 54.56,
+      "over05Pct": 45.44,
+      "fairUnder": -120,
+      "fairOver": 120,
+      "lineupUncertaintySdPct": 0.66,
+      "underRangePct": [
+        53.68,
+        55.63
+      ],
+      "top2ScorePct": 27.37,
+      "bottom2ScorePct": 24.89,
+      "fullI2Exact": {
+        "0": 54.55,
+        "1": 20.9,
+        "2": 12.08,
+        "3": 6.4,
+        "4+": 6.07
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 9,
+        "bucket": "9.0",
+        "totalPriorOverPct": 44.1,
+        "totalPriorUnderPct": 55.9,
+        "totalPriorN": 1839,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 9,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.010807293109995175,
+        "equalHalfLogitShift": 0.022199880893443047
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 11,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "9.0",
+        "n": 1839,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 54.55,
+            "historicalPct": 55.9,
+            "deltaPp": -1.35,
+            "historicalWilson95Pct": [
+              53.62,
+              58.15
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 20.9,
+            "historicalPct": 21.1,
+            "deltaPp": -0.2,
+            "historicalWilson95Pct": [
+              19.29,
+              23.02
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 12.08,
+            "historicalPct": 10.6,
+            "deltaPp": 1.48,
+            "historicalWilson95Pct": [
+              9.28,
+              12.09
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.4,
+            "historicalPct": 6.74,
+            "deltaPp": -0.34,
+            "historicalWilson95Pct": [
+              5.68,
+              7.98
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 6.07,
+            "historicalPct": 5.66,
+            "deltaPp": 0.41,
+            "historicalWilson95Pct": [
+              4.69,
+              6.81
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 45.45,
+            "historicalPct": 44.1,
+            "deltaPp": 1.35
+          },
+          "2+": {
+            "modelPct": 24.55,
+            "historicalPct": 23.0,
+            "deltaPp": 1.55
+          },
+          "3+": {
+            "modelPct": 12.47,
+            "historicalPct": 12.4,
+            "deltaPp": 0.07
+          },
+          "4+": {
+            "modelPct": 6.07,
+            "historicalPct": 5.66,
+            "deltaPp": 0.41
+          }
+        },
+        "historicalUnder05Pct": 55.9,
+        "modelUnder05Pct": 54.55,
+        "underPriorLiftPp": -1.35,
+        "historicalUnderWilson95Pct": [
+          53.62,
+          58.15
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 1.89
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 823094,
+      "matchup": "Athletics @ Seattle Mariners",
+      "gameDate": "2026-09-06T01:40:00Z",
+      "samples": 6,
+      "under05Pct": 54.42,
+      "over05Pct": 45.58,
+      "fairUnder": -119,
+      "fairOver": 119,
+      "lineupUncertaintySdPct": 0.48,
+      "underRangePct": [
+        53.69,
+        55.04
+      ],
+      "top2ScorePct": 25.14,
+      "bottom2ScorePct": 27.3,
+      "fullI2Exact": {
+        "0": 54.41,
+        "1": 19.8,
+        "2": 12.04,
+        "3": 6.77,
+        "4+": 6.98
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7.5,
+        "bucket": "7.5",
+        "totalPriorOverPct": 41.94,
+        "totalPriorUnderPct": 58.06,
+        "totalPriorN": 1612,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 7.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.1367482628784887,
+        "equalHalfLogitShift": -0.05638085469089271
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 12,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "7.5",
+        "n": 1612,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 54.41,
+            "historicalPct": 58.06,
+            "deltaPp": -3.65,
+            "historicalWilson95Pct": [
+              55.64,
+              60.45
+            ],
+            "insideHistoricalWilson95": false
+          },
+          {
+            "bucket": "1",
+            "modelPct": 19.8,
+            "historicalPct": 21.34,
+            "deltaPp": -1.54,
+            "historicalWilson95Pct": [
+              19.41,
+              23.41
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 12.04,
+            "historicalPct": 10.61,
+            "deltaPp": 1.43,
+            "historicalWilson95Pct": [
+              9.2,
+              12.21
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.77,
+            "historicalPct": 4.84,
+            "deltaPp": 1.93,
+            "historicalWilson95Pct": [
+              3.89,
+              6.0
+            ],
+            "insideHistoricalWilson95": false
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 6.98,
+            "historicalPct": 5.15,
+            "deltaPp": 1.83,
+            "historicalWilson95Pct": [
+              4.17,
+              6.34
+            ],
+            "insideHistoricalWilson95": false
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 45.59,
+            "historicalPct": 41.94,
+            "deltaPp": 3.65
+          },
+          "2+": {
+            "modelPct": 25.79,
+            "historicalPct": 20.6,
+            "deltaPp": 5.19
+          },
+          "3+": {
+            "modelPct": 13.75,
+            "historicalPct": 9.99,
+            "deltaPp": 3.76
+          },
+          "4+": {
+            "modelPct": 6.98,
+            "historicalPct": 5.15,
+            "deltaPp": 1.83
+          }
+        },
+        "historicalUnder05Pct": 58.06,
+        "modelUnder05Pct": 54.41,
+        "underPriorLiftPp": -3.65,
+        "historicalUnderWilson95Pct": [
+          55.64,
+          60.45
+        ],
+        "underWithinHistoricalWilson95": false,
+        "exactBucketsOutsideWilson95": [
+          "0",
+          "3",
+          "4+"
+        ],
+        "exactDistributionTotalVariationPct": 5.19
+      },
+      "empiricalReconciliationStatus": "MATCHUP_DELTA_OUTSIDE_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824468,
+      "matchup": "Milwaukee Brewers @ Cincinnati Reds",
+      "gameDate": "2026-09-05T22:40:00Z",
+      "samples": 6,
+      "under05Pct": 54.32,
+      "over05Pct": 45.68,
+      "fairUnder": -119,
+      "fairOver": 119,
+      "lineupUncertaintySdPct": 0.81,
+      "underRangePct": [
+        53.39,
+        55.47
+      ],
+      "top2ScorePct": 27.37,
+      "bottom2ScorePct": 25.21,
+      "fullI2Exact": {
+        "0": 54.32,
+        "1": 20.28,
+        "2": 11.84,
+        "3": 6.77,
+        "4+": 6.79
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 9,
+        "bucket": "9.0",
+        "totalPriorOverPct": 44.1,
+        "totalPriorUnderPct": 55.9,
+        "totalPriorN": 1839,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 9,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.06306231854827216,
+        "equalHalfLogitShift": 0.020022636413679795
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 13,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "9.0",
+        "n": 1839,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 54.32,
+            "historicalPct": 55.9,
+            "deltaPp": -1.58,
+            "historicalWilson95Pct": [
+              53.62,
+              58.15
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 20.28,
+            "historicalPct": 21.1,
+            "deltaPp": -0.82,
+            "historicalWilson95Pct": [
+              19.29,
+              23.02
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 11.84,
+            "historicalPct": 10.6,
+            "deltaPp": 1.24,
+            "historicalWilson95Pct": [
+              9.28,
+              12.09
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 6.77,
+            "historicalPct": 6.74,
+            "deltaPp": 0.03,
+            "historicalWilson95Pct": [
+              5.68,
+              7.98
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 6.79,
+            "historicalPct": 5.66,
+            "deltaPp": 1.13,
+            "historicalWilson95Pct": [
+              4.69,
+              6.81
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 45.68,
+            "historicalPct": 44.1,
+            "deltaPp": 1.58
+          },
+          "2+": {
+            "modelPct": 25.4,
+            "historicalPct": 23.0,
+            "deltaPp": 2.4
+          },
+          "3+": {
+            "modelPct": 13.56,
+            "historicalPct": 12.4,
+            "deltaPp": 1.16
+          },
+          "4+": {
+            "modelPct": 6.79,
+            "historicalPct": 5.66,
+            "deltaPp": 1.13
+          }
+        },
+        "historicalUnder05Pct": 55.9,
+        "modelUnder05Pct": 54.32,
+        "underPriorLiftPp": -1.58,
+        "historicalUnderWilson95Pct": [
+          53.62,
+          58.15
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 2.4
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824066,
+      "matchup": "Toronto Blue Jays @ Kansas City Royals",
+      "gameDate": "2026-09-05T23:10:00Z",
+      "samples": 6,
+      "under05Pct": 50.11,
+      "over05Pct": 49.89,
+      "fairUnder": -100,
+      "fairOver": 100,
+      "lineupUncertaintySdPct": 0.44,
+      "underRangePct": [
+        49.35,
+        50.67
+      ],
+      "top2ScorePct": 29.38,
+      "bottom2ScorePct": 29.05,
+      "fullI2Exact": {
+        "0": 50.11,
+        "1": 22.33,
+        "2": 13.04,
+        "3": 7.25,
+        "4+": 7.26
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 9.5,
+        "bucket": "9.5",
+        "totalPriorOverPct": 47.89,
+        "totalPriorUnderPct": 52.11,
+        "totalPriorN": 875,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 9.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.06952336722619357,
+        "equalHalfLogitShift": 0.13921770714372034
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 14,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "9.5",
+        "n": 875,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 50.11,
+            "historicalPct": 52.11,
+            "deltaPp": -2.0,
+            "historicalWilson95Pct": [
+              48.8,
+              55.41
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 22.33,
+            "historicalPct": 19.31,
+            "deltaPp": 3.02,
+            "historicalWilson95Pct": [
+              16.84,
+              22.06
+            ],
+            "insideHistoricalWilson95": false
+          },
+          {
+            "bucket": "2",
+            "modelPct": 13.04,
+            "historicalPct": 12.46,
+            "deltaPp": 0.58,
+            "historicalWilson95Pct": [
+              10.43,
+              14.81
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 7.25,
+            "historicalPct": 7.43,
+            "deltaPp": -0.18,
+            "historicalWilson95Pct": [
+              5.87,
+              9.36
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 7.26,
+            "historicalPct": 8.69,
+            "deltaPp": -1.43,
+            "historicalWilson95Pct": [
+              7.0,
+              10.74
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 49.89,
+            "historicalPct": 47.89,
+            "deltaPp": 2.0
+          },
+          "2+": {
+            "modelPct": 27.55,
+            "historicalPct": 28.57,
+            "deltaPp": -1.02
+          },
+          "3+": {
+            "modelPct": 14.51,
+            "historicalPct": 16.11,
+            "deltaPp": -1.6
+          },
+          "4+": {
+            "modelPct": 7.26,
+            "historicalPct": 8.69,
+            "deltaPp": -1.43
+          }
+        },
+        "historicalUnder05Pct": 52.11,
+        "modelUnder05Pct": 50.11,
+        "underPriorLiftPp": -2.0,
+        "historicalUnderWilson95Pct": [
+          48.8,
+          55.41
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [
+          "1"
+        ],
+        "exactDistributionTotalVariationPct": 3.6
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    },
+    {
+      "gamePk": 824310,
+      "matchup": "St. Louis Cardinals @ Colorado Rockies",
+      "gameDate": "2026-09-06T00:10:00Z",
+      "samples": 6,
+      "under05Pct": 43.81,
+      "over05Pct": 56.19,
+      "fairUnder": 128,
+      "fairOver": -128,
+      "lineupUncertaintySdPct": 0.58,
+      "underRangePct": [
+        43.06,
+        44.73
+      ],
+      "top2ScorePct": 32.0,
+      "bottom2ScorePct": 35.56,
+      "fullI2Exact": {
+        "0": 43.81,
+        "1": 24.56,
+        "2": 14.86,
+        "3": 8.36,
+        "4+": 8.4
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 11,
+        "bucket": "11.0",
+        "totalPriorOverPct": 52.42,
+        "totalPriorUnderPct": 47.58,
+        "totalPriorN": 124,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-05T16:10:45.410Z",
+        "latestObservedTotal": 11,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.11464673821805385,
+        "equalHalfLogitShift": 0.29880999418794063
+      },
+      "predictionClass": "PRELIMINARY_PROBABILISTIC_LINEUP_SHADOW",
+      "rank": 15,
+      "historicalInningBenchmark": {
+        "window": "2021-2025",
+        "conditioner": "DraftKings pregame opening full-game total",
+        "totalBucket": "11.0",
+        "n": 124,
+        "exactRunComparison": [
+          {
+            "bucket": "0",
+            "modelPct": 43.81,
+            "historicalPct": 47.58,
+            "deltaPp": -3.77,
+            "historicalWilson95Pct": [
+              39.0,
+              56.31
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "1",
+            "modelPct": 24.56,
+            "historicalPct": 21.77,
+            "deltaPp": 2.79,
+            "historicalWilson95Pct": [
+              15.42,
+              29.83
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "2",
+            "modelPct": 14.86,
+            "historicalPct": 15.32,
+            "deltaPp": -0.46,
+            "historicalWilson95Pct": [
+              10.03,
+              22.69
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "3",
+            "modelPct": 8.36,
+            "historicalPct": 6.45,
+            "deltaPp": 1.91,
+            "historicalWilson95Pct": [
+              3.31,
+              12.22
+            ],
+            "insideHistoricalWilson95": true
+          },
+          {
+            "bucket": "4+",
+            "modelPct": 8.4,
+            "historicalPct": 8.87,
+            "deltaPp": -0.47,
+            "historicalWilson95Pct": [
+              5.03,
+              15.19
+            ],
+            "insideHistoricalWilson95": true
+          }
+        ],
+        "cumulativeComparison": {
+          "1+": {
+            "modelPct": 56.19,
+            "historicalPct": 52.42,
+            "deltaPp": 3.77
+          },
+          "2+": {
+            "modelPct": 31.62,
+            "historicalPct": 30.65,
+            "deltaPp": 0.97
+          },
+          "3+": {
+            "modelPct": 16.76,
+            "historicalPct": 15.32,
+            "deltaPp": 1.44
+          },
+          "4+": {
+            "modelPct": 8.4,
+            "historicalPct": 8.87,
+            "deltaPp": -0.47
+          }
+        },
+        "historicalUnder05Pct": 47.58,
+        "modelUnder05Pct": 43.81,
+        "underPriorLiftPp": -3.77,
+        "historicalUnderWilson95Pct": [
+          39.0,
+          56.31
+        ],
+        "underWithinHistoricalWilson95": true,
+        "exactBucketsOutsideWilson95": [],
+        "exactDistributionTotalVariationPct": 4.7
+      },
+      "empiricalReconciliationStatus": "CONSISTENT_WITH_HISTORICAL_I2_95CI"
+    }
+  ]
+}
