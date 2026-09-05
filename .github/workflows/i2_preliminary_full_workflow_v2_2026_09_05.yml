@@ -1,0 +1,69 @@
+name: I2 preliminary full workflow v2 2026-09-05
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/i2_preliminary_full_workflow_v2_2026_09_05.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Mandatory historical inning benchmark gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,math
+          from pathlib import Path
+          src=Path('data/runtime/i2/2026-09-05_preliminary_probabilistic_projection_v4.json')
+          p=json.loads(src.read_text())
+          B={
+           '7.0':(655,[418,121,58,31,27]),
+           '7.5':(1612,[936,344,171,78,83]),
+           '8.0':(2146,[1239,428,231,123,125]),
+           '8.5':(2871,[1612,614,292,185,168]),
+           '9.0':(1839,[1028,388,195,124,104]),
+           '9.5':(875,[456,169,109,65,76])}
+          K=['0','1','2','3','4+']
+          def pct(x):return round(100*x,2)
+          def wilson(x,n,z=1.959963984540054):
+           p=x/n;d=1+z*z/n;c=(p+z*z/(2*n))/d;h=z*math.sqrt((p*(1-p)+z*z/(4*n))/n)/d;return c-h,c+h
+          rows=[]
+          for g in p['games']:
+           key=f"{float(g['runEnvironment']['fullGameTotal']):.1f}"
+           if key not in B:raise SystemExit(f'MISSING HISTORICAL I2 BENCHMARK: {g["matchup"]} total={key}')
+           n,c=B[key];hist={k:c[i]/n for i,k in enumerate(K)};mod={k:float(g['fullI2Exact'][k])/100 for k in K}
+           if abs(sum(mod.values())-1)>.002:raise SystemExit(f'BAD MODEL DISTRIBUTION: {g["matchup"]}')
+           comp=[];outside=[]
+           for i,k in enumerate(K):
+            lo,hi=wilson(c[i],n);inside=lo<=mod[k]<=hi
+            if not inside:outside.append(k)
+            comp.append({'bucket':k,'modelPct':pct(mod[k]),'historicalPct':pct(hist[k]),'deltaPp':round(100*(mod[k]-hist[k]),2),'historicalWilson95Pct':[pct(lo),pct(hi)],'insideHistoricalWilson95':inside})
+           lo0,hi0=wilson(c[0],n)
+           cum=lambda x:{'1+':1-x['0'],'2+':x['2']+x['3']+x['4+'],'3+':x['3']+x['4+'],'4+':x['4+']}
+           mc,hc=cum(mod),cum(hist)
+           q=dict(g);q['historicalInningBenchmark']={'window':'2021-2025','conditioner':'DraftKings pregame opening full-game total','totalBucket':key,'n':n,'exactRunComparison':comp,'cumulativeComparison':{k:{'modelPct':pct(mc[k]),'historicalPct':pct(hc[k]),'deltaPp':round(100*(mc[k]-hc[k]),2)} for k in mc},'historicalUnder05Pct':pct(hist['0']),'modelUnder05Pct':pct(mod['0']),'underPriorLiftPp':round(100*(mod['0']-hist['0']),2),'historicalUnderWilson95Pct':[pct(lo0),pct(hi0)],'underWithinHistoricalWilson95':lo0<=mod['0']<=hi0,'exactBucketsOutsideWilson95':outside,'exactDistributionTotalVariationPct':round(50*sum(abs(mod[k]-hist[k]) for k in K),2)}
+           q['empiricalReconciliationStatus']='CONSISTENT_WITH_HISTORICAL_I2_95CI' if q['historicalInningBenchmark']['underWithinHistoricalWilson95'] else 'MATCHUP_DELTA_OUTSIDE_HISTORICAL_I2_95CI'
+           rows.append(q)
+          if len(rows)!=15:raise SystemExit(f'INCOMPLETE HISTORICAL RECONCILIATION {len(rows)}/15')
+          rows.sort(key=lambda x:x['under05Pct'],reverse=True)
+          for i,g in enumerate(rows,1):g['rank']=i
+          out={'date':'2026-09-05','status':'PRELIMINARY_SHADOW_FULL_WORKFLOW_EMPIRICALLY_RECONCILED_NOT_BETTING_APPROVED','sourceProjectionArtifact':str(src),'mandatoryWorkflowAudit':{'probabilisticPreliminaryLineups':True,'i1ToI2StateSimulation':True,'empiricalBaseOutTransitions2021_2025':True,'fullGameTotalPointOnlyPreFreeze':True,'totalConditionedHistoricalI2Prior':True,'historicalI2ExactRunBenchmarkReconciliation':True,'historicalI2CumulativeThresholdComparison':True,'historicalWilson95ConsistencyCheck':True,'derivativeI2MarketDataUsed':False,'officialConfirmedLineupGatePassed':False,'outputClass':'SHADOW_ONLY'},'historicalBenchmark':{'name':'MLB_Inning_Benchmark_Tables_2021_2025 Exact Runs I2','populationGamesTotalRange':10730,'liveVsHistoryTotalDefinitionCaveat':'Live uses first-observed DraftKings pregame total; historical uses DraftKings opening total.'},'projectedGames':15,'games':rows}
+          Path('data/runtime/i2/2026-09-05_preliminary_full_workflow_shadow.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps({'outside95':[{'rank':g['rank'],'matchup':g['matchup'],'total':g['runEnvironment']['fullGameTotal'],'under':g['under05Pct'],'histUnder':g['historicalInningBenchmark']['historicalUnder05Pct'],'lift':g['historicalInningBenchmark']['underPriorLiftPp']} for g in rows if not g['historicalInningBenchmark']['underWithinHistoricalWilson95']],'ranking':[{'rank':g['rank'],'matchup':g['matchup'],'total':g['runEnvironment']['fullGameTotal'],'under':g['under05Pct'],'histUnder':g['historicalInningBenchmark']['historicalUnder05Pct'],'lift':g['historicalInningBenchmark']['underPriorLiftPp'],'fairUnder':g['fairUnder'],'status':g['empiricalReconciliationStatus']} for g in rows]},indent=2))
+          PY
+      - name: Commit reconciled shadow board
+        run: |
+          set -euo pipefail
+          ART=data/runtime/i2/2026-09-05_preliminary_full_workflow_shadow.json
+          cp "$ART" /tmp/full.json
+          git config user.name github-actions[bot]
+          git config user.email 4189828+github-actions[bot]@users.noreply.github.com
+          for x in 1 2 3; do git fetch origin main; git reset --hard origin/main; cp /tmp/full.json "$ART"; git add "$ART"; git commit -m 'Add full-workflow preliminary I2 historical reconciliation 2026-09-05' || exit 0; git push origin HEAD:main && exit 0; done
+          exit 1
