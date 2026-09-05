@@ -1,0 +1,13 @@
+{
+  "date": "2026-09-05",
+  "status": "PRELIMINARY_SHADOW_NOT_BETTING_APPROVED",
+  "cutoff": "2026-09-05T16:00:00Z",
+  "lineupMethod": "probabilistic recent official MLB batting orders",
+  "projectedGames": 0,
+  "games": [],
+  "governance": {
+    "confirmedLineupsRequiredForOfficial": true,
+    "derivativeMarketDataUsed": false,
+    "fullGameTotalPointConditioningUsed": true
+  }
+}

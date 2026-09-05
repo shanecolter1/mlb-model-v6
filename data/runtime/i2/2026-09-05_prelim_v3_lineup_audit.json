@@ -1,0 +1,4314 @@
+{
+  "date": "2026-09-05",
+  "source": "Official MLB Stats API",
+  "method": "last 6 completed-game battingOrder arrays + active roster + recency + starter-handedness weighting",
+  "games": {
+    "823577": {
+      "away": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 137,
+        "name": "San Francisco Giants",
+        "link": "/api/v1/teams/137",
+        "season": 2026,
+        "venue": {
+          "id": 2395,
+          "name": "Oracle Park",
+          "link": "/api/v1/venues/2395"
+        },
+        "springVenue": {
+          "id": 2532,
+          "link": "/api/v1/venues/2532"
+        },
+        "teamCode": "sfn",
+        "fileCode": "sf",
+        "abbreviation": "SF",
+        "teamName": "Giants",
+        "locationName": "San Francisco",
+        "firstYearOfPlay": "1883",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "San Francisco",
+        "franchiseName": "San Francisco",
+        "clubName": "Giants",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 121,
+        "name": "New York Mets",
+        "link": "/api/v1/teams/121",
+        "season": 2026,
+        "venue": {
+          "id": 3289,
+          "name": "Citi Field",
+          "link": "/api/v1/venues/3289"
+        },
+        "springVenue": {
+          "id": 2856,
+          "link": "/api/v1/venues/2856"
+        },
+        "teamCode": "nyn",
+        "fileCode": "nym",
+        "abbreviation": "NYM",
+        "teamName": "Mets",
+        "locationName": "Flushing",
+        "firstYearOfPlay": "1962",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "NY Mets",
+        "franchiseName": "New York",
+        "clubName": "Mets",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 683627,
+        "fullName": "Anthony Molina",
+        "link": "/api/v1/people/683627"
+      },
+      "homeStarter": {
+        "id": 804267,
+        "fullName": "Zac Thornton",
+        "link": "/api/v1/people/804267"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "L",
+      "gameDate": "2026-09-05T20:10:00Z"
+    },
+    "823823": {
+      "away": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 112,
+        "name": "Chicago Cubs",
+        "link": "/api/v1/teams/112",
+        "season": 2026,
+        "venue": {
+          "id": 17,
+          "name": "Wrigley Field",
+          "link": "/api/v1/venues/17"
+        },
+        "springVenue": {
+          "id": 4629,
+          "link": "/api/v1/venues/4629"
+        },
+        "teamCode": "chn",
+        "fileCode": "chc",
+        "abbreviation": "CHC",
+        "teamName": "Cubs",
+        "locationName": "Chicago",
+        "firstYearOfPlay": "1874",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Chi Cubs",
+        "franchiseName": "Chicago",
+        "clubName": "Cubs",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 146,
+        "name": "Miami Marlins",
+        "link": "/api/v1/teams/146",
+        "season": 2026,
+        "venue": {
+          "id": 4169,
+          "name": "loanDepot park",
+          "link": "/api/v1/venues/4169"
+        },
+        "springVenue": {
+          "id": 2520,
+          "link": "/api/v1/venues/2520"
+        },
+        "teamCode": "mia",
+        "fileCode": "mia",
+        "abbreviation": "MIA",
+        "teamName": "Marlins",
+        "locationName": "Miami",
+        "firstYearOfPlay": "1991",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Miami",
+        "franchiseName": "Miami",
+        "clubName": "Marlins",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 665871,
+        "fullName": "Javier Assad",
+        "link": "/api/v1/people/665871"
+      },
+      "homeStarter": {
+        "id": 687473,
+        "fullName": "Ryan Gusto",
+        "link": "/api/v1/people/687473"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T20:10:00Z"
+    },
+    "823419": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 144,
+        "name": "Atlanta Braves",
+        "link": "/api/v1/teams/144",
+        "season": 2026,
+        "venue": {
+          "id": 4705,
+          "name": "Truist Park",
+          "link": "/api/v1/venues/4705"
+        },
+        "springVenue": {
+          "id": 5380,
+          "link": "/api/v1/venues/5380"
+        },
+        "teamCode": "atl",
+        "fileCode": "atl",
+        "abbreviation": "ATL",
+        "teamName": "Braves",
+        "locationName": "Atlanta",
+        "firstYearOfPlay": "1871",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Atlanta",
+        "franchiseName": "Atlanta",
+        "clubName": "Braves",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 143,
+        "name": "Philadelphia Phillies",
+        "link": "/api/v1/teams/143",
+        "season": 2026,
+        "venue": {
+          "id": 2681,
+          "name": "Citizens Bank Park",
+          "link": "/api/v1/venues/2681"
+        },
+        "springVenue": {
+          "id": 2700,
+          "link": "/api/v1/venues/2700"
+        },
+        "teamCode": "phi",
+        "fileCode": "phi",
+        "abbreviation": "PHI",
+        "teamName": "Phillies",
+        "locationName": "Philadelphia",
+        "firstYearOfPlay": "1883",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Philadelphia",
+        "franchiseName": "Philadelphia",
+        "clubName": "Phillies",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 527048,
+        "fullName": "Mart\u00edn P\u00e9rez",
+        "link": "/api/v1/people/527048"
+      },
+      "homeStarter": {
+        "id": 554430,
+        "fullName": "Zack Wheeler",
+        "link": "/api/v1/people/554430"
+      },
+      "awayStarterHand": "L",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T22:05:00Z"
+    },
+    "824389": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 116,
+        "name": "Detroit Tigers",
+        "link": "/api/v1/teams/116",
+        "season": 2026,
+        "venue": {
+          "id": 2394,
+          "name": "Comerica Park",
+          "link": "/api/v1/venues/2394"
+        },
+        "springVenue": {
+          "id": 2511,
+          "link": "/api/v1/venues/2511"
+        },
+        "teamCode": "det",
+        "fileCode": "det",
+        "abbreviation": "DET",
+        "teamName": "Tigers",
+        "locationName": "Detroit",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Detroit",
+        "franchiseName": "Detroit",
+        "clubName": "Tigers",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 114,
+        "name": "Cleveland Guardians",
+        "link": "/api/v1/teams/114",
+        "season": 2026,
+        "venue": {
+          "id": 5,
+          "name": "Progressive Field",
+          "link": "/api/v1/venues/5"
+        },
+        "springVenue": {
+          "id": 3834,
+          "link": "/api/v1/venues/3834"
+        },
+        "teamCode": "cle",
+        "fileCode": "cle",
+        "abbreviation": "CLE",
+        "teamName": "Guardians",
+        "locationName": "Cleveland",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Cleveland",
+        "franchiseName": "Cleveland",
+        "clubName": "Guardians",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 664285,
+        "fullName": "Framber Valdez",
+        "link": "/api/v1/people/664285"
+      },
+      "homeStarter": {
+        "id": 800048,
+        "fullName": "Parker Messick",
+        "link": "/api/v1/people/800048"
+      },
+      "awayStarterHand": "L",
+      "homeStarterHand": "L",
+      "gameDate": "2026-09-05T22:10:00Z"
+    },
+    "823335": {
+      "away": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 108,
+        "name": "Los Angeles Angels",
+        "link": "/api/v1/teams/108",
+        "season": 2026,
+        "venue": {
+          "id": 1,
+          "name": "Angel Stadium",
+          "link": "/api/v1/venues/1"
+        },
+        "springVenue": {
+          "id": 2500,
+          "link": "/api/v1/venues/2500"
+        },
+        "teamCode": "ana",
+        "fileCode": "ana",
+        "abbreviation": "LAA",
+        "teamName": "Angels",
+        "locationName": "Anaheim",
+        "firstYearOfPlay": "1961",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "LA Angels",
+        "franchiseName": "Los Angeles",
+        "clubName": "Angels",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 134,
+        "name": "Pittsburgh Pirates",
+        "link": "/api/v1/teams/134",
+        "season": 2026,
+        "venue": {
+          "id": 31,
+          "name": "PNC Park",
+          "link": "/api/v1/venues/31"
+        },
+        "springVenue": {
+          "id": 2526,
+          "link": "/api/v1/venues/2526"
+        },
+        "teamCode": "pit",
+        "fileCode": "pit",
+        "abbreviation": "PIT",
+        "teamName": "Pirates",
+        "locationName": "Pittsburgh",
+        "firstYearOfPlay": "1882",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Pittsburgh",
+        "franchiseName": "Pittsburgh",
+        "clubName": "Pirates",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 579328,
+        "fullName": "Yusei Kikuchi",
+        "link": "/api/v1/people/579328"
+      },
+      "homeStarter": {
+        "id": 677952,
+        "fullName": "Braxton Ashcraft",
+        "link": "/api/v1/people/677952"
+      },
+      "awayStarterHand": "L",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T22:40:00Z"
+    },
+    "824468": {
+      "away": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 158,
+        "name": "Milwaukee Brewers",
+        "link": "/api/v1/teams/158",
+        "season": 2026,
+        "venue": {
+          "id": 32,
+          "name": "American Family Field",
+          "link": "/api/v1/venues/32"
+        },
+        "springVenue": {
+          "id": 2518,
+          "link": "/api/v1/venues/2518"
+        },
+        "teamCode": "mil",
+        "fileCode": "mil",
+        "abbreviation": "MIL",
+        "teamName": "Brewers",
+        "locationName": "Milwaukee",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Milwaukee",
+        "franchiseName": "Milwaukee",
+        "clubName": "Brewers",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 113,
+        "name": "Cincinnati Reds",
+        "link": "/api/v1/teams/113",
+        "season": 2026,
+        "venue": {
+          "id": 2602,
+          "name": "Great American Ball Park",
+          "link": "/api/v1/venues/2602"
+        },
+        "springVenue": {
+          "id": 3834,
+          "link": "/api/v1/venues/3834"
+        },
+        "teamCode": "cin",
+        "fileCode": "cin",
+        "abbreviation": "CIN",
+        "teamName": "Reds",
+        "locationName": "Cincinnati",
+        "firstYearOfPlay": "1882",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Cincinnati",
+        "franchiseName": "Cincinnati",
+        "clubName": "Reds",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 669160,
+        "fullName": "Dustin May",
+        "link": "/api/v1/people/669160"
+      },
+      "homeStarter": {
+        "id": 671096,
+        "fullName": "Andrew Abbott",
+        "link": "/api/v1/people/671096"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "L",
+      "gameDate": "2026-09-05T22:40:00Z"
+    },
+    "824795": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 111,
+        "name": "Boston Red Sox",
+        "link": "/api/v1/teams/111",
+        "season": 2026,
+        "venue": {
+          "id": 3,
+          "name": "Fenway Park",
+          "link": "/api/v1/venues/3"
+        },
+        "springVenue": {
+          "id": 4309,
+          "link": "/api/v1/venues/4309"
+        },
+        "teamCode": "bos",
+        "fileCode": "bos",
+        "abbreviation": "BOS",
+        "teamName": "Red Sox",
+        "locationName": "Boston",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Boston",
+        "franchiseName": "Boston",
+        "clubName": "Red Sox",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 110,
+        "name": "Baltimore Orioles",
+        "link": "/api/v1/teams/110",
+        "season": 2026,
+        "venue": {
+          "id": 2,
+          "name": "Oriole Park at Camden Yards",
+          "link": "/api/v1/venues/2"
+        },
+        "springVenue": {
+          "id": 2508,
+          "link": "/api/v1/venues/2508"
+        },
+        "teamCode": "bal",
+        "fileCode": "bal",
+        "abbreviation": "BAL",
+        "teamName": "Orioles",
+        "locationName": "Baltimore",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Baltimore",
+        "franchiseName": "Baltimore",
+        "clubName": "Orioles",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 543243,
+        "fullName": "Sonny Gray",
+        "link": "/api/v1/people/543243"
+      },
+      "homeStarter": {
+        "id": 605135,
+        "fullName": "Chris Bassitt",
+        "link": "/api/v1/people/605135"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T23:05:00Z"
+    },
+    "822850": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 139,
+        "name": "Tampa Bay Rays",
+        "link": "/api/v1/teams/139",
+        "season": 2026,
+        "venue": {
+          "id": 12,
+          "name": "Tropicana Field",
+          "link": "/api/v1/venues/12"
+        },
+        "springVenue": {
+          "id": 2534,
+          "link": "/api/v1/venues/2534"
+        },
+        "teamCode": "tba",
+        "fileCode": "tb",
+        "abbreviation": "TB",
+        "teamName": "Rays",
+        "locationName": "St. Petersburg",
+        "firstYearOfPlay": "1996",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Tampa Bay",
+        "franchiseName": "Tampa Bay",
+        "clubName": "Rays",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 140,
+        "name": "Texas Rangers",
+        "link": "/api/v1/teams/140",
+        "season": 2026,
+        "venue": {
+          "id": 5325,
+          "name": "Globe Life Field",
+          "link": "/api/v1/venues/5325"
+        },
+        "springVenue": {
+          "id": 2603,
+          "link": "/api/v1/venues/2603"
+        },
+        "teamCode": "tex",
+        "fileCode": "tex",
+        "abbreviation": "TEX",
+        "teamName": "Rangers",
+        "locationName": "Arlington",
+        "firstYearOfPlay": "1961",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Texas",
+        "franchiseName": "Texas",
+        "clubName": "Rangers",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 656876,
+        "fullName": "Drew Rasmussen",
+        "link": "/api/v1/people/656876"
+      },
+      "homeStarter": {
+        "id": 594798,
+        "fullName": "Jacob deGrom",
+        "link": "/api/v1/people/594798"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T23:05:00Z"
+    },
+    "824066": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 141,
+        "name": "Toronto Blue Jays",
+        "link": "/api/v1/teams/141",
+        "season": 2026,
+        "venue": {
+          "id": 14,
+          "name": "Rogers Centre",
+          "link": "/api/v1/venues/14"
+        },
+        "springVenue": {
+          "id": 2536,
+          "link": "/api/v1/venues/2536"
+        },
+        "teamCode": "tor",
+        "fileCode": "tor",
+        "abbreviation": "TOR",
+        "teamName": "Blue Jays",
+        "locationName": "Toronto",
+        "firstYearOfPlay": "1977",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Toronto",
+        "franchiseName": "Toronto",
+        "clubName": "Blue Jays",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 118,
+        "name": "Kansas City Royals",
+        "link": "/api/v1/teams/118",
+        "season": 2026,
+        "venue": {
+          "id": 7,
+          "name": "Kauffman Stadium",
+          "link": "/api/v1/venues/7"
+        },
+        "springVenue": {
+          "id": 2603,
+          "link": "/api/v1/venues/2603"
+        },
+        "teamCode": "kca",
+        "fileCode": "kc",
+        "abbreviation": "KC",
+        "teamName": "Royals",
+        "locationName": "Kansas City",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Kansas City",
+        "franchiseName": "Kansas City",
+        "clubName": "Royals",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 453286,
+        "fullName": "Max Scherzer",
+        "link": "/api/v1/people/453286"
+      },
+      "homeStarter": {
+        "id": 607625,
+        "fullName": "Seth Lugo",
+        "link": "/api/v1/people/607625"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T23:10:00Z"
+    },
+    "824553": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 142,
+        "name": "Minnesota Twins",
+        "link": "/api/v1/teams/142",
+        "season": 2026,
+        "venue": {
+          "id": 3312,
+          "name": "Target Field",
+          "link": "/api/v1/venues/3312"
+        },
+        "springVenue": {
+          "id": 2862,
+          "link": "/api/v1/venues/2862"
+        },
+        "teamCode": "min",
+        "fileCode": "min",
+        "abbreviation": "MIN",
+        "teamName": "Twins",
+        "locationName": "Minneapolis",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Minnesota",
+        "franchiseName": "Minnesota",
+        "clubName": "Twins",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 145,
+        "name": "Chicago White Sox",
+        "link": "/api/v1/teams/145",
+        "season": 2026,
+        "venue": {
+          "id": 4,
+          "name": "Rate Field",
+          "link": "/api/v1/venues/4"
+        },
+        "springVenue": {
+          "id": 3809,
+          "link": "/api/v1/venues/3809"
+        },
+        "teamCode": "cha",
+        "fileCode": "cws",
+        "abbreviation": "CWS",
+        "teamName": "White Sox",
+        "locationName": "Chicago",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Chi White Sox",
+        "franchiseName": "Chicago",
+        "clubName": "White Sox",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 671737,
+        "fullName": "Taj Bradley",
+        "link": "/api/v1/people/671737"
+      },
+      "homeStarter": {
+        "id": 641743,
+        "fullName": "Anthony Kay",
+        "link": "/api/v1/people/641743"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "L",
+      "gameDate": "2026-09-05T23:10:00Z"
+    },
+    "824145": {
+      "away": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 109,
+        "name": "Arizona Diamondbacks",
+        "link": "/api/v1/teams/109",
+        "season": 2026,
+        "venue": {
+          "id": 15,
+          "name": "Chase Field",
+          "link": "/api/v1/venues/15"
+        },
+        "springVenue": {
+          "id": 4249,
+          "link": "/api/v1/venues/4249"
+        },
+        "teamCode": "ari",
+        "fileCode": "ari",
+        "abbreviation": "AZ",
+        "teamName": "D-backs",
+        "locationName": "Phoenix",
+        "firstYearOfPlay": "1996",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Arizona",
+        "franchiseName": "Arizona",
+        "clubName": "Diamondbacks",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 117,
+        "name": "Houston Astros",
+        "link": "/api/v1/teams/117",
+        "season": 2026,
+        "venue": {
+          "id": 2392,
+          "name": "Daikin Park",
+          "link": "/api/v1/venues/2392"
+        },
+        "springVenue": {
+          "id": 5000,
+          "link": "/api/v1/venues/5000"
+        },
+        "teamCode": "hou",
+        "fileCode": "hou",
+        "abbreviation": "HOU",
+        "teamName": "Astros",
+        "locationName": "Houston",
+        "firstYearOfPlay": "1962",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Houston",
+        "franchiseName": "Houston",
+        "clubName": "Astros",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 694297,
+        "fullName": "Brandon Pfaadt",
+        "link": "/api/v1/people/694297"
+      },
+      "homeStarter": {
+        "id": 814490,
+        "fullName": "Ethan Pecko",
+        "link": "/api/v1/people/814490"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-05T23:15:00Z"
+    },
+    "823257": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 147,
+        "name": "New York Yankees",
+        "link": "/api/v1/teams/147",
+        "season": 2026,
+        "venue": {
+          "id": 3313,
+          "name": "Yankee Stadium",
+          "link": "/api/v1/venues/3313"
+        },
+        "springVenue": {
+          "id": 2523,
+          "link": "/api/v1/venues/2523"
+        },
+        "teamCode": "nya",
+        "fileCode": "nyy",
+        "abbreviation": "NYY",
+        "teamName": "Yankees",
+        "locationName": "Bronx",
+        "firstYearOfPlay": "1903",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "NY Yankees",
+        "franchiseName": "New York",
+        "clubName": "Yankees",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 135,
+        "name": "San Diego Padres",
+        "link": "/api/v1/teams/135",
+        "season": 2026,
+        "venue": {
+          "id": 2680,
+          "name": "Petco Park",
+          "link": "/api/v1/venues/2680"
+        },
+        "springVenue": {
+          "id": 2530,
+          "link": "/api/v1/venues/2530"
+        },
+        "teamCode": "sdn",
+        "fileCode": "sd",
+        "abbreviation": "SD",
+        "teamName": "Padres",
+        "locationName": "San Diego",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "San Diego",
+        "franchiseName": "San Diego",
+        "clubName": "Padres",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 607074,
+        "fullName": "Carlos Rod\u00f3n",
+        "link": "/api/v1/people/607074"
+      },
+      "homeStarter": {
+        "id": 592662,
+        "fullName": "Robbie Ray",
+        "link": "/api/v1/people/592662"
+      },
+      "awayStarterHand": "L",
+      "homeStarterHand": "L",
+      "gameDate": "2026-09-05T23:15:00Z"
+    },
+    "824310": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 138,
+        "name": "St. Louis Cardinals",
+        "link": "/api/v1/teams/138",
+        "season": 2026,
+        "venue": {
+          "id": 2889,
+          "name": "Busch Stadium",
+          "link": "/api/v1/venues/2889"
+        },
+        "springVenue": {
+          "id": 2520,
+          "link": "/api/v1/venues/2520"
+        },
+        "teamCode": "sln",
+        "fileCode": "stl",
+        "abbreviation": "STL",
+        "teamName": "Cardinals",
+        "locationName": "St. Louis",
+        "firstYearOfPlay": "1892",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "St. Louis",
+        "franchiseName": "St. Louis",
+        "clubName": "Cardinals",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 115,
+        "name": "Colorado Rockies",
+        "link": "/api/v1/teams/115",
+        "season": 2026,
+        "venue": {
+          "id": 19,
+          "name": "Coors Field",
+          "link": "/api/v1/venues/19"
+        },
+        "springVenue": {
+          "id": 4249,
+          "link": "/api/v1/venues/4249"
+        },
+        "teamCode": "col",
+        "fileCode": "col",
+        "abbreviation": "COL",
+        "teamName": "Rockies",
+        "locationName": "Denver",
+        "firstYearOfPlay": "1992",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Colorado",
+        "franchiseName": "Colorado",
+        "clubName": "Rockies",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 669461,
+        "fullName": "Matthew Liberatore",
+        "link": "/api/v1/people/669461"
+      },
+      "homeStarter": {
+        "id": 690279,
+        "fullName": "Mason Adams",
+        "link": "/api/v1/people/690279"
+      },
+      "awayStarterHand": "L",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-06T00:10:00Z"
+    },
+    "823904": {
+      "away": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 120,
+        "name": "Washington Nationals",
+        "link": "/api/v1/teams/120",
+        "season": 2026,
+        "venue": {
+          "id": 3309,
+          "name": "Nationals Park",
+          "link": "/api/v1/venues/3309"
+        },
+        "springVenue": {
+          "id": 5000,
+          "link": "/api/v1/venues/5000"
+        },
+        "teamCode": "was",
+        "fileCode": "was",
+        "abbreviation": "WSH",
+        "teamName": "Nationals",
+        "locationName": "Washington",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Washington",
+        "franchiseName": "Washington",
+        "clubName": "Nationals",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 119,
+        "name": "Los Angeles Dodgers",
+        "link": "/api/v1/teams/119",
+        "season": 2026,
+        "venue": {
+          "id": 22,
+          "name": "UNIQLO Field at Dodger Stadium",
+          "link": "/api/v1/venues/22"
+        },
+        "springVenue": {
+          "id": 3809,
+          "link": "/api/v1/venues/3809"
+        },
+        "teamCode": "lan",
+        "fileCode": "la",
+        "abbreviation": "LAD",
+        "teamName": "Dodgers",
+        "locationName": "Los Angeles",
+        "firstYearOfPlay": "1884",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "LA Dodgers",
+        "franchiseName": "Los Angeles",
+        "clubName": "Dodgers",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 676917,
+        "fullName": "Cade Cavalli",
+        "link": "/api/v1/people/676917"
+      },
+      "homeStarter": {
+        "id": 607192,
+        "fullName": "Tyler Glasnow",
+        "link": "/api/v1/people/607192"
+      },
+      "awayStarterHand": "R",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-06T01:10:00Z"
+    },
+    "823094": {
+      "away": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 133,
+        "name": "Athletics",
+        "link": "/api/v1/teams/133",
+        "season": 2026,
+        "venue": {
+          "id": 2529,
+          "name": "Sutter Health Park",
+          "link": "/api/v1/venues/2529"
+        },
+        "springVenue": {
+          "id": 2507,
+          "link": "/api/v1/venues/2507"
+        },
+        "teamCode": "ath",
+        "fileCode": "ath",
+        "abbreviation": "ATH",
+        "teamName": "Athletics",
+        "locationName": "Sacramento",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Athletics",
+        "franchiseName": "Athletics",
+        "clubName": "Athletics",
+        "active": true
+      },
+      "home": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 136,
+        "name": "Seattle Mariners",
+        "link": "/api/v1/teams/136",
+        "season": 2026,
+        "venue": {
+          "id": 680,
+          "name": "T-Mobile Park",
+          "link": "/api/v1/venues/680"
+        },
+        "springVenue": {
+          "id": 2530,
+          "link": "/api/v1/venues/2530"
+        },
+        "teamCode": "sea",
+        "fileCode": "sea",
+        "abbreviation": "SEA",
+        "teamName": "Mariners",
+        "locationName": "Seattle",
+        "firstYearOfPlay": "1977",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Seattle",
+        "franchiseName": "Seattle",
+        "clubName": "Mariners",
+        "active": true
+      },
+      "awayStarter": {
+        "id": 605488,
+        "fullName": "Jeffrey Springs",
+        "link": "/api/v1/people/605488"
+      },
+      "homeStarter": {
+        "id": 669923,
+        "fullName": "George Kirby",
+        "link": "/api/v1/people/669923"
+      },
+      "awayStarterHand": "L",
+      "homeStarterHand": "R",
+      "gameDate": "2026-09-06T01:40:00Z"
+    }
+  },
+  "teams": {
+    "137": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 137,
+        "name": "San Francisco Giants",
+        "link": "/api/v1/teams/137",
+        "season": 2026,
+        "venue": {
+          "id": 2395,
+          "name": "Oracle Park",
+          "link": "/api/v1/venues/2395"
+        },
+        "springVenue": {
+          "id": 2532,
+          "link": "/api/v1/venues/2532"
+        },
+        "teamCode": "sfn",
+        "fileCode": "sf",
+        "abbreviation": "SF",
+        "teamName": "Giants",
+        "locationName": "San Francisco",
+        "firstYearOfPlay": "1883",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "San Francisco",
+        "franchiseName": "San Francisco",
+        "clubName": "Giants",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 823579,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823337,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823339,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823340,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824911,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823176,
+          "oppHand": "L",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "121": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 121,
+        "name": "New York Mets",
+        "link": "/api/v1/teams/121",
+        "season": 2026,
+        "venue": {
+          "id": 3289,
+          "name": "Citi Field",
+          "link": "/api/v1/venues/3289"
+        },
+        "springVenue": {
+          "id": 2856,
+          "link": "/api/v1/venues/2856"
+        },
+        "teamCode": "nyn",
+        "fileCode": "nym",
+        "abbreviation": "NYM",
+        "teamName": "Mets",
+        "locationName": "Flushing",
+        "firstYearOfPlay": "1962",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "NY Mets",
+        "franchiseName": "New York",
+        "clubName": "Mets",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823579,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822931,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822929,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822932,
+          "oppHand": "L",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823580,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 823582,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "112": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 112,
+        "name": "Chicago Cubs",
+        "link": "/api/v1/teams/112",
+        "season": 2026,
+        "venue": {
+          "id": 17,
+          "name": "Wrigley Field",
+          "link": "/api/v1/venues/17"
+        },
+        "springVenue": {
+          "id": 4629,
+          "link": "/api/v1/venues/4629"
+        },
+        "teamCode": "chn",
+        "fileCode": "chc",
+        "abbreviation": "CHC",
+        "teamName": "Cubs",
+        "locationName": "Chicago",
+        "firstYearOfPlay": "1874",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Chi Cubs",
+        "franchiseName": "Chicago",
+        "clubName": "Cubs",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823824,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824632,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824634,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824633,
+          "oppHand": "L",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824635,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824636,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "146": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 146,
+        "name": "Miami Marlins",
+        "link": "/api/v1/teams/146",
+        "season": 2026,
+        "venue": {
+          "id": 4169,
+          "name": "loanDepot park",
+          "link": "/api/v1/venues/4169"
+        },
+        "springVenue": {
+          "id": 2520,
+          "link": "/api/v1/venues/2520"
+        },
+        "teamCode": "mia",
+        "fileCode": "mia",
+        "abbreviation": "MIA",
+        "teamName": "Marlins",
+        "locationName": "Miami",
+        "firstYearOfPlay": "1991",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Miami",
+        "franchiseName": "Miami",
+        "clubName": "Marlins",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823824,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824069,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824068,
+          "oppHand": "L",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824070,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822689,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 822688,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "144": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 144,
+        "name": "Atlanta Braves",
+        "link": "/api/v1/teams/144",
+        "season": 2026,
+        "venue": {
+          "id": 4705,
+          "name": "Truist Park",
+          "link": "/api/v1/venues/4705"
+        },
+        "springVenue": {
+          "id": 5380,
+          "link": "/api/v1/venues/5380"
+        },
+        "teamCode": "atl",
+        "fileCode": "atl",
+        "abbreviation": "ATL",
+        "teamName": "Braves",
+        "locationName": "Atlanta",
+        "firstYearOfPlay": "1871",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Atlanta",
+        "franchiseName": "Atlanta",
+        "clubName": "Braves",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823418,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822686,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822687,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824911,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824876,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824874,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 12
+    },
+    "143": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 143,
+        "name": "Philadelphia Phillies",
+        "link": "/api/v1/teams/143",
+        "season": 2026,
+        "venue": {
+          "id": 2681,
+          "name": "Citizens Bank Park",
+          "link": "/api/v1/venues/2681"
+        },
+        "springVenue": {
+          "id": 2700,
+          "link": "/api/v1/venues/2700"
+        },
+        "teamCode": "phi",
+        "fileCode": "phi",
+        "abbreviation": "PHI",
+        "teamName": "Phillies",
+        "locationName": "Philadelphia",
+        "firstYearOfPlay": "1883",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Philadelphia",
+        "franchiseName": "Philadelphia",
+        "clubName": "Phillies",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 823418,
+          "oppHand": "L",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 825037,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 825038,
+          "oppHand": "L",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 825040,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823987,
+          "oppHand": "L",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823986,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "116": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 116,
+        "name": "Detroit Tigers",
+        "link": "/api/v1/teams/116",
+        "season": 2026,
+        "venue": {
+          "id": 2394,
+          "name": "Comerica Park",
+          "link": "/api/v1/venues/2394"
+        },
+        "springVenue": {
+          "id": 2511,
+          "link": "/api/v1/venues/2511"
+        },
+        "teamCode": "det",
+        "fileCode": "det",
+        "abbreviation": "DET",
+        "teamName": "Tigers",
+        "locationName": "Detroit",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Detroit",
+        "franchiseName": "Detroit",
+        "clubName": "Tigers",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 824387,
+          "oppHand": "L",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824424,
+          "oppHand": "L",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823660,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823661,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823663,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824232,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 15
+    },
+    "114": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 114,
+        "name": "Cleveland Guardians",
+        "link": "/api/v1/teams/114",
+        "season": 2026,
+        "venue": {
+          "id": 5,
+          "name": "Progressive Field",
+          "link": "/api/v1/venues/5"
+        },
+        "springVenue": {
+          "id": 3834,
+          "link": "/api/v1/venues/3834"
+        },
+        "teamCode": "cle",
+        "fileCode": "cle",
+        "abbreviation": "CLE",
+        "teamName": "Guardians",
+        "locationName": "Cleveland",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Cleveland",
+        "franchiseName": "Cleveland",
+        "clubName": "Guardians",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 824387,
+          "oppHand": "L",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824424,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824388,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824390,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824391,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824393,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "108": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 108,
+        "name": "Los Angeles Angels",
+        "link": "/api/v1/teams/108",
+        "season": 2026,
+        "venue": {
+          "id": 1,
+          "name": "Angel Stadium",
+          "link": "/api/v1/venues/1"
+        },
+        "springVenue": {
+          "id": 2500,
+          "link": "/api/v1/venues/2500"
+        },
+        "teamCode": "ana",
+        "fileCode": "ana",
+        "abbreviation": "LAA",
+        "teamName": "Angels",
+        "locationName": "Anaheim",
+        "firstYearOfPlay": "1961",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "LA Angels",
+        "franchiseName": "Los Angeles",
+        "clubName": "Angels",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823338,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823983,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823984,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823982,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823987,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823986,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "134": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 134,
+        "name": "Pittsburgh Pirates",
+        "link": "/api/v1/teams/134",
+        "season": 2026,
+        "venue": {
+          "id": 31,
+          "name": "PNC Park",
+          "link": "/api/v1/venues/31"
+        },
+        "springVenue": {
+          "id": 2526,
+          "link": "/api/v1/venues/2526"
+        },
+        "teamCode": "pit",
+        "fileCode": "pit",
+        "abbreviation": "PIT",
+        "teamName": "Pirates",
+        "locationName": "Pittsburgh",
+        "firstYearOfPlay": "1882",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Pittsburgh",
+        "franchiseName": "Pittsburgh",
+        "clubName": "Pirates",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 823338,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823337,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823339,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823340,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823010,
+          "oppHand": "L",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823011,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "158": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 158,
+        "name": "Milwaukee Brewers",
+        "link": "/api/v1/teams/158",
+        "season": 2026,
+        "venue": {
+          "id": 32,
+          "name": "American Family Field",
+          "link": "/api/v1/venues/32"
+        },
+        "springVenue": {
+          "id": 2518,
+          "link": "/api/v1/venues/2518"
+        },
+        "teamCode": "mil",
+        "fileCode": "mil",
+        "abbreviation": "MIL",
+        "teamName": "Brewers",
+        "locationName": "Milwaukee",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Milwaukee",
+        "franchiseName": "Milwaukee",
+        "clubName": "Brewers",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 824471,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824632,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824634,
+          "oppHand": "L",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824633,
+          "oppHand": "L",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824635,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823740,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "113": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 113,
+        "name": "Cincinnati Reds",
+        "link": "/api/v1/teams/113",
+        "season": 2026,
+        "venue": {
+          "id": 2602,
+          "name": "Great American Ball Park",
+          "link": "/api/v1/venues/2602"
+        },
+        "springVenue": {
+          "id": 3834,
+          "link": "/api/v1/venues/3834"
+        },
+        "teamCode": "cin",
+        "fileCode": "cin",
+        "abbreviation": "CIN",
+        "teamName": "Reds",
+        "locationName": "Cincinnati",
+        "firstYearOfPlay": "1882",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Cincinnati",
+        "franchiseName": "Cincinnati",
+        "clubName": "Reds",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824471,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824470,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824472,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824473,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824636,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 824637,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "111": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 111,
+        "name": "Boston Red Sox",
+        "link": "/api/v1/teams/111",
+        "season": 2026,
+        "venue": {
+          "id": 3,
+          "name": "Fenway Park",
+          "link": "/api/v1/venues/3"
+        },
+        "springVenue": {
+          "id": 4309,
+          "link": "/api/v1/venues/4309"
+        },
+        "teamCode": "bos",
+        "fileCode": "bos",
+        "abbreviation": "BOS",
+        "teamName": "Red Sox",
+        "locationName": "Boston",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Boston",
+        "franchiseName": "Boston",
+        "clubName": "Red Sox",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824797,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824796,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824717,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824716,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824719,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823502,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "110": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 110,
+        "name": "Baltimore Orioles",
+        "link": "/api/v1/teams/110",
+        "season": 2026,
+        "venue": {
+          "id": 2,
+          "name": "Oriole Park at Camden Yards",
+          "link": "/api/v1/venues/2"
+        },
+        "springVenue": {
+          "id": 2508,
+          "link": "/api/v1/venues/2508"
+        },
+        "teamCode": "bal",
+        "fileCode": "bal",
+        "abbreviation": "BAL",
+        "teamName": "Orioles",
+        "locationName": "Baltimore",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Baltimore",
+        "franchiseName": "Baltimore",
+        "clubName": "Orioles",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824797,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824796,
+          "oppHand": "L",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824312,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824313,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824314,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824959,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 12
+    },
+    "139": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 139,
+        "name": "Tampa Bay Rays",
+        "link": "/api/v1/teams/139",
+        "season": 2026,
+        "venue": {
+          "id": 12,
+          "name": "Tropicana Field",
+          "link": "/api/v1/venues/12"
+        },
+        "springVenue": {
+          "id": 2534,
+          "link": "/api/v1/venues/2534"
+        },
+        "teamCode": "tba",
+        "fileCode": "tb",
+        "abbreviation": "TB",
+        "teamName": "Rays",
+        "locationName": "St. Petersburg",
+        "firstYearOfPlay": "1996",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Tampa Bay",
+        "franchiseName": "Tampa Bay",
+        "clubName": "Rays",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 822852,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822853,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822931,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822929,
+          "oppHand": "L",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822932,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822933,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "140": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 140,
+        "name": "Texas Rangers",
+        "link": "/api/v1/teams/140",
+        "season": 2026,
+        "venue": {
+          "id": 5325,
+          "name": "Globe Life Field",
+          "link": "/api/v1/venues/5325"
+        },
+        "springVenue": {
+          "id": 2603,
+          "link": "/api/v1/venues/2603"
+        },
+        "teamCode": "tex",
+        "fileCode": "tex",
+        "abbreviation": "TEX",
+        "teamName": "Rangers",
+        "locationName": "Arlington",
+        "firstYearOfPlay": "1961",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Texas",
+        "franchiseName": "Texas",
+        "clubName": "Rangers",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 822852,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822853,
+          "oppHand": "L",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822851,
+          "oppHand": "L",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822854,
+          "oppHand": "L",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822855,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823740,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "141": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 141,
+        "name": "Toronto Blue Jays",
+        "link": "/api/v1/teams/141",
+        "season": 2026,
+        "venue": {
+          "id": 14,
+          "name": "Rogers Centre",
+          "link": "/api/v1/venues/14"
+        },
+        "springVenue": {
+          "id": 2536,
+          "link": "/api/v1/venues/2536"
+        },
+        "teamCode": "tor",
+        "fileCode": "tor",
+        "abbreviation": "TOR",
+        "teamName": "Blue Jays",
+        "locationName": "Toronto",
+        "firstYearOfPlay": "1977",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Toronto",
+        "franchiseName": "Toronto",
+        "clubName": "Blue Jays",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824067,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824388,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824390,
+          "oppHand": "L",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824391,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822766,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822770,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "118": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 118,
+        "name": "Kansas City Royals",
+        "link": "/api/v1/teams/118",
+        "season": 2026,
+        "venue": {
+          "id": 7,
+          "name": "Kauffman Stadium",
+          "link": "/api/v1/venues/7"
+        },
+        "springVenue": {
+          "id": 2603,
+          "link": "/api/v1/venues/2603"
+        },
+        "teamCode": "kca",
+        "fileCode": "kc",
+        "abbreviation": "KC",
+        "teamName": "Royals",
+        "locationName": "Kansas City",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Kansas City",
+        "franchiseName": "Kansas City",
+        "clubName": "Royals",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824067,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824069,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824068,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824070,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824393,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824392,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "142": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 142,
+        "name": "Minnesota Twins",
+        "link": "/api/v1/teams/142",
+        "season": 2026,
+        "venue": {
+          "id": 3312,
+          "name": "Target Field",
+          "link": "/api/v1/venues/3312"
+        },
+        "springVenue": {
+          "id": 2862,
+          "link": "/api/v1/venues/2862"
+        },
+        "teamCode": "min",
+        "fileCode": "min",
+        "abbreviation": "MIN",
+        "teamName": "Twins",
+        "locationName": "Minneapolis",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Minnesota",
+        "franchiseName": "Minnesota",
+        "clubName": "Twins",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 824554,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823660,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823661,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823663,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823662,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823665,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "145": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 145,
+        "name": "Chicago White Sox",
+        "link": "/api/v1/teams/145",
+        "season": 2026,
+        "venue": {
+          "id": 4,
+          "name": "Rate Field",
+          "link": "/api/v1/venues/4"
+        },
+        "springVenue": {
+          "id": 3809,
+          "link": "/api/v1/venues/3809"
+        },
+        "teamCode": "cha",
+        "fileCode": "cws",
+        "abbreviation": "CWS",
+        "teamName": "White Sox",
+        "locationName": "Chicago",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 202,
+          "name": "American League Central",
+          "link": "/api/v1/divisions/202"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Chi White Sox",
+        "franchiseName": "Chicago",
+        "clubName": "White Sox",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824554,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824144,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824147,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 824148,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 824149,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823662,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "109": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 109,
+        "name": "Arizona Diamondbacks",
+        "link": "/api/v1/teams/109",
+        "season": 2026,
+        "venue": {
+          "id": 15,
+          "name": "Chase Field",
+          "link": "/api/v1/venues/15"
+        },
+        "springVenue": {
+          "id": 4249,
+          "link": "/api/v1/venues/4249"
+        },
+        "teamCode": "ari",
+        "fileCode": "ari",
+        "abbreviation": "AZ",
+        "teamName": "D-backs",
+        "locationName": "Phoenix",
+        "firstYearOfPlay": "1996",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Arizona",
+        "franchiseName": "Arizona",
+        "clubName": "Diamondbacks",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824146,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 825037,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 825038,
+          "oppHand": "L",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 825040,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823176,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823177,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "117": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 117,
+        "name": "Houston Astros",
+        "link": "/api/v1/teams/117",
+        "season": 2026,
+        "venue": {
+          "id": 2392,
+          "name": "Daikin Park",
+          "link": "/api/v1/venues/2392"
+        },
+        "springVenue": {
+          "id": 5000,
+          "link": "/api/v1/venues/5000"
+        },
+        "teamCode": "hou",
+        "fileCode": "hou",
+        "abbreviation": "HOU",
+        "teamName": "Astros",
+        "locationName": "Houston",
+        "firstYearOfPlay": "1962",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Houston",
+        "franchiseName": "Houston",
+        "clubName": "Astros",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824146,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824144,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824147,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824148,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824149,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823580,
+          "oppHand": "L",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "147": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 147,
+        "name": "New York Yankees",
+        "link": "/api/v1/teams/147",
+        "season": 2026,
+        "venue": {
+          "id": 3313,
+          "name": "Yankee Stadium",
+          "link": "/api/v1/venues/3313"
+        },
+        "springVenue": {
+          "id": 2523,
+          "link": "/api/v1/venues/2523"
+        },
+        "teamCode": "nya",
+        "fileCode": "nyy",
+        "abbreviation": "NYY",
+        "teamName": "Yankees",
+        "locationName": "Bronx",
+        "firstYearOfPlay": "1903",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 201,
+          "name": "American League East",
+          "link": "/api/v1/divisions/201"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "NY Yankees",
+        "franchiseName": "New York",
+        "clubName": "Yankees",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 823256,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823983,
+          "oppHand": "L",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823984,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823982,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823502,
+          "oppHand": "L",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823501,
+          "oppHand": "L",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "135": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 135,
+        "name": "San Diego Padres",
+        "link": "/api/v1/teams/135",
+        "season": 2026,
+        "venue": {
+          "id": 2680,
+          "name": "Petco Park",
+          "link": "/api/v1/venues/2680"
+        },
+        "springVenue": {
+          "id": 2530,
+          "link": "/api/v1/venues/2530"
+        },
+        "teamCode": "sdn",
+        "fileCode": "sd",
+        "abbreviation": "SD",
+        "teamName": "Padres",
+        "locationName": "San Diego",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "San Diego",
+        "franchiseName": "San Diego",
+        "clubName": "Padres",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 823256,
+          "oppHand": "L",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824470,
+          "oppHand": "L",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824472,
+          "oppHand": "L",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824473,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822933,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822936,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "138": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 138,
+        "name": "St. Louis Cardinals",
+        "link": "/api/v1/teams/138",
+        "season": 2026,
+        "venue": {
+          "id": 2889,
+          "name": "Busch Stadium",
+          "link": "/api/v1/venues/2889"
+        },
+        "springVenue": {
+          "id": 2520,
+          "link": "/api/v1/venues/2520"
+        },
+        "teamCode": "sln",
+        "fileCode": "stl",
+        "abbreviation": "STL",
+        "teamName": "Cardinals",
+        "locationName": "St. Louis",
+        "firstYearOfPlay": "1892",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 205,
+          "name": "National League Central",
+          "link": "/api/v1/divisions/205"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "St. Louis",
+        "franchiseName": "St. Louis",
+        "clubName": "Cardinals",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 824311,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823907,
+          "oppHand": "L",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823906,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823908,
+          "oppHand": "L",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823010,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823011,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 11
+    },
+    "115": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 115,
+        "name": "Colorado Rockies",
+        "link": "/api/v1/teams/115",
+        "season": 2026,
+        "venue": {
+          "id": 19,
+          "name": "Coors Field",
+          "link": "/api/v1/venues/19"
+        },
+        "springVenue": {
+          "id": 4249,
+          "link": "/api/v1/venues/4249"
+        },
+        "teamCode": "col",
+        "fileCode": "col",
+        "abbreviation": "COL",
+        "teamName": "Rockies",
+        "locationName": "Denver",
+        "firstYearOfPlay": "1992",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Colorado",
+        "franchiseName": "Colorado",
+        "clubName": "Rockies",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 824311,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824312,
+          "oppHand": "L",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824313,
+          "oppHand": "R",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824314,
+          "oppHand": "L",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824876,
+          "oppHand": "R",
+          "weight": 0.2466,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824874,
+          "oppHand": "L",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "120": {
+      "team": {
+        "springLeague": {
+          "id": 115,
+          "name": "Grapefruit League",
+          "link": "/api/v1/league/115",
+          "abbreviation": "GL"
+        },
+        "allStarStatus": "N",
+        "id": 120,
+        "name": "Washington Nationals",
+        "link": "/api/v1/teams/120",
+        "season": 2026,
+        "venue": {
+          "id": 3309,
+          "name": "Nationals Park",
+          "link": "/api/v1/venues/3309"
+        },
+        "springVenue": {
+          "id": 5000,
+          "link": "/api/v1/venues/5000"
+        },
+        "teamCode": "was",
+        "fileCode": "was",
+        "abbreviation": "WSH",
+        "teamName": "Nationals",
+        "locationName": "Washington",
+        "firstYearOfPlay": "1968",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 204,
+          "name": "National League East",
+          "link": "/api/v1/divisions/204"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Washington",
+        "franchiseName": "Washington",
+        "clubName": "Nationals",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823905,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822686,
+          "oppHand": "R",
+          "weight": 1.2684,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822687,
+          "oppHand": "R",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822689,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 822688,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 822690,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "119": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 119,
+        "name": "Los Angeles Dodgers",
+        "link": "/api/v1/teams/119",
+        "season": 2026,
+        "venue": {
+          "id": 22,
+          "name": "UNIQLO Field at Dodger Stadium",
+          "link": "/api/v1/venues/22"
+        },
+        "springVenue": {
+          "id": 3809,
+          "link": "/api/v1/venues/3809"
+        },
+        "teamCode": "lan",
+        "fileCode": "la",
+        "abbreviation": "LAD",
+        "teamName": "Dodgers",
+        "locationName": "Los Angeles",
+        "firstYearOfPlay": "1884",
+        "league": {
+          "id": 104,
+          "name": "National League",
+          "link": "/api/v1/league/104"
+        },
+        "division": {
+          "id": 203,
+          "name": "National League West",
+          "link": "/api/v1/divisions/203"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "LA Dodgers",
+        "franchiseName": "Los Angeles",
+        "clubName": "Dodgers",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823905,
+          "oppHand": "L",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823907,
+          "oppHand": "L",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823906,
+          "oppHand": "L",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823908,
+          "oppHand": "R",
+          "weight": 0.6299,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824232,
+          "oppHand": "L",
+          "weight": 0.2466,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 824230,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 8
+        }
+      ],
+      "eligibleHitters": 13
+    },
+    "133": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 133,
+        "name": "Athletics",
+        "link": "/api/v1/teams/133",
+        "season": 2026,
+        "venue": {
+          "id": 2529,
+          "name": "Sutter Health Park",
+          "link": "/api/v1/venues/2529"
+        },
+        "springVenue": {
+          "id": 2507,
+          "link": "/api/v1/venues/2507"
+        },
+        "teamCode": "ath",
+        "fileCode": "ath",
+        "abbreviation": "ATH",
+        "teamName": "Athletics",
+        "locationName": "Sacramento",
+        "firstYearOfPlay": "1901",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Athletics",
+        "franchiseName": "Athletics",
+        "clubName": "Athletics",
+        "active": true
+      },
+      "oppHand": "R",
+      "history": [
+        {
+          "gamePk": 823093,
+          "oppHand": "R",
+          "weight": 1.8,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823095,
+          "oppHand": "L",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822851,
+          "oppHand": "L",
+          "weight": 0.4966,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822854,
+          "oppHand": "L",
+          "weight": 0.3499,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 822855,
+          "oppHand": "R",
+          "weight": 0.4439,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824959,
+          "oppHand": "R",
+          "weight": 0.3128,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 14
+    },
+    "136": {
+      "team": {
+        "springLeague": {
+          "id": 114,
+          "name": "Cactus League",
+          "link": "/api/v1/league/114",
+          "abbreviation": "CL"
+        },
+        "allStarStatus": "N",
+        "id": 136,
+        "name": "Seattle Mariners",
+        "link": "/api/v1/teams/136",
+        "season": 2026,
+        "venue": {
+          "id": 680,
+          "name": "T-Mobile Park",
+          "link": "/api/v1/venues/680"
+        },
+        "springVenue": {
+          "id": 2530,
+          "link": "/api/v1/venues/2530"
+        },
+        "teamCode": "sea",
+        "fileCode": "sea",
+        "abbreviation": "SEA",
+        "teamName": "Mariners",
+        "locationName": "Seattle",
+        "firstYearOfPlay": "1977",
+        "league": {
+          "id": 103,
+          "name": "American League",
+          "link": "/api/v1/league/103"
+        },
+        "division": {
+          "id": 200,
+          "name": "American League West",
+          "link": "/api/v1/divisions/200"
+        },
+        "sport": {
+          "id": 1,
+          "link": "/api/v1/sports/1",
+          "name": "Major League Baseball"
+        },
+        "shortName": "Seattle",
+        "franchiseName": "Seattle",
+        "clubName": "Mariners",
+        "active": true
+      },
+      "oppHand": "L",
+      "history": [
+        {
+          "gamePk": 823093,
+          "oppHand": "R",
+          "weight": 1.0,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 823095,
+          "oppHand": "R",
+          "weight": 0.7047,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824717,
+          "oppHand": "L",
+          "weight": 0.8939,
+          "activePlayersKept": 9
+        },
+        {
+          "gamePk": 824716,
+          "oppHand": "R",
+          "weight": 0.3499,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 824719,
+          "oppHand": "L",
+          "weight": 0.4439,
+          "activePlayersKept": 8
+        },
+        {
+          "gamePk": 822766,
+          "oppHand": "R",
+          "weight": 0.1738,
+          "activePlayersKept": 9
+        }
+      ],
+      "eligibleHitters": 13
+    }
+  }
+}
