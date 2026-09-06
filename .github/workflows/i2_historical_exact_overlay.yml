@@ -26,8 +26,6 @@ jobs:
           gh release download i2-phase1-historical-store-v1 -p 'i2-phase1-frozen-historical-store-2021-2025.tar.gz' -D /tmp/phase1
           mkdir -p /tmp/phase1/ex
           tar -xzf /tmp/phase1/i2-phase1-frozen-historical-store-2021-2025.tar.gz -C /tmp/phase1/ex
-          echo '--- Phase 1 files ---'
-          find /tmp/phase1/ex -maxdepth 4 -type f | sort | head -120
       - name: Download v0.4 production validation predictions
         run: |
           mkdir -p /tmp/v04
@@ -36,7 +34,7 @@ jobs:
           tar -xzf /tmp/v04/*.tar.gz -C /tmp/v04/ex
       - name: Compute historical actual vs predicted exact-run overlay
         run: |
-          python -m pip install --quiet pandas numpy
+          python -m pip install --quiet pandas numpy pyarrow
           python src/analysis/i2_historical_exact_overlay.py --phase1 /tmp/phase1/ex --validation /tmp/v04/ex --out /tmp/overlay
       - name: Upload overlay artifact
         uses: actions/upload-artifact@v4
