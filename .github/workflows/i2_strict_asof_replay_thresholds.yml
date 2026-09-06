@@ -1,0 +1,161 @@
+name: I2 strict as-of replay and thresholds
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - src/analysis/i2_strict_asof_replay.py
+      - src/analysis/i2_pregame_threshold_calibration.py
+      - .github/workflows/i2_strict_asof_replay_thresholds.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  acquire-normalize:
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2021, 2022, 2023, 2024, 2025]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Fetch official MLB regular-season feeds
+        run: |
+          python src/ingestion/fetch_mlb_statsapi.py \
+            --start-date "${{ matrix.season }}-01-01" \
+            --end-date "${{ matrix.season }}-12-31" \
+            --game-types R \
+            --output-dir "/tmp/mlb_raw_${{ matrix.season }}" \
+            --sleep 0.03
+
+      - name: Normalize season
+        run: |
+          python src/ingestion/normalize_mlb_feeds.py \
+            --raw-dir "/tmp/mlb_raw_${{ matrix.season }}" \
+            --output-dir "/tmp/normalized_${{ matrix.season }}"
+
+      - name: Season integrity audit
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          root=Path('/tmp/normalized_${{ matrix.season }}')
+          g=pd.read_parquet(root/'games.parquet')
+          p=pd.read_parquet(root/'plate_appearances.parquet')
+          i=pd.read_parquet(root/'inning_results.parquet')
+          assert len(g)>2000, len(g)
+          assert len(p)>100000, len(p)
+          assert len(i)>15000, len(i)
+          assert g['game_id'].nunique()==len(g)
+          print({'season':${{ matrix.season }},'games':len(g),'pa':len(p),'innings':len(i),'status':'PASS'})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-strict-normalized-${{ matrix.season }}
+          path: /tmp/normalized_${{ matrix.season }}/
+          retention-days: 7
+          compression-level: 6
+
+  replay-calibrate:
+    needs: acquire-normalize
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: i2-strict-normalized-*
+          path: /tmp/season_artifacts
+
+      - name: Merge normalized seasons
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Build strictly prior-date team feature history
+        run: |
+          python src/ingestion/build_asof_team_rates_fast.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --output /tmp/team_asof.parquet \
+            --shrink-strength 200
+
+      - name: Fetch checksum-verified canonical master
+        run: |
+          python src/ingestion/fetch_historical_joined_master.py \
+            --output-dir /tmp/canonical
+
+      - name: Generate chronological strict-asof I2 predictions
+        run: |
+          python src/analysis/i2_strict_asof_replay.py \
+            --master /tmp/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz \
+            --games /tmp/mlb_2021_2025/games.parquet \
+            --team-asof /tmp/team_asof.parquet \
+            --output-dir data/derived/i2/strict_asof_replay \
+            --prior-strength 100 \
+            --ridge-lambda 10
+
+      - name: Create total-only baseline prediction file
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          p='data/derived/i2/strict_asof_replay/strict_oos_predictions.csv'
+          x=pd.read_csv(p)
+          x['context_prediction']=x['prediction']
+          x['prediction']=x['baseline_prediction']
+          x.to_csv('data/derived/i2/strict_asof_replay/baseline_oos_predictions.csv',index=False)
+          PY
+
+      - name: Calibrate strict baseball-context Under/Over gates
+        run: |
+          python src/analysis/i2_pregame_threshold_calibration.py \
+            --input data/derived/i2/strict_asof_replay/strict_oos_predictions.csv \
+            --output-dir data/derived/i2/threshold_calibration_strict_context \
+            --start 0.40 --stop 0.75 --step 0.005 --min-n 100
+
+      - name: Calibrate total-only benchmark gates
+        run: |
+          python src/analysis/i2_pregame_threshold_calibration.py \
+            --input data/derived/i2/strict_asof_replay/baseline_oos_predictions.csv \
+            --output-dir data/derived/i2/threshold_calibration_total_only \
+            --start 0.40 --stop 0.75 --step 0.005 --min-n 100
+
+      - name: Final leakage/market audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2/strict_asof_replay/manifest.json').read_text())
+          assert m['identity_inputs']['historical_lineup_identity_used'] is False
+          assert m['identity_inputs']['historical_actual_starter_identity_used'] is False
+          assert m['market_isolation']['i2_derivative_prices_used'] is False
+          assert m['market_isolation']['moneyline_used'] is False
+          assert m['market_isolation']['runline_used'] is False
+          assert m['join_rate'] >= 0.98
+          for d in ['threshold_calibration_strict_context','threshold_calibration_total_only']:
+              c=json.loads(Path('data/derived/i2',d,'manifest.json').read_text())
+              assert c['price_used'] is False
+          print({'status':'PASS','oos_predictions':m['oos_predictions'],'join_rate':m['join_rate']})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-strict-asof-replay-thresholds
+          path: |
+            data/derived/i2/strict_asof_replay/
+            data/derived/i2/threshold_calibration_strict_context/
+            data/derived/i2/threshold_calibration_total_only/
+          retention-days: 30
