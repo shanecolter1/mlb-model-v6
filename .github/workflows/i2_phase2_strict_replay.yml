@@ -1,6 +1,12 @@
 name: I2 Phase 2 - strict replay
 
 on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - .github/workflows/i2_phase2_strict_replay.yml
+      - src/analysis/i2_strict_asof_replay_canonical_codes.py
   workflow_dispatch:
   workflow_run:
     workflows:
@@ -13,7 +19,7 @@ permissions:
 
 jobs:
   replay:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
