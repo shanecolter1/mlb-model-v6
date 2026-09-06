@@ -8,62 +8,125 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Compute weekday I2 results
+      - name: Compute weekday starter-attendance results
         shell: bash
         run: |
+          set -euo pipefail
+          mkdir -p /tmp/retro
+          for y in 2021 2022 2023 2024 2025; do
+            curl -fsSL "https://www.retrosheet.org/downloads/${y}/${y}csvs.zip" -o "/tmp/retro/${y}.zip"
+            mkdir -p "/tmp/retro/${y}"
+            unzip -q "/tmp/retro/${y}.zip" -d "/tmp/retro/${y}"
+          done
           python - <<'PY'
-          import csv, glob, datetime, collections, math
+          import csv, glob, os, collections, datetime, statistics
 
-          games = {}
+          def findfile(root, suffix):
+              hits=[]
+              for p in glob.glob(root+'/**', recursive=True):
+                  if os.path.isfile(p) and os.path.basename(p).lower()==suffix.lower(): hits.append(p)
+              return hits[0] if hits else None
+
+          # Existing compact I2 data keyed by Retrosheet gid.
+          i2={}
           for path in sorted(glob.glob('data/derived/i2/i2_state_compact_20*.csv')):
               with open(path, newline='', encoding='utf-8') as f:
                   for r in csv.DictReader(f):
-                      gid = r['gid']
-                      key = (gid, r['date'])
-                      g = games.setdefault(key, {'runs':0, 'season':int(r['season'])})
-                      g['runs'] += int(float(r['i2_runs'] or 0))
+                      k=r['gid']; i2[k]=i2.get(k,0)+int(float(r['i2_runs'] or 0))
 
-          order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
-          agg = {d: {'n':0,'u':0,'o':0,'runs':0,'z':0,'one':0,'two_plus':0} for d in order}
-          yearly = collections.defaultdict(lambda: {d:[0,0] for d in order})
+          records=[]
+          for year in range(2021,2026):
+              root=f'/tmp/retro/{year}'
+              gf=findfile(root,'gameinfo.csv'); pf=findfile(root,'pitching.csv')
+              print('FILES',year,gf,pf)
+              with open(gf,newline='',encoding='utf-8-sig') as f:
+                  gr=list(csv.DictReader(f))
+              with open(pf,newline='',encoding='utf-8-sig') as f:
+                  pr=list(csv.DictReader(f))
+              print('GAMEINFO_HEADER',year,list(gr[0].keys()))
+              print('PITCHING_HEADER',year,list(pr[0].keys()))
 
-          for (gid, ds), g in games.items():
-              dt = datetime.datetime.strptime(ds, '%Y%m%d')
-              d = dt.strftime('%A')
-              a = agg[d]
-              a['n'] += 1
-              a['runs'] += g['runs']
-              if g['runs'] == 0:
-                  a['u'] += 1; a['z'] += 1
-              else:
-                  a['o'] += 1
-              if g['runs'] == 1: a['one'] += 1
-              if g['runs'] >= 2: a['two_plus'] += 1
-              yearly[g['season']][d][0] += 1
-              yearly[g['season']][d][1] += (g['runs'] == 0)
+              # Aggregate starter workload and ERA by pitcher-team-season.
+              st=collections.defaultdict(lambda:{'gs':0,'er':0.0,'outs':0.0})
+              starters_by_game=collections.defaultdict(dict)
+              for r in pr:
+                  try: seq=int(float(r.get('p_seq') or 0))
+                  except: continue
+                  if seq!=1: continue
+                  gid=r['gid']; team=r['team']; pid=r['id']
+                  # Retrosheet simplified files should expose value rows only; ignore duplicate stattype if present.
+                  stattype=(r.get('stattype') or 'value').lower()
+                  if stattype not in ('value',''): continue
+                  er=float(r.get('p_er') or 0); outs=float(r.get('p_ipouts') or 0)
+                  d=st[(team,pid)]; d['gs']+=1; d['er']+=er; d['outs']+=outs
+                  starters_by_game[gid][team]=pid
 
-          print('OVERALL')
-          print('day,games,under_pct,over_pct,avg_i2_runs,zero_pct,one_pct,two_plus_pct,fair_under_american')
-          for d in order:
-              a=agg[d]; n=a['n']; p=a['u']/n
-              if p >= .5: fair = -100*p/(1-p)
-              else: fair = 100*(1-p)/p
-              print(f"{d},{n},{100*p:.3f},{100*a['o']/n:.3f},{a['runs']/n:.4f},{100*a['z']/n:.3f},{100*a['one']/n:.3f},{100*a['two_plus']/n:.3f},{fair:.1f}")
+              # For each team: five most-used starters; among them, best three by ERA.
+              byteam=collections.defaultdict(list)
+              for (team,pid),d in st.items():
+                  era=(d['er']*27/d['outs']) if d['outs'] else 99.0
+                  byteam[team].append((pid,d['gs'],era))
+              top3_quality={}
+              core3_gs={}
+              for team,vals in byteam.items():
+                  top5=sorted(vals,key=lambda x:(-x[1],x[2]))[:5]
+                  top3_quality[team]={x[0] for x in sorted(top5,key=lambda x:(x[2],-x[1]))[:3]}
+                  core3_gs[team]={x[0] for x in sorted(vals,key=lambda x:(-x[1],x[2]))[:3]}
 
-          print('\nBY_SEASON')
-          print('season,day,games,under_pct')
-          for season in sorted(yearly):
-              for d in order:
-                  n,u = yearly[season][d]
-                  if n:
-                      print(f'{season},{d},{n},{100*u/n:.3f}')
+              for g in gr:
+                  gid=g.get('gid')
+                  if gid not in i2: continue
+                  # Daily-log gameinfo uses visteam/hometeam; fall back to visitor/home variants.
+                  away=g.get('visteam') or g.get('visitor') or g.get('away') or g.get('awayteam')
+                  home=g.get('hometeam') or g.get('home') or g.get('home_team')
+                  if not away or not home: continue
+                  sp=starters_by_game.get(gid,{})
+                  ap=sp.get(away); hp=sp.get(home)
+                  if not ap or not hp: continue
+                  date_s=g.get('date') or gid[3:11]
+                  try:
+                      dt=datetime.datetime.strptime(date_s.replace('-',''),'%Y%m%d')
+                  except:
+                      continue
+                  att=float(g.get('attendance') or 0)
+                  records.append({'year':year,'gid':gid,'day':dt.strftime('%A'),'home':home,'away':away,'att':att,
+                                  'under':i2[gid]==0,
+                                  'away_topq':ap in top3_quality.get(away,set()), 'home_topq':hp in top3_quality.get(home,set()),
+                                  'away_core':ap in core3_gs.get(away,set()), 'home_core':hp in core3_gs.get(home,set())})
 
-          total_n=sum(a['n'] for a in agg.values())
-          total_u=sum(a['u'] for a in agg.values())
-          print(f'\nBASELINE,{total_n},{100*total_u/total_n:.3f}')
-          print('\nDIFF_VS_BASELINE')
-          base=100*total_u/total_n
-          for d in order:
-              a=agg[d]
-              print(f"{d},{100*a['u']/a['n']-base:+.3f}pp")
+          print('MATCHED_GAMES',len(records))
+          days=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+          print('\nWEEKDAY_STARTERS')
+          print('day,games,starter_sides,top3_quality_pct,both_top3_quality_pct,core3_gs_pct,both_core3_pct,i2_under_pct,avg_attendance')
+          for day in days:
+              rr=[r for r in records if r['day']==day]
+              if not rr: continue
+              sides=2*len(rr)
+              tq=sum(r['away_topq']+r['home_topq'] for r in rr)
+              bothq=sum(r['away_topq'] and r['home_topq'] for r in rr)
+              core=sum(r['away_core']+r['home_core'] for r in rr)
+              bothcore=sum(r['away_core'] and r['home_core'] for r in rr)
+              under=sum(r['under'] for r in rr)
+              at=[r['att'] for r in rr if r['att']>0]
+              print(f"{day},{len(rr)},{sides},{100*tq/sides:.3f},{100*bothq/len(rr):.3f},{100*core/sides:.3f},{100*bothcore/len(rr):.3f},{100*under/len(rr):.3f},{statistics.mean(at):.1f}")
+
+          # Attendance relative to each home-team/season median.
+          med={}
+          for key in {(r['year'],r['home']) for r in records}:
+              vals=[r['att'] for r in records if (r['year'],r['home'])==key and r['att']>0]
+              if vals: med[key]=statistics.median(vals)
+          for r in records:
+              m=med.get((r['year'],r['home']))
+              r['att_rel']=r['att']/m if m and r['att']>0 else None
+          avail=[r for r in records if r['att_rel'] is not None]
+          vals=sorted(r['att_rel'] for r in avail)
+          def q(p): return vals[min(len(vals)-1,max(0,int(p*(len(vals)-1))))]
+          cuts=[q(.25),q(.50),q(.75)]
+          print('\nATTENDANCE_QUARTILES_RELATIVE_TO_HOME_TEAM_SEASON_MEDIAN',cuts)
+          print('quartile,games,mean_att_rel,top3_quality_pct,both_top3_quality_pct,i2_under_pct')
+          for qi in range(4):
+              lo=-1e9 if qi==0 else cuts[qi-1]; hi=1e9 if qi==3 else cuts[qi]
+              rr=[r for r in avail if (r['att_rel']<=hi and (qi==0 or r['att_rel']>lo))]
+              sides=2*len(rr); tq=sum(r['away_topq']+r['home_topq'] for r in rr); both=sum(r['away_topq'] and r['home_topq'] for r in rr)
+              print(f"Q{qi+1},{len(rr)},{statistics.mean(r['att_rel'] for r in rr):.3f},{100*tq/sides:.3f},{100*both/len(rr):.3f},{100*sum(r['under'] for r in rr)/len(rr):.3f}")
           PY
