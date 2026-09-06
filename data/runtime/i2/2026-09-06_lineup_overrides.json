@@ -1,0 +1,590 @@
+{
+  "date": "2026-09-06",
+  "generatedAt": "2026-09-06T11:28:43.402Z",
+  "governance": {
+    "sourceStatus": "PRELIMINARY_BASEBALL_ONLY",
+    "methodology": "Use each team's most recent completed MLB game starting batting order as the provisional batting order when today's MLB feed does not yet contain a complete confirmed order. MLB feed-confirmed orders always override this file.",
+    "source": "MLB Stats API only",
+    "marketDataUsed": false,
+    "note": "Preliminary lineups are explicitly provisional and must be replaced by confirmed MLB batting orders when available."
+  },
+  "lookback": {
+    "startDate": "2026-08-30",
+    "endDate": "2026-09-05",
+    "days": 7
+  },
+  "games": {
+    "822848": {
+      "matchup": "Tampa Bay Rays @ Texas Rangers",
+      "away": [
+        "Yandy Díaz",
+        "Jonathan Aranda",
+        "Junior Caminero",
+        "Liam Hicks",
+        "Chandler Simpson",
+        "Victor Mesa Jr.",
+        "Cedric Mullins",
+        "Richie Palacios",
+        "Taylor Walls"
+      ],
+      "home": [
+        "Joc Pederson",
+        "Corey Seager",
+        "Wyatt Langford",
+        "Brandon Nimmo",
+        "Ezequiel Duran",
+        "Jake Burger",
+        "Evan Carter",
+        "Cody Freeman",
+        "Danny Jansen"
+      ]
+    },
+    "823091": {
+      "matchup": "Athletics @ Seattle Mariners",
+      "away": [
+        "Henry Bolte",
+        "Jeff McNeil",
+        "Zack Gelof",
+        "Lawrence Butler",
+        "Jonah Heim",
+        "Max Muncy",
+        "Donovan Walton",
+        "Alika Williams",
+        "Denzel Clarke"
+      ],
+      "home": [
+        "Randy Arozarena",
+        "Dominic Canzone",
+        "Julio Rodríguez",
+        "Cal Raleigh",
+        "Josh Naylor",
+        "J.P. Crawford",
+        "Taylor Ward",
+        "Cole Young",
+        "Weston Wilson"
+      ]
+    },
+    "823253": {
+      "matchup": "New York Yankees @ San Diego Padres",
+      "away": [
+        "Paul Goldschmidt",
+        "Cody Bellinger",
+        "Amed Rosario",
+        "Ben Rice",
+        "Heliot Ramos",
+        "George Lombard Jr.",
+        "Spencer Jones",
+        "José Caballero",
+        "Austin Wells"
+      ],
+      "home": [
+        "Fernando Tatis Jr.",
+        "Xander Bogaerts",
+        "Manny Machado",
+        "Ty France",
+        "Jackson Merrill",
+        "Luis Campusano",
+        "Freddy Fermin",
+        "Jake Cronenworth",
+        "Samad Taylor"
+      ]
+    },
+    "823336": {
+      "matchup": "Los Angeles Angels @ Pittsburgh Pirates",
+      "away": [
+        "Zach Neto",
+        "Mike Trout",
+        "Wade Meckler",
+        "Vaughn Grissom",
+        "Moisés Ballesteros",
+        "Christian Moore",
+        "Josh Lowe",
+        "Denzer Guzman",
+        "Adam Frazier"
+      ],
+      "home": [
+        "Konnor Griffin",
+        "Esmerlyn Valdez",
+        "Bryan Reynolds",
+        "Oneil Cruz",
+        "Nick Gonzales",
+        "Rafael Flores Jr.",
+        "Jared Triolo",
+        "Jake Mangum",
+        "Nick Yorke"
+      ]
+    },
+    "823417": {
+      "matchup": "Atlanta Braves @ Philadelphia Phillies",
+      "away": [
+        "Drake Baldwin",
+        "Ronald Acuña Jr.",
+        "Matt Olson",
+        "Michael Harris II",
+        "Mauricio Dubón",
+        "Ozzie Albies",
+        "Dominic Smith",
+        "Austin Riley",
+        "Ha-Seong Kim"
+      ],
+      "home": [
+        "Kyle Schwarber",
+        "Trea Turner",
+        "Bryce Harper",
+        "Luis Arraez",
+        "Alec Bohm",
+        "Edmundo Sosa",
+        "J.T. Realmuto",
+        "Bryson Stott",
+        "Derek Hill"
+      ]
+    },
+    "823578": {
+      "matchup": "San Francisco Giants @ New York Mets",
+      "away": [
+        "Jonah Cox",
+        "Rafael Devers",
+        "Bryce Eldridge",
+        "Osleivis Basabe",
+        "Turner Hill",
+        "Andrew Knizner",
+        "Shay Whitcomb",
+        "Grant McCray",
+        "Christian Koss"
+      ],
+      "home": [
+        "Francisco Lindor",
+        "Juan Soto",
+        "Bo Bichette",
+        "Carson Benge",
+        "Jared Young",
+        "Marcus Semien",
+        "A.J. Ewing",
+        "Francisco Alvarez",
+        "Brett Baty"
+      ]
+    },
+    "823822": {
+      "matchup": "Chicago Cubs @ Miami Marlins",
+      "away": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Michael Busch",
+        "Alex Bregman",
+        "Ian Happ",
+        "Nico Hoerner",
+        "Pedro Ramírez",
+        "Michael Conforto",
+        "Miguel Amaya"
+      ],
+      "home": [
+        "Kyle Stowers",
+        "Heriberto Hernández",
+        "Griffin Conine",
+        "Otto Lopez",
+        "Jakob Marsee",
+        "Owen Caissie",
+        "Joe Mack",
+        "Graham Pauley",
+        "Javier Sanoja"
+      ]
+    },
+    "823903": {
+      "matchup": "Washington Nationals @ Los Angeles Dodgers",
+      "away": [
+        "James Wood",
+        "Daylen Lile",
+        "Abimelec Ortiz",
+        "CJ Abrams",
+        "Brady House",
+        "Jorbit Vivas",
+        "José Tena",
+        "Keibert Ruiz",
+        "Dylan Crews"
+      ],
+      "home": [
+        "Tommy Edman",
+        "Freddie Freeman",
+        "Mookie Betts",
+        "Kyle Tucker",
+        "Teoscar Hernández",
+        "Hunter Feduccia",
+        "Alex Freeland",
+        "Alex Call",
+        "Enrique Hernández"
+      ]
+    },
+    "824065": {
+      "matchup": "Toronto Blue Jays @ Kansas City Royals",
+      "away": [
+        "Brett Bateman",
+        "George Springer",
+        "Vladimir Guerrero Jr.",
+        "Alejandro Kirk",
+        "Nathan Lukes",
+        "Kazuma Okamoto",
+        "Andrés Giménez",
+        "Ernie Clement",
+        "Myles Straw"
+      ],
+      "home": [
+        "Carter Jensen",
+        "Bobby Witt Jr.",
+        "Jac Caglianone",
+        "Salvador Perez",
+        "Vinnie Pasquantino",
+        "Michael Massey",
+        "John Rave",
+        "Josh Rojas",
+        "Isaac Collins"
+      ]
+    },
+    "824142": {
+      "matchup": "Arizona Diamondbacks @ Houston Astros",
+      "away": [
+        "Lars Nootbaar",
+        "Geraldo Perdomo",
+        "Gabriel Moreno",
+        "Ketel Marte",
+        "Corbin Carroll",
+        "Nolan Arenado",
+        "Max Kepler",
+        "Tim Tawa",
+        "Ryan Waldschmidt"
+      ],
+      "home": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Daulton Varsho",
+        "Christian Walker",
+        "Yainer Diaz",
+        "Taylor Trammell",
+        "Cam Smith"
+      ]
+    },
+    "824309": {
+      "matchup": "St. Louis Cardinals @ Colorado Rockies",
+      "away": [
+        "Bryan Torres",
+        "Iván Herrera",
+        "Alec Burleson",
+        "Jordan Walker",
+        "Leo Bernal",
+        "Joshua Báez",
+        "Nolan Gorman",
+        "Thomas Saggese",
+        "Nathan Church"
+      ],
+      "home": [
+        "Jake McCarthy",
+        "Connor Norby",
+        "Hunter Goodman",
+        "TJ Rumfield",
+        "Cole Carrigg",
+        "Jordan Beck",
+        "Troy Johnston",
+        "Adael Amador",
+        "Ezequiel Tovar"
+      ]
+    },
+    "824385": {
+      "matchup": "Detroit Tigers @ Cleveland Guardians",
+      "away": [
+        "Gleyber Torres",
+        "Hao-Yu Lee",
+        "Riley Greene",
+        "Dillon Dingler",
+        "Ben Malgeri",
+        "Spencer Torkelson",
+        "John Peck",
+        "Zach McKinstry",
+        "Javier Báez"
+      ],
+      "home": [
+        "Steven Kwan",
+        "Angel Martínez",
+        "José Ramírez",
+        "Jo Adell",
+        "David Fry",
+        "Angel Genao",
+        "Petey Halpin",
+        "Austin Hedges",
+        "Brayan Rocchio"
+      ]
+    },
+    "824469": {
+      "matchup": "Milwaukee Brewers @ Cincinnati Reds",
+      "away": [
+        "Jackson Chourio",
+        "Luis Lara",
+        "William Contreras",
+        "Andrew Vaughn",
+        "Garrett Mitchell",
+        "Joey Ortiz",
+        "Cooper Pratt",
+        "Gary Sánchez",
+        "David Hamilton"
+      ],
+      "home": [
+        "Héctor Rodríguez",
+        "Elly De La Cruz",
+        "Sal Stewart",
+        "JJ Bleday",
+        "Tyler Stephenson",
+        "Eugenio Suárez",
+        "Jose Trevino",
+        "Carlos Jorge",
+        "Matt McLain"
+      ]
+    },
+    "824552": {
+      "matchup": "Minnesota Twins @ Chicago White Sox",
+      "away": [
+        "Luke Keaschall",
+        "Kaelen Culpepper",
+        "Ryan Jeffers",
+        "Josh Bell",
+        "Royce Lewis",
+        "Kody Clemens",
+        "Brooks Lee",
+        "Gabriel Gonzalez",
+        "Ryan Kreidler"
+      ],
+      "home": [
+        "Sam Antonacci",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Colson Montgomery",
+        "Braden Montgomery",
+        "Chase Meidroth",
+        "Tristan Peters",
+        "Jake Rogers"
+      ]
+    },
+    "824794": {
+      "matchup": "Boston Red Sox @ Baltimore Orioles",
+      "away": [
+        "Roman Anthony",
+        "Mickey Gasper",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Nick Sogard",
+        "Isiah Kiner-Falefa",
+        "Jarren Duran",
+        "Eli White",
+        "Connor Wong"
+      ],
+      "home": [
+        "Jackson Holliday",
+        "Blaze Alexander",
+        "Gunnar Henderson",
+        "Pete Alonso",
+        "Samuel Basallo",
+        "Heston Kjerstad",
+        "Christian Encarnacion-Strand",
+        "Dylan Beavers",
+        "Colton Cowser"
+      ]
+    }
+  },
+  "audit": [
+    {
+      "gamePk": 824469,
+      "matchup": "Milwaukee Brewers @ Cincinnati Reds",
+      "awayTeamId": 158,
+      "homeTeamId": 113,
+      "awayPriorGamePk": 824468,
+      "awayPriorGameDate": "2026-09-05T22:40:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824468,
+      "homePriorGameDate": "2026-09-05T22:40:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823417,
+      "matchup": "Atlanta Braves @ Philadelphia Phillies",
+      "awayTeamId": 144,
+      "homeTeamId": 143,
+      "awayPriorGamePk": 823419,
+      "awayPriorGameDate": "2026-09-05T22:05:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823419,
+      "homePriorGameDate": "2026-09-05T22:05:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 824794,
+      "matchup": "Boston Red Sox @ Baltimore Orioles",
+      "awayTeamId": 111,
+      "homeTeamId": 110,
+      "awayPriorGamePk": 824795,
+      "awayPriorGameDate": "2026-09-05T23:05:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824795,
+      "homePriorGameDate": "2026-09-05T23:05:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823336,
+      "matchup": "Los Angeles Angels @ Pittsburgh Pirates",
+      "awayTeamId": 108,
+      "homeTeamId": 134,
+      "awayPriorGamePk": 823335,
+      "awayPriorGameDate": "2026-09-05T22:40:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823335,
+      "homePriorGameDate": "2026-09-05T22:40:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 824385,
+      "matchup": "Detroit Tigers @ Cleveland Guardians",
+      "awayTeamId": 116,
+      "homeTeamId": 114,
+      "awayPriorGamePk": 824389,
+      "awayPriorGameDate": "2026-09-05T22:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824389,
+      "homePriorGameDate": "2026-09-05T22:10:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823578,
+      "matchup": "San Francisco Giants @ New York Mets",
+      "awayTeamId": 137,
+      "homeTeamId": 121,
+      "awayPriorGamePk": 823577,
+      "awayPriorGameDate": "2026-09-05T20:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823577,
+      "homePriorGameDate": "2026-09-05T20:10:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823822,
+      "matchup": "Chicago Cubs @ Miami Marlins",
+      "awayTeamId": 112,
+      "homeTeamId": 146,
+      "awayPriorGamePk": 823823,
+      "awayPriorGameDate": "2026-09-05T20:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823823,
+      "homePriorGameDate": "2026-09-05T20:10:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 824142,
+      "matchup": "Arizona Diamondbacks @ Houston Astros",
+      "awayTeamId": 109,
+      "homeTeamId": 117,
+      "awayPriorGamePk": 824145,
+      "awayPriorGameDate": "2026-09-05T23:15:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824145,
+      "homePriorGameDate": "2026-09-05T23:15:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 824065,
+      "matchup": "Toronto Blue Jays @ Kansas City Royals",
+      "awayTeamId": 141,
+      "homeTeamId": 118,
+      "awayPriorGamePk": 824066,
+      "awayPriorGameDate": "2026-09-05T23:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824066,
+      "homePriorGameDate": "2026-09-05T23:10:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 822848,
+      "matchup": "Tampa Bay Rays @ Texas Rangers",
+      "awayTeamId": 139,
+      "homeTeamId": 140,
+      "awayPriorGamePk": 822850,
+      "awayPriorGameDate": "2026-09-05T23:05:00Z",
+      "awayError": null,
+      "homePriorGamePk": 822850,
+      "homePriorGameDate": "2026-09-05T23:05:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 824309,
+      "matchup": "St. Louis Cardinals @ Colorado Rockies",
+      "awayTeamId": 138,
+      "homeTeamId": 115,
+      "awayPriorGamePk": 824310,
+      "awayPriorGameDate": "2026-09-06T00:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824310,
+      "homePriorGameDate": "2026-09-06T00:10:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823091,
+      "matchup": "Athletics @ Seattle Mariners",
+      "awayTeamId": 133,
+      "homeTeamId": 136,
+      "awayPriorGamePk": 823094,
+      "awayPriorGameDate": "2026-09-06T01:40:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823094,
+      "homePriorGameDate": "2026-09-06T01:40:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823253,
+      "matchup": "New York Yankees @ San Diego Padres",
+      "awayTeamId": 147,
+      "homeTeamId": 135,
+      "awayPriorGamePk": 823257,
+      "awayPriorGameDate": "2026-09-05T23:15:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823257,
+      "homePriorGameDate": "2026-09-05T23:15:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 824552,
+      "matchup": "Minnesota Twins @ Chicago White Sox",
+      "awayTeamId": 142,
+      "homeTeamId": 145,
+      "awayPriorGamePk": 824553,
+      "awayPriorGameDate": "2026-09-05T23:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 824553,
+      "homePriorGameDate": "2026-09-05T23:10:00Z",
+      "homeError": null,
+      "usable": true
+    },
+    {
+      "gamePk": 823903,
+      "matchup": "Washington Nationals @ Los Angeles Dodgers",
+      "awayTeamId": 120,
+      "homeTeamId": 119,
+      "awayPriorGamePk": 823904,
+      "awayPriorGameDate": "2026-09-06T01:10:00Z",
+      "awayError": null,
+      "homePriorGamePk": 823904,
+      "homePriorGameDate": "2026-09-06T01:10:00Z",
+      "homeError": null,
+      "usable": true
+    }
+  ]
+}
