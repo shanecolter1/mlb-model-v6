@@ -1,0 +1,49 @@
+name: I2 baseball-only today
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - '.github/workflows/i2_baseball_only_today.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-baseball-only:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run current I2 baseball-only model
+        env:
+          I2_DATE: '2026-09-06'
+          I2_TRIALS: '50000'
+          I2_OUTPUT: '/tmp/2026-09-06_baseball_only_predictions.json'
+          I2_VENUE_PROFILES: 'data/runtime/i2/savant_venue_profiles_2026_3yr.json'
+        run: |
+          node src/pipeline/run_i2_today.mjs
+      - name: Apply 57.5 percent Under qualification gate
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const p='/tmp/2026-09-06_baseball_only_predictions.json';
+          const x=JSON.parse(fs.readFileSync(p,'utf8'));
+          const rows=(x.games||[]).map(g=>({gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,start:g.gameDate,status:g.status,modelStatus:g.modelStatus,lineupConfirmed:g.lineupConfirmed,awayStarter:g.awayStarter,homeStarter:g.homeStarter,under05Pct:g.under05Pct??null,over05Pct:g.over05Pct??null,fairUnder:g.fairUnder??null,qualifiesUnder:Number(g.under05Pct)>=57.5}));
+          const out={date:'2026-09-06',underQualificationThreshold:57.5,marketDataUsed:false,generatedAt:new Date().toISOString(),rows};
+          fs.writeFileSync('/tmp/2026-09-06_i2_analysis.json',JSON.stringify(out,null,2));
+          console.log(JSON.stringify(out,null,2));
+          NODE
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-baseball-only-2026-09-06
+          path: |
+            /tmp/2026-09-06_baseball_only_predictions.json
+            /tmp/2026-09-06_i2_analysis.json
+          retention-days: 90
