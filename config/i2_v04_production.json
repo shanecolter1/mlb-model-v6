@@ -1,0 +1,31 @@
+{
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "status": "PRODUCTION",
+  "promoted_on": "2026-09-06",
+  "validation_release": "i2-v0.4-production-validation-v1",
+  "gate_retest_release": "i2-v0.4-full-gate-retest-v1",
+  "local_cv": {
+    "fixed_decile_edges": [0.5238396498423443,0.5491157480364879,0.5505588397195031,0.5722073331366149,0.5765829070767106,0.5802455678499445,0.5868605910212334,0.5886883820373516,0.5947180190516053],
+    "bin_shrinkage": [200,10,10,10,10,10,10,10,10,10],
+    "anchor": "p100 total-prior Under before baseball-context logit delta"
+  },
+  "qualification_gates": {
+    "under": {
+      "threshold": 0.615,
+      "status": "PRODUCTION",
+      "development_2022_2024": {"n":472,"wins":299,"losses":173,"hit_rate":0.6334745763,"wilson_low":0.5890890448,"season_hit_rate_sd_pp":1.1255508998},
+      "validation_2025": {"n":83,"wins":54,"losses":29,"hit_rate":0.6506024096},
+      "pooled_2022_2025": {"n":555,"wins":353,"losses":202,"hit_rate":0.6360360360,"realized_fair_american":-174.7524752}
+    },
+    "over": {
+      "threshold": null,
+      "status": "NO_PRODUCTION_GATE",
+      "best_retest_candidate": {"threshold":0.495,"development_n":227,"development_hit_rate":0.5242290749,"development_season_sd_pp":4.2602084072,"validation_2025_n":20,"validation_2025_hit_rate":0.55,"pooled_n":247,"pooled_hit_rate":0.5263157895},
+      "reason": "Candidate lacks sufficient validation depth and stability for production qualification."
+    }
+  },
+  "market_isolation": {
+    "i2_derivative_price_used_for_probability_or_gate": false
+  },
+  "prospective_control": "Continue logging prior p100/v0.3 outputs in parallel through 2026."
+}
