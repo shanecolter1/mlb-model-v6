@@ -43,7 +43,6 @@ jobs:
                       lu={r.get(f'start_l{i}') for i in range(1,10) if r.get(f'start_l{i}')}
                       side='home' if r.get('vishome')=='h' else 'away'
                       g[side+'_lu']=lu if lu else None
-          # Prior-game continuity.
           apps=[]
           for g in games:
               apps += [(g['year'],g['away'],g['date'],g['gid'],'away',g),(g['year'],g['home'],g['date'],g['gid'],'home',g)]
@@ -53,7 +52,6 @@ jobs:
               lu=g.get(side+'_lu'); key=(y,team); p=prev.get(key)
               g[side+'_ret']=len(lu&p) if lu and p else None
               if lu: prev[key]=lu
-          # Series grouping.
           pairs=collections.defaultdict(list)
           for g in games: pairs[(g['year'],g['away'],g['home'])].append(g)
           for arr in pairs.values():
@@ -72,7 +70,7 @@ jobs:
               print(f'{label},{n},{100*p:.3f},{fair:.1f}')
           sun=[g for g in games if g['day']=='Sunday']
           valid=[g for g in sun if g.get('away_ret') is not None and g.get('home_ret') is not None]
-          print('LINEUP_PARSE_GAMES',sum(g.get('away_lu') and g.get('home_lu') for g in games))
+          print('LINEUP_PARSE_GAMES',sum(1 for g in games if g.get('away_lu') and g.get('home_lu')))
           print('\nWEEKDAY_LINEUP_CONTINUITY')
           print('day,games,avg_combined_returners,under_pct')
           for d in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']:
