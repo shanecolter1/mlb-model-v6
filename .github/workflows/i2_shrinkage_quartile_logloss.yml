@@ -1,0 +1,59 @@
+name: I2 shrinkage quartile logloss
+
+on:
+  push:
+    branches: [research/all-inning-engine-rebuild]
+    paths:
+      - src/analysis/i2_shrinkage_quartile_logloss.py
+      - .github/workflows/i2_shrinkage_quartile_logloss.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - name: Download permanent Phase 1 frozen store
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/phase1
+          gh release download i2-phase1-historical-store-v1 --dir /tmp/phase1 --pattern 'i2-phase1-frozen-historical-store-2021-2025.tar.gz' --clobber
+          tar -C /tmp -xzf /tmp/phase1/i2-phase1-frozen-historical-store-2021-2025.tar.gz
+      - name: Run variants
+        run: |
+          cat > /tmp/variants.json <<'JSON'
+          [
+            {"name":"p200","prior_strength":200},
+            {"name":"p100","prior_strength":100},
+            {"name":"p75","prior_strength":75},
+            {"name":"p50","prior_strength":50},
+            {"name":"p25","prior_strength":25},
+            {"name":"p10","prior_strength":10},
+            {"name":"p0","prior_strength":0}
+          ]
+          JSON
+          python - <<'PY'
+          import json, subprocess
+          from pathlib import Path
+          variants=json.loads(Path('/tmp/variants.json').read_text())
+          root=Path('/tmp/i2_shrinkage_logloss_variants'); root.mkdir(parents=True,exist_ok=True)
+          for v in variants:
+              subprocess.run(['python','src/analysis/i2_strict_asof_replay_canonical_codes.py','--master','/tmp/i2_phase1_store/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz','--games','/tmp/i2_phase1_store/mlb_2021_2025/games.parquet','--team-asof','/tmp/i2_phase1_store/team_asof.parquet','--output-dir',str(root/v['name']),'--prior-strength',str(v['prior_strength']),'--ridge-lambda','10'],check=True)
+          PY
+      - name: Cohort log loss
+        run: |
+          python src/analysis/i2_shrinkage_quartile_logloss.py --variants-dir /tmp/i2_shrinkage_logloss_variants --manifest /tmp/variants.json --output-dir /tmp/i2_shrinkage_logloss
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-shrinkage-quartile-logloss
+          path: /tmp/i2_shrinkage_logloss/fixed_cohort_logloss_by_shrinkage.csv
