@@ -1,6 +1,6 @@
 {
   "date": "2026-09-06",
-  "generatedAt": "2026-09-06T11:28:43.402Z",
+  "generatedAt": "2026-09-06T17:08:04.105Z",
   "governance": {
     "sourceStatus": "PRELIMINARY_BASEBALL_ONLY",
     "methodology": "Use each team's most recent completed MLB game starting batting order as the provisional batting order when today's MLB feed does not yet contain a complete confirmed order. MLB feed-confirmed orders always override this file.",
