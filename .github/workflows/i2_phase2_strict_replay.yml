@@ -2,15 +2,23 @@ name: I2 Phase 2 - strict replay
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - I2 Phase 1 Bootstrap - preserved historical store
+    types:
+      - completed
 
 permissions:
   contents: write
 
 jobs:
   replay:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -30,7 +38,7 @@ jobs:
 
       - name: Generate chronological strict-asof I2 predictions
         run: |
-          python src/analysis/i2_strict_asof_replay_fixed.py \
+          python src/analysis/i2_strict_asof_replay_canonical_codes.py \
             --master /tmp/i2_phase1_store/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz \
             --games /tmp/i2_phase1_store/mlb_2021_2025/games.parquet \
             --team-asof /tmp/i2_phase1_store/team_asof.parquet \
