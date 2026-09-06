@@ -1,0 +1,90 @@
+name: I2 Phase 1 Bootstrap - preserved historical store
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - .github/workflows/i2_phase1_bootstrap_preserved.yml
+      - src/analysis/i2_strict_asof_replay_canonical_codes.py
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  freeze-store:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download preserved normalized seasons
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i2-strict-normalized-*
+          path: /tmp/season_artifacts
+          run-id: 34027415084
+          github-token: ${{ github.token }}
+
+      - name: Merge normalized seasons
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Build strictly prior-date team feature history
+        run: |
+          python src/ingestion/build_asof_team_rates_fast.py \
+            --plate-appearances /tmp/mlb_2021_2025/plate_appearances.parquet \
+            --output /tmp/team_asof.parquet \
+            --shrink-strength 200
+
+      - name: Fetch checksum-verified canonical master
+        run: |
+          python src/ingestion/fetch_historical_joined_master.py --output-dir /tmp/canonical
+
+      - name: Freeze reusable phase-1 store
+        run: |
+          mkdir -p /tmp/i2_phase1_store/mlb_2021_2025 /tmp/i2_phase1_store/canonical
+          cp /tmp/mlb_2021_2025/*.parquet /tmp/i2_phase1_store/mlb_2021_2025/
+          cp /tmp/mlb_2021_2025/*.json /tmp/i2_phase1_store/mlb_2021_2025/ 2>/dev/null || true
+          cp /tmp/team_asof.parquet /tmp/i2_phase1_store/team_asof.parquet
+          cp /tmp/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz /tmp/i2_phase1_store/canonical/
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          import pandas as pd
+          root=Path('/tmp/i2_phase1_store')
+          files=[]
+          for p in sorted(root.rglob('*')):
+              if p.is_file():
+                  files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          g=pd.read_parquet(root/'mlb_2021_2025/games.parquet')
+          pa=pd.read_parquet(root/'mlb_2021_2025/plate_appearances.parquet')
+          ta=pd.read_parquet(root/'team_asof.parquet')
+          manifest={'status':'FROZEN','phase':1,'date_range':'2021-2025','market_data_used':False,'games':len(g),'plate_appearances':len(pa),'team_asof_rows':len(ta),'source_run':34027415084,'files':files}
+          (root/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+          PY
+          tar -C /tmp -czf /tmp/i2-phase1-frozen-historical-store-2021-2025.tar.gz i2_phase1_store
+          sha256sum /tmp/i2-phase1-frozen-historical-store-2021-2025.tar.gz > /tmp/i2-phase1-frozen-historical-store-2021-2025.sha256
+
+      - name: Publish permanent GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="i2-phase1-historical-store-v1"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "I2 Phase 1 historical store v1" --notes "Frozen reusable 2021-2025 MLB historical source layer for I2 retrospective analysis. Bootstrapped from preserved normalized artifacts."
+          gh release upload "$TAG" /tmp/i2-phase1-frozen-historical-store-2021-2025.tar.gz /tmp/i2-phase1-frozen-historical-store-2021-2025.sha256 --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-phase1-frozen-historical-store
+          path: |
+            /tmp/i2-phase1-frozen-historical-store-2021-2025.tar.gz
+            /tmp/i2-phase1-frozen-historical-store-2021-2025.sha256
+          retention-days: 90
