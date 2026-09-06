@@ -1,0 +1,76 @@
+name: I2 Phase 2 - strict replay
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download permanent Phase 1 frozen store
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/phase1
+          gh release download i2-phase1-historical-store-v1 --dir /tmp/phase1 --pattern 'i2-phase1-frozen-historical-store-2021-2025.tar.gz' --clobber
+          tar -C /tmp -xzf /tmp/phase1/i2-phase1-frozen-historical-store-2021-2025.tar.gz
+          test -f /tmp/i2_phase1_store/manifest.json
+          test -f /tmp/i2_phase1_store/mlb_2021_2025/games.parquet
+          test -f /tmp/i2_phase1_store/team_asof.parquet
+          test -f /tmp/i2_phase1_store/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz
+
+      - name: Generate chronological strict-asof I2 predictions
+        run: |
+          python src/analysis/i2_strict_asof_replay_fixed.py \
+            --master /tmp/i2_phase1_store/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz \
+            --games /tmp/i2_phase1_store/mlb_2021_2025/games.parquet \
+            --team-asof /tmp/i2_phase1_store/team_asof.parquet \
+            --output-dir /tmp/i2_phase2_replay/strict_asof_replay \
+            --prior-strength 100 \
+            --ridge-lambda 10
+
+      - name: Create total-only baseline and freeze Phase 2
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          import pandas as pd
+          root=Path('/tmp/i2_phase2_replay')
+          p=root/'strict_asof_replay/strict_oos_predictions.csv'
+          x=pd.read_csv(p)
+          x['context_prediction']=x['prediction']
+          x['prediction']=x['baseline_prediction']
+          x.to_csv(root/'strict_asof_replay/baseline_oos_predictions.csv',index=False)
+          files=[]
+          for f in sorted(root.rglob('*')):
+              if f.is_file(): files.append({'path':str(f.relative_to(root)),'bytes':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()})
+          m={'status':'FROZEN','phase':2,'prediction_rows':len(x),'files':files,'source_release':'i2-phase1-historical-store-v1'}
+          (root/'phase2_manifest.json').write_text(json.dumps(m,indent=2)+'\n')
+          PY
+          tar -C /tmp -czf /tmp/i2-phase2-strict-replay-v1.tar.gz i2_phase2_replay
+          sha256sum /tmp/i2-phase2-strict-replay-v1.tar.gz > /tmp/i2-phase2-strict-replay-v1.sha256
+
+      - name: Publish permanent GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="i2-phase2-strict-replay-v1"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "I2 Phase 2 strict replay v1" --notes "Frozen chronological out-of-sample I2 predictions and model-vs-total-only metrics derived from Phase 1."
+          gh release upload "$TAG" /tmp/i2-phase2-strict-replay-v1.tar.gz /tmp/i2-phase2-strict-replay-v1.sha256 --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-phase2-strict-replay
+          path: |
+            /tmp/i2-phase2-strict-replay-v1.tar.gz
+            /tmp/i2-phase2-strict-replay-v1.sha256
+          retention-days: 90
