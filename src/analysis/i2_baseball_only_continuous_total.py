@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, math
+import argparse, json
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -70,26 +70,27 @@ def predict(beta,X): return 1/(1+np.exp(-np.clip(X@beta,-40,40)))
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--phase1',required=True); ap.add_argument('--v04',required=True); ap.add_argument('--out',required=True)
     a=ap.parse_args(); out=Path(a.out); out.mkdir(parents=True,exist_ok=True)
-    master=next(Path(a.phase1).rglob('MLB_Game_Stats_Joined_2021_2025.csv.gz')); d=pd.read_csv(master,low_memory=False)
+    phase=Path(a.phase1)
+    master=next(phase.rglob('MLB_Game_Stats_Joined_2021_2025.csv.gz')); d=pd.read_csv(master,low_memory=False)
     if 'benchmark_matched' in d.columns: d=d[d.benchmark_matched==True].copy()
     d['game_date']=pd.to_datetime(d['game_date'],errors='coerce').dt.normalize(); sca,sch=find_score_cols(d)
     d['away_score_num']=pd.to_numeric(d[sca],errors='coerce'); d['home_score_num']=pd.to_numeric(d[sch],errors='coerce'); d['i2_runs']=pd.to_numeric(d['inning2_total_runs'],errors='coerce'); d['actual_under']=(d.i2_runs==0).astype(int)
-    d=d.dropna(subset=['game_date','away_score_num','home_score_num','i2_runs']).copy(); d=build_continuous_total(d)
+    d=d.dropna(subset=['game_date','away_score_num','home_score_num','i2_runs']).copy(); d['away_team_code']=d.away_team_code.map(norm_code); d['home_team_code']=d.home_team_code.map(norm_code); d=build_continuous_total(d)
+
+    # Map canonical rows to StatsAPI game_id using normalized game table. This gives an exact key shared by v0.4 OOS predictions.
+    gp=next(phase.rglob('games.parquet')); games=pd.read_parquet(gp)
+    games['game_date']=pd.to_datetime(games['game_date'],errors='coerce').dt.normalize(); games['away_team_code']=games['away_team'].map(norm_code); games['home_team_code']=games['home_team'].map(norm_code)
+    games=games.sort_values(['game_date','away_team_code','home_team_code','game_id']).copy(); games['_seq']=games.groupby(['game_date','away_team_code','home_team_code']).cumcount()
+    d=d.sort_values(['game_date','away_team_code','home_team_code','retro_game_id']).copy(); d['_seq']=d.groupby(['game_date','away_team_code','home_team_code']).cumcount()
+    d=d.merge(games[['game_id','game_date','away_team_code','home_team_code','_seq']],on=['game_date','away_team_code','home_team_code','_seq'],how='left')
+    map_rate=float(d.game_id.notna().mean()); print('canonical_to_game_id_rate',map_rate)
+
     vp=next(Path(a.v04).rglob('v04_oos_predictions.csv')); v=pd.read_csv(vp)
-    v['game_date']=pd.to_datetime(v['game_date'],errors='coerce').dt.normalize() if 'game_date' in v.columns else pd.NaT
-    if 'retro_game_id' in d.columns and 'retro_game_id' in v.columns: m=v.merge(d,on='retro_game_id',how='left',suffixes=('','_hist'))
-    else:
-        for c in ['away_team_code','home_team_code']:
-            if c in v.columns: v[c]=v[c].map(norm_code)
-            d[c]=d[c].map(norm_code)
-        keys=[c for c in ['season','game_date','away_team_code','home_team_code','game_number'] if c in v.columns and c in d.columns]
-        if 'game_number' not in keys:
-            d=d.sort_values(['game_date','away_team_code','home_team_code']).copy(); d['_seq']=d.groupby(['game_date','away_team_code','home_team_code']).cumcount()
-            v=v.sort_values(['game_date','away_team_code','home_team_code']).copy(); v['_seq']=v.groupby(['game_date','away_team_code','home_team_code']).cumcount(); keys=[c for c in ['season','game_date','away_team_code','home_team_code','_seq'] if c in v.columns and c in d.columns]
-        m=v.merge(d[keys+['baseball_expected_total','away_expected_runs','home_expected_runs','min_team_history_games','actual_under']],on=keys,how='left')
+    m=v.merge(d[['game_id','baseball_expected_total','away_expected_runs','home_expected_runs','min_team_history_games','actual_under']],on='game_id',how='left',validate='one_to_one')
     jr=float(m.baseball_expected_total.notna().mean()); print('join_rate',jr)
     if jr<0.99: raise SystemExit('Join rate below 99%')
     m=m[m.season.isin([2022,2023,2024,2025])].copy(); m['y']=m.actual_under.astype(float)
+
     candidates=[(n,l) for n in [0,2,3,4] for l in [0.1,1.0,10.0,100.0]]; pred_rows=[]; metric=[]
     for season in [2022,2023,2024,2025]:
         tr=m[m.season<season].copy(); te=m[m.season==season].copy()
@@ -110,11 +111,11 @@ def main():
     oos=pd.concat(pred_rows,ignore_index=True); comps=[]
     for split,dd in [('ALL',oos),('DEV',oos[oos.season<=2024]),('2025',oos[oos.season==2025])]:
         for name,col in [('BASEBALL_CONTINUOUS','p_under_baseball_continuous'),('V04_LOCAL_CV','p_under_local_cv')]:
-            if col in dd.columns: comps.append({'split':split,'model':name,'n':len(dd),'logloss':logloss(dd.y,dd[col]),'brier':brier(dd.y,dd[col]),'mean_p_under':float(dd[col].mean()),'actual_under':float(dd.y.mean())})
+            comps.append({'split':split,'model':name,'n':len(dd),'logloss':logloss(dd.y,dd[col]),'brier':brier(dd.y,dd[col]),'mean_p_under':float(dd[col].mean()),'actual_under':float(dd.y.mean())})
     pd.DataFrame(metric).to_csv(out/'annual_metrics.csv',index=False); pd.DataFrame(comps).to_csv(out/'performance_comparison.csv',index=False)
-    keep=[c for c in ['season','game_date','away_team_code','home_team_code','baseball_expected_total','p_under_baseball_continuous','p_under_local_cv','actual_under','selected_knots','selected_lambda'] if c in oos.columns]; oos[keep].to_csv(out/'oos_predictions.csv',index=False)
+    oos[['game_id','season','baseball_expected_total','p_under_baseball_continuous','p_under_local_cv','actual_under','selected_knots','selected_lambda']].to_csv(out/'oos_predictions.csv',index=False)
     def moments(s):
         s=pd.Series(s).dropna(); return {'mean':float(s.mean()),'sd':float(s.std()),'skew':float(s.skew()),'excess_kurtosis':float(s.kurt()),'p01':float(s.quantile(.01)),'p05':float(s.quantile(.05)),'p50':float(s.quantile(.5)),'p95':float(s.quantile(.95)),'p99':float(s.quantile(.99))}
-    shape={'baseball_continuous':moments(oos.p_under_baseball_continuous),'v04':moments(oos.p_under_local_cv),'baseball_expected_total':moments(oos.baseball_expected_total),'score_columns':[sca,sch],'join_rate':jr,'price_used':False}
+    shape={'baseball_continuous':moments(oos.p_under_baseball_continuous),'v04':moments(oos.p_under_local_cv),'baseball_expected_total':moments(oos.baseball_expected_total),'score_columns':[sca,sch],'canonical_to_game_id_rate':map_rate,'join_rate':jr,'price_used':False}
     (out/'shape.json').write_text(json.dumps(shape,indent=2)); print(pd.DataFrame(comps).to_string(index=False)); print(json.dumps(shape,indent=2))
 if __name__=='__main__': main()
