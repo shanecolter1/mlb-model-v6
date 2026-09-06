@@ -46,6 +46,26 @@ jobs:
           PYTHONPATH=. python src/ingestion/build_asof_entity_rates_fast.py --plate-appearances "$PROC/plate_appearances.parquet" --output /tmp/entity_asof.parquet --shrink-strength 50
           PYTHONPATH=. python src/ingestion/build_asof_team_rates_fast.py --plate-appearances "$PROC/plate_appearances.parquet" --output /tmp/team_asof.parquet --shrink-strength 200
           PYTHONPATH=. python src/ingestion/assemble_reusable_asof_store.py --processed-dir "$PROC" --entity-asof /tmp/entity_asof.parquet --team-asof /tmp/team_asof.parquet --output-dir /tmp/reusable
+          python - <<'PY'
+          import pandas as pd
+          p='/tmp/reusable/inning_outcomes.parquet'
+          d=pd.read_parquet(p)
+          print('inning_outcomes columns:', list(d.columns))
+          def pick(cands):
+              for c in cands:
+                  if c in d.columns: return c
+              return None
+          hc=pick(['home_runs_game','home_score_game','home_final_runs','home_score','home_runs'])
+          ac=pick(['away_runs_game','away_score_game','away_final_runs','away_score','away_runs'])
+          if hc is None or ac is None:
+              raise SystemExit(f'Could not identify final score columns: home={hc} away={ac}')
+          d['home_runs']=pd.to_numeric(d[hc],errors='coerce')
+          d['away_runs']=pd.to_numeric(d[ac],errors='coerce')
+          if 'total_runs' not in d.columns:
+              d['total_runs']=d['home_runs']+d['away_runs']
+          d.to_parquet(p,index=False)
+          print('normalized final scores from',hc,ac)
+          PY
       - name: Run parent-style experiment
         run: |
           PYTHONPATH=. python src/analysis/i2_parent_style_continuous_total.py --phase1 /tmp/reusable --v04 /tmp/v04/ex --out /tmp/out
