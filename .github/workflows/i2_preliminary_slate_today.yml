@@ -1,0 +1,121 @@
+name: Run preliminary I2 slate today
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_preliminary_slate_today.yml'
+      - 'src/pipeline/build_preliminary_lineups_from_last_game.mjs'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'YYYY-MM-DD'
+        required: false
+      trials:
+        description: 'Monte Carlo trials per game'
+        required: false
+        default: '50000'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i2-preliminary-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  run-preliminary-slate:
+    runs-on: ubuntu-latest
+    env:
+      SPORTSBOOK_DATA_SOURCE: THE_ODDS_API
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Resolve parameters
+        id: params
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE_INPUT='${{ inputs.date }}'
+          TRIALS_INPUT='${{ inputs.trials }}'
+          if [ -z "$DATE_INPUT" ]; then DATE_INPUT="$(date -u +%F)"; fi
+          if [ -z "$TRIALS_INPUT" ]; then TRIALS_INPUT='50000'; fi
+          echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
+          echo "trials=$TRIALS_INPUT" >> "$GITHUB_OUTPUT"
+
+      - name: Build baseball-only preliminary lineups
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_LINEUP_OVERRIDES: data/runtime/i2/${{ steps.params.outputs.date }}_lineup_overrides.json
+          I2_PRELIM_LOOKBACK_DAYS: '7'
+        run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
+
+      - name: Capture approved pregame total run environment
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_RUN_ENVIRONMENT: data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Run full preliminary I2 model
+        env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_CUTOFF: '1970-01-01T00:00:00Z'
+          I2_TRIALS: ${{ steps.params.outputs.trials }}
+          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_predictions.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+          I2_LINEUP_OVERRIDES: data/runtime/i2/${{ steps.params.outputs.date }}_lineup_overrides.json
+          I2_RUN_ENVIRONMENT: data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json
+          I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Apply qualification gate and write summary
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs=require('fs');
+          const d=process.env.I2_DATE;
+          const p=`data/runtime/i2/${d}_preliminary_predictions.json`;
+          const out=JSON.parse(fs.readFileSync(p,'utf8'));
+          const rows=(out.ranking||[]).map(r=>({
+            rank:r.rank,gamePk:r.gamePk,matchup:r.matchup,under05Pct:r.under05Pct,over05Pct:r.over05Pct,
+            fairUnder:r.fairUnder,fairOver:r.fairOver,total:r.runEnvironment?.fullGameTotal??null,
+            predictionClass:r.predictionClass||null,lineupSource:r.lineupSource||null,
+            underQualified:Number(r.under05Pct)>=57.5
+          }));
+          const summary={date:d,generatedAt:new Date().toISOString(),underThresholdPct:57.5,projectedGames:rows.length,qualifiedUnders:rows.filter(x=>x.underQualified),ranking:rows};
+          fs.writeFileSync(`data/runtime/i2/${d}_preliminary_summary.json`,JSON.stringify(summary,null,2));
+          console.log(JSON.stringify(summary,null,2));
+          NODE
+
+      - name: Probe derivative markets only after predictions are frozen
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_predictions.json
+          I2_MARKET_CATALOG: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_event_market_catalog.json
+        run: node src/pipeline/probe_i2_event_markets.mjs
+
+      - name: Commit preliminary artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE='${{ steps.params.outputs.date }}'
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add \
+            data/runtime/i2/${DATE}_lineup_overrides.json \
+            data/runtime/i2/${DATE}_run_environment.json \
+            data/runtime/i2/${DATE}_preliminary_predictions.json \
+            data/runtime/i2/${DATE}_preliminary_summary.json \
+            data/runtime/i2/${DATE}_preliminary_event_market_catalog.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Update preliminary I2 slate ${DATE}"
+          git push origin HEAD:main
