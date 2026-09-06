@@ -26,6 +26,8 @@ jobs:
           gh release download i2-phase1-historical-store-v1 -p 'i2-phase1-frozen-historical-store-2021-2025.tar.gz' -D /tmp/phase1
           mkdir -p /tmp/phase1/ex
           tar -xzf /tmp/phase1/i2-phase1-frozen-historical-store-2021-2025.tar.gz -C /tmp/phase1/ex
+          echo '--- Phase 1 files ---'
+          find /tmp/phase1/ex -maxdepth 4 -type f | sort | head -120
       - name: Download v0.4 production validation predictions
         run: |
           mkdir -p /tmp/v04
