@@ -22,6 +22,31 @@ def wilson(w, n, z=1.959963984540054):
     return ctr-rad, ctr+rad
 
 
+def normalize_prediction_columns(x):
+    x=x.copy()
+    if 'p_over' not in x.columns:
+        for c in ['prediction','context_prediction','pred_over','prob_over','p_i2_over']:
+            if c in x.columns:
+                x['p_over']=pd.to_numeric(x[c],errors='coerce')
+                break
+    if 'p_over' not in x.columns:
+        raise SystemExit('Could not identify P(Over) column')
+    x['p_over']=pd.to_numeric(x['p_over'],errors='coerce')
+    if 'p_under' not in x.columns:
+        x['p_under']=1.0-x['p_over']
+    else:
+        x['p_under']=pd.to_numeric(x['p_under'],errors='coerce')
+    if 'actual_over' not in x.columns:
+        raise SystemExit('Missing actual_over outcome column')
+    x['actual_over']=pd.to_numeric(x['actual_over'],errors='coerce')
+    if 'actual_under' not in x.columns:
+        x['actual_under']=1.0-x['actual_over']
+    else:
+        x['actual_under']=pd.to_numeric(x['actual_under'],errors='coerce')
+    x['season']=pd.to_numeric(x['season'],errors='coerce')
+    return x
+
+
 def score(df, side, t):
     pcol = 'p_under' if side == 'UNDER' else 'p_over'
     ycol = 'actual_under' if side == 'UNDER' else 'actual_over'
@@ -37,7 +62,7 @@ def score(df, side, t):
 
 
 def run_one(path, outdir, start, stop, step):
-    x = pd.read_csv(path)
+    x = normalize_prediction_columns(pd.read_csv(path))
     req = {'season','p_over','p_under','actual_over','actual_under'}
     miss = req-set(x.columns)
     if miss: raise SystemExit(f'Missing columns: {sorted(miss)}')
