@@ -1,0 +1,64 @@
+name: I2 pregame threshold calibration
+
+on:
+  workflow_dispatch:
+    inputs:
+      predictions_path:
+        description: "Path to frozen chronological OOS I2 prediction CSV/CSV.GZ"
+        required: true
+        default: "data/derived/i2/matchup_variable_research/final_walk_forward_predictions.csv"
+      min_n:
+        description: "Minimum qualifying sample for candidate-threshold ranking"
+        required: true
+        default: "100"
+
+permissions:
+  contents: read
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify frozen prediction artifact
+        run: |
+          test -f "${{ inputs.predictions_path }}" || {
+            echo "BLOCKED: frozen chronological prediction file not found: ${{ inputs.predictions_path }}"
+            echo "Generate retrospective OOS predictions first; do not substitute in-sample fitted probabilities."
+            exit 2
+          }
+
+      - name: Run price-independent Under/Over threshold sweep
+        run: |
+          python src/analysis/i2_pregame_threshold_calibration.py \
+            --input "${{ inputs.predictions_path }}" \
+            --output-dir data/derived/i2/threshold_calibration \
+            --start 0.45 \
+            --stop 0.75 \
+            --step 0.005 \
+            --min-n "${{ inputs.min_n }}"
+
+      - name: Assert market isolation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2/threshold_calibration/manifest.json').read_text())
+          assert m['price_used'] is False
+          assert m['market_fields_used'] == []
+          print({'status':'PASS','market_isolation':True,'n_predictions':m['n_predictions']})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-pregame-threshold-calibration
+          path: data/derived/i2/threshold_calibration/
+          retention-days: 30
