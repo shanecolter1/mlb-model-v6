@@ -1,0 +1,92 @@
+name: I2 Rotation Rank Robustness
+on:
+  push:
+    branches: [analysis/i2-weekday-edge-20260906]
+    paths: ['.github/workflows/i2-rotation-rank-robustness.yml']
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/retro
+          for y in 2021 2022 2023 2024 2025; do
+            curl -fsSL "https://www.retrosheet.org/downloads/${y}/${y}csvs.zip" -o "/tmp/retro/${y}.zip"
+            mkdir -p "/tmp/retro/${y}"; unzip -q "/tmp/retro/${y}.zip" -d "/tmp/retro/${y}"
+          done
+          python - <<'PY'
+          import csv,glob,os,collections,datetime,statistics
+          def ff(root,suf):
+            for p in glob.glob(root+'/**',recursive=True):
+              if os.path.isfile(p) and os.path.basename(p).lower().endswith(suf): return p
+          def fair(p): return -100*p/(1-p) if p>=.5 else 100*(1-p)/p
+          i2={}
+          for p in glob.glob('data/derived/i2/i2_state_compact_20*.csv'):
+            for r in csv.DictReader(open(p,encoding='utf-8')): i2[r['gid']]=i2.get(r['gid'],0)+int(float(r['i2_runs'] or 0))
+          games=[]; by={}
+          for y in range(2021,2026):
+            root=f'/tmp/retro/{y}'
+            for r in csv.DictReader(open(ff(root,'gameinfo.csv'),encoding='utf-8-sig')):
+              if r['gid'] not in i2: continue
+              d=datetime.datetime.strptime(r['date'].replace('-',''),'%Y%m%d').date(); g={'y':y,'gid':r['gid'],'date':d,'day':d.strftime('%A'),'a':r['visteam'],'h':r['hometeam'],'u':i2[r['gid']]==0}; games.append(g); by[r['gid']]=g
+            for r in csv.DictReader(open(ff(root,'pitching.csv'),encoding='utf-8-sig')):
+              if r.get('stattype')!='value' or str(r.get('p_seq'))!='1' or r['gid'] not in by: continue
+              g=by[r['gid']]; side='h' if r.get('vishome')=='h' else 'a'; g[side+'sp']=r['id']; g[side+'st']={k:int(float(r.get(c) or 0)) for k,c in [('ip','p_ipouts'),('er','p_er'),('hr','p_hr'),('bb','p_w'),('hbp','p_hbp'),('k','p_k'),('bfp','p_bfp')]}
+          # series
+          pairs=collections.defaultdict(list)
+          for g in games:pairs[(g['y'],g['a'],g['h'])].append(g)
+          for arr in pairs.values():
+            arr.sort(key=lambda g:(g['date'],g['gid'])); cur=[]; groups=[]; last=None
+            for g in arr:
+              if last is None or (g['date']-last).days<=2:cur.append(g)
+              else:groups.append(cur);cur=[g]
+              last=g['date']
+            if cur:groups.append(cur)
+            for grp in groups:
+              for i,g in enumerate(grp,1):g['sg']=i
+          tg=collections.defaultdict(list)
+          for g in games:
+            tg[(g['y'],g['a'])].append(('a',g));tg[(g['y'],g['h'])].append(('h',g))
+          for arr in tg.values():
+            arr.sort(key=lambda x:(x[1]['date'],x[1]['gid'])); hist=[]; ss=collections.defaultdict(collections.Counter)
+            for side,g in arr:
+              sp=g.get(side+'sp')
+              if sp and len(hist)>=15:
+                c=collections.Counter(hist[-30:]); active=[p for p,n in c.most_common(5) if n>=3]
+                variants={'era':[],'fip':[],'comp':[]}
+                for p in active:
+                  s=ss[p]
+                  if s['ip']<27 or s['bfp']<=0:continue
+                  era=27*s['er']/s['ip']; fip=(13*s['hr']+3*(s['bb']+s['hbp'])-2*s['k'])/(s['ip']/3); kbb=(s['k']-s['bb'])/s['bfp']; hr=s['hr']/s['bfp']; comp=era-4*kbb+12*hr
+                  variants['era'].append((era,p));variants['fip'].append((fip,p));variants['comp'].append((comp,p))
+                for nm,v in variants.items():
+                  v.sort(); ranks={p:i+1 for i,(_,p) in enumerate(v)}; g[side+'_'+nm]=ranks.get(sp)
+              if sp:
+                hist.append(sp); st=g.get(side+'st')
+                if st:
+                  for k,v in st.items():ss[sp][k]+=v
+          print('GAME4_RANK_ROBUSTNESS')
+          print('method,filter,games,under_pct,fair')
+          for nm in ['era','fip','comp']:
+            vv=[g for g in games if g.get('sg')==4 and g.get('a_'+nm) and g.get('h_'+nm)]
+            for label,pred in [('both_top3',lambda g:g['a_'+nm]<=3 and g['h_'+nm]<=3),('both_top2',lambda g:g['a_'+nm]<=2 and g['h_'+nm]<=2),('rank_sum_le5',lambda g:g['a_'+nm]+g['h_'+nm]<=5),('rank_sum_ge7',lambda g:g['a_'+nm]+g['h_'+nm]>=7)]:
+              rr=[g for g in vv if pred(g)]
+              if rr:
+                p=sum(g['u'] for g in rr)/len(rr);print(f'{nm},{label},{len(rr)},{100*p:.3f},{fair(p):.1f}')
+          print('SUNDAY_GAME4_RANK_ROBUSTNESS')
+          print('method,filter,games,under_pct,fair')
+          for nm in ['era','fip','comp']:
+            vv=[g for g in games if g.get('sg')==4 and g['day']=='Sunday' and g.get('a_'+nm) and g.get('h_'+nm)]
+            for label,pred in [('both_top3',lambda g:g['a_'+nm]<=3 and g['h_'+nm]<=3),('rank_sum_le5',lambda g:g['a_'+nm]+g['h_'+nm]<=5),('rank_sum_ge7',lambda g:g['a_'+nm]+g['h_'+nm]>=7)]:
+              rr=[g for g in vv if pred(g)]
+              if rr:
+                p=sum(g['u'] for g in rr)/len(rr);print(f'{nm},{label},{len(rr)},{100*p:.3f},{fair(p):.1f}')
+          print('GAME4_BOTH_TOP3_BY_YEAR')
+          print('method,year,games,under_pct')
+          for nm in ['era','fip','comp']:
+            for y in range(2021,2026):
+              rr=[g for g in games if g['y']==y and g.get('sg')==4 and g.get('a_'+nm) and g.get('h_'+nm) and g['a_'+nm]<=3 and g['h_'+nm]<=3]
+              if rr:print(f'{nm},{y},{len(rr)},{100*sum(g["u"] for g in rr)/len(rr):.3f}')
+          PY
