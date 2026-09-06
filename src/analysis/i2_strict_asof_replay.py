@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 """Strict chronological I2 retrospective replay using only pregame-reconstructable data.
 
-Purpose
--------
 Generate frozen out-of-sample P(I2 Over 0.5) predictions for threshold calibration.
 This first replay intentionally excludes retrospective final-feed lineup identities,
 actual starter identities, same-game I1 outcomes, and all I2 derivative prices.
 
-Allowed inputs in this replay:
+Allowed inputs:
 - DraftKings opening full-game total point from the canonical historical master,
-  used only as the structural run-environment anchor already approved by I2 governance;
+  used only as the approved structural run-environment anchor;
 - team batting and pitching-allowed event rates constructed strictly from dates before
   the target game;
 - game/date/team identifiers used only for joins;
 - I2 outcome used only after prediction for grading.
 
-The resulting model is a deliberately conservative STRICT-ASOF challenger. It is not
-claimed to be a byte-for-byte replay of the current live simulator. Its job is to
-establish a leakage-safe historical prediction surface and test whether baseball
-context beyond the total anchor adds out-of-sample discrimination.
+This is a conservative STRICT-ASOF challenger, not a byte-for-byte replay of the
+current live simulator. It establishes a leakage-safe historical prediction surface
+and tests whether baseball context beyond the total anchor adds OOS discrimination.
 """
 from __future__ import annotations
 
@@ -31,14 +28,6 @@ import pandas as pd
 
 EPS = 1e-9
 EVENTS = ["strikeout", "walk", "hit_by_pitch", "home_run", "hit", "xbh", "onbase", "contact"]
-
-
-def pick_col(df, names):
-    lower = {c.lower(): c for c in df.columns}
-    for n in names:
-        if n.lower() in lower:
-            return lower[n.lower()]
-    return None
 
 
 def logit(p):
@@ -72,8 +61,7 @@ def fit_total_prior(train, strength=100.0):
 
 def map_total_prior(values, broad, priors):
     keys = list(priors)
-    out = []
-    used = []
+    out, used = [], []
     for x in values:
         t = float(x)
         if t in priors:
@@ -139,15 +127,25 @@ def canonical_master(path: Path):
 
 
 def team_code_map():
-    # StatsAPI abbreviations -> canonical market codes used in the joined master.
+    # StatsAPI abbreviations and full names -> canonical codes in joined master.
     return {
-        "AZ": "AZ", "ARI": "AZ", "ATH": "ATH", "OAK": "ATH", "ATL": "ATL", "BAL": "BAL",
-        "BOS": "BOS", "CHC": "CHC", "CWS": "CHW", "CHW": "CHW", "CIN": "CIN", "CLE": "CLE",
-        "COL": "COL", "DET": "DET", "HOU": "HOU", "KC": "KC", "KCR": "KC", "LAA": "LAA",
-        "LAD": "LAD", "MIA": "MIA", "MIL": "MIL", "MIN": "MIN", "NYM": "NYM", "NYY": "NYY",
-        "PHI": "PHI", "PIT": "PIT", "SD": "SD", "SDP": "SD", "SEA": "SEA", "SF": "SF",
-        "SFG": "SF", "STL": "STL", "TB": "TB", "TBR": "TB", "TEX": "TEX", "TOR": "TOR",
-        "WSH": "WSH", "WSN": "WSH",
+        "AZ":"AZ", "ARI":"AZ", "ARIZONA DIAMONDBACKS":"AZ",
+        "ATH":"ATH", "OAK":"ATH", "OAKLAND ATHLETICS":"ATH", "ATHLETICS":"ATH",
+        "ATL":"ATL", "ATLANTA BRAVES":"ATL", "BAL":"BAL", "BALTIMORE ORIOLES":"BAL",
+        "BOS":"BOS", "BOSTON RED SOX":"BOS", "CHC":"CHC", "CHICAGO CUBS":"CHC",
+        "CWS":"CHW", "CHW":"CHW", "CHICAGO WHITE SOX":"CHW", "CIN":"CIN", "CINCINNATI REDS":"CIN",
+        "CLE":"CLE", "CLEVELAND GUARDIANS":"CLE", "CLEVELAND INDIANS":"CLE",
+        "COL":"COL", "COLORADO ROCKIES":"COL", "DET":"DET", "DETROIT TIGERS":"DET",
+        "HOU":"HOU", "HOUSTON ASTROS":"HOU", "KC":"KC", "KCR":"KC", "KANSAS CITY ROYALS":"KC",
+        "LAA":"LAA", "LOS ANGELES ANGELS":"LAA", "LAD":"LAD", "LOS ANGELES DODGERS":"LAD",
+        "MIA":"MIA", "MIAMI MARLINS":"MIA", "MIL":"MIL", "MILWAUKEE BREWERS":"MIL",
+        "MIN":"MIN", "MINNESOTA TWINS":"MIN", "NYM":"NYM", "NEW YORK METS":"NYM",
+        "NYY":"NYY", "NEW YORK YANKEES":"NYY", "PHI":"PHI", "PHILADELPHIA PHILLIES":"PHI",
+        "PIT":"PIT", "PITTSBURGH PIRATES":"PIT", "SD":"SD", "SDP":"SD", "SAN DIEGO PADRES":"SD",
+        "SEA":"SEA", "SEATTLE MARINERS":"SEA", "SF":"SF", "SFG":"SF", "SAN FRANCISCO GIANTS":"SF",
+        "STL":"STL", "ST. LOUIS CARDINALS":"STL", "TB":"TB", "TBR":"TB", "TAMPA BAY RAYS":"TB",
+        "TEX":"TEX", "TEXAS RANGERS":"TEX", "TOR":"TOR", "TORONTO BLUE JAYS":"TOR",
+        "WSH":"WSH", "WSN":"WSH", "WASHINGTON NATIONALS":"WSH",
     }
 
 
@@ -158,7 +156,7 @@ def normalize_code(x):
 
 def build_game_key_from_normalized(games_path: Path):
     g = pd.read_parquet(games_path)
-    need = ["game_id", "game_date", "away_team", "home_team"]
+    need = ["game_id", "game_date", "away_team", "home_team", "away_team_id", "home_team_id"]
     missing = [c for c in need if c not in g.columns]
     if missing:
         raise ValueError(f"Normalized games missing columns: {missing}")
@@ -184,7 +182,6 @@ def join_master_to_games(master, games):
         how="left",
         validate="one_to_one",
     )
-    # Fallback for occasional doubleheader numbering mismatches: unique date/team matchup.
     miss = x["game_id"].isna()
     if miss.any():
         counts = games.groupby(["game_date", "away_code", "home_code"]).size().rename("n").reset_index()
@@ -213,7 +210,6 @@ def team_feature_table(path: Path):
 
 def add_side_context(df, team, rate_cols):
     out = df.copy()
-    # Build four lookup joins: away batting, home batting, away pitching allowed, home pitching allowed.
     specs = [
         ("away_team_id", "batting", "away_bat"),
         ("home_team_id", "batting", "home_bat"),
@@ -229,7 +225,6 @@ def add_side_context(df, team, rate_cols):
 
     features = []
     for event, c in zip(EVENTS, rate_cols):
-        # Top I2: away offense vs home pitching allowed. Bottom I2: home offense vs away pitching allowed.
         top = 0.5 * (pd.to_numeric(out[f"away_bat_{c}"], errors="coerce") + pd.to_numeric(out[f"home_pit_{c}"], errors="coerce"))
         bot = 0.5 * (pd.to_numeric(out[f"home_bat_{c}"], errors="coerce") + pd.to_numeric(out[f"away_pit_{c}"], errors="coerce"))
         out[f"ctx_{event}_mean"] = 0.5 * (top + bot)
@@ -243,9 +238,7 @@ def add_side_context(df, team, rate_cols):
 
 def replay(df, features, prior_strength=100.0, ridge_lambda=10.0):
     seasons = sorted(int(s) for s in df["season"].dropna().unique())
-    pred_parts = []
-    metric_rows = []
-    coef_rows = []
+    pred_parts, metric_rows, coef_rows = [], [], []
     for test_season in seasons[1:]:
         train = df[df["season"] < test_season].copy()
         test = df[df["season"] == test_season].copy()
@@ -254,7 +247,6 @@ def replay(df, features, prior_strength=100.0, ridge_lambda=10.0):
         broad, priors = fit_total_prior(train, prior_strength)
         p_tr, _ = map_total_prior(train["opening_total"], broad, priors)
         p_te, buckets = map_total_prior(test["opening_total"], broad, priors)
-
         Xtr_raw = train[features].apply(pd.to_numeric, errors="coerce").to_numpy(float)
         Xte_raw = test[features].apply(pd.to_numeric, errors="coerce").to_numpy(float)
         sc = Standardizer().fit(Xtr_raw)
@@ -262,22 +254,22 @@ def replay(df, features, prior_strength=100.0, ridge_lambda=10.0):
         Xte = sc.transform(Xte_raw)
         beta = fit_ridge_offset(Xtr, train["actual_over"].to_numpy(float), logit(p_tr), ridge_lambda)
         pred = logistic(logit(p_te) + Xte @ beta)
-
         y = test["actual_over"].to_numpy(float)
+        base_ll, ctx_ll = log_loss(y, p_te), log_loss(y, pred)
+        base_br, ctx_br = brier(y, p_te), brier(y, pred)
         metric_rows.append({
             "test_season": test_season,
             "train_seasons": ",".join(str(s) for s in seasons if s < test_season),
             "n": len(test),
-            "baseline_log_loss": log_loss(y, p_te),
-            "context_log_loss": log_loss(y, pred),
-            "log_loss_improvement": log_loss(y, p_te) - log_loss(y, pred),
-            "baseline_brier": brier(y, p_te),
-            "context_brier": brier(y, pred),
-            "brier_improvement": brier(y, p_te) - brier(y, pred),
+            "baseline_log_loss": base_ll,
+            "context_log_loss": ctx_ll,
+            "log_loss_improvement": base_ll - ctx_ll,
+            "baseline_brier": base_br,
+            "context_brier": ctx_br,
+            "brier_improvement": base_br - ctx_br,
         })
         for f, b in zip(features, beta):
             coef_rows.append({"test_season": test_season, "feature": f, "standardized_beta": float(b)})
-
         p = test[["game_id", "game_date", "season", "away_team_code", "home_team_code", "opening_total", "i2_runs", "actual_over"]].copy()
         p["baseline_prediction"] = p_te
         p["prediction"] = pred
@@ -285,7 +277,6 @@ def replay(df, features, prior_strength=100.0, ridge_lambda=10.0):
         p["prior_bucket_used"] = buckets
         p["prediction_class"] = "STRICT_ASOF_TEAM_CONTEXT"
         pred_parts.append(p)
-
     return (
         pd.concat(pred_parts, ignore_index=True) if pred_parts else pd.DataFrame(),
         pd.DataFrame(metric_rows),
@@ -305,17 +296,17 @@ def main():
 
     outdir = Path(args.output_dir)
     outdir.mkdir(parents=True, exist_ok=True)
-
     master = canonical_master(Path(args.master))
     games = build_game_key_from_normalized(Path(args.games))
     joined = join_master_to_games(master, games)
     before = len(joined)
     joined = joined[joined["game_id"].notna()].copy()
     join_rate = len(joined) / before if before else 0.0
+    if join_rate < 0.98:
+        raise SystemExit(f"Game join rate too low for threshold calibration: {join_rate:.3%}")
 
     team, rate_cols = team_feature_table(Path(args.team_asof))
     model_df, features = add_side_context(joined, team, rate_cols)
-    # Require enough strictly-prior context to avoid early-season rows being imputed to zero en masse.
     model_df = model_df[model_df["ctx_reliability_mean"].notna()].copy()
     model_df = model_df[model_df["ctx_reliability_mean"] >= 0.10].copy()
 
@@ -354,7 +345,7 @@ def main():
         "features": features,
         "prior_strength": args.prior_strength,
         "ridge_lambda": args.ridge_lambda,
-        "note": "This is the first leakage-safe historical replay layer. It intentionally sacrifices lineup/starter specificity rather than silently using retrospective identities as pregame-known.",
+        "note": "First leakage-safe historical replay layer. It sacrifices lineup/starter specificity rather than silently using retrospective identities as pregame-known.",
     }
     (outdir / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(json.dumps(manifest, indent=2))
