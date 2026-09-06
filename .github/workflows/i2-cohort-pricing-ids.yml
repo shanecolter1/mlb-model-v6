@@ -1,0 +1,57 @@
+name: I2 Cohort Pricing IDs
+on:
+  push:
+    branches: [analysis/i2-weekday-edge-20260906]
+    paths: ['.github/workflows/i2-cohort-pricing-ids.yml']
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/retro
+          for y in 2021 2022 2023 2024 2025; do
+            curl -fsSL "https://www.retrosheet.org/downloads/${y}/${y}csvs.zip" -o "/tmp/retro/${y}.zip"
+            mkdir -p "/tmp/retro/${y}"
+            unzip -q "/tmp/retro/${y}.zip" -d "/tmp/retro/${y}"
+          done
+          python - <<'PY'
+          import pathlib,re,textwrap
+          p=pathlib.Path('.github/workflows/i2-rotation-series-edge.yml')
+          txt=p.read_text()
+          lines=txt.splitlines()
+          start=next(i for i,l in enumerate(lines) if "python - <<'PY'" in l)+1
+          end=next(i for i in range(start,len(lines)) if lines[i].strip()=='PY')
+          code='\n'.join(lines[start:end])
+          code=textwrap.dedent(code)
+          ns={}
+          exec(code,ns)
+          valid=ns['valid']
+          fair=ns['fair']
+          cohorts=[]
+          for sg in [1,2,3,4]:
+            for tier in ['both_top3','any_back']:
+              for rest in ['0-1','2+']:
+                rr=[]
+                for g in valid:
+                  if g.get('sg')!=sg or g.get('rest_total') is None: continue
+                  if tier=='both_top3' and not g['both_top3']: continue
+                  if tier=='any_back' and not g['any_back']: continue
+                  if rest=='0-1' and not g['rest_total']<=1: continue
+                  if rest=='2+' and not g['rest_total']>=2: continue
+                  rr.append(g)
+                if rr:
+                  cohorts.append((sg,tier,rest,rr))
+          print('\nCOHORT_PRICING_IDS_BEGIN')
+          print('series_game,tier,rest_bucket,gid,date,away,home,under,rest_total')
+          for sg,tier,rest,rr in cohorts:
+            for g in rr:
+              print(f"{sg},{tier},{rest},{g['gid']},{g['date']},{g['away']},{g['home']},{int(g['under'])},{g['rest_total']}")
+          print('COHORT_PRICING_IDS_END')
+          print('\nCOHORT_SUMMARY')
+          print('series_game,tier,rest_bucket,n,under_pct')
+          for sg,tier,rest,rr in cohorts:
+            print(f"{sg},{tier},{rest},{len(rr)},{100*sum(g['under'] for g in rr)/len(rr):.3f}")
+          PY
