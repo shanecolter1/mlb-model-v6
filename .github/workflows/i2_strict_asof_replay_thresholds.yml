@@ -6,6 +6,7 @@ on:
       - research/all-inning-engine-rebuild
     paths:
       - src/analysis/i2_strict_asof_replay.py
+      - src/analysis/i2_strict_asof_replay_fixed.py
       - src/analysis/i2_pregame_threshold_calibration.py
       - .github/workflows/i2_strict_asof_replay_thresholds.yml
   workflow_dispatch:
@@ -100,7 +101,7 @@ jobs:
 
       - name: Generate chronological strict-asof I2 predictions
         run: |
-          python src/analysis/i2_strict_asof_replay.py \
+          python src/analysis/i2_strict_asof_replay_fixed.py \
             --master /tmp/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz \
             --games /tmp/mlb_2021_2025/games.parquet \
             --team-asof /tmp/team_asof.parquet \
