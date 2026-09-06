@@ -1,0 +1,71 @@
+name: I2 Game4 Top3 IDs
+on:
+  push:
+    branches: [analysis/i2-weekday-edge-20260906]
+    paths: ['.github/workflows/i2-game4-top3-ids.yml']
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/retro
+          for y in 2021 2022 2023 2024 2025; do
+            curl -fsSL "https://www.retrosheet.org/downloads/${y}/${y}csvs.zip" -o "/tmp/retro/${y}.zip"
+            mkdir -p "/tmp/retro/${y}"; unzip -q "/tmp/retro/${y}.zip" -d "/tmp/retro/${y}"
+          done
+          python - <<'PY'
+          import csv,glob,os,collections,datetime
+          def ff(root,suf):
+            for p in glob.glob(root+'/**',recursive=True):
+              if os.path.isfile(p) and os.path.basename(p).lower().endswith(suf): return p
+          i2={}
+          for p in glob.glob('data/derived/i2/i2_state_compact_20*.csv'):
+            for r in csv.DictReader(open(p,encoding='utf-8')): i2[r['gid']]=i2.get(r['gid'],0)+int(float(r['i2_runs'] or 0))
+          games=[]; by={}
+          for y in range(2021,2026):
+            root=f'/tmp/retro/{y}'
+            for r in csv.DictReader(open(ff(root,'gameinfo.csv'),encoding='utf-8-sig')):
+              if r['gid'] not in i2: continue
+              d=datetime.datetime.strptime(r['date'].replace('-',''),'%Y%m%d').date(); g={'y':y,'gid':r['gid'],'date':d,'day':d.strftime('%A'),'a':r['visteam'],'h':r['hometeam'],'u':i2[r['gid']]==0}; games.append(g); by[r['gid']]=g
+            for r in csv.DictReader(open(ff(root,'pitching.csv'),encoding='utf-8-sig')):
+              if r.get('stattype')!='value' or str(r.get('p_seq'))!='1' or r['gid'] not in by: continue
+              g=by[r['gid']]; side='h' if r.get('vishome')=='h' else 'a'; g[side+'sp']=r['id']; g[side+'st']={k:int(float(r.get(c) or 0)) for k,c in [('ip','p_ipouts'),('er','p_er'),('hr','p_hr'),('bb','p_w'),('hbp','p_hbp'),('k','p_k'),('bfp','p_bfp')]}
+          pairs=collections.defaultdict(list)
+          for g in games:pairs[(g['y'],g['a'],g['h'])].append(g)
+          for arr in pairs.values():
+            arr.sort(key=lambda g:(g['date'],g['gid'])); cur=[]; groups=[]; last=None
+            for g in arr:
+              if last is None or (g['date']-last).days<=2: cur.append(g)
+              else: groups.append(cur); cur=[g]
+              last=g['date']
+            if cur:groups.append(cur)
+            for grp in groups:
+              for i,g in enumerate(grp,1):g['sg']=i
+          tg=collections.defaultdict(list)
+          for g in games:
+            tg[(g['y'],g['a'])].append(('a',g));tg[(g['y'],g['h'])].append(('h',g))
+          for arr in tg.values():
+            arr.sort(key=lambda x:(x[1]['date'],x[1]['gid'])); hist=[]; ss=collections.defaultdict(collections.Counter)
+            for side,g in arr:
+              sp=g.get(side+'sp')
+              if sp and len(hist)>=15:
+                c=collections.Counter(hist[-30:]); active=[p for p,n in c.most_common(5) if n>=3]
+                vals=[]
+                for p in active:
+                  s=ss[p]
+                  if s['ip']<27 or s['bfp']<=0: continue
+                  era=27*s['er']/s['ip']; kbb=(s['k']-s['bb'])/s['bfp']; hr=s['hr']/s['bfp']; comp=era-4*kbb+12*hr
+                  vals.append((comp,p))
+                vals.sort(); ranks={p:i+1 for i,(_,p) in enumerate(vals)}; g[side+'_comp']=ranks.get(sp)
+              if sp:
+                hist.append(sp); st=g.get(side+'st')
+                if st:
+                  for k,v in st.items(): ss[sp][k]+=v
+          rr=[g for g in games if g.get('sg')==4 and g.get('a_comp') and g.get('h_comp') and g['a_comp']<=3 and g['h_comp']<=3]
+          print('COUNT',len(rr))
+          print('gid,year,day,under,a_rank,h_rank')
+          for g in rr: print(f"{g['gid']},{g['y']},{g['day']},{int(g['u'])},{g['a_comp']},{g['h_comp']}")
+          PY
