@@ -1,0 +1,69 @@
+name: I2 Weekday Edge Analysis
+on:
+  push:
+    branches:
+      - analysis/i2-weekday-edge-20260906
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute weekday I2 results
+        shell: bash
+        run: |
+          python - <<'PY'
+          import csv, glob, datetime, collections, math
+
+          games = {}
+          for path in sorted(glob.glob('data/derived/i2/i2_state_compact_20*.csv')):
+              with open(path, newline='', encoding='utf-8') as f:
+                  for r in csv.DictReader(f):
+                      gid = r['gid']
+                      key = (gid, r['date'])
+                      g = games.setdefault(key, {'runs':0, 'season':int(r['season'])})
+                      g['runs'] += int(float(r['i2_runs'] or 0))
+
+          order = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+          agg = {d: {'n':0,'u':0,'o':0,'runs':0,'z':0,'one':0,'two_plus':0} for d in order}
+          yearly = collections.defaultdict(lambda: {d:[0,0] for d in order})
+
+          for (gid, ds), g in games.items():
+              dt = datetime.datetime.strptime(ds, '%Y%m%d')
+              d = dt.strftime('%A')
+              a = agg[d]
+              a['n'] += 1
+              a['runs'] += g['runs']
+              if g['runs'] == 0:
+                  a['u'] += 1; a['z'] += 1
+              else:
+                  a['o'] += 1
+              if g['runs'] == 1: a['one'] += 1
+              if g['runs'] >= 2: a['two_plus'] += 1
+              yearly[g['season']][d][0] += 1
+              yearly[g['season']][d][1] += (g['runs'] == 0)
+
+          print('OVERALL')
+          print('day,games,under_pct,over_pct,avg_i2_runs,zero_pct,one_pct,two_plus_pct,fair_under_american')
+          for d in order:
+              a=agg[d]; n=a['n']; p=a['u']/n
+              if p >= .5: fair = -100*p/(1-p)
+              else: fair = 100*(1-p)/p
+              print(f"{d},{n},{100*p:.3f},{100*a['o']/n:.3f},{a['runs']/n:.4f},{100*a['z']/n:.3f},{100*a['one']/n:.3f},{100*a['two_plus']/n:.3f},{fair:.1f}")
+
+          print('\nBY_SEASON')
+          print('season,day,games,under_pct')
+          for season in sorted(yearly):
+              for d in order:
+                  n,u = yearly[season][d]
+                  if n:
+                      print(f'{season},{d},{n},{100*u/n:.3f}')
+
+          total_n=sum(a['n'] for a in agg.values())
+          total_u=sum(a['u'] for a in agg.values())
+          print(f'\nBASELINE,{total_n},{100*total_u/total_n:.3f}')
+          print('\nDIFF_VS_BASELINE')
+          base=100*total_u/total_n
+          for d in order:
+              a=agg[d]
+              print(f"{d},{100*a['u']/a['n']-base:+.3f}pp")
+          PY
