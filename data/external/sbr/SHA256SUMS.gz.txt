@@ -1,0 +1,2 @@
+18089511947281c57529732935c14f3af3dc01ce2e8e8fde7a650f96f1002732  data/external/sbr/mlb_archive_10Y_2011_2021.json.gz
+15090beab8bee34999371286c5dc711bcfdf554229f8284fe28ce6ceb8786c5a  data/external/sbr/mlb_odds_dataset_2021_2025.json.gz
