@@ -1,0 +1,55 @@
+name: I2 v0.4 interpolated prior experiment
+
+on:
+  push:
+    branches:
+      - research/i2-v0.4-local-cv-production
+    paths:
+      - 'src/analysis/i2_v04_interpolated_prior_experiment.py'
+      - '.github/workflows/i2_v04_interpolated_prior_experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download frozen historical master
+        run: |
+          mkdir -p /tmp/phase1 /tmp/phase1/ex
+          gh release download i2-phase1-historical-store-v1 -p 'i2-phase1-frozen-historical-store-2021-2025.tar.gz' -D /tmp/phase1
+          tar -xzf /tmp/phase1/i2-phase1-frozen-historical-store-2021-2025.tar.gz -C /tmp/phase1/ex
+          find /tmp/phase1/ex -name 'MLB_Game_Stats_Joined_2021_2025.csv.gz' -print
+      - name: Download p100 strict replay
+        run: |
+          mkdir -p /tmp/p100 /tmp/p100/ex
+          gh release download i2-phase2-strict-replay-v1 -p '*.tar.gz' -D /tmp/p100
+          tar -xzf $(find /tmp/p100 -maxdepth 1 -name '*.tar.gz' | head -1) -C /tmp/p100/ex
+          find /tmp/p100/ex -name strict_oos_predictions.csv -print
+      - name: Download completed parent-style continuous artifact
+        run: |
+          mkdir -p /tmp/parent
+          gh run download 34056877638 -n i2-parent-style-continuous-total -D /tmp/parent
+          test -f /tmp/parent/oos_predictions.csv
+      - name: Run exact interpolation experiment
+        run: |
+          python -m pip install --quiet pandas numpy
+          MASTER=$(find /tmp/phase1/ex -name 'MLB_Game_Stats_Joined_2021_2025.csv.gz' | head -1)
+          P100=$(find /tmp/p100/ex -name strict_oos_predictions.csv | head -1)
+          PYTHONPATH=. python src/analysis/i2_v04_interpolated_prior_experiment.py \
+            --master "$MASTER" \
+            --parent /tmp/parent/oos_predictions.csv \
+            --p100 "$P100" \
+            --out /tmp/out
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-v04-interpolated-prior-experiment
+          path: /tmp/out/
