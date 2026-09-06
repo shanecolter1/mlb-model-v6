@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Compute rolling regular-core rest and series results
+      - name: Compute role-dominant regular rest and series results
         shell: bash
         run: |
           set -euo pipefail
@@ -23,17 +23,17 @@ jobs:
 
           WINDOW=30
           MIN_HISTORY=15
+          ROLE_SHARE=.50
+          MIN_ROLE_STARTS=8
 
           def findfile(root,suffix):
               for p in glob.glob(root+'/**',recursive=True):
                   if os.path.isfile(p) and os.path.basename(p).lower().endswith(suffix.lower()): return p
 
-          # Full-game I2 outcomes from compact state files.
           i2={}
           for p in glob.glob('data/derived/i2/i2_state_compact_20*.csv'):
               with open(p,newline='',encoding='utf-8') as f:
-                  for r in csv.DictReader(f):
-                      i2[r['gid']]=i2.get(r['gid'],0)+int(float(r['i2_runs'] or 0))
+                  for r in csv.DictReader(f): i2[r['gid']]=i2.get(r['gid'],0)+int(float(r['i2_runs'] or 0))
 
           games=[]; by_gid={}
           for y in range(2021,2026):
@@ -49,38 +49,43 @@ jobs:
                   for r in csv.DictReader(f):
                       g=by_gid.get(r['gid'])
                       if not g: continue
-                      lu=[r.get(f'start_l{i}') for i in range(1,10) if r.get(f'start_l{i}')]
                       side='home' if r.get('vishome')=='h' else 'away'
-                      g[side+'_lu']=set(lu) if lu else None
+                      lineup={r.get(f'start_l{i}') for i in range(1,10) if r.get(f'start_l{i}')}
+                      roles={pos:r.get(f'start_f{pos}') for pos in range(2,11) if r.get(f'start_f{pos}')}
+                      g[side+'_lu']=lineup
+                      g[side+'_roles']=roles
 
-          # Build one ordered appearance stream per team-season and define the pregame regular core
-          # from the PRIOR 30 team games only. This never uses the current game or future games.
+          # Build pregame established regulars from role dominance in prior 30 games.
           team_games=collections.defaultdict(list)
           for g in games:
               team_games[(g['year'],g['away'])].append((g['date'],g['gid'],'away',g))
               team_games[(g['year'],g['home'])].append((g['date'],g['gid'],'home',g))
 
           for key,arr in team_games.items():
-              arr.sort(key=lambda x:(x[0],x[1]))
-              hist=[]
+              arr.sort(key=lambda x:(x[0],x[1])); hist=[]
               for _,_,side,g in arr:
-                  cur=g.get(side+'_lu')
-                  if cur is not None and len(hist)>=MIN_HISTORY:
+                  cur_lu=g.get(side+'_lu'); cur_roles=g.get(side+'_roles')
+                  if cur_lu is not None and cur_roles is not None and len(hist)>=MIN_HISTORY:
                       prior=hist[-WINDOW:]
-                      counts=collections.Counter()
-                      for lu in prior:
-                          counts.update(lu)
-                      core={pid for pid,_ in counts.most_common(9)}
-                      absent=len(core-cur)
-                      g[side+'_core']=core
-                      g[side+'_regular_absent']=absent
-                      g[side+'_history_n']=len(prior)
+                      established=set(); role_details=[]
+                      for pos in range(2,11):
+                          vals=[h[pos] for h in prior if pos in h and h[pos]]
+                          if not vals: continue
+                          c=collections.Counter(vals); pid,n=c.most_common(1)[0]
+                          share=n/len(vals)
+                          if n>=MIN_ROLE_STARTS and share>=ROLE_SHARE:
+                              established.add(pid); role_details.append((pos,pid,n,share))
+                      rested={pid for pid in established if pid not in cur_lu}
+                      g[side+'_established']=established
+                      g[side+'_rested']=rested
+                      g[side+'_n_established']=len(established)
+                      g[side+'_n_rested']=len(rested)
+                      g[side+'_role_details']=role_details
                   else:
-                      g[side+'_regular_absent']=None
-                  if cur is not None:
-                      hist.append(cur)
+                      g[side+'_n_rested']=None
+                  if cur_roles: hist.append(cur_roles)
 
-          # Series position: contiguous same away/home pairing with <=2-day gaps.
+          # Series grouping.
           pairs=collections.defaultdict(list)
           for g in games: pairs[(g['year'],g['away'],g['home'])].append(g)
           for arr in pairs.values():
@@ -91,74 +96,72 @@ jobs:
                   last=g['date']
               if cur: groups.append(cur)
               for grp in groups:
-                  for j,g in enumerate(grp,1):
-                      g['sg']=j; g['sl']=len(grp); g['finale']=(j==len(grp))
+                  for j,g in enumerate(grp,1): g['sg']=j; g['sl']=len(grp); g['finale']=(j==len(grp))
 
-          valid=[g for g in games if g.get('away_regular_absent') is not None and g.get('home_regular_absent') is not None]
+          valid=[g for g in games if g.get('away_n_rested') is not None and g.get('home_n_rested') is not None]
           for g in valid:
-              g['absent_total']=g['away_regular_absent']+g['home_regular_absent']
+              g['rested_total']=g['away_n_rested']+g['home_n_rested']
+              g['est_total']=g.get('away_n_established',0)+g.get('home_n_established',0)
 
-          def summarize(label,rr):
-              n=len(rr)
-              if not n: return
-              p=sum(g['under'] for g in rr)/n
-              fair=(-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
-              avga=statistics.mean(g['absent_total'] for g in rr if 'absent_total' in g) if rr and all('absent_total' in g for g in rr) else float('nan')
-              print(f'{label},{n},{100*p:.3f},{fair:.1f},{avga:.3f}')
+          def fair(p): return (-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
+          def show(label,rr):
+              if not rr: return
+              p=sum(g['under'] for g in rr)/len(rr)
+              print(f'{label},{len(rr)},{statistics.mean(g["rested_total"] for g in rr):.3f},{statistics.mean(g["est_total"] for g in rr):.3f},{100*p:.3f},{fair(p):.1f}')
 
-          print('VALID_CORE_GAMES',len(valid))
-          print('\nREGULAR_ABSENCE_BUCKETS')
-          print('filter,games,under_pct,fair_under,avg_absent')
-          for label,lo,hi in [('0 absent',0,0),('1 absent',1,1),('2 absent',2,2),('3 absent',3,3),('4+ absent',4,99)]:
-              summarize(label,[g for g in valid if lo<=g['absent_total']<=hi])
+          print('VALID_ROLE_CORE_GAMES',len(valid))
+          print('AVG_ESTABLISHED_PER_GAME',statistics.mean(g['est_total'] for g in valid))
+          print('\nREST_BUCKETS')
+          print('filter,games,avg_rested,avg_established,under_pct,fair_under')
+          for label,lo,hi in [('0 rested',0,0),('1 rested',1,1),('2 rested',2,2),('3+ rested',3,99)]:
+              show(label,[g for g in valid if lo<=g['rested_total']<=hi])
 
-          print('\nWEEKDAY_REGULAR_REST')
-          print('day,games,avg_absent,under_pct')
+          print('\nWEEKDAY_REST')
+          print('day,games,avg_rested,avg_established,under_pct,fair_under')
           for d in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']:
-              rr=[g for g in valid if g['day']==d]
-              if rr:
-                  print(f'{d},{len(rr)},{statistics.mean(g["absent_total"] for g in rr):.3f},{100*sum(g["under"] for g in rr)/len(rr):.3f}')
+              show(d,[g for g in valid if g['day']==d])
 
           print('\nSERIES_POSITION')
-          print('series_game,games,avg_absent,under_pct,fair_under')
-          for sg in [1,2,3,4,5]:
-              rr=[g for g in valid if g.get('sg')==sg]
-              if rr:
-                  p=sum(g['under'] for g in rr)/len(rr); fair=(-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
-                  print(f'{sg},{len(rr)},{statistics.mean(g["absent_total"] for g in rr):.3f},{100*p:.3f},{fair:.1f}')
+          print('series_game,games,avg_rested,avg_established,under_pct,fair_under')
+          for sg in [1,2,3,4,5]: show(str(sg),[g for g in valid if g.get('sg')==sg])
 
           print('\nSERIES_X_REST')
           print('series_game,rest_bucket,games,under_pct,fair_under')
           for sg in [1,2,3,4]:
-              for label,lo,hi in [('0-1',0,1),('2',2,2),('3+',3,99)]:
-                  rr=[g for g in valid if g.get('sg')==sg and lo<=g['absent_total']<=hi]
+              for label,lo,hi in [('0',0,0),('1',1,1),('2+',2,99)]:
+                  rr=[g for g in valid if g.get('sg')==sg and lo<=g['rested_total']<=hi]
                   if len(rr)>=25:
-                      p=sum(g['under'] for g in rr)/len(rr); fair=(-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
-                      print(f'{sg},{label},{len(rr)},{100*p:.3f},{fair:.1f}')
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{sg},{label},{len(rr)},{100*p:.3f},{fair(p):.1f}')
 
           print('\nWEEKDAY_X_SERIES')
-          print('day,series_game,games,avg_absent,under_pct,fair_under')
+          print('day,series_game,games,avg_rested,under_pct,fair_under')
           for d in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']:
               for sg in [1,2,3,4]:
                   rr=[g for g in valid if g['day']==d and g.get('sg')==sg]
                   if len(rr)>=25:
-                      p=sum(g['under'] for g in rr)/len(rr); fair=(-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
-                      print(f'{d},{sg},{len(rr)},{statistics.mean(g["absent_total"] for g in rr):.3f},{100*p:.3f},{fair:.1f}')
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{d},{sg},{len(rr)},{statistics.mean(g["rested_total"] for g in rr):.3f},{100*p:.3f},{fair(p):.1f}')
 
           print('\nSUNDAY_SERIES_X_REST')
           print('series_game,rest_bucket,games,under_pct,fair_under')
-          for sg in [1,2,3,4]:
-              for label,lo,hi in [('0-1',0,1),('2',2,2),('3+',3,99)]:
-                  rr=[g for g in valid if g['day']=='Sunday' and g.get('sg')==sg and lo<=g['absent_total']<=hi]
+          for sg in [2,3,4]:
+              for label,lo,hi in [('0',0,0),('1',1,1),('2+',2,99)]:
+                  rr=[g for g in valid if g['day']=='Sunday' and g.get('sg')==sg and lo<=g['rested_total']<=hi]
                   if len(rr)>=15:
-                      p=sum(g['under'] for g in rr)/len(rr); fair=(-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
-                      print(f'{sg},{label},{len(rr)},{100*p:.3f},{fair:.1f}')
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{sg},{label},{len(rr)},{100*p:.3f},{fair(p):.1f}')
 
-          print('\nGAME4_BY_YEAR_AND_REST')
+          print('\nGAME4_BY_YEAR')
           print('year,rest_bucket,games,under_pct')
           for y in range(2021,2026):
-              for label,lo,hi in [('0-1',0,1),('2',2,2),('3+',3,99)]:
-                  rr=[g for g in valid if g['year']==y and g.get('sg')==4 and lo<=g['absent_total']<=hi]
-                  if rr:
-                      print(f'{y},{label},{len(rr)},{100*sum(g["under"] for g in rr)/len(rr):.3f}')
+              for label,lo,hi in [('0',0,0),('1',1,1),('2+',2,99)]:
+                  rr=[g for g in valid if g['year']==y and g.get('sg')==4 and lo<=g['rested_total']<=hi]
+                  if rr: print(f'{y},{label},{len(rr)},{100*sum(g["under"] for g in rr)/len(rr):.3f}')
+
+          print('\nSUNDAY_GAME4_BY_YEAR')
+          print('year,games,avg_rested,under_pct')
+          for y in range(2021,2026):
+              rr=[g for g in valid if g['year']==y and g['day']=='Sunday' and g.get('sg')==4]
+              if rr: print(f'{y},{len(rr)},{statistics.mean(g["rested_total"] for g in rr):.3f},{100*sum(g["under"] for g in rr)/len(rr):.3f}')
           PY
