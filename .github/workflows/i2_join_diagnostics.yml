@@ -1,0 +1,56 @@
+name: I2 join diagnostics
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - src/analysis/i2_join_diagnostics.py
+      - .github/workflows/i2_join_diagnostics.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download successful normalized season artifacts from preserved run
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i2-strict-normalized-*
+          path: /tmp/season_artifacts
+          run-id: 34027415084
+          github-token: ${{ github.token }}
+
+      - name: Merge normalized seasons
+        run: |
+          python src/ingestion/merge_normalized_mlb_seasons.py \
+            --input-root /tmp/season_artifacts \
+            --output-dir /tmp/mlb_2021_2025
+
+      - name: Fetch checksum-verified canonical master
+        run: |
+          python src/ingestion/fetch_historical_joined_master.py \
+            --output-dir /tmp/canonical
+
+      - name: Diagnose canonical-to-StatsAPI game reconciliation
+        run: |
+          python src/analysis/i2_join_diagnostics.py \
+            /tmp/canonical/MLB_Game_Stats_Joined_2021_2025.csv.gz \
+            /tmp/mlb_2021_2025/games.parquet \
+            data/derived/i2/join_diagnostics
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-join-diagnostics
+          path: data/derived/i2/join_diagnostics/
+          retention-days: 90
