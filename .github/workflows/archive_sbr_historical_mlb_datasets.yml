@@ -1,0 +1,96 @@
+name: Archive SBR historical MLB odds datasets
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - .github/workflows/archive_sbr_historical_mlb_datasets.yml
+
+permissions:
+  contents: write
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
+          fetch-depth: 0
+
+      - name: Download public historical MLB odds datasets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p data/external/sbr
+
+          curl -fL --retry 5 --retry-delay 5 \
+            -o /tmp/mlb_odds_dataset.json \
+            https://github.com/ArnavSaraogi/mlb-odds-scraper/releases/download/dataset/mlb_odds_dataset.json
+
+          curl -fL --retry 5 --retry-delay 5 \
+            -o /tmp/mlb_archive_10Y.json \
+            https://raw.githubusercontent.com/flancast90/sportsbookreview-scraper/main/data/mlb_archive_10Y.json
+
+          sha256sum /tmp/mlb_odds_dataset.json /tmp/mlb_archive_10Y.json | sed 's#/tmp/##' > data/external/sbr/SHA256SUMS.raw.txt
+          gzip -9 -c /tmp/mlb_odds_dataset.json > data/external/sbr/mlb_odds_dataset_2021_2025.json.gz
+          gzip -9 -c /tmp/mlb_archive_10Y.json > data/external/sbr/mlb_archive_10Y_2011_2021.json.gz
+          sha256sum data/external/sbr/*.json.gz > data/external/sbr/SHA256SUMS.gz.txt
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          out = Path('data/external/sbr')
+          manifest = {
+            'dataset_family': 'SportsBookReview historical MLB odds archives',
+            'archived_utc': __import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),
+            'sources': [
+              {
+                'local_file': 'mlb_odds_dataset_2021_2025.json.gz',
+                'upstream': 'ArnavSaraogi/mlb-odds-scraper release dataset',
+                'source_url': 'https://github.com/ArnavSaraogi/mlb-odds-scraper/releases/tag/dataset',
+                'upstream_filename': 'mlb_odds_dataset.json',
+                'documented_range': '2021-04-01 through 2025-08-16',
+                'markets': ['moneyline', 'pointspread', 'totals'],
+                'books': ['BetMGM', 'FanDuel', 'Caesars', 'Bet365', 'DraftKings', 'BetRivers'],
+                'notes': 'Opening and current/closing full-game lines plus game results. Source project states data were collected from SportsBookReview.'
+              },
+              {
+                'local_file': 'mlb_archive_10Y_2011_2021.json.gz',
+                'upstream': 'flancast90/sportsbookreview-scraper data/mlb_archive_10Y.json',
+                'source_url': 'https://github.com/flancast90/sportsbookreview-scraper/blob/main/data/mlb_archive_10Y.json',
+                'documented_range': 'approximately 2011 through 2021',
+                'notes': 'Older SBR-derived MLB archive. Schema/market coverage differs from the ArnavSaraogi archive; preserve raw for independent validation and historical extensions.'
+              }
+            ],
+            'governance': {
+              'market_isolation': 'These are historical market datasets. They must not be fed into the baseball prediction engine before projections are frozen.',
+              'individual_inning_prices': 'No individual-inning O/U prices are claimed to be present in either archive without field-level verification.'
+            }
+          }
+          (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+
+      - name: Commit archived datasets
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/external/sbr
+          if git diff --cached --quiet; then
+            echo 'No dataset changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Archive SBR historical MLB odds datasets'
+          git push origin HEAD:research/all-inning-engine-rebuild
+
+      - name: Upload archive artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbr-historical-mlb-odds-archives
+          path: data/external/sbr/
+          retention-days: 90
