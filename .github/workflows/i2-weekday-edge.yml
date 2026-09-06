@@ -24,10 +24,9 @@ jobs:
           def findfile(root, suffix):
               hits=[]
               for p in glob.glob(root+'/**', recursive=True):
-                  if os.path.isfile(p) and os.path.basename(p).lower()==suffix.lower(): hits.append(p)
+                  if os.path.isfile(p) and os.path.basename(p).lower().endswith(suffix.lower()): hits.append(p)
               return hits[0] if hits else None
 
-          # Existing compact I2 data keyed by Retrosheet gid.
           i2={}
           for path in sorted(glob.glob('data/derived/i2/i2_state_compact_20*.csv')):
               with open(path, newline='', encoding='utf-8') as f:
@@ -46,7 +45,6 @@ jobs:
               print('GAMEINFO_HEADER',year,list(gr[0].keys()))
               print('PITCHING_HEADER',year,list(pr[0].keys()))
 
-              # Aggregate starter workload and ERA by pitcher-team-season.
               st=collections.defaultdict(lambda:{'gs':0,'er':0.0,'outs':0.0})
               starters_by_game=collections.defaultdict(dict)
               for r in pr:
@@ -54,14 +52,12 @@ jobs:
                   except: continue
                   if seq!=1: continue
                   gid=r['gid']; team=r['team']; pid=r['id']
-                  # Retrosheet simplified files should expose value rows only; ignore duplicate stattype if present.
                   stattype=(r.get('stattype') or 'value').lower()
                   if stattype not in ('value',''): continue
                   er=float(r.get('p_er') or 0); outs=float(r.get('p_ipouts') or 0)
                   d=st[(team,pid)]; d['gs']+=1; d['er']+=er; d['outs']+=outs
                   starters_by_game[gid][team]=pid
 
-              # For each team: five most-used starters; among them, best three by ERA.
               byteam=collections.defaultdict(list)
               for (team,pid),d in st.items():
                   era=(d['er']*27/d['outs']) if d['outs'] else 99.0
@@ -76,7 +72,6 @@ jobs:
               for g in gr:
                   gid=g.get('gid')
                   if gid not in i2: continue
-                  # Daily-log gameinfo uses visteam/hometeam; fall back to visitor/home variants.
                   away=g.get('visteam') or g.get('visitor') or g.get('away') or g.get('awayteam')
                   home=g.get('hometeam') or g.get('home') or g.get('home_team')
                   if not away or not home: continue
@@ -110,7 +105,6 @@ jobs:
               at=[r['att'] for r in rr if r['att']>0]
               print(f"{day},{len(rr)},{sides},{100*tq/sides:.3f},{100*bothq/len(rr):.3f},{100*core/sides:.3f},{100*bothcore/len(rr):.3f},{100*under/len(rr):.3f},{statistics.mean(at):.1f}")
 
-          # Attendance relative to each home-team/season median.
           med={}
           for key in {(r['year'],r['home']) for r in records}:
               vals=[r['att'] for r in records if (r['year'],r['home'])==key and r['att']>0]
