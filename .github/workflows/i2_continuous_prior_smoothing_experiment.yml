@@ -1,0 +1,43 @@
+name: I2 continuous prior smoothing experiment
+
+on:
+  push:
+    branches:
+      - research/i2-v0.4-local-cv-production
+    paths:
+      - 'src/analysis/i2_continuous_prior_smoothing_experiment.py'
+      - '.github/workflows/i2_continuous_prior_smoothing_experiment.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Phase 2 strict replay
+        run: |
+          mkdir -p /tmp/phase2
+          gh release download i2-phase2-strict-replay-v1 -p '*.tar.gz' -D /tmp/phase2
+          mkdir -p /tmp/phase2/ex
+          tar -xzf /tmp/phase2/*.tar.gz -C /tmp/phase2/ex
+      - name: Download v0.4 validation
+        run: |
+          mkdir -p /tmp/v04
+          gh release download i2-v0.4-production-validation-v1 -p '*.tar.gz' -D /tmp/v04
+          mkdir -p /tmp/v04/ex
+          tar -xzf /tmp/v04/*.tar.gz -C /tmp/v04/ex
+      - name: Run smoothing experiment
+        run: |
+          python -m pip install --quiet pandas numpy scipy scikit-learn
+          python src/analysis/i2_continuous_prior_smoothing_experiment.py --phase2 /tmp/phase2/ex --v04 /tmp/v04/ex --out /tmp/i2_smoothing
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-continuous-prior-smoothing
+          path: /tmp/i2_smoothing/
