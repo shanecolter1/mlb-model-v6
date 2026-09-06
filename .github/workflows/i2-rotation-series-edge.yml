@@ -1,0 +1,251 @@
+name: I2 Rotation Series Edge
+on:
+  push:
+    branches:
+      - analysis/i2-weekday-edge-20260906
+    paths:
+      - '.github/workflows/i2-rotation-series-edge.yml'
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute pregame rotation hierarchy by series position
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/retro
+          for y in 2021 2022 2023 2024 2025; do
+            curl -fsSL "https://www.retrosheet.org/downloads/${y}/${y}csvs.zip" -o "/tmp/retro/${y}.zip"
+            mkdir -p "/tmp/retro/${y}"
+            unzip -q "/tmp/retro/${y}.zip" -d "/tmp/retro/${y}"
+          done
+          python - <<'PY'
+          import csv, glob, os, collections, datetime, statistics, math
+
+          ROT_WINDOW=30
+          MIN_TEAM_HISTORY=15
+          MIN_ACTIVE_STARTS=3
+          QUALITY_MIN_IP_OUTS=27
+
+          def findfile(root,suffix):
+              for p in glob.glob(root+'/**',recursive=True):
+                  if os.path.isfile(p) and os.path.basename(p).lower().endswith(suffix.lower()): return p
+
+          def fair(p):
+              return (-100*p/(1-p)) if p>=.5 else 100*(1-p)/p
+
+          i2={}
+          for p in glob.glob('data/derived/i2/i2_state_compact_20*.csv'):
+              with open(p,newline='',encoding='utf-8') as f:
+                  for r in csv.DictReader(f):
+                      i2[r['gid']]=i2.get(r['gid'],0)+int(float(r['i2_runs'] or 0))
+
+          games=[]; by_gid={}
+          for y in range(2021,2026):
+              root=f'/tmp/retro/{y}'
+              with open(findfile(root,'gameinfo.csv'),newline='',encoding='utf-8-sig') as f:
+                  for r in csv.DictReader(f):
+                      if r['gid'] not in i2: continue
+                      dt=datetime.datetime.strptime(r['date'].replace('-',''),'%Y%m%d').date()
+                      g={'year':y,'gid':r['gid'],'date':dt,'day':dt.strftime('%A'),'away':r['visteam'],'home':r['hometeam'],
+                         'daynight':(r.get('daynight') or '').lower(),'under':i2[r['gid']]==0}
+                      games.append(g); by_gid[r['gid']]=g
+
+              # Actual starters and pregame-quality ingredients. Use stattype=value only.
+              pp=findfile(root,'pitching.csv')
+              with open(pp,newline='',encoding='utf-8-sig') as f:
+                  for r in csv.DictReader(f):
+                      if r.get('stattype')!='value' or str(r.get('p_seq'))!='1': continue
+                      g=by_gid.get(r['gid'])
+                      if not g: continue
+                      side='home' if r.get('vishome')=='h' else 'away'
+                      g[side+'_sp']=r['id']
+                      g[side+'_sp_game']={
+                          'id':r['id'],
+                          'ipouts':int(float(r.get('p_ipouts') or 0)),
+                          'er':int(float(r.get('p_er') or 0)),
+                          'hr':int(float(r.get('p_hr') or 0)),
+                          'bb':int(float(r.get('p_w') or 0)),
+                          'hbp':int(float(r.get('p_hbp') or 0)),
+                          'k':int(float(r.get('p_k') or 0)),
+                          'bfp':int(float(r.get('p_bfp') or 0)),
+                      }
+
+              # Strict everyday-player rest variable retained for interaction testing.
+              with open(findfile(root,'teamstats.csv'),newline='',encoding='utf-8-sig') as f:
+                  for r in csv.DictReader(f):
+                      g=by_gid.get(r['gid'])
+                      if not g: continue
+                      side='home' if r.get('vishome')=='h' else 'away'
+                      g[side+'_lu']={r.get(f'start_l{i}') for i in range(1,10) if r.get(f'start_l{i}')}
+                      g[side+'_roles']={pos:r.get(f'start_f{pos}') for pos in range(2,11) if r.get(f'start_f{pos}')}
+
+          # Series grouping.
+          pairs=collections.defaultdict(list)
+          for g in games: pairs[(g['year'],g['away'],g['home'])].append(g)
+          for arr in pairs.values():
+              arr.sort(key=lambda g:(g['date'],g['gid'])); groups=[]; cur=[]; last=None
+              for g in arr:
+                  if last is None or (g['date']-last).days<=2: cur.append(g)
+                  else: groups.append(cur); cur=[g]
+                  last=g['date']
+              if cur: groups.append(cur)
+              for grp in groups:
+                  for j,g in enumerate(grp,1):
+                      g['sg']=j; g['sl']=len(grp); g['finale']=(j==len(grp))
+
+          # Strict offensive established-regular/rest definition from prior 30 games.
+          tg=collections.defaultdict(list)
+          for g in games:
+              tg[(g['year'],g['away'])].append((g['date'],g['gid'],'away',g))
+              tg[(g['year'],g['home'])].append((g['date'],g['gid'],'home',g))
+          for key,arr in tg.items():
+              arr.sort(key=lambda x:(x[0],x[1])); hist=[]
+              for _,_,side,g in arr:
+                  cur_lu=g.get(side+'_lu'); cur_roles=g.get(side+'_roles')
+                  if cur_lu is not None and cur_roles is not None and len(hist)>=15:
+                      prior=hist[-30:]; established=set()
+                      for pos in range(2,11):
+                          vals=[h[pos] for h in prior if pos in h and h[pos]]
+                          if not vals: continue
+                          c=collections.Counter(vals); pid,n=c.most_common(1)[0]
+                          if n>=15 and n/len(vals)>=.70: established.add(pid)
+                      g[side+'_rested']=len([pid for pid in established if pid not in cur_lu])
+                  else: g[side+'_rested']=None
+                  if cur_roles: hist.append(cur_roles)
+
+          # Pregame rotation state. For each team, active five are top five SPs by starts in PRIOR 30 team games.
+          # Quality rank within active five uses season-to-date data BEFORE the target game only.
+          for key,arr in tg.items():
+              arr.sort(key=lambda x:(x[0],x[1])); start_hist=[]; season_stats=collections.defaultdict(lambda: collections.Counter())
+              for _,_,side,g in arr:
+                  cur_sp=g.get(side+'_sp')
+                  if cur_sp and len(start_hist)>=MIN_TEAM_HISTORY:
+                      prior=start_hist[-ROT_WINDOW:]
+                      cnt=collections.Counter(pid for pid in prior if pid)
+                      active=[pid for pid,n in cnt.most_common(5) if n>=MIN_ACTIVE_STARTS]
+                      g[side+'_active_n']=len(active)
+                      g[side+'_is_active5']=cur_sp in active
+                      g[side+'_recent_start_count']=cnt.get(cur_sp,0)
+
+                      # rank eligible active pitchers using only accumulated stats before today.
+                      q=[]
+                      for pid in active:
+                          s=season_stats[pid]; ipouts=s['ipouts']; bfp=s['bfp']
+                          if ipouts < QUALITY_MIN_IP_OUTS or bfp<=0: continue
+                          era=27*s['er']/ipouts if ipouts else 99
+                          # component score: lower is better; combines ERA and controllable outcomes.
+                          kbb=(s['k']-s['bb'])/bfp
+                          hr=s['hr']/bfp
+                          comp=era - 4.0*kbb + 12.0*hr
+                          q.append((comp,era,pid))
+                      q.sort()
+                      ranks={pid:i+1 for i,(_,__,pid) in enumerate(q)}
+                      g[side+'_qrank']=ranks.get(cur_sp)
+                      g[side+'_era_pre']= (27*season_stats[cur_sp]['er']/season_stats[cur_sp]['ipouts']) if season_stats[cur_sp]['ipouts'] else None
+
+                      # Rotation-skip proxy: among active five, identify the pitcher with the oldest last start before current game.
+                      last_seen={}
+                      for back_i,pid in enumerate(reversed(prior),1):
+                          if pid not in last_seen: last_seen[pid]=back_i
+                      if active:
+                          expected=max(active,key=lambda pid:last_seen.get(pid,999))
+                          g[side+'_expected_oldest']=expected
+                          g[side+'_followed_oldest']=cur_sp==expected
+                          if expected in ranks and cur_sp in ranks:
+                              g[side+'_skip_quality_delta']=ranks[expected]-ranks[cur_sp]
+                          else: g[side+'_skip_quality_delta']=None
+                  else:
+                      g[side+'_active_n']=None; g[side+'_is_active5']=None; g[side+'_qrank']=None; g[side+'_followed_oldest']=None
+
+                  # Only after features are frozen, add current game to histories/stats.
+                  if cur_sp:
+                      start_hist.append(cur_sp)
+                      st=g.get(side+'_sp_game')
+                      if st:
+                          s=season_stats[cur_sp]
+                          for k in ['ipouts','er','hr','bb','hbp','k','bfp']: s[k]+=st[k]
+
+          valid=[g for g in games if g.get('away_qrank') is not None and g.get('home_qrank') is not None]
+          for g in valid:
+              g['both_top3']=g['away_qrank']<=3 and g['home_qrank']<=3
+              g['any_back']=g['away_qrank']>=4 or g['home_qrank']>=4
+              g['rank_sum']=g['away_qrank']+g['home_qrank']
+              if g.get('away_rested') is not None and g.get('home_rested') is not None:
+                  g['rest_total']=g['away_rested']+g['home_rested']
+              else: g['rest_total']=None
+              g['both_follow_oldest']=g.get('away_followed_oldest') is True and g.get('home_followed_oldest') is True
+              g['any_skip_oldest']=g.get('away_followed_oldest') is False or g.get('home_followed_oldest') is False
+
+          print('VALID_ROTATION_RANK_GAMES',len(valid))
+
+          print('\nSERIES_POSITION_ROTATION')
+          print('series_game,games,both_top3_pct,any_back_pct,avg_rank_sum,under_pct,fair_under')
+          for sg in [1,2,3,4]:
+              rr=[g for g in valid if g.get('sg')==sg]
+              if rr:
+                  p=sum(g['under'] for g in rr)/len(rr)
+                  print(f'{sg},{len(rr)},{100*sum(g["both_top3"] for g in rr)/len(rr):.3f},{100*sum(g["any_back"] for g in rr)/len(rr):.3f},{statistics.mean(g["rank_sum"] for g in rr):.3f},{100*p:.3f},{fair(p):.1f}')
+
+          print('\nSERIES_X_ROTATION_TIER')
+          print('series_game,tier,games,under_pct,fair_under')
+          for sg in [1,2,3,4]:
+              for label,pred in [
+                  ('both_top3',lambda g:g['both_top3']),
+                  ('any_back',lambda g:g['any_back']),
+                  ('both_1_2',lambda g:g['away_qrank']<=2 and g['home_qrank']<=2),
+                  ('rank_sum_le5',lambda g:g['rank_sum']<=5),
+                  ('rank_sum_ge7',lambda g:g['rank_sum']>=7),
+              ]:
+                  rr=[g for g in valid if g.get('sg')==sg and pred(g)]
+                  if len(rr)>=25:
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{sg},{label},{len(rr)},{100*p:.3f},{fair(p):.1f}')
+
+          print('\nWEEKDAY_X_GAME4_ROTATION')
+          print('day,tier,games,under_pct,fair_under')
+          for d in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']:
+              for label,pred in [('all',lambda g:True),('both_top3',lambda g:g['both_top3']),('any_back',lambda g:g['any_back'])]:
+                  rr=[g for g in valid if g['day']==d and g.get('sg')==4 and pred(g)]
+                  if len(rr)>=20:
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{d},{label},{len(rr)},{100*p:.3f},{fair(p):.1f}')
+
+          print('\nGAME4_ROTATION_X_OFFENSE_REST')
+          print('rotation_tier,rest_bucket,games,under_pct,fair_under')
+          g4=[g for g in valid if g.get('sg')==4 and g.get('rest_total') is not None]
+          for tlabel,tpred in [('both_top3',lambda g:g['both_top3']),('any_back',lambda g:g['any_back'])]:
+              for rlabel,rpred in [('0-1',lambda g:g['rest_total']<=1),('2+',lambda g:g['rest_total']>=2)]:
+                  rr=[g for g in g4 if tpred(g) and rpred(g)]
+                  if len(rr)>=20:
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{tlabel},{rlabel},{len(rr)},{100*p:.3f},{fair(p):.1f}')
+
+          print('\nSUNDAY_GAME4_ROTATION_X_OFFENSE_REST')
+          print('rotation_tier,rest_bucket,games,under_pct,fair_under')
+          sg4=[g for g in g4 if g['day']=='Sunday']
+          for tlabel,tpred in [('both_top3',lambda g:g['both_top3']),('any_back',lambda g:g['any_back'])]:
+              for rlabel,rpred in [('0-1',lambda g:g['rest_total']<=1),('2+',lambda g:g['rest_total']>=2)]:
+                  rr=[g for g in sg4 if tpred(g) and rpred(g)]
+                  if len(rr)>=15:
+                      p=sum(g['under'] for g in rr)/len(rr)
+                      print(f'{tlabel},{rlabel},{len(rr)},{100*p:.3f},{fair(p):.1f}')
+
+          print('\nROTATION_SKIP_PROXY_BY_SERIES')
+          print('series_game,games,any_skip_oldest_pct,under_when_any_skip,under_when_both_follow')
+          for sg in [1,2,3,4]:
+              rr=[g for g in valid if g.get('sg')==sg]
+              skip=[g for g in rr if g['any_skip_oldest']]
+              follow=[g for g in rr if g['both_follow_oldest']]
+              sp=100*sum(g['under'] for g in skip)/len(skip) if skip else float('nan')
+              fp=100*sum(g['under'] for g in follow)/len(follow) if follow else float('nan')
+              print(f'{sg},{len(rr)},{100*len(skip)/len(rr):.3f},{sp:.3f},{fp:.3f}')
+
+          print('\nGAME4_BY_YEAR_ROTATION')
+          print('year,tier,games,under_pct')
+          for y in range(2021,2026):
+              for label,pred in [('all',lambda g:True),('both_top3',lambda g:g['both_top3']),('any_back',lambda g:g['any_back'])]:
+                  rr=[g for g in valid if g['year']==y and g.get('sg')==4 and pred(g)]
+                  if rr: print(f'{y},{label},{len(rr)},{100*sum(g["under"] for g in rr)/len(rr):.3f}')
+          PY
