@@ -1,0 +1,71 @@
+name: I2 Phase 4 - sealed threshold validation
+
+on:
+  push:
+    branches:
+      - research/all-inning-engine-rebuild
+    paths:
+      - src/analysis/i2_threshold_holdout_validation.py
+      - .github/workflows/i2_phase4_holdout_validation.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download permanent Phase 2 replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/phase2
+          gh release download i2-phase2-strict-replay-v1 --dir /tmp/phase2 --pattern 'i2-phase2-strict-replay-v1.tar.gz' --clobber
+          tar -C /tmp -xzf /tmp/phase2/i2-phase2-strict-replay-v1.tar.gz
+
+      - name: Select on 2022-2024 and validate on sealed 2025
+        run: |
+          python src/analysis/i2_threshold_holdout_validation.py \
+            --strict-input /tmp/i2_phase2_replay/strict_asof_replay/strict_oos_predictions.csv \
+            --baseline-input /tmp/i2_phase2_replay/strict_asof_replay/baseline_oos_predictions.csv \
+            --output-dir /tmp/i2_phase4_holdout \
+            --start 0.40 --stop 0.75 --step 0.005
+
+      - name: Freeze Phase 4 outputs
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('/tmp/i2_phase4_holdout')
+          files=[]
+          for p in sorted(root.rglob('*')):
+              if p.is_file(): files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (root/'phase4_manifest.json').write_text(json.dumps({'status':'FROZEN','phase':4,'price_used':False,'source_release':'i2-phase2-strict-replay-v1','files':files},indent=2)+'\n')
+          PY
+          tar -C /tmp -czf /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz i2_phase4_holdout
+          sha256sum /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz > /tmp/i2-phase4-sealed-threshold-validation-v1.sha256
+
+      - name: Publish permanent GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="i2-phase4-sealed-threshold-validation-v1"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "I2 Phase 4 sealed threshold validation v1" --notes "I2 probability threshold development on 2022-2024 chronological OOS predictions with untouched 2025 validation. No sportsbook price used."
+          gh release upload "$TAG" /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz /tmp/i2-phase4-sealed-threshold-validation-v1.sha256 --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-phase4-sealed-threshold-validation
+          path: |
+            /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz
+            /tmp/i2-phase4-sealed-threshold-validation-v1.sha256
+          retention-days: 90
