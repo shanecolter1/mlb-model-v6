@@ -68,12 +68,12 @@ jobs:
                 if st:
                   for k,v in st.items(): ss[sp][k]+=v
           print('QUALIFIERS_BEGIN')
-          print('gid,year,day,under,a_rank,h_rank,top3,rank_sum_le5,sunday_top3')
+          print('gid,date,year,day,away,home,under,a_rank,h_rank,top3,rank_sum_le5,sunday_top3')
           for g in games:
             ar=g.get('a_comp'); hr=g.get('h_comp')
             if g.get('sg')!=4 or ar is None or hr is None: continue
             top3=ar<=3 and hr<=3; rs=ar+hr<=5; sun=top3 and g['day']=='Sunday'
             if top3 or rs:
-              print(f"{g['gid']},{g['y']},{g['day']},{int(g['u'])},{ar},{hr},{int(top3)},{int(rs)},{int(sun)}")
+              print(f"{g['gid']},{g['date'].isoformat()},{g['y']},{g['day']},{g['a']},{g['h']},{int(g['u'])},{ar},{hr},{int(top3)},{int(rs)},{int(sun)}")
           print('QUALIFIERS_END')
           PY
