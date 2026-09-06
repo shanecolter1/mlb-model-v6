@@ -2,15 +2,23 @@ name: I2 Phase 3 - threshold calibration
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - I2 Phase 2 - strict replay
+    types:
+      - completed
 
 permissions:
   contents: write
 
 jobs:
   calibrate:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: research/all-inning-engine-rebuild
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
