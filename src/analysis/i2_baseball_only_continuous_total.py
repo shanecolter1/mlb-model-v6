@@ -22,7 +22,18 @@ def find_score_cols(df):
     raise ValueError('Could not identify away/home final score columns. Columns='+','.join(df.columns[:120]))
 
 def norm_code(x):
-    m={'ARI':'AZ','AZ':'AZ','OAK':'ATH','ATH':'ATH','CWS':'CHW','CHW':'CHW','KCR':'KC','KC':'KC','SDP':'SD','SD':'SD','SFG':'SF','SF':'SF','TBR':'TB','TB':'TB','WSN':'WSH','WAS':'WSH','WSH':'WSH'}
+    m={
+      'AZ':'AZ','ARI':'AZ','ARIZONA DIAMONDBACKS':'AZ','ATH':'ATH','OAK':'ATH','ATHLETICS':'ATH','OAKLAND ATHLETICS':'ATH',
+      'ATL':'ATL','ATLANTA BRAVES':'ATL','BAL':'BAL','BALTIMORE ORIOLES':'BAL','BOS':'BOS','BOSTON RED SOX':'BOS',
+      'CHC':'CHC','CHICAGO CUBS':'CHC','CWS':'CHW','CHW':'CHW','CHICAGO WHITE SOX':'CHW','CIN':'CIN','CINCINNATI REDS':'CIN',
+      'CLE':'CLE','CLEVELAND GUARDIANS':'CLE','CLEVELAND INDIANS':'CLE','COL':'COL','COLORADO ROCKIES':'COL','DET':'DET','DETROIT TIGERS':'DET',
+      'HOU':'HOU','HOUSTON ASTROS':'HOU','KC':'KC','KCR':'KC','KANSAS CITY ROYALS':'KC','LAA':'LAA','LOS ANGELES ANGELS':'LAA',
+      'LAD':'LAD','LOS ANGELES DODGERS':'LAD','MIA':'MIA','MIAMI MARLINS':'MIA','MIL':'MIL','MILWAUKEE BREWERS':'MIL',
+      'MIN':'MIN','MINNESOTA TWINS':'MIN','NYM':'NYM','NEW YORK METS':'NYM','NYY':'NYY','NEW YORK YANKEES':'NYY',
+      'PHI':'PHI','PHILADELPHIA PHILLIES':'PHI','PIT':'PIT','PITTSBURGH PIRATES':'PIT','SD':'SD','SDP':'SD','SAN DIEGO PADRES':'SD',
+      'SEA':'SEA','SEATTLE MARINERS':'SEA','SF':'SF','SFG':'SF','SAN FRANCISCO GIANTS':'SF','STL':'STL','ST. LOUIS CARDINALS':'STL',
+      'TB':'TB','TBR':'TB','TAMPA BAY RAYS':'TB','TEX':'TEX','TEXAS RANGERS':'TEX','TOR':'TOR','TORONTO BLUE JAYS':'TOR',
+      'WSH':'WSH','WSN':'WSH','WAS':'WSH','WASHINGTON NATIONALS':'WSH'}
     s=str(x).upper().strip(); return m.get(s,s)
 
 def build_continuous_total(df, window_days=365, shrink_games=30.0):
@@ -69,28 +80,24 @@ def predict(beta,X): return 1/(1+np.exp(-np.clip(X@beta,-40,40)))
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--phase1',required=True); ap.add_argument('--v04',required=True); ap.add_argument('--out',required=True)
-    a=ap.parse_args(); out=Path(a.out); out.mkdir(parents=True,exist_ok=True)
-    phase=Path(a.phase1)
+    a=ap.parse_args(); out=Path(a.out); out.mkdir(parents=True,exist_ok=True); phase=Path(a.phase1)
     master=next(phase.rglob('MLB_Game_Stats_Joined_2021_2025.csv.gz')); d=pd.read_csv(master,low_memory=False)
     if 'benchmark_matched' in d.columns: d=d[d.benchmark_matched==True].copy()
     d['game_date']=pd.to_datetime(d['game_date'],errors='coerce').dt.normalize(); sca,sch=find_score_cols(d)
     d['away_score_num']=pd.to_numeric(d[sca],errors='coerce'); d['home_score_num']=pd.to_numeric(d[sch],errors='coerce'); d['i2_runs']=pd.to_numeric(d['inning2_total_runs'],errors='coerce'); d['actual_under']=(d.i2_runs==0).astype(int)
     d=d.dropna(subset=['game_date','away_score_num','home_score_num','i2_runs']).copy(); d['away_team_code']=d.away_team_code.map(norm_code); d['home_team_code']=d.home_team_code.map(norm_code); d=build_continuous_total(d)
-
-    # Map canonical rows to StatsAPI game_id using normalized game table. This gives an exact key shared by v0.4 OOS predictions.
     gp=next(phase.rglob('games.parquet')); games=pd.read_parquet(gp)
     games['game_date']=pd.to_datetime(games['game_date'],errors='coerce').dt.normalize(); games['away_team_code']=games['away_team'].map(norm_code); games['home_team_code']=games['home_team'].map(norm_code)
     games=games.sort_values(['game_date','away_team_code','home_team_code','game_id']).copy(); games['_seq']=games.groupby(['game_date','away_team_code','home_team_code']).cumcount()
     d=d.sort_values(['game_date','away_team_code','home_team_code','retro_game_id']).copy(); d['_seq']=d.groupby(['game_date','away_team_code','home_team_code']).cumcount()
     d=d.merge(games[['game_id','game_date','away_team_code','home_team_code','_seq']],on=['game_date','away_team_code','home_team_code','_seq'],how='left')
     map_rate=float(d.game_id.notna().mean()); print('canonical_to_game_id_rate',map_rate)
-
     vp=next(Path(a.v04).rglob('v04_oos_predictions.csv')); v=pd.read_csv(vp)
-    m=v.merge(d[['game_id','baseball_expected_total','away_expected_runs','home_expected_runs','min_team_history_games','actual_under']],on='game_id',how='left',validate='one_to_one')
+    keyed=d[d.game_id.notna()].drop_duplicates('game_id')
+    m=v.merge(keyed[['game_id','baseball_expected_total','away_expected_runs','home_expected_runs','min_team_history_games','actual_under']],on='game_id',how='left',validate='one_to_one')
     jr=float(m.baseball_expected_total.notna().mean()); print('join_rate',jr)
     if jr<0.99: raise SystemExit('Join rate below 99%')
     m=m[m.season.isin([2022,2023,2024,2025])].copy(); m['y']=m.actual_under.astype(float)
-
     candidates=[(n,l) for n in [0,2,3,4] for l in [0.1,1.0,10.0,100.0]]; pred_rows=[]; metric=[]
     for season in [2022,2023,2024,2025]:
         tr=m[m.season<season].copy(); te=m[m.season==season].copy()
