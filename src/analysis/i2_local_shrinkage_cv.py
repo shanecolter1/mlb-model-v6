@@ -10,7 +10,7 @@ Purpose: test the cohort finding directly instead of selecting on one global fit
 - Refit on all 2022-24, then evaluate once on sealed 2025.
 """
 from __future__ import annotations
-import argparse,json,math
+import argparse,json
 from pathlib import Path
 import numpy as np,pandas as pd
 
@@ -42,11 +42,9 @@ def bin_loss(panel,bins,mask):
   for j,s in enumerate(S): rows[b,j]=ll(y[mb],panel[f'p_{int(s)}'].to_numpy(float)[mb])
  return rows
 def fit_path(losses,lam):
- # DP: shrinkage must stay same/decrease as bin index (Under probability) rises.
  B,J=losses.shape; dp=np.full((B,J),np.inf); back=np.full((B,J),-1,int); dp[0]=losses[0]
  for b in range(1,B):
   for j in range(J):
-   # current S[j] <= previous S[k] => k>=j because S ascending
    vals=[]
    for k in range(j,J): vals.append(dp[b-1,k]+losses[b,j]+lam*(S[k]-S[j])**2)
    krel=int(np.argmin(vals)); k=j+krel; dp[b,j]=vals[krel]; back[b,j]=k
@@ -63,14 +61,12 @@ def main():
  a=ap.parse_args(); meta=json.loads(Path(a.manifest).read_text()); panel=load(Path(a.variants_dir),meta); out=Path(a.output_dir); out.mkdir(parents=True,exist_ok=True)
  anchor=panel.p_100.to_numpy(float); dev=panel.season.isin(DEV).to_numpy(); hold=panel.season.eq(2025).to_numpy(); y=panel.actual_under.to_numpy(float)
  edges=panel.loc[dev,'p_100'].quantile(np.arange(.1,1,.1)).to_numpy(float); bins=assign_bins(anchor,edges)
- # Raw local loss surface on all development seasons.
  raw=[]; losses=bin_loss(panel,bins,dev)
  for b in range(10):
   mb=dev&(bins==b)
   for j,s in enumerate(S):
    raw.append({'bin':b+1,'p_low':float(-np.inf if b==0 else edges[b-1]),'p_high':float(np.inf if b==9 else edges[b]),'shrinkage':s,'n':int(mb.sum()),'dev_log_loss':losses[b,j]})
  pd.DataFrame(raw).to_csv(out/'local_loss_surface.csv',index=False)
- # Nested leave-one-development-season-out CV for lambda.
  cv=[]
  for lam in LAMBDAS:
   fold_ll=[]; fold_rows=[]
@@ -80,24 +76,22 @@ def main():
    fold_rows.append({'lambda':lam,'validation_year':valyr,'validation_log_loss':score,'path':'|'.join(str(int(x)) for x in path)})
   cv.extend(fold_rows); cv.append({'lambda':lam,'validation_year':'MEAN','validation_log_loss':float(np.mean(fold_ll)),'path':''})
  cvdf=pd.DataFrame(cv); cvdf.to_csv(out/'lambda_cross_validation.csv',index=False)
- means=cvdf[cvdf.validation_year.astype(str)=='MEAN'].copy(); bestlam=float(means.sort_values(['validation_log_loss','lambda']).iloc[0].lambda)
+ means=cvdf[cvdf.validation_year.astype(str)=='MEAN'].copy(); bestlam=float(means.sort_values(['validation_log_loss','lambda']).iloc[0]['lambda'])
  path,_=fit_path(losses,bestlam); grad=path_predict(panel,bins,path)
- # Benchmarks and local model metrics, both overall and fixed deciles.
  rows=[]
  for name,p in [('LOCAL_CV',grad)]+[(f'CONST_{int(s)}',panel[f'p_{int(s)}'].to_numpy(float)) for s in S]:
   for split,mask in [('DEV_2022_2024',dev),('HOLDOUT_2025',hold),('ALL',np.ones(len(panel),bool))]:
-   r={'model':name,'split':split,'bin':'ALL',**metrics(panel,p,mask)}; rows.append(r)
+   rows.append({'model':name,'split':split,'bin':'ALL',**metrics(panel,p,mask)})
    for b in range(10): rows.append({'model':name,'split':split,'bin':b+1,**metrics(panel,p,mask&(bins==b))})
- pd.DataFrame(rows).to_csv(out/'model_and_decile_performance.csv',index=False)
- # Replication: best shrinkage independently by development season and 2025, same frozen bins.
+ perf=pd.DataFrame(rows); perf.to_csv(out/'model_and_decile_performance.csv',index=False)
  repl=[]
  for yr in [2022,2023,2024,2025]:
-  m=panel.season.eq(yr).to_numpy()
-  L=bin_loss(panel,bins,m)
+  m=panel.season.eq(yr).to_numpy(); L=bin_loss(panel,bins,m)
   for b in range(10):
+   if np.all(np.isnan(L[b])): continue
    j=int(np.nanargmin(L[b])); repl.append({'season':yr,'bin':b+1,'n':int((m&(bins==b)).sum()),'best_shrinkage':S[j],'best_log_loss':L[b,j]})
  pd.DataFrame(repl).to_csv(out/'season_bin_local_optima.csv',index=False)
  manifest={'status':'PASS','price_used':False,'development_seasons':DEV,'sealed_validation_season':2025,'anchor':'p100 baseline P(Under)','fixed_decile_edges':[float(x) for x in edges],'shrinkage_grid':[float(x) for x in S],'lambda_grid':LAMBDAS,'selected_lambda':bestlam,'selected_bin_shrinkage':[float(x) for x in path],'constraint':'non-increasing shrinkage as P(Under) rises','selection':'leave-one-development-season-out CV; sealed 2025 untouched','caveat':'strict historical replay, not byte-for-byte live simulator'}
  (out/'manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
- print(json.dumps(manifest,indent=2)); print('\nCV'); print(means.sort_values('validation_log_loss').to_string(index=False)); print('\nOVERALL'); print(pd.DataFrame(rows).query("bin == 'ALL' or bin == @'ALL'").to_string(index=False) if False else pd.DataFrame(rows)[pd.DataFrame(rows).bin.astype(str).eq('ALL')].to_string(index=False))
+ print(json.dumps(manifest,indent=2)); print('\nCV'); print(means.sort_values('validation_log_loss').to_string(index=False)); print('\nOVERALL'); print(perf[perf.bin.astype(str).eq('ALL')].to_string(index=False))
 if __name__=='__main__': main()
