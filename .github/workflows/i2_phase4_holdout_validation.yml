@@ -1,4 +1,4 @@
-name: I2 Phase 4 - sealed threshold validation
+name: I2 Phase 4 - dual-view threshold analysis
 
 on:
   push:
@@ -32,15 +32,27 @@ jobs:
           gh release download i2-phase2-strict-replay-v1 --dir /tmp/phase2 --pattern 'i2-phase2-strict-replay-v1.tar.gz' --clobber
           tar -C /tmp -xzf /tmp/phase2/i2-phase2-strict-replay-v1.tar.gz
 
-      - name: Select on 2022-2024 and validate on sealed 2025
+      - name: Build pooled and sealed-holdout threshold curves
         run: |
           python src/analysis/i2_threshold_holdout_validation.py \
             --strict-input /tmp/i2_phase2_replay/strict_asof_replay/strict_oos_predictions.csv \
             --baseline-input /tmp/i2_phase2_replay/strict_asof_replay/baseline_oos_predictions.csv \
             --output-dir /tmp/i2_phase4_holdout \
-            --start 0.40 --stop 0.75 --step 0.005
+            --start 0.40 --stop 0.75 --step 0.0025
 
-      - name: Freeze Phase 4 outputs
+      - name: Print focused Under curve
+        run: |
+          python - <<'PY'
+          import pandas as pd
+          for model in ['total_only','strict_context']:
+              p=f'/tmp/i2_phase4_holdout/{model}/under_focus_57_64.csv'
+              x=pd.read_csv(p)
+              cols=['threshold','pooled_n','pooled_hit_rate','pooled_fair_american_odds_from_hit_rate','pooled_wilson95_low','pooled_wilson95_high','pooled_season_hit_rate_sd','pooled_hit_rate_delta_pp_vs_prev_threshold','pooled_n_lost_vs_prev_threshold','dev_n','dev_hit_rate','val2025_n','val2025_hit_rate']
+              print(f'\n===== {model} UNDER 57%-64% =====')
+              print(x[cols].to_string(index=False))
+          PY
+
+      - name: Freeze Phase 4 dual-view outputs
         run: |
           python - <<'PY'
           import hashlib,json
@@ -48,24 +60,36 @@ jobs:
           root=Path('/tmp/i2_phase4_holdout')
           files=[]
           for p in sorted(root.rglob('*')):
-              if p.is_file(): files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
-          (root/'phase4_manifest.json').write_text(json.dumps({'status':'FROZEN','phase':4,'price_used':False,'source_release':'i2-phase2-strict-replay-v1','files':files},indent=2)+'\n')
+              if p.is_file():
+                  files.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (root/'phase4_manifest.json').write_text(json.dumps({
+              'status':'FROZEN',
+              'phase':4,
+              'analysis':'dual_view_threshold_curve',
+              'pooled_descriptive_seasons':[2022,2023,2024,2025],
+              'development_seasons':[2022,2023,2024],
+              'sealed_validation_season':2025,
+              'threshold_step':0.0025,
+              'price_used':False,
+              'source_release':'i2-phase2-strict-replay-v1',
+              'files':files
+          },indent=2)+'\n')
           PY
-          tar -C /tmp -czf /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz i2_phase4_holdout
-          sha256sum /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz > /tmp/i2-phase4-sealed-threshold-validation-v1.sha256
+          tar -C /tmp -czf /tmp/i2-phase4-threshold-dual-view-v2.tar.gz i2_phase4_holdout
+          sha256sum /tmp/i2-phase4-threshold-dual-view-v2.tar.gz > /tmp/i2-phase4-threshold-dual-view-v2.sha256
 
       - name: Publish permanent GitHub Release assets
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          TAG="i2-phase4-sealed-threshold-validation-v1"
-          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "I2 Phase 4 sealed threshold validation v1" --notes "I2 probability threshold development on 2022-2024 chronological OOS predictions with untouched 2025 validation. No sportsbook price used."
-          gh release upload "$TAG" /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz /tmp/i2-phase4-sealed-threshold-validation-v1.sha256 --clobber
+          TAG="i2-phase4-threshold-dual-view-v2"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "I2 Phase 4 threshold dual-view v2" --notes "Price-blind I2 threshold analysis with pooled 2022-2025 descriptive curves at 0.25 percentage-point increments plus retained 2022-2024 development / sealed 2025 robustness validation. No sportsbook price used."
+          gh release upload "$TAG" /tmp/i2-phase4-threshold-dual-view-v2.tar.gz /tmp/i2-phase4-threshold-dual-view-v2.sha256 --clobber
 
       - uses: actions/upload-artifact@v4
         with:
-          name: i2-phase4-sealed-threshold-validation
+          name: i2-phase4-threshold-dual-view-v2
           path: |
-            /tmp/i2-phase4-sealed-threshold-validation-v1.tar.gz
-            /tmp/i2-phase4-sealed-threshold-validation-v1.sha256
+            /tmp/i2-phase4-threshold-dual-view-v2.tar.gz
+            /tmp/i2-phase4-threshold-dual-view-v2.sha256
           retention-days: 90
