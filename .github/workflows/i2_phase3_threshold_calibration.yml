@@ -1,0 +1,91 @@
+name: I2 Phase 3 - threshold calibration
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+
+      - name: Download permanent Phase 2 replay
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/phase2
+          gh release download i2-phase2-strict-replay-v1 --dir /tmp/phase2 --pattern 'i2-phase2-strict-replay-v1.tar.gz' --clobber
+          tar -C /tmp -xzf /tmp/phase2/i2-phase2-strict-replay-v1.tar.gz
+          test -f /tmp/i2_phase2_replay/strict_asof_replay/strict_oos_predictions.csv
+          test -f /tmp/i2_phase2_replay/strict_asof_replay/baseline_oos_predictions.csv
+
+      - name: Calibrate strict baseball-context Under/Over gates
+        run: |
+          mkdir -p /tmp/i2_phase3_thresholds
+          python src/analysis/i2_pregame_threshold_calibration.py \
+            --input /tmp/i2_phase2_replay/strict_asof_replay/strict_oos_predictions.csv \
+            --output-dir /tmp/i2_phase3_thresholds/strict_context \
+            --start 0.40 --stop 0.75 --step 0.005 --min-n 100
+
+      - name: Calibrate total-only benchmark gates
+        run: |
+          python src/analysis/i2_pregame_threshold_calibration.py \
+            --input /tmp/i2_phase2_replay/strict_asof_replay/baseline_oos_predictions.csv \
+            --output-dir /tmp/i2_phase3_thresholds/total_only \
+            --start 0.40 --stop 0.75 --step 0.005 --min-n 100
+
+      - name: Final leakage and market audit
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('/tmp/i2_phase2_replay/strict_asof_replay/manifest.json').read_text())
+          assert m['identity_inputs']['historical_lineup_identity_used'] is False
+          assert m['identity_inputs']['historical_actual_starter_identity_used'] is False
+          assert m['market_isolation']['i2_derivative_prices_used'] is False
+          assert m['market_isolation']['moneyline_used'] is False
+          assert m['market_isolation']['runline_used'] is False
+          assert m['join_rate'] >= 0.98
+          for d in ['strict_context','total_only']:
+              c=json.loads(Path('/tmp/i2_phase3_thresholds',d,'manifest.json').read_text())
+              assert c['price_used'] is False
+          print({'status':'PASS','oos_predictions':m['oos_predictions'],'join_rate':m['join_rate']})
+          PY
+
+      - name: Freeze threshold outputs
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path('/tmp/i2_phase3_thresholds')
+          files=[]
+          for f in sorted(root.rglob('*')):
+              if f.is_file(): files.append({'path':str(f.relative_to(root)),'bytes':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()})
+          m={'status':'FROZEN','phase':3,'source_release':'i2-phase2-strict-replay-v1','price_used':False,'files':files}
+          (root/'phase3_manifest.json').write_text(json.dumps(m,indent=2)+'\n')
+          PY
+          tar -C /tmp -czf /tmp/i2-phase3-threshold-calibration-v1.tar.gz i2_phase3_thresholds
+          sha256sum /tmp/i2-phase3-threshold-calibration-v1.tar.gz > /tmp/i2-phase3-threshold-calibration-v1.sha256
+
+      - name: Publish permanent GitHub Release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="i2-phase3-threshold-calibration-v1"
+          gh release view "$TAG" >/dev/null 2>&1 || gh release create "$TAG" --title "I2 Phase 3 threshold calibration v1" --notes "Price-blind Under/Over threshold calibration outputs derived from frozen Phase 2 predictions."
+          gh release upload "$TAG" /tmp/i2-phase3-threshold-calibration-v1.tar.gz /tmp/i2-phase3-threshold-calibration-v1.sha256 --clobber
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-phase3-threshold-calibration
+          path: |
+            /tmp/i2-phase3-threshold-calibration-v1.tar.gz
+            /tmp/i2-phase3-threshold-calibration-v1.sha256
+          retention-days: 90
