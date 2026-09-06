@@ -23,8 +23,8 @@ jobs:
 
           WINDOW=30
           MIN_HISTORY=15
-          ROLE_SHARE=.50
-          MIN_ROLE_STARTS=8
+          ROLE_SHARE=.70
+          MIN_ROLE_STARTS=15
 
           def findfile(root,suffix):
               for p in glob.glob(root+'/**',recursive=True):
@@ -55,7 +55,6 @@ jobs:
                       g[side+'_lu']=lineup
                       g[side+'_roles']=roles
 
-          # Build pregame established regulars from role dominance in prior 30 games.
           team_games=collections.defaultdict(list)
           for g in games:
               team_games[(g['year'],g['away'])].append((g['date'],g['gid'],'away',g))
@@ -85,7 +84,6 @@ jobs:
                       g[side+'_n_rested']=None
                   if cur_roles: hist.append(cur_roles)
 
-          # Series grouping.
           pairs=collections.defaultdict(list)
           for g in games: pairs[(g['year'],g['away'],g['home'])].append(g)
           for arr in pairs.values():
