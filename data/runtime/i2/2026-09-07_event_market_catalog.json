@@ -1,6 +1,6 @@
 {
   "date": "2026-09-07",
-  "generatedAt": "2026-09-07T17:16:20.471Z",
+  "generatedAt": "2026-09-07T18:44:48.909Z",
   "source": "THEODDSAPI_COM_LIVE_ODDS_EVENT_PROBE",
   "results": [
     {
@@ -55,7 +55,7 @@
         {
           "book": "fanduel",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:14:36Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -70,7 +70,7 @@
         {
           "book": "fanduel",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:14:36Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -87,7 +87,7 @@
         {
           "book": "fanduel",
           "market": "totals",
-          "updated_at": "2026-09-07T17:14:36Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Over",
@@ -104,7 +104,7 @@
         {
           "book": "betmgm",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:14:34Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -119,7 +119,7 @@
         {
           "book": "betmgm",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:14:34Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -128,7 +128,7 @@
             },
             {
               "name": "Washington Nationals",
-              "price": -125,
+              "price": -130,
               "point": 1.5
             }
           ]
@@ -136,7 +136,7 @@
         {
           "book": "betmgm",
           "market": "totals",
-          "updated_at": "2026-09-07T17:14:34Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Over",
@@ -153,7 +153,7 @@
         {
           "book": "williamhill_us",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:09:34Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -168,7 +168,7 @@
         {
           "book": "williamhill_us",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:09:34Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -185,7 +185,7 @@
         {
           "book": "williamhill_us",
           "market": "totals",
-          "updated_at": "2026-09-07T17:09:34Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "Over",
@@ -202,7 +202,7 @@
         {
           "book": "draftkings",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:15:13Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -217,7 +217,7 @@
         {
           "book": "draftkings",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:15:13Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -234,7 +234,7 @@
         {
           "book": "draftkings",
           "market": "totals",
-          "updated_at": "2026-09-07T17:15:13Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "Over",
@@ -251,7 +251,7 @@
         {
           "book": "fanatics",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:15:14Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -266,7 +266,7 @@
         {
           "book": "fanatics",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:15:14Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -283,7 +283,7 @@
         {
           "book": "fanatics",
           "market": "totals",
-          "updated_at": "2026-09-07T17:15:14Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Over",
@@ -300,22 +300,22 @@
         {
           "book": "pinnacle",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:15:12Z",
+          "updated_at": "2026-09-07T18:44:28Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
-              "price": -194
+              "price": -193
             },
             {
               "name": "Washington Nationals",
-              "price": 177
+              "price": 176
             }
           ]
         },
         {
           "book": "pinnacle",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:15:12Z",
+          "updated_at": "2026-09-07T18:44:28Z",
           "outcomes": [
             {
               "name": "San Diego Padres",
@@ -332,7 +332,7 @@
         {
           "book": "pinnacle",
           "market": "totals",
-          "updated_at": "2026-09-07T17:15:12Z",
+          "updated_at": "2026-09-07T18:44:28Z",
           "outcomes": [
             {
               "name": "Over",
@@ -343,676 +343,6 @@
               "name": "Under",
               "price": -104,
               "point": 8
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "matchup": "Cleveland Guardians @ Baltimore Orioles",
-      "gamePk": 824793,
-      "eventId": "0a5522c3b427e5162e8c13c1ddb05dd7",
-      "commenceTime": "2026-09-07T17:36:00Z",
-      "status": "OK",
-      "marketsByBook": {
-        "fanduel": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "draftkings": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "williamhill_us": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "betmgm": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "pinnacle": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "fanatics": [
-          "h2h",
-          "spreads",
-          "totals"
-        ]
-      },
-      "focusedEntries": [
-        {
-          "book": "fanduel",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": -136
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": 116
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": 162,
-              "point": -1.5
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": -196,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": 102,
-              "point": 7.5
-            },
-            {
-              "name": "Under",
-              "price": -124,
-              "point": 7.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": -142
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": 118
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": 159,
-              "point": -1.5
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": -194,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -120,
-              "point": 7
-            },
-            {
-              "name": "Under",
-              "price": 100,
-              "point": 7
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": -132
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": 122
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": 162,
-              "point": -1.5
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": -195,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -120,
-              "point": 7
-            },
-            {
-              "name": "Under",
-              "price": 100,
-              "point": 7
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": -140
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": 118
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": 155,
-              "point": -1.5
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": -190,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -125,
-              "point": 7
-            },
-            {
-              "name": "Under",
-              "price": 105,
-              "point": 7
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": -134
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": 123
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": 164,
-              "point": -1.5
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": -183,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -115,
-              "point": 7
-            },
-            {
-              "name": "Under",
-              "price": 102,
-              "point": 7
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": -140
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": 115
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Baltimore Orioles",
-              "price": 160,
-              "point": -1.5
-            },
-            {
-              "name": "Cleveland Guardians",
-              "price": -200,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -120,
-              "point": 7
-            },
-            {
-              "name": "Under",
-              "price": 100,
-              "point": 7
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
-      "gamePk": 824062,
-      "eventId": "b4745820fda1c660f277b88a71e25596",
-      "commenceTime": "2026-09-07T18:11:00Z",
-      "status": "OK",
-      "marketsByBook": {
-        "fanduel": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "fanatics": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "draftkings": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "williamhill_us": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "betmgm": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "pinnacle": [
-          "h2h",
-          "spreads",
-          "totals"
-        ]
-      },
-      "focusedEntries": [
-        {
-          "book": "fanduel",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -104
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -112
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": 146,
-              "point": -1.5
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -178,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": 102,
-              "point": 9.5
-            },
-            {
-              "name": "Under",
-              "price": -124,
-              "point": 9.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -105
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -115
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": 150,
-              "point": -1.5
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -185,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -120,
-              "point": 9
-            },
-            {
-              "name": "Under",
-              "price": 100,
-              "point": 9
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -107
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -112
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": 148,
-              "point": -1.5
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -180,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -122,
-              "point": 9
-            },
-            {
-              "name": "Under",
-              "price": 101,
-              "point": 9
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -105
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -105
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -210,
-              "point": 1.5
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": 175,
-              "point": -1.5
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -125,
-              "point": 9
-            },
-            {
-              "name": "Under",
-              "price": 105,
-              "point": 9
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -105
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -115
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": 145,
-              "point": -1.5
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -180,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": 100,
-              "point": 9.5
-            },
-            {
-              "name": "Under",
-              "price": -120,
-              "point": 9.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": 101
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": -109
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Arizona Diamondbacks",
-              "price": -204,
-              "point": 1.5
-            },
-            {
-              "name": "Kansas City Royals",
-              "price": 181,
-              "point": -1.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -115,
-              "point": 9
-            },
-            {
-              "name": "Under",
-              "price": 102,
-              "point": 9
             }
           ]
         }
@@ -1047,7 +377,6 @@
         ],
         "betmgm": [
           "h2h",
-          "spreads",
           "totals"
         ],
         "pinnacle": [
@@ -1060,48 +389,48 @@
         {
           "book": "fanduel",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:14:36Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
-              "price": -120
+              "price": -124
             },
             {
               "name": "Minnesota Twins",
-              "price": 102
+              "price": 106
             }
           ]
         },
         {
           "book": "fanduel",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:14:36Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
-              "price": -205,
-              "point": 1.5
+              "price": 168,
+              "point": -1.5
             },
             {
               "name": "Minnesota Twins",
-              "price": 168,
-              "point": -1.5
+              "price": -205,
+              "point": 1.5
             }
           ]
         },
         {
           "book": "fanduel",
           "market": "totals",
-          "updated_at": "2026-09-07T17:14:36Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Over",
-              "price": -118,
+              "price": -122,
               "point": 7.5
             },
             {
               "name": "Under",
-              "price": -104,
+              "price": 100,
               "point": 7.5
             }
           ]
@@ -1109,22 +438,22 @@
         {
           "book": "fanatics",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:15:14Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
-              "price": -120
+              "price": -125
             },
             {
               "name": "Minnesota Twins",
-              "price": 100
+              "price": 105
             }
           ]
         },
         {
           "book": "fanatics",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:15:14Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
@@ -1141,97 +470,97 @@
         {
           "book": "fanatics",
           "market": "totals",
-          "updated_at": "2026-09-07T17:15:14Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Over",
-              "price": -115,
-              "point": 7.5
-            },
-            {
-              "name": "Under",
               "price": -105,
-              "point": 7.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Detroit Tigers",
-              "price": -122
-            },
-            {
-              "name": "Minnesota Twins",
-              "price": 101
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Detroit Tigers",
-              "price": 170,
-              "point": -1.5
-            },
-            {
-              "name": "Minnesota Twins",
-              "price": -208,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -119,
-              "point": 7.5
+              "point": 8
             },
             {
               "name": "Under",
+              "price": -115,
+              "point": 8
+            }
+          ]
+        },
+        {
+          "book": "draftkings",
+          "market": "h2h",
+          "updated_at": "2026-09-07T18:44:03Z",
+          "outcomes": [
+            {
+              "name": "Detroit Tigers",
+              "price": -123
+            },
+            {
+              "name": "Minnesota Twins",
+              "price": 102
+            }
+          ]
+        },
+        {
+          "book": "draftkings",
+          "market": "spreads",
+          "updated_at": "2026-09-07T18:44:03Z",
+          "outcomes": [
+            {
+              "name": "Detroit Tigers",
+              "price": 162,
+              "point": -1.5
+            },
+            {
+              "name": "Minnesota Twins",
+              "price": -198,
+              "point": 1.5
+            }
+          ]
+        },
+        {
+          "book": "draftkings",
+          "market": "totals",
+          "updated_at": "2026-09-07T18:44:03Z",
+          "outcomes": [
+            {
+              "name": "Over",
               "price": -101,
-              "point": 7.5
+              "point": 8
+            },
+            {
+              "name": "Under",
+              "price": -119,
+              "point": 8
             }
           ]
         },
         {
           "book": "williamhill_us",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:09:34Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
-              "price": -115
+              "price": -121
             },
             {
               "name": "Minnesota Twins",
-              "price": 105
+              "price": 110
             }
           ]
         },
         {
           "book": "williamhill_us",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:09:34Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
-              "price": 170,
+              "price": 158,
               "point": -1.5
             },
             {
               "name": "Minnesota Twins",
-              "price": -205,
+              "price": -190,
               "point": 1.5
             }
           ]
@@ -1239,7 +568,7 @@
         {
           "book": "williamhill_us",
           "market": "totals",
-          "updated_at": "2026-09-07T17:09:34Z",
+          "updated_at": "2026-09-07T18:44:03Z",
           "outcomes": [
             {
               "name": "Over",
@@ -1256,48 +585,31 @@
         {
           "book": "betmgm",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:14:34Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
-              "price": -120
+              "price": -125
             },
             {
               "name": "Minnesota Twins",
-              "price": 100
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Detroit Tigers",
-              "price": -210,
-              "point": 1.5
-            },
-            {
-              "name": "Minnesota Twins",
-              "price": 170,
-              "point": -1.5
+              "price": 105
             }
           ]
         },
         {
           "book": "betmgm",
           "market": "totals",
-          "updated_at": "2026-09-07T17:14:34Z",
+          "updated_at": "2026-09-07T18:44:04Z",
           "outcomes": [
             {
               "name": "Over",
-              "price": 100,
+              "price": -105,
               "point": 8
             },
             {
               "name": "Under",
-              "price": -120,
+              "price": -115,
               "point": 8
             }
           ]
@@ -1305,7 +617,7 @@
         {
           "book": "pinnacle",
           "market": "h2h",
-          "updated_at": "2026-09-07T17:15:12Z",
+          "updated_at": "2026-09-07T18:44:28Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
@@ -1320,7 +632,7 @@
         {
           "book": "pinnacle",
           "market": "spreads",
-          "updated_at": "2026-09-07T17:15:12Z",
+          "updated_at": "2026-09-07T18:44:28Z",
           "outcomes": [
             {
               "name": "Detroit Tigers",
@@ -1329,695 +641,25 @@
             },
             {
               "name": "Minnesota Twins",
-              "price": -197,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -113,
-              "point": 7.5
-            },
-            {
-              "name": "Under",
-              "price": 101,
-              "point": 7.5
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "matchup": "Los Angeles Angels @ Boston Red Sox",
-      "gamePk": 824715,
-      "eventId": "22430c880f9e9118f74aacf0b720b7ee",
-      "commenceTime": "2026-09-07T17:36:00Z",
-      "status": "OK",
-      "marketsByBook": {
-        "fanduel": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "draftkings": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "williamhill_us": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "betmgm": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "fanatics": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "pinnacle": [
-          "h2h",
-          "spreads",
-          "totals"
-        ]
-      },
-      "focusedEntries": [
-        {
-          "book": "fanduel",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": -174
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": 146
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": 122,
-              "point": -1.5
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": -146,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -105,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -115,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": -181
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": 149
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": 119,
-              "point": -1.5
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": -144,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -104,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -115,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": -174
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": 159
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": 118,
-              "point": -1.5
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": -140,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -105,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -115,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": -185
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": 150
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": 118,
-              "point": -1.5
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": -145,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -105,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -115,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": -175
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": 145
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": 125,
-              "point": -1.5
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": -150,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -105,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -115,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": -168
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": 154
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Boston Red Sox",
-              "price": 123,
-              "point": -1.5
-            },
-            {
-              "name": "Los Angeles Angels",
-              "price": -136,
-              "point": 1.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -104,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -108,
-              "point": 8.5
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "matchup": "Chicago Cubs @ Milwaukee Brewers",
-      "gamePk": 823742,
-      "eventId": "0902d8258427af19994e87abb3519262",
-      "commenceTime": "2026-09-07T18:11:00Z",
-      "status": "OK",
-      "marketsByBook": {
-        "fanduel": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "draftkings": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "williamhill_us": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "betmgm": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "fanatics": [
-          "h2h",
-          "spreads",
-          "totals"
-        ],
-        "pinnacle": [
-          "h2h",
-          "spreads",
-          "totals"
-        ]
-      },
-      "focusedEntries": [
-        {
-          "book": "fanduel",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 106
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": -124
-            }
-          ]
-        },
-        {
-          "book": "fanduel",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 162,
-              "point": -1.5
-            },
-            {
-              "name": "Milwaukee Brewers",
               "price": -196,
               "point": 1.5
             }
           ]
         },
         {
-          "book": "fanduel",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:36Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -108,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -112,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 104
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": -126
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": -193,
-              "point": 1.5
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": 159,
-              "point": -1.5
-            }
-          ]
-        },
-        {
-          "book": "draftkings",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:13Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -109,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -111,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 110
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": -121
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": -180,
-              "point": 1.5
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": 152,
-              "point": -1.5
-            }
-          ]
-        },
-        {
-          "book": "williamhill_us",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:09:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -110,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -110,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 105
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": -125
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": -190,
-              "point": 1.5
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": 155,
-              "point": -1.5
-            }
-          ]
-        },
-        {
-          "book": "betmgm",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:14:34Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -110,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -110,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 105
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": -125
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": -200,
-              "point": 1.5
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": 160,
-              "point": -1.5
-            }
-          ]
-        },
-        {
-          "book": "fanatics",
-          "market": "totals",
-          "updated_at": "2026-09-07T17:15:14Z",
-          "outcomes": [
-            {
-              "name": "Over",
-              "price": -110,
-              "point": 8.5
-            },
-            {
-              "name": "Under",
-              "price": -110,
-              "point": 8.5
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "h2h",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": 114
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": -123
-            }
-          ]
-        },
-        {
-          "book": "pinnacle",
-          "market": "spreads",
-          "updated_at": "2026-09-07T17:15:12Z",
-          "outcomes": [
-            {
-              "name": "Chicago Cubs",
-              "price": -185,
-              "point": 1.5
-            },
-            {
-              "name": "Milwaukee Brewers",
-              "price": 165,
-              "point": -1.5
-            }
-          ]
-        },
-        {
           "book": "pinnacle",
           "market": "totals",
-          "updated_at": "2026-09-07T17:15:12Z",
+          "updated_at": "2026-09-07T18:44:28Z",
           "outcomes": [
             {
               "name": "Over",
-              "price": -104,
-              "point": 8.5
+              "price": 102,
+              "point": 8
             },
             {
               "name": "Under",
-              "price": -108,
-              "point": 8.5
+              "price": -115,
+              "point": 8
             }
           ]
         }

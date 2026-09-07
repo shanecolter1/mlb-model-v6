@@ -1,6 +1,6 @@
 {
   "date": "2026-09-07",
-  "capturedAt": "2026-09-07T17:14:30.457Z",
+  "capturedAt": "2026-09-07T18:43:54.628Z",
   "source": "THE_ODDS_API",
   "sourcePolicyVersion": "1.2.0",
   "scope": "FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES",
@@ -21,9 +21,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 7.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 1.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "4645b2d34e3503155b3ff308836621dc",
@@ -33,9 +33,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 16.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "0a5522c3b427e5162e8c13c1ddb05dd7",
@@ -45,9 +45,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 7,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "22430c880f9e9118f74aacf0b720b7ee",
@@ -57,9 +57,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 10.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "b4745820fda1c660f277b88a71e25596",
@@ -69,9 +69,9 @@
       "fullGameTotal": 9,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 9,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 6.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "0902d8258427af19994e87abb3519262",
@@ -81,9 +81,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 5.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "a410afcc86bee1b6cbe7e60eafd8d50e",
@@ -93,9 +93,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
-      "latestObservedTotal": 7.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "4b966f5cc20bd2c8aabb3ffae91d489c",
@@ -105,9 +105,9 @@
       "fullGameTotal": 8,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
       "latestObservedTotal": 8,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "7e08f8c46ae533c3c09d2e5d1a37ac2b",
@@ -117,9 +117,9 @@
       "fullGameTotal": 7.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
       "latestObservedTotal": 7.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "a58a90b8a19f48d680546cac451b77ec",
@@ -129,9 +129,9 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
       "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     },
     {
       "eventId": "56329e0195eb8df1d61a2ced249e623d",
@@ -141,9 +141,165 @@
       "fullGameTotal": 8.5,
       "bookmaker": "draftkings",
       "firstSeenAt": "2026-09-07T12:01:00.178Z",
-      "lastSeenAt": "2026-09-07T17:14:30.457Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
       "latestObservedTotal": 8.5,
-      "latestBookmakerUpdate": "2026-09-07T17:12:50Z"
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "34562a9fcbcea523c510c1e42991506b",
+      "commenceTime": "2026-09-08T22:36:00Z",
+      "awayTeam": "Cleveland Guardians",
+      "homeTeam": "Baltimore Orioles",
+      "fullGameTotal": 8.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "10492fa54f9765a1ae3c65266b20ca1a",
+      "commenceTime": "2026-09-08T22:41:00Z",
+      "awayTeam": "Minnesota Twins",
+      "homeTeam": "Detroit Tigers",
+      "fullGameTotal": 8.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "9e2f314d867b53d782c83c17368fae5e",
+      "commenceTime": "2026-09-08T22:41:00Z",
+      "awayTeam": "Houston Astros",
+      "homeTeam": "Philadelphia Phillies",
+      "fullGameTotal": 8.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "73c13ede933eb472cc249b925289fd11",
+      "commenceTime": "2026-09-08T22:41:00Z",
+      "awayTeam": "New York Mets",
+      "homeTeam": "Miami Marlins",
+      "fullGameTotal": 7.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 7.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "13b2a30b2be9fb761113ce7cb8d2ea9d",
+      "commenceTime": "2026-09-08T22:46:00Z",
+      "awayTeam": "Los Angeles Angels",
+      "homeTeam": "Boston Red Sox",
+      "fullGameTotal": 8,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "a10aaa5c39074d6ea18faef14d18bfb5",
+      "commenceTime": "2026-09-08T23:06:00Z",
+      "awayTeam": "Colorado Rockies",
+      "homeTeam": "New York Yankees",
+      "fullGameTotal": 8,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "cd725aa57a2f0e5ac106e101cd15fc1d",
+      "commenceTime": "2026-09-08T23:16:00Z",
+      "awayTeam": "Tampa Bay Rays",
+      "homeTeam": "Atlanta Braves",
+      "fullGameTotal": 8,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "e28a92e1cd8fe7ce97b34004a0d2063e",
+      "commenceTime": "2026-09-08T23:40:00Z",
+      "awayTeam": "Arizona Diamondbacks",
+      "homeTeam": "Kansas City Royals",
+      "fullGameTotal": 9.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 9.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "85c65d8138861fb6a024b339bf4f5ab6",
+      "commenceTime": "2026-09-08T23:41:00Z",
+      "awayTeam": "Chicago Cubs",
+      "homeTeam": "Milwaukee Brewers",
+      "fullGameTotal": 7,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 7,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "f62b9e0454b38cb2e0509ef206a08138",
+      "commenceTime": "2026-09-08T23:41:00Z",
+      "awayTeam": "Pittsburgh Pirates",
+      "homeTeam": "Chicago White Sox",
+      "fullGameTotal": 8,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "bbab891f2a9defcd506aafce495b42dc",
+      "commenceTime": "2026-09-09T01:41:00Z",
+      "awayTeam": "Toronto Blue Jays",
+      "homeTeam": "Athletics",
+      "fullGameTotal": 9.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 9.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "7fe872788a9a570ceb3aa6918bbf641d",
+      "commenceTime": "2026-09-09T01:46:00Z",
+      "awayTeam": "St. Louis Cardinals",
+      "homeTeam": "San Francisco Giants",
+      "fullGameTotal": 8,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
+    },
+    {
+      "eventId": "f01c292dd868a51b739e2283164a5e94",
+      "commenceTime": "2026-09-09T02:11:00Z",
+      "awayTeam": "Cincinnati Reds",
+      "homeTeam": "Los Angeles Dodgers",
+      "fullGameTotal": 8.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-07T18:43:54.628Z",
+      "lastSeenAt": "2026-09-07T18:43:54.628Z",
+      "latestObservedTotal": 8.5,
+      "latestBookmakerUpdate": "2026-09-07T18:43:09Z"
     }
   ]
 }
