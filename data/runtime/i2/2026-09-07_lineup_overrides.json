@@ -86,7 +86,9 @@
       "away": ["Elly De La Cruz", "Sal Stewart", "Dane Myers", "Tyler Stephenson", "Eugenio Suarez", "Matt McLain", "JJ Bleday", "Jose Trevino", "Hector Rodriguez"],
       "home": ["Shohei Ohtani", "Freddie Freeman", "Mookie Betts", "Max Muncy", "Will Smith", "Tommy Edman", "Kyle Tucker", "Teoscar Hernandez", "Enrique Hernandez"],
       "homeStarter": {
+        "id": 686218,
         "name": "Emmet Sheehan",
+        "identitySource": "MLB.com player page /player/emmet-sheehan-686218",
         "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
         "role": "named probable pitcher",
         "note": "RotoWire lists Sheehan as the pitching assignment; other reporting notes an opener is possible. No rotation inference was used."
