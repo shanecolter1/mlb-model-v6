@@ -1,0 +1,43 @@
+CURRENT_PAGE_STATUS=200 LEN=135357 URL=https://www.oddssafari.com/matches/baseball/usa/mlb/phi-phillies-vs-atl-braves/2317393
+
+MARKET_TYPE_RECORDS
+{"MarketTypeID": 901, "MarketTypeName": "Winner", "MarketTypeShortName": "Winner"}
+{"MarketTypeID": 904, "MarketTypeName": "Handicap", "MarketTypeShortName": "Handicap"}
+{"MarketTypeID": 905, "MarketTypeName": "Over/Under Runs", "MarketTypeShortName": "O/U Runs"}
+{"MarketTypeID": 903, "MarketTypeName": "1-X-2", "MarketTypeShortName": "1-X-2"}
+{"MarketTypeID": 907, "MarketTypeName": "Team O/U runs", "MarketTypeShortName": "Team O/U"}
+{"MarketTypeID": 914, "MarketTypeName": "Winning Margin", "MarketTypeShortName": "Winning Margin"}
+{"MarketTypeID": 916, "MarketTypeName": "Race to X runs", "MarketTypeShortName": "Race to X runs"}
+{"MarketTypeID": 908, "MarketTypeName": "First Team to Score", "MarketTypeShortName": "Firts team to score"}
+{"MarketTypeID": 918, "MarketTypeName": "Winner & Over/Under Runs", "MarketTypeShortName": "Winner & O/U Runs"}
+{"MarketTypeID": 915, "MarketTypeName": "Team with highest scoring inning", "MarketTypeShortName": "Team with HSI"}
+{"MarketTypeID": 909, "MarketTypeName": "Odd/Even", "MarketTypeShortName": "O/E"}
+
+SCOPE_RECORDS
+{"ScopeID": 902, "ScopeName": "Full Time+EI", "ScopeShortName": "FT+EI"}
+{"ScopeID": 903, "ScopeName": "First 5 Innings", "ScopeShortName": "5 Innings"}
+{"ScopeID": 904, "ScopeName": "1st Inning", "ScopeShortName": "1st Inn."}
+{"ScopeID": 905, "ScopeName": "2nd Inning", "ScopeShortName": "2nd Inn."}
+
+RELEVANT_MARKET_RECORDS
+root.props.pageProps.marketTypes[2] {"MarketTypeID": 905, "MarketTypeName": "Over/Under Runs", "MarketTypeShortName": "O/U Runs"}
+root.props.pageProps.marketTypes[4] {"MarketTypeID": 907, "MarketTypeName": "Team O/U runs", "MarketTypeShortName": "Team O/U"}
+root.props.pageProps.marketTypes[6] {"MarketTypeID": 916, "MarketTypeName": "Race to X runs", "MarketTypeShortName": "Race to X runs"}
+root.props.pageProps.marketTypes[8] {"MarketTypeID": 918, "MarketTypeName": "Winner & Over/Under Runs", "MarketTypeShortName": "Winner & O/U Runs"}
+
+MARKET_IDS=[901, 903, 904, 905, 907, 908, 909, 914, 915, 916, 918]
+SCOPE_IDS=[902, 903, 904, 905]
+TARGET_MARKET_IDS_BY_NAME=[905, 907, 918]
+TARGET_SCOPE_IDS_BY_NAME=[905]
+
+CURRENT_API_TESTS
+{"event": "current", "mid": 905, "sid": 905, "status": 200, "keys": ["scopes", "grouping", "market"], "market_meta": {"ParamID": 7529}, "scopes": [{"ScopeID": 902, "MarketTypeHasParam": 1, "ScopeName": "Full Time+EI", "ScopeShortName": "FT+EI"}, {"ScopeID": 903, "MarketTypeHasParam": 1, "ScopeName": "First 5 Innings", "ScopeShortName": "5 Innings"}, {"ScopeID": 904, "MarketTypeHasParam": 1, "ScopeName": "1st Inning", "ScopeShortName": "1st Inn."}, {"ScopeID": 905, "MarketTypeHasParam": 1, "ScopeName": "2nd Inning", "ScopeShortName": "2nd Inn."}], "bets_count": 1, "outcomes": [{"OutcomeID": 1863, "OutcomeCode": "Over", "OutcomeAA": "1", "OutcomeNameGr": "Over", "OutcomeNameEng": "Over", "OutcomeShortNameGr": "O", "OutcomeShortNameEng": "O", "OutcomeName": "Over", "OutcomeShortName": "O"}, {"OutcomeID": 1864, "OutcomeCode": "Under", "OutcomeAA": "2", "OutcomeNameGr": "Under", "OutcomeNameEng": "Under", "OutcomeShortNameGr": "U", "OutcomeShortNameEng": "U", "OutcomeName": "Under", "OutcomeShortName": "U"}]}
+{"event": "current", "mid": 907, "sid": 905, "status": 200, "keys": ["scopes", "grouping", "market"], "market_meta": {"ParamID": 7614}, "scopes": [{"ScopeID": 902, "MarketTypeHasParam": 1, "ScopeName": "Full Time+EI", "ScopeShortName": "FT+EI"}, {"ScopeID": 903, "MarketTypeHasParam": 1, "ScopeName": "First 5 Innings", "ScopeShortName": "5 Innings"}, {"ScopeID": 904, "MarketTypeHasParam": 1, "ScopeName": "1st Inning", "ScopeShortName": "1st Inn."}], "bets_count": 5, "outcomes": [{"OutcomeID": 1967, "OutcomeCode": "Over", "OutcomeAA": "1", "OutcomeNameGr": "Over", "OutcomeNameEng": "Over", "OutcomeShortNameGr": "O", "OutcomeShortNameEng": "O", "OutcomeName": "Over", "OutcomeShortName": "O"}, {"OutcomeID": 1968, "OutcomeCode": "Under", "OutcomeAA": "2", "OutcomeNameGr": "Under", "OutcomeNameEng": "Under", "OutcomeShortNameGr": "U", "OutcomeShortNameEng": "U", "OutcomeName": "Under", "OutcomeShortName": "U"}]}
+{"event": "current", "mid": 918, "sid": 905, "status": 200, "keys": ["scopes", "grouping", "market"], "market_meta": {"ParamID": 12301}, "scopes": [{"ScopeID": 902, "MarketTypeHasParam": 1, "ScopeName": "Full Time+EI", "ScopeShortName": "FT+EI"}], "bets_count": 4, "outcomes": null}
+
+CHOSEN_COMBOS=[(905, 905), (907, 905), (918, 905)]
+
+OLD_2025_API_TESTS
+{"event": "2025", "mid": 905, "sid": 905, "error": "<HTTPError 500: 'Internal Server Error'>"}
+{"event": "2025", "mid": 907, "sid": 905, "error": "<HTTPError 500: 'Internal Server Error'>"}
+{"event": "2025", "mid": 918, "sid": 905, "error": "<HTTPError 500: 'Internal Server Error'>"}
