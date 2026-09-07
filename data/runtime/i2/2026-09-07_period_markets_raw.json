@@ -1,6 +1,6 @@
 {
   "date": "2026-09-07",
-  "generatedAt": "2026-09-07T15:23:24.858Z",
+  "generatedAt": "2026-09-07T16:02:14.067Z",
   "endpoint": "/period-markets/",
   "queryMethod": "EVENT_BY_EVENT",
   "sport_key": "baseball_mlb",
@@ -77,7 +77,7 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:57:08Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -96,27 +96,27 @@
                     },
                     {
                       "name": "Over",
-                      "price": -186,
+                      "price": -182,
                       "point": 3.5
                     },
                     {
                       "name": "Over",
-                      "price": -102,
+                      "price": 100,
                       "point": 4.5
                     },
                     {
                       "name": "Over",
-                      "price": 164,
+                      "price": 168,
                       "point": 5.5
                     },
                     {
                       "name": "Over",
-                      "price": 265,
+                      "price": 260,
                       "point": 6.5
                     },
                     {
                       "name": "Over",
-                      "price": 400,
+                      "price": 390,
                       "point": 7.5
                     },
                     {
@@ -126,12 +126,12 @@
                     },
                     {
                       "name": "Over",
-                      "price": 880,
+                      "price": 850,
                       "point": 9.5
                     },
                     {
                       "name": "Over",
-                      "price": 1200,
+                      "price": 1100,
                       "point": 10.5
                     },
                     {
@@ -151,27 +151,27 @@
                     },
                     {
                       "name": "Under",
-                      "price": 138,
+                      "price": 136,
                       "point": 3.5
                     },
                     {
                       "name": "Under",
-                      "price": -130,
+                      "price": -132,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -225,
+                      "price": -230,
                       "point": 5.5
                     },
                     {
                       "name": "Under",
-                      "price": -390,
+                      "price": -380,
                       "point": 6.5
                     },
                     {
                       "name": "Under",
-                      "price": -670,
+                      "price": -650,
                       "point": 7.5
                     },
                     {
@@ -181,19 +181,24 @@
                     },
                     {
                       "name": "Under",
-                      "price": -3000,
+                      "price": -2200,
                       "point": 9.5
                     },
                     {
                       "name": "Under",
-                      "price": -5000,
+                      "price": -4500,
                       "point": 10.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -8000,
+                      "point": 11.5
                     }
                   ]
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:55:59Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -299,7 +304,7 @@
                 },
                 {
                   "book": "draftkings",
-                  "updated_at": "2026-09-07T15:21:04Z",
+                  "updated_at": "2026-09-07T15:56:43Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -335,7 +340,7 @@
                 },
                 {
                   "book": "betrivers",
-                  "updated_at": "2026-09-07T15:20:42Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -351,31 +356,31 @@
                 },
                 {
                   "book": "pinnacle",
-                  "updated_at": "2026-09-07T15:21:02Z",
+                  "updated_at": "2026-09-07T15:56:15Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -162,
+                      "price": -163,
                       "point": 3.5
                     },
                     {
                       "name": "Over",
-                      "price": -126,
+                      "price": -127,
                       "point": 4
                     },
                     {
                       "name": "Over",
-                      "price": 141,
+                      "price": 140,
                       "point": 5
                     },
                     {
                       "name": "Over",
-                      "price": 171,
+                      "price": 170,
                       "point": 5.5
                     },
                     {
                       "name": "Under",
-                      "price": 140,
+                      "price": 141,
                       "point": 3.5
                     },
                     {
@@ -385,12 +390,12 @@
                     },
                     {
                       "name": "Under",
-                      "price": -163,
+                      "price": -162,
                       "point": 5
                     },
                     {
                       "name": "Under",
-                      "price": -201,
+                      "price": -200,
                       "point": 5.5
                     }
                   ]
@@ -402,7 +407,7 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:57:08Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -416,35 +421,35 @@
                 },
                 {
                   "book": "betonlineag",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:56:47Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
-                      "price": 164
+                      "price": 165
                     },
                     {
                       "name": "Philadelphia Phillies",
-                      "price": -188
+                      "price": -190
                     }
                   ]
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:55:59Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
-                      "price": 155
+                      "price": 150
                     },
                     {
                       "name": "Philadelphia Phillies",
-                      "price": -210
+                      "price": -200
                     }
                   ]
                 },
                 {
                   "book": "draftkings",
-                  "updated_at": "2026-09-07T15:21:04Z",
+                  "updated_at": "2026-09-07T15:56:43Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -458,7 +463,7 @@
                 },
                 {
                   "book": "williamhill_us",
-                  "updated_at": "2026-09-07T15:20:26Z",
+                  "updated_at": "2026-09-07T15:56:41Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -472,7 +477,7 @@
                 },
                 {
                   "book": "betrivers",
-                  "updated_at": "2026-09-07T15:20:42Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -486,21 +491,21 @@
                 },
                 {
                   "book": "mybookieag",
-                  "updated_at": "2026-09-07T15:20:42Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
-                      "price": 165
+                      "price": 167
                     },
                     {
                       "name": "Philadelphia Phillies",
-                      "price": -206
+                      "price": -210
                     }
                   ]
                 },
                 {
                   "book": "betus",
-                  "updated_at": "2026-09-07T15:20:32Z",
+                  "updated_at": "2026-09-07T15:56:27Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -519,23 +524,23 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:57:08Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
-                      "price": 104,
+                      "price": 106,
                       "point": 0.5
                     },
                     {
                       "name": "Philadelphia Phillies",
-                      "price": -135,
+                      "price": -138,
                       "point": -0.5
                     }
                   ]
                 },
                 {
                   "book": "betonlineag",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:56:47Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -551,7 +556,7 @@
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:55:59Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -567,7 +572,7 @@
                 },
                 {
                   "book": "williamhill_us",
-                  "updated_at": "2026-09-07T15:20:26Z",
+                  "updated_at": "2026-09-07T15:56:41Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -583,7 +588,7 @@
                 },
                 {
                   "book": "mybookieag",
-                  "updated_at": "2026-09-07T15:20:42Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -599,7 +604,7 @@
                 },
                 {
                   "book": "betus",
-                  "updated_at": "2026-09-07T15:20:32Z",
+                  "updated_at": "2026-09-07T15:56:27Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -615,7 +620,7 @@
                 },
                 {
                   "book": "betmgm",
-                  "updated_at": "2026-09-07T15:18:17Z",
+                  "updated_at": "2026-09-07T15:55:33Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
@@ -631,16 +636,16 @@
                 },
                 {
                   "book": "pinnacle",
-                  "updated_at": "2026-09-07T15:21:02Z",
+                  "updated_at": "2026-09-07T15:56:15Z",
                   "outcomes": [
                     {
                       "name": "Atlanta Braves",
-                      "price": 161,
+                      "price": 167,
                       "point": 0
                     },
                     {
                       "name": "Philadelphia Phillies",
-                      "price": -189,
+                      "price": -197,
                       "point": 0
                     }
                   ]
@@ -652,39 +657,39 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:57:08Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -102,
+                      "price": 100,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -128,
+                      "price": -130,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "betonlineag",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:56:47Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -102,
+                      "price": -105,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -118,
+                      "price": -115,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:21:09Z",
+                  "updated_at": "2026-09-07T15:55:59Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -700,7 +705,7 @@
                 },
                 {
                   "book": "williamhill_us",
-                  "updated_at": "2026-09-07T15:20:26Z",
+                  "updated_at": "2026-09-07T15:56:41Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -716,27 +721,11 @@
                 },
                 {
                   "book": "mybookieag",
-                  "updated_at": "2026-09-07T15:20:42Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -101,
-                      "point": 4.5
-                    },
-                    {
-                      "name": "Under",
-                      "price": -122,
-                      "point": 4.5
-                    }
-                  ]
-                },
-                {
-                  "book": "betus",
-                  "updated_at": "2026-09-07T15:20:32Z",
-                  "outcomes": [
-                    {
-                      "name": "Over",
-                      "price": -110,
+                      "price": -102,
                       "point": 4.5
                     },
                     {
@@ -747,8 +736,24 @@
                   ]
                 },
                 {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -115,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
                   "book": "betmgm",
-                  "updated_at": "2026-09-07T15:18:17Z",
+                  "updated_at": "2026-09-07T15:55:33Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -764,16 +769,16 @@
                 },
                 {
                   "book": "pinnacle",
-                  "updated_at": "2026-09-07T15:21:02Z",
+                  "updated_at": "2026-09-07T15:56:15Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": 106,
+                      "price": 105,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -122,
+                      "price": -121,
                       "point": 4.5
                     }
                   ]
@@ -783,8 +788,8 @@
           ]
         },
         "active_window": {
-          "start": "2026-09-07T13:53:23.806794Z",
-          "end": "2026-09-07T17:23:23.806794Z",
+          "start": "2026-09-07T14:32:12.877950Z",
+          "end": "2026-09-07T18:02:12.877950Z",
           "events_in_window": 1,
           "next_event_at": "2026-09-07T17:06:00Z"
         }
@@ -811,7 +816,7 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:07Z",
+                  "updated_at": "2026-09-07T15:56:21Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -932,7 +937,7 @@
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:20:46Z",
+                  "updated_at": "2026-09-07T15:57:10Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -956,7 +961,7 @@
                     },
                     {
                       "name": "Over",
-                      "price": 130,
+                      "price": 125,
                       "point": 5
                     },
                     {
@@ -1006,7 +1011,7 @@
                     },
                     {
                       "name": "Under",
-                      "price": -170,
+                      "price": -165,
                       "point": 5
                     },
                     {
@@ -1038,11 +1043,11 @@
                 },
                 {
                   "book": "draftkings",
-                  "updated_at": "2026-09-07T15:21:03Z",
+                  "updated_at": "2026-09-07T15:56:44Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -175,
+                      "price": -180,
                       "point": 3.5
                     },
                     {
@@ -1052,12 +1057,12 @@
                     },
                     {
                       "name": "Over",
-                      "price": 160,
+                      "price": 150,
                       "point": 5.5
                     },
                     {
                       "name": "Under",
-                      "price": 135,
+                      "price": 140,
                       "point": 3.5
                     },
                     {
@@ -1067,30 +1072,30 @@
                     },
                     {
                       "name": "Under",
-                      "price": -210,
+                      "price": -195,
                       "point": 5.5
                     }
                   ]
                 },
                 {
                   "book": "betrivers",
-                  "updated_at": "2026-09-07T15:20:25Z",
+                  "updated_at": "2026-09-07T15:56:42Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -110,
+                      "price": -107,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -121,
+                      "price": -125,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "pinnacle",
-                  "updated_at": "2026-09-07T15:20:28Z",
+                  "updated_at": "2026-09-07T15:56:42Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -1129,7 +1134,7 @@
                     },
                     {
                       "name": "Under",
-                      "price": -193,
+                      "price": -194,
                       "point": 5.5
                     }
                   ]
@@ -1141,7 +1146,7 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:07Z",
+                  "updated_at": "2026-09-07T15:56:21Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1155,7 +1160,7 @@
                 },
                 {
                   "book": "betonlineag",
-                  "updated_at": "2026-09-07T15:21:10Z",
+                  "updated_at": "2026-09-07T15:56:43Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1169,7 +1174,7 @@
                 },
                 {
                   "book": "mybookieag",
-                  "updated_at": "2026-09-07T15:21:02Z",
+                  "updated_at": "2026-09-07T15:56:16Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1183,7 +1188,7 @@
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:20:46Z",
+                  "updated_at": "2026-09-07T15:57:10Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1197,7 +1202,7 @@
                 },
                 {
                   "book": "draftkings",
-                  "updated_at": "2026-09-07T15:21:03Z",
+                  "updated_at": "2026-09-07T15:56:44Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1211,7 +1216,7 @@
                 },
                 {
                   "book": "williamhill_us",
-                  "updated_at": "2026-09-07T15:20:41Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1225,21 +1230,21 @@
                 },
                 {
                   "book": "betrivers",
-                  "updated_at": "2026-09-07T15:20:25Z",
+                  "updated_at": "2026-09-07T15:56:42Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
-                      "price": -139
+                      "price": -148
                     },
                     {
                       "name": "New York Mets",
-                      "price": 105
+                      "price": 110
                     }
                   ]
                 },
                 {
                   "book": "betus",
-                  "updated_at": "2026-09-07T15:20:32Z",
+                  "updated_at": "2026-09-07T15:56:27Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1258,7 +1263,7 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:07Z",
+                  "updated_at": "2026-09-07T15:56:21Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1274,7 +1279,7 @@
                 },
                 {
                   "book": "betonlineag",
-                  "updated_at": "2026-09-07T15:21:10Z",
+                  "updated_at": "2026-09-07T15:56:43Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1290,7 +1295,7 @@
                 },
                 {
                   "book": "mybookieag",
-                  "updated_at": "2026-09-07T15:21:02Z",
+                  "updated_at": "2026-09-07T15:56:16Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1306,7 +1311,7 @@
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:20:46Z",
+                  "updated_at": "2026-09-07T15:57:10Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1322,7 +1327,7 @@
                 },
                 {
                   "book": "williamhill_us",
-                  "updated_at": "2026-09-07T15:20:41Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1338,7 +1343,7 @@
                 },
                 {
                   "book": "betus",
-                  "updated_at": "2026-09-07T15:20:32Z",
+                  "updated_at": "2026-09-07T15:56:27Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1354,7 +1359,7 @@
                 },
                 {
                   "book": "betmgm",
-                  "updated_at": "2026-09-07T15:18:17Z",
+                  "updated_at": "2026-09-07T15:55:33Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1370,7 +1375,7 @@
                 },
                 {
                   "book": "pinnacle",
-                  "updated_at": "2026-09-07T15:20:28Z",
+                  "updated_at": "2026-09-07T15:56:42Z",
                   "outcomes": [
                     {
                       "name": "Miami Marlins",
@@ -1391,7 +1396,7 @@
               "books": [
                 {
                   "book": "fanduel",
-                  "updated_at": "2026-09-07T15:21:07Z",
+                  "updated_at": "2026-09-07T15:56:21Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -1407,55 +1412,55 @@
                 },
                 {
                   "book": "betonlineag",
-                  "updated_at": "2026-09-07T15:21:10Z",
+                  "updated_at": "2026-09-07T15:56:43Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": 100,
+                      "price": -111,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -120,
+                      "price": -109,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "mybookieag",
-                  "updated_at": "2026-09-07T15:21:02Z",
+                  "updated_at": "2026-09-07T15:56:16Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": 100,
+                      "price": 101,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -122,
+                      "price": -123,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "bovada",
-                  "updated_at": "2026-09-07T15:20:46Z",
+                  "updated_at": "2026-09-07T15:57:10Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": 100,
+                      "price": -105,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -130,
+                      "price": -125,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "williamhill_us",
-                  "updated_at": "2026-09-07T15:20:41Z",
+                  "updated_at": "2026-09-07T15:57:04Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -1471,39 +1476,39 @@
                 },
                 {
                   "book": "betus",
-                  "updated_at": "2026-09-07T15:20:32Z",
+                  "updated_at": "2026-09-07T15:56:27Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": -110,
+                      "price": -115,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -120,
+                      "price": -115,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "betmgm",
-                  "updated_at": "2026-09-07T15:18:17Z",
+                  "updated_at": "2026-09-07T15:55:33Z",
                   "outcomes": [
                     {
                       "name": "Over",
-                      "price": 100,
+                      "price": -105,
                       "point": 4.5
                     },
                     {
                       "name": "Under",
-                      "price": -130,
+                      "price": -125,
                       "point": 4.5
                     }
                   ]
                 },
                 {
                   "book": "pinnacle",
-                  "updated_at": "2026-09-07T15:20:28Z",
+                  "updated_at": "2026-09-07T15:56:42Z",
                   "outcomes": [
                     {
                       "name": "Over",
@@ -1522,8 +1527,8 @@
           ]
         },
         "active_window": {
-          "start": "2026-09-07T13:53:23.976484Z",
-          "end": "2026-09-07T17:23:23.976484Z",
+          "start": "2026-09-07T14:32:13.005444Z",
+          "end": "2026-09-07T18:02:13.005444Z",
           "events_in_window": 1,
           "next_event_at": "2026-09-07T17:06:00Z"
         }
@@ -1535,10 +1540,742 @@
       "away_team": "Cleveland Guardians",
       "start_time": "2026-09-07T17:36:00Z",
       "response": {
-        "success": false,
+        "success": true,
         "source": "cache",
-        "data": null,
-        "message": "Event '0a5522c3b427e5162e8c13c1ddb05dd7' not found in baseball_mlb period markets cache."
+        "data": {
+          "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+          "sport": "baseball",
+          "league": "MLB",
+          "home_team": "Baltimore Orioles",
+          "away_team": "Cleveland Guardians",
+          "start_time": "2026-09-07T17:36:00Z",
+          "markets": [
+            {
+              "market": "alternate_totals_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:46Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -4500,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -700,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -300,
+                      "point": 2.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -152,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 118,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 194,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 310,
+                      "point": 6.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 470,
+                      "point": 7.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 680,
+                      "point": 8.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 920,
+                      "point": 9.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 1280,
+                      "point": 10.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 1100,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 410,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 210,
+                      "point": 2.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 114,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -158,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -270,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -470,
+                      "point": 6.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -850,
+                      "point": 7.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -1600,
+                      "point": 8.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -3500,
+                      "point": 9.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -7000,
+                      "point": 10.5
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:55:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -6600,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -1100,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -230,
+                      "point": 3
+                    },
+                    {
+                      "name": "Over",
+                      "price": -150,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 115,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 155,
+                      "point": 5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 350,
+                      "point": 7.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 525,
+                      "point": 8.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 700,
+                      "point": 9.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 900,
+                      "point": 10.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 1400,
+                      "point": 11.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 1200,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 575,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 170,
+                      "point": 3
+                    },
+                    {
+                      "name": "Under",
+                      "price": 115,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -150,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -210,
+                      "point": 5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -550,
+                      "point": 7.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -950,
+                      "point": 8.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -1600,
+                      "point": 9.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -3333,
+                      "point": 10.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -10000,
+                      "point": 11.5
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-07T15:55:13Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -145,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 120,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 195,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 114,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -154,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -260,
+                      "point": 5.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betrivers",
+                  "updated_at": "2026-09-07T15:56:16Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -139,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 105,
+                      "point": 3.5
+                    }
+                  ]
+                },
+                {
+                  "book": "pinnacle",
+                  "updated_at": "2026-09-07T15:56:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -212,
+                      "point": 3
+                    },
+                    {
+                      "name": "Over",
+                      "price": -139,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 124,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 166,
+                      "point": 5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 179,
+                      "point": 3
+                    },
+                    {
+                      "name": "Under",
+                      "price": 121,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -143,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -195,
+                      "point": 5
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "h2h_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:46Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -140
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 112
+                    }
+                  ]
+                },
+                {
+                  "book": "betonlineag",
+                  "updated_at": "2026-09-07T15:57:08Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -138
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 118
+                    }
+                  ]
+                },
+                {
+                  "book": "mybookieag",
+                  "updated_at": "2026-09-07T15:57:03Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -139
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 113
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:55:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -145
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 110
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-07T15:55:13Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -140
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 110
+                    }
+                  ]
+                },
+                {
+                  "book": "williamhill_us",
+                  "updated_at": "2026-09-07T15:56:17Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -145
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 115
+                    }
+                  ]
+                },
+                {
+                  "book": "betrivers",
+                  "updated_at": "2026-09-07T15:56:16Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -148
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 112
+                    }
+                  ]
+                },
+                {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -140
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 120
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "spreads_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:46Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": 104,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -135,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betonlineag",
+                  "updated_at": "2026-09-07T15:57:08Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": 103,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -123,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "mybookieag",
+                  "updated_at": "2026-09-07T15:57:03Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": 103,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -126,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:55:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": 100,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -130,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "williamhill_us",
+                  "updated_at": "2026-09-07T15:56:17Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": 100,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -130,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": 105,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -125,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betmgm",
+                  "updated_at": "2026-09-07T15:55:33Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -105,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": -125,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "pinnacle",
+                  "updated_at": "2026-09-07T15:56:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Baltimore Orioles",
+                      "price": -135,
+                      "point": 0
+                    },
+                    {
+                      "name": "Cleveland Guardians",
+                      "price": 117,
+                      "point": 0
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "totals_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:46Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -148,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 114,
+                      "point": 3.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betonlineag",
+                  "updated_at": "2026-09-07T15:57:08Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -104,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -116,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "mybookieag",
+                  "updated_at": "2026-09-07T15:57:03Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -106,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:55:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -115,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "williamhill_us",
+                  "updated_at": "2026-09-07T15:56:17Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -105,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -125,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -115,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "betmgm",
+                  "updated_at": "2026-09-07T15:55:33Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -115,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "pinnacle",
+                  "updated_at": "2026-09-07T15:56:41Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -106,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -108,
+                      "point": 4
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "active_window": {
+          "start": "2026-09-07T14:32:13.137038Z",
+          "end": "2026-09-07T18:02:13.137038Z",
+          "events_in_window": 1,
+          "next_event_at": "2026-09-07T17:06:00Z"
+        }
       }
     },
     {
@@ -1547,10 +2284,682 @@
       "away_team": "Los Angeles Angels",
       "start_time": "2026-09-07T17:36:00Z",
       "response": {
-        "success": false,
+        "success": true,
         "source": "cache",
-        "data": null,
-        "message": "Event '22430c880f9e9118f74aacf0b720b7ee' not found in baseball_mlb period markets cache."
+        "data": {
+          "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+          "sport": "baseball",
+          "league": "MLB",
+          "home_team": "Boston Red Sox",
+          "away_team": "Los Angeles Angels",
+          "start_time": "2026-09-07T17:36:00Z",
+          "markets": [
+            {
+              "market": "alternate_totals_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:51Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -7000,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -1100,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -400,
+                      "point": 2.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -205,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -112,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 152,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 230,
+                      "point": 6.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 360,
+                      "point": 7.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 520,
+                      "point": 8.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 750,
+                      "point": 9.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 920,
+                      "point": 10.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 1280,
+                      "point": 11.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 1280,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 550,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 270,
+                      "point": 2.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 152,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -118,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -205,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -330,
+                      "point": 6.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -580,
+                      "point": 7.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -1000,
+                      "point": 8.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -2000,
+                      "point": 9.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -3500,
+                      "point": 10.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -7000,
+                      "point": 11.5
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:56:00Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -200,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -160,
+                      "point": 4
+                    },
+                    {
+                      "name": "Over",
+                      "price": 115,
+                      "point": 5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 140,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 150,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 120,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -150,
+                      "point": 5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -185,
+                      "point": 5.5
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-07T15:56:43Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -188,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -110,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 150,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 145,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -120,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -195,
+                      "point": 5.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betrivers",
+                  "updated_at": "2026-09-07T15:56:16Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -107,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -124,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "pinnacle",
+                  "updated_at": "2026-09-07T15:55:54Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -175,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -138,
+                      "point": 4
+                    },
+                    {
+                      "name": "Over",
+                      "price": 128,
+                      "point": 5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 158,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 151,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 120,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -148,
+                      "point": 5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -184,
+                      "point": 5.5
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "h2h_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:51Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -168
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 134
+                    }
+                  ]
+                },
+                {
+                  "book": "mybookieag",
+                  "updated_at": "2026-09-07T15:56:18Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -172
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 140
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:56:00Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -170
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 130
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-07T15:56:43Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -166
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 130
+                    }
+                  ]
+                },
+                {
+                  "book": "williamhill_us",
+                  "updated_at": "2026-09-07T15:56:17Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -170
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 140
+                    }
+                  ]
+                },
+                {
+                  "book": "betonlineag",
+                  "updated_at": "2026-09-07T15:56:48Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -163
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 143
+                    }
+                  ]
+                },
+                {
+                  "book": "betrivers",
+                  "updated_at": "2026-09-07T15:56:16Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -175
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 128
+                    }
+                  ]
+                },
+                {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -165
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 145
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "spreads_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:51Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -115,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -113,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "mybookieag",
+                  "updated_at": "2026-09-07T15:56:18Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -117,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -104,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:56:00Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -120,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -110,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "williamhill_us",
+                  "updated_at": "2026-09-07T15:56:17Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -125,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -105,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betmgm",
+                  "updated_at": "2026-09-07T15:55:33Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -118,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -110,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betonlineag",
+                  "updated_at": "2026-09-07T15:56:48Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -115,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -105,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -115,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": -105,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "pinnacle",
+                  "updated_at": "2026-09-07T15:55:54Z",
+                  "outcomes": [
+                    {
+                      "name": "Boston Red Sox",
+                      "price": -159,
+                      "point": 0
+                    },
+                    {
+                      "name": "Los Angeles Angels",
+                      "price": 137,
+                      "point": 0
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "totals_1st_5_innings",
+              "books": [
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-07T15:56:51Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -113,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "mybookieag",
+                  "updated_at": "2026-09-07T15:56:18Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -105,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -116,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "bovada",
+                  "updated_at": "2026-09-07T15:56:00Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -115,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "williamhill_us",
+                  "updated_at": "2026-09-07T15:56:17Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -120,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -110,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betmgm",
+                  "updated_at": "2026-09-07T15:55:33Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -110,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -118,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betonlineag",
+                  "updated_at": "2026-09-07T15:56:48Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -102,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -118,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betus",
+                  "updated_at": "2026-09-07T15:56:27Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -110,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -120,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "pinnacle",
+                  "updated_at": "2026-09-07T15:55:54Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -103,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -111,
+                      "point": 4.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "active_window": {
+          "start": "2026-09-07T14:32:13.336188Z",
+          "end": "2026-09-07T18:02:13.336188Z",
+          "events_in_window": 1,
+          "next_event_at": "2026-09-07T17:06:00Z"
+        }
       }
     },
     {
@@ -1628,7 +3037,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:57:08Z",
         "outcomes": [
           {
             "name": "Over",
@@ -1647,27 +3056,27 @@
           },
           {
             "name": "Over",
-            "price": -186,
+            "price": -182,
             "point": 3.5
           },
           {
             "name": "Over",
-            "price": -102,
+            "price": 100,
             "point": 4.5
           },
           {
             "name": "Over",
-            "price": 164,
+            "price": 168,
             "point": 5.5
           },
           {
             "name": "Over",
-            "price": 265,
+            "price": 260,
             "point": 6.5
           },
           {
             "name": "Over",
-            "price": 400,
+            "price": 390,
             "point": 7.5
           },
           {
@@ -1677,12 +3086,12 @@
           },
           {
             "name": "Over",
-            "price": 880,
+            "price": 850,
             "point": 9.5
           },
           {
             "name": "Over",
-            "price": 1200,
+            "price": 1100,
             "point": 10.5
           },
           {
@@ -1702,27 +3111,27 @@
           },
           {
             "name": "Under",
-            "price": 138,
+            "price": 136,
             "point": 3.5
           },
           {
             "name": "Under",
-            "price": -130,
+            "price": -132,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -225,
+            "price": -230,
             "point": 5.5
           },
           {
             "name": "Under",
-            "price": -390,
+            "price": -380,
             "point": 6.5
           },
           {
             "name": "Under",
-            "price": -670,
+            "price": -650,
             "point": 7.5
           },
           {
@@ -1732,13 +3141,18 @@
           },
           {
             "name": "Under",
-            "price": -3000,
+            "price": -2200,
             "point": 9.5
           },
           {
             "name": "Under",
-            "price": -5000,
+            "price": -4500,
             "point": 10.5
+          },
+          {
+            "name": "Under",
+            "price": -8000,
+            "point": 11.5
           }
         ]
       },
@@ -1748,7 +3162,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:55:59Z",
         "outcomes": [
           {
             "name": "Over",
@@ -1858,7 +3272,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "draftkings",
-        "updated_at": "2026-09-07T15:21:04Z",
+        "updated_at": "2026-09-07T15:56:43Z",
         "outcomes": [
           {
             "name": "Over",
@@ -1898,7 +3312,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "betrivers",
-        "updated_at": "2026-09-07T15:20:42Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Over",
@@ -1918,31 +3332,31 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "pinnacle",
-        "updated_at": "2026-09-07T15:21:02Z",
+        "updated_at": "2026-09-07T15:56:15Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": -162,
+            "price": -163,
             "point": 3.5
           },
           {
             "name": "Over",
-            "price": -126,
+            "price": -127,
             "point": 4
           },
           {
             "name": "Over",
-            "price": 141,
+            "price": 140,
             "point": 5
           },
           {
             "name": "Over",
-            "price": 171,
+            "price": 170,
             "point": 5.5
           },
           {
             "name": "Under",
-            "price": 140,
+            "price": 141,
             "point": 3.5
           },
           {
@@ -1952,12 +3366,12 @@
           },
           {
             "name": "Under",
-            "price": -163,
+            "price": -162,
             "point": 5
           },
           {
             "name": "Under",
-            "price": -201,
+            "price": -200,
             "point": 5.5
           }
         ]
@@ -1968,7 +3382,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:57:08Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -1986,15 +3400,15 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "betonlineag",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:56:47Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
-            "price": 164
+            "price": 165
           },
           {
             "name": "Philadelphia Phillies",
-            "price": -188
+            "price": -190
           }
         ]
       },
@@ -2004,15 +3418,15 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:55:59Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
-            "price": 155
+            "price": 150
           },
           {
             "name": "Philadelphia Phillies",
-            "price": -210
+            "price": -200
           }
         ]
       },
@@ -2022,7 +3436,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "draftkings",
-        "updated_at": "2026-09-07T15:21:04Z",
+        "updated_at": "2026-09-07T15:56:43Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2040,7 +3454,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "williamhill_us",
-        "updated_at": "2026-09-07T15:20:26Z",
+        "updated_at": "2026-09-07T15:56:41Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2058,7 +3472,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "betrivers",
-        "updated_at": "2026-09-07T15:20:42Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2076,15 +3490,15 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "mybookieag",
-        "updated_at": "2026-09-07T15:20:42Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
-            "price": 165
+            "price": 167
           },
           {
             "name": "Philadelphia Phillies",
-            "price": -206
+            "price": -210
           }
         ]
       },
@@ -2094,7 +3508,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "betus",
-        "updated_at": "2026-09-07T15:20:32Z",
+        "updated_at": "2026-09-07T15:56:27Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2112,16 +3526,16 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:57:08Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
-            "price": 104,
+            "price": 106,
             "point": 0.5
           },
           {
             "name": "Philadelphia Phillies",
-            "price": -135,
+            "price": -138,
             "point": -0.5
           }
         ]
@@ -2132,7 +3546,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "betonlineag",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:56:47Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2152,7 +3566,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:55:59Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2172,7 +3586,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "williamhill_us",
-        "updated_at": "2026-09-07T15:20:26Z",
+        "updated_at": "2026-09-07T15:56:41Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2192,7 +3606,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "mybookieag",
-        "updated_at": "2026-09-07T15:20:42Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2212,7 +3626,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "betus",
-        "updated_at": "2026-09-07T15:20:32Z",
+        "updated_at": "2026-09-07T15:56:27Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2232,7 +3646,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "betmgm",
-        "updated_at": "2026-09-07T15:18:17Z",
+        "updated_at": "2026-09-07T15:55:33Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
@@ -2252,16 +3666,16 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "pinnacle",
-        "updated_at": "2026-09-07T15:21:02Z",
+        "updated_at": "2026-09-07T15:56:15Z",
         "outcomes": [
           {
             "name": "Atlanta Braves",
-            "price": 161,
+            "price": 167,
             "point": 0
           },
           {
             "name": "Philadelphia Phillies",
-            "price": -189,
+            "price": -197,
             "point": 0
           }
         ]
@@ -2272,16 +3686,16 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:57:08Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": -102,
+            "price": 100,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -128,
+            "price": -130,
             "point": 4.5
           }
         ]
@@ -2292,16 +3706,16 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "betonlineag",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:56:47Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": -102,
+            "price": -105,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -118,
+            "price": -115,
             "point": 4.5
           }
         ]
@@ -2312,7 +3726,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:21:09Z",
+        "updated_at": "2026-09-07T15:55:59Z",
         "outcomes": [
           {
             "name": "Over",
@@ -2332,7 +3746,7 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "williamhill_us",
-        "updated_at": "2026-09-07T15:20:26Z",
+        "updated_at": "2026-09-07T15:56:41Z",
         "outcomes": [
           {
             "name": "Over",
@@ -2352,31 +3766,11 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "mybookieag",
-        "updated_at": "2026-09-07T15:20:42Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": -101,
-            "point": 4.5
-          },
-          {
-            "name": "Under",
-            "price": -122,
-            "point": 4.5
-          }
-        ]
-      },
-      {
-        "event_id": "ce94c6d5ef8ae9f29d29223e386beee1",
-        "matchup": "Atlanta Braves @ Philadelphia Phillies",
-        "start_time": "2026-09-07T17:06:00Z",
-        "market": "totals_1st_5_innings",
-        "sportsbook": "betus",
-        "updated_at": "2026-09-07T15:20:32Z",
-        "outcomes": [
-          {
-            "name": "Over",
-            "price": -110,
+            "price": -102,
             "point": 4.5
           },
           {
@@ -2391,8 +3785,28 @@
         "matchup": "Atlanta Braves @ Philadelphia Phillies",
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "ce94c6d5ef8ae9f29d29223e386beee1",
+        "matchup": "Atlanta Braves @ Philadelphia Phillies",
+        "start_time": "2026-09-07T17:06:00Z",
+        "market": "totals_1st_5_innings",
         "sportsbook": "betmgm",
-        "updated_at": "2026-09-07T15:18:17Z",
+        "updated_at": "2026-09-07T15:55:33Z",
         "outcomes": [
           {
             "name": "Over",
@@ -2412,16 +3826,16 @@
         "start_time": "2026-09-07T17:06:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "pinnacle",
-        "updated_at": "2026-09-07T15:21:02Z",
+        "updated_at": "2026-09-07T15:56:15Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": 106,
+            "price": 105,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -122,
+            "price": -121,
             "point": 4.5
           }
         ]
@@ -2432,7 +3846,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:07Z",
+        "updated_at": "2026-09-07T15:56:21Z",
         "outcomes": [
           {
             "name": "Over",
@@ -2557,7 +3971,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:20:46Z",
+        "updated_at": "2026-09-07T15:57:10Z",
         "outcomes": [
           {
             "name": "Over",
@@ -2581,7 +3995,7 @@
           },
           {
             "name": "Over",
-            "price": 130,
+            "price": 125,
             "point": 5
           },
           {
@@ -2631,7 +4045,7 @@
           },
           {
             "name": "Under",
-            "price": -170,
+            "price": -165,
             "point": 5
           },
           {
@@ -2667,11 +4081,11 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "draftkings",
-        "updated_at": "2026-09-07T15:21:03Z",
+        "updated_at": "2026-09-07T15:56:44Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": -175,
+            "price": -180,
             "point": 3.5
           },
           {
@@ -2681,12 +4095,12 @@
           },
           {
             "name": "Over",
-            "price": 160,
+            "price": 150,
             "point": 5.5
           },
           {
             "name": "Under",
-            "price": 135,
+            "price": 140,
             "point": 3.5
           },
           {
@@ -2696,7 +4110,7 @@
           },
           {
             "name": "Under",
-            "price": -210,
+            "price": -195,
             "point": 5.5
           }
         ]
@@ -2707,16 +4121,16 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "betrivers",
-        "updated_at": "2026-09-07T15:20:25Z",
+        "updated_at": "2026-09-07T15:56:42Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": -110,
+            "price": -107,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -121,
+            "price": -125,
             "point": 4.5
           }
         ]
@@ -2727,7 +4141,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "alternate_totals_1st_5_innings",
         "sportsbook": "pinnacle",
-        "updated_at": "2026-09-07T15:20:28Z",
+        "updated_at": "2026-09-07T15:56:42Z",
         "outcomes": [
           {
             "name": "Over",
@@ -2766,7 +4180,7 @@
           },
           {
             "name": "Under",
-            "price": -193,
+            "price": -194,
             "point": 5.5
           }
         ]
@@ -2777,7 +4191,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:07Z",
+        "updated_at": "2026-09-07T15:56:21Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2795,7 +4209,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "betonlineag",
-        "updated_at": "2026-09-07T15:21:10Z",
+        "updated_at": "2026-09-07T15:56:43Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2813,7 +4227,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "mybookieag",
-        "updated_at": "2026-09-07T15:21:02Z",
+        "updated_at": "2026-09-07T15:56:16Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2831,7 +4245,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:20:46Z",
+        "updated_at": "2026-09-07T15:57:10Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2849,7 +4263,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "draftkings",
-        "updated_at": "2026-09-07T15:21:03Z",
+        "updated_at": "2026-09-07T15:56:44Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2867,7 +4281,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "williamhill_us",
-        "updated_at": "2026-09-07T15:20:41Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2885,15 +4299,15 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "betrivers",
-        "updated_at": "2026-09-07T15:20:25Z",
+        "updated_at": "2026-09-07T15:56:42Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
-            "price": -139
+            "price": -148
           },
           {
             "name": "New York Mets",
-            "price": 105
+            "price": 110
           }
         ]
       },
@@ -2903,7 +4317,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "h2h_1st_5_innings",
         "sportsbook": "betus",
-        "updated_at": "2026-09-07T15:20:32Z",
+        "updated_at": "2026-09-07T15:56:27Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2921,7 +4335,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:07Z",
+        "updated_at": "2026-09-07T15:56:21Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2941,7 +4355,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "betonlineag",
-        "updated_at": "2026-09-07T15:21:10Z",
+        "updated_at": "2026-09-07T15:56:43Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2961,7 +4375,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "mybookieag",
-        "updated_at": "2026-09-07T15:21:02Z",
+        "updated_at": "2026-09-07T15:56:16Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -2981,7 +4395,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:20:46Z",
+        "updated_at": "2026-09-07T15:57:10Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -3001,7 +4415,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "williamhill_us",
-        "updated_at": "2026-09-07T15:20:41Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -3021,7 +4435,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "betus",
-        "updated_at": "2026-09-07T15:20:32Z",
+        "updated_at": "2026-09-07T15:56:27Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -3041,7 +4455,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "betmgm",
-        "updated_at": "2026-09-07T15:18:17Z",
+        "updated_at": "2026-09-07T15:55:33Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -3061,7 +4475,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "spreads_1st_5_innings",
         "sportsbook": "pinnacle",
-        "updated_at": "2026-09-07T15:20:28Z",
+        "updated_at": "2026-09-07T15:56:42Z",
         "outcomes": [
           {
             "name": "Miami Marlins",
@@ -3081,7 +4495,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "fanduel",
-        "updated_at": "2026-09-07T15:21:07Z",
+        "updated_at": "2026-09-07T15:56:21Z",
         "outcomes": [
           {
             "name": "Over",
@@ -3101,16 +4515,16 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "betonlineag",
-        "updated_at": "2026-09-07T15:21:10Z",
+        "updated_at": "2026-09-07T15:56:43Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": 100,
+            "price": -111,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -120,
+            "price": -109,
             "point": 4.5
           }
         ]
@@ -3121,16 +4535,16 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "mybookieag",
-        "updated_at": "2026-09-07T15:21:02Z",
+        "updated_at": "2026-09-07T15:56:16Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": 100,
+            "price": 101,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -122,
+            "price": -123,
             "point": 4.5
           }
         ]
@@ -3141,16 +4555,16 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "bovada",
-        "updated_at": "2026-09-07T15:20:46Z",
+        "updated_at": "2026-09-07T15:57:10Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": 100,
+            "price": -105,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -130,
+            "price": -125,
             "point": 4.5
           }
         ]
@@ -3161,7 +4575,7 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "williamhill_us",
-        "updated_at": "2026-09-07T15:20:41Z",
+        "updated_at": "2026-09-07T15:57:04Z",
         "outcomes": [
           {
             "name": "Over",
@@ -3181,7 +4595,1595 @@
         "start_time": "2026-09-07T17:11:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "betus",
-        "updated_at": "2026-09-07T15:20:32Z",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "4645b2d34e3503155b3ff308836621dc",
+        "matchup": "New York Mets @ Miami Marlins",
+        "start_time": "2026-09-07T17:11:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betmgm",
+        "updated_at": "2026-09-07T15:55:33Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -105,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -125,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "4645b2d34e3503155b3ff308836621dc",
+        "matchup": "New York Mets @ Miami Marlins",
+        "start_time": "2026-09-07T17:11:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "pinnacle",
+        "updated_at": "2026-09-07T15:56:42Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": 104,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -120,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:46Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -4500,
+            "point": 0.5
+          },
+          {
+            "name": "Over",
+            "price": -700,
+            "point": 1.5
+          },
+          {
+            "name": "Over",
+            "price": -300,
+            "point": 2.5
+          },
+          {
+            "name": "Over",
+            "price": -152,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": 118,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 194,
+            "point": 5.5
+          },
+          {
+            "name": "Over",
+            "price": 310,
+            "point": 6.5
+          },
+          {
+            "name": "Over",
+            "price": 470,
+            "point": 7.5
+          },
+          {
+            "name": "Over",
+            "price": 680,
+            "point": 8.5
+          },
+          {
+            "name": "Over",
+            "price": 920,
+            "point": 9.5
+          },
+          {
+            "name": "Over",
+            "price": 1280,
+            "point": 10.5
+          },
+          {
+            "name": "Under",
+            "price": 1100,
+            "point": 0.5
+          },
+          {
+            "name": "Under",
+            "price": 410,
+            "point": 1.5
+          },
+          {
+            "name": "Under",
+            "price": 210,
+            "point": 2.5
+          },
+          {
+            "name": "Under",
+            "price": 114,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": -158,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -270,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": -470,
+            "point": 6.5
+          },
+          {
+            "name": "Under",
+            "price": -850,
+            "point": 7.5
+          },
+          {
+            "name": "Under",
+            "price": -1600,
+            "point": 8.5
+          },
+          {
+            "name": "Under",
+            "price": -3500,
+            "point": 9.5
+          },
+          {
+            "name": "Under",
+            "price": -7000,
+            "point": 10.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:55:41Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -6600,
+            "point": 0.5
+          },
+          {
+            "name": "Over",
+            "price": -1100,
+            "point": 1.5
+          },
+          {
+            "name": "Over",
+            "price": -230,
+            "point": 3
+          },
+          {
+            "name": "Over",
+            "price": -150,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": 115,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 155,
+            "point": 5
+          },
+          {
+            "name": "Over",
+            "price": 350,
+            "point": 7.5
+          },
+          {
+            "name": "Over",
+            "price": 525,
+            "point": 8.5
+          },
+          {
+            "name": "Over",
+            "price": 700,
+            "point": 9.5
+          },
+          {
+            "name": "Over",
+            "price": 900,
+            "point": 10.5
+          },
+          {
+            "name": "Over",
+            "price": 1400,
+            "point": 11.5
+          },
+          {
+            "name": "Under",
+            "price": 1200,
+            "point": 0.5
+          },
+          {
+            "name": "Under",
+            "price": 575,
+            "point": 1.5
+          },
+          {
+            "name": "Under",
+            "price": 170,
+            "point": 3
+          },
+          {
+            "name": "Under",
+            "price": 115,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": -150,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -210,
+            "point": 5
+          },
+          {
+            "name": "Under",
+            "price": -550,
+            "point": 7.5
+          },
+          {
+            "name": "Under",
+            "price": -950,
+            "point": 8.5
+          },
+          {
+            "name": "Under",
+            "price": -1600,
+            "point": 9.5
+          },
+          {
+            "name": "Under",
+            "price": -3333,
+            "point": 10.5
+          },
+          {
+            "name": "Under",
+            "price": -10000,
+            "point": 11.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-07T15:55:13Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -145,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": 120,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 195,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": 114,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": -154,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -260,
+            "point": 5.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "betrivers",
+        "updated_at": "2026-09-07T15:56:16Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -139,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 105,
+            "point": 3.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "pinnacle",
+        "updated_at": "2026-09-07T15:56:41Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -212,
+            "point": 3
+          },
+          {
+            "name": "Over",
+            "price": -139,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": 124,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 166,
+            "point": 5
+          },
+          {
+            "name": "Under",
+            "price": 179,
+            "point": 3
+          },
+          {
+            "name": "Under",
+            "price": 121,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": -143,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -195,
+            "point": 5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:46Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -140
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 112
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "betonlineag",
+        "updated_at": "2026-09-07T15:57:08Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -138
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 118
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "mybookieag",
+        "updated_at": "2026-09-07T15:57:03Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -139
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 113
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:55:41Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -145
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 110
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-07T15:55:13Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -140
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 110
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "williamhill_us",
+        "updated_at": "2026-09-07T15:56:17Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -145
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 115
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "betrivers",
+        "updated_at": "2026-09-07T15:56:16Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -148
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 112
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -140
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 120
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:46Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": 104,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -135,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "betonlineag",
+        "updated_at": "2026-09-07T15:57:08Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": 103,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -123,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "mybookieag",
+        "updated_at": "2026-09-07T15:57:03Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": 103,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -126,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:55:41Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": 100,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -130,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "williamhill_us",
+        "updated_at": "2026-09-07T15:56:17Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": 100,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -130,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": 105,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -125,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "betmgm",
+        "updated_at": "2026-09-07T15:55:33Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -105,
+            "point": -0.5
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": -125,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "pinnacle",
+        "updated_at": "2026-09-07T15:56:41Z",
+        "outcomes": [
+          {
+            "name": "Baltimore Orioles",
+            "price": -135,
+            "point": 0
+          },
+          {
+            "name": "Cleveland Guardians",
+            "price": 117,
+            "point": 0
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:46Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -148,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 114,
+            "point": 3.5
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betonlineag",
+        "updated_at": "2026-09-07T15:57:08Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -104,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -116,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "mybookieag",
+        "updated_at": "2026-09-07T15:57:03Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -106,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:55:41Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "williamhill_us",
+        "updated_at": "2026-09-07T15:56:17Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -105,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -125,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betmgm",
+        "updated_at": "2026-09-07T15:55:33Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+        "matchup": "Cleveland Guardians @ Baltimore Orioles",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "pinnacle",
+        "updated_at": "2026-09-07T15:56:41Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -106,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -108,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:51Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -7000,
+            "point": 0.5
+          },
+          {
+            "name": "Over",
+            "price": -1100,
+            "point": 1.5
+          },
+          {
+            "name": "Over",
+            "price": -400,
+            "point": 2.5
+          },
+          {
+            "name": "Over",
+            "price": -205,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -112,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 152,
+            "point": 5.5
+          },
+          {
+            "name": "Over",
+            "price": 230,
+            "point": 6.5
+          },
+          {
+            "name": "Over",
+            "price": 360,
+            "point": 7.5
+          },
+          {
+            "name": "Over",
+            "price": 520,
+            "point": 8.5
+          },
+          {
+            "name": "Over",
+            "price": 750,
+            "point": 9.5
+          },
+          {
+            "name": "Over",
+            "price": 920,
+            "point": 10.5
+          },
+          {
+            "name": "Over",
+            "price": 1280,
+            "point": 11.5
+          },
+          {
+            "name": "Under",
+            "price": 1280,
+            "point": 0.5
+          },
+          {
+            "name": "Under",
+            "price": 550,
+            "point": 1.5
+          },
+          {
+            "name": "Under",
+            "price": 270,
+            "point": 2.5
+          },
+          {
+            "name": "Under",
+            "price": 152,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": -118,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -205,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": -330,
+            "point": 6.5
+          },
+          {
+            "name": "Under",
+            "price": -580,
+            "point": 7.5
+          },
+          {
+            "name": "Under",
+            "price": -1000,
+            "point": 8.5
+          },
+          {
+            "name": "Under",
+            "price": -2000,
+            "point": 9.5
+          },
+          {
+            "name": "Under",
+            "price": -3500,
+            "point": 10.5
+          },
+          {
+            "name": "Under",
+            "price": -7000,
+            "point": 11.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:56:00Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -200,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -160,
+            "point": 4
+          },
+          {
+            "name": "Over",
+            "price": 115,
+            "point": 5
+          },
+          {
+            "name": "Over",
+            "price": 140,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": 150,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 120,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -150,
+            "point": 5
+          },
+          {
+            "name": "Under",
+            "price": -185,
+            "point": 5.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-07T15:56:43Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -188,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -110,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 150,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": 145,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": -120,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -195,
+            "point": 5.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "betrivers",
+        "updated_at": "2026-09-07T15:56:16Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -107,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -124,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "alternate_totals_1st_5_innings",
+        "sportsbook": "pinnacle",
+        "updated_at": "2026-09-07T15:55:54Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -175,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -138,
+            "point": 4
+          },
+          {
+            "name": "Over",
+            "price": 128,
+            "point": 5
+          },
+          {
+            "name": "Over",
+            "price": 158,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": 151,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 120,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -148,
+            "point": 5
+          },
+          {
+            "name": "Under",
+            "price": -184,
+            "point": 5.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:51Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -168
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 134
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "mybookieag",
+        "updated_at": "2026-09-07T15:56:18Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -172
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 140
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:56:00Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -170
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 130
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-07T15:56:43Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -166
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 130
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "williamhill_us",
+        "updated_at": "2026-09-07T15:56:17Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -170
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 140
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "betonlineag",
+        "updated_at": "2026-09-07T15:56:48Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -163
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 143
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "betrivers",
+        "updated_at": "2026-09-07T15:56:16Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -175
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 128
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -165
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 145
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:51Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -115,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -113,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "mybookieag",
+        "updated_at": "2026-09-07T15:56:18Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -117,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -104,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:56:00Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -120,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -110,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "williamhill_us",
+        "updated_at": "2026-09-07T15:56:17Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -125,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -105,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "betmgm",
+        "updated_at": "2026-09-07T15:55:33Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -118,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -110,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "betonlineag",
+        "updated_at": "2026-09-07T15:56:48Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -115,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -105,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -115,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": -105,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "pinnacle",
+        "updated_at": "2026-09-07T15:55:54Z",
+        "outcomes": [
+          {
+            "name": "Boston Red Sox",
+            "price": -159,
+            "point": 0
+          },
+          {
+            "name": "Los Angeles Angels",
+            "price": 137,
+            "point": 0
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-07T15:56:51Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -113,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "mybookieag",
+        "updated_at": "2026-09-07T15:56:18Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -105,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -116,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "bovada",
+        "updated_at": "2026-09-07T15:56:00Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "williamhill_us",
+        "updated_at": "2026-09-07T15:56:17Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -120,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -110,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betmgm",
+        "updated_at": "2026-09-07T15:55:33Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -110,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -118,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betonlineag",
+        "updated_at": "2026-09-07T15:56:48Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -102,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -118,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betus",
+        "updated_at": "2026-09-07T15:56:27Z",
         "outcomes": [
           {
             "name": "Over",
@@ -3196,41 +6198,21 @@
         ]
       },
       {
-        "event_id": "4645b2d34e3503155b3ff308836621dc",
-        "matchup": "New York Mets @ Miami Marlins",
-        "start_time": "2026-09-07T17:11:00Z",
-        "market": "totals_1st_5_innings",
-        "sportsbook": "betmgm",
-        "updated_at": "2026-09-07T15:18:17Z",
-        "outcomes": [
-          {
-            "name": "Over",
-            "price": 100,
-            "point": 4.5
-          },
-          {
-            "name": "Under",
-            "price": -130,
-            "point": 4.5
-          }
-        ]
-      },
-      {
-        "event_id": "4645b2d34e3503155b3ff308836621dc",
-        "matchup": "New York Mets @ Miami Marlins",
-        "start_time": "2026-09-07T17:11:00Z",
+        "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+        "matchup": "Los Angeles Angels @ Boston Red Sox",
+        "start_time": "2026-09-07T17:36:00Z",
         "market": "totals_1st_5_innings",
         "sportsbook": "pinnacle",
-        "updated_at": "2026-09-07T15:20:28Z",
+        "updated_at": "2026-09-07T15:55:54Z",
         "outcomes": [
           {
             "name": "Over",
-            "price": 104,
+            "price": -103,
             "point": 4.5
           },
           {
             "name": "Under",
-            "price": -120,
+            "price": -111,
             "point": 4.5
           }
         ]
