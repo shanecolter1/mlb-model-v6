@@ -1,0 +1,18 @@
+master_rows=12148
+cohort_rows=6625
+sunday_g4_rows=204
+juice_fixed_effect_beta=0.7502342893141744
+archive_caveat=DK market archive is partial through 2025-08-16; market_covered_n is reported separately from cohort_n.
+pricing_rule=Pregame total is a market-pricing benchmark, not a causal control. Total-only residual is primary; juice-enhanced residual is secondary.
+total,n,i2_under_pct
+6.0,12,66.66666666666666
+6.5,149,61.74496644295302
+7.0,655,63.81679389312978
+7.5,1612,58.06451612903226
+8.0,2146,57.735321528424976
+8.5,2871,56.14768373389063
+9.0,1839,55.899945622621
+9.5,875,52.114285714285714
+10.0,261,50.191570881226056
+10.5,186,44.623655913978496
+11.0,124,47.58064516129033
