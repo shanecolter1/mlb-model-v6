@@ -1,0 +1,158 @@
+name: I2 OddsSafari Phase 2 ID Test
+on:
+  push:
+    branches:
+      - analysis/i2-weekday-edge-20260906
+    paths:
+      - '.github/workflows/i2-oddssafari-phase2-id-test.yml'
+      - 'analysis/oddssafari_phase2_id_trigger.txt'
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/i2-weekday-edge-20260906
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recover current MLB market/scope IDs and test 2025 event
+        run: |
+          python - <<'PY'
+          import json, re, urllib.parse, urllib.request
+          from pathlib import Path
+
+          BASE='https://www.oddssafari.com'
+          CURRENT_URL=BASE+'/matches/baseball/usa/mlb/phi-phillies-vs-atl-braves/2317393'
+          CURRENT_EVENT=2317393
+          OLD_EVENT=1944521
+          headers={'User-Agent':'Mozilla/5.0'}
+          out=[]
+
+          def get(url):
+              req=urllib.request.Request(url,headers=headers)
+              with urllib.request.urlopen(req,timeout=40) as resp:
+                  return resp.status, resp.read().decode('utf-8','ignore')
+
+          def next_data(html):
+              m=re.search(r'<script[^>]+id=["\']__NEXT_DATA__["\'][^>]*>(.*?)</script>',html,re.S|re.I)
+              return json.loads(m.group(1)) if m else None
+
+          def walk(x, path='root'):
+              if isinstance(x,dict):
+                  yield path,x
+                  for k,v in x.items():
+                      yield from walk(v,path+'.'+str(k))
+              elif isinstance(x,list):
+                  for i,v in enumerate(x):
+                      yield from walk(v,path+f'[{i}]')
+
+          status,html=get(CURRENT_URL)
+          out.append(f'CURRENT_PAGE_STATUS={status} LEN={len(html)} URL={CURRENT_URL}')
+          nd=next_data(html)
+          if nd is None:
+              raise RuntimeError('No __NEXT_DATA__ on current page')
+
+          mt=[]; sc=[]; relevant=[]
+          for path,d in walk(nd):
+              if 'MarketTypeID' in d:
+                  rec={k:d.get(k) for k in ['MarketTypeID','MarketTypeName','MarketTypeShortName','CombinedMarketTypeName','OutcomeID','OutcomeName','ScopeID','ScopeName','ParamID'] if k in d}
+                  key=json.dumps(rec,sort_keys=True,default=str)
+                  if key not in {json.dumps(x,sort_keys=True,default=str) for x in mt}: mt.append(rec)
+                  text=' '.join(str(v) for v in rec.values()).lower()
+                  if 'over' in text or 'under' in text or 'run' in text: relevant.append((path,rec))
+              if 'ScopeID' in d and any(k in d for k in ['ScopeName','ScopeShortName']):
+                  rec={k:d.get(k) for k in ['ScopeID','ScopeName','ScopeShortName'] if k in d}
+                  if rec not in sc: sc.append(rec)
+
+          out.append('\nMARKET_TYPE_RECORDS')
+          out.extend(json.dumps(x,sort_keys=True) for x in mt)
+          out.append('\nSCOPE_RECORDS')
+          out.extend(json.dumps(x,sort_keys=True) for x in sc)
+          out.append('\nRELEVANT_MARKET_RECORDS')
+          out.extend(path+' '+json.dumps(rec,sort_keys=True) for path,rec in relevant)
+
+          # Infer IDs from any record names. If names are unavailable, test unique IDs and inspect response metadata.
+          market_ids=sorted({int(x['MarketTypeID']) for x in mt if x.get('MarketTypeID') is not None})
+          scope_ids=sorted({int(x['ScopeID']) for x in mt+sc if x.get('ScopeID') is not None})
+          out.append(f'\nMARKET_IDS={market_ids}')
+          out.append(f'SCOPE_IDS={scope_ids}')
+
+          target_market_ids=[]
+          for x in mt:
+              text=' '.join(str(x.get(k,'')) for k in ['MarketTypeName','MarketTypeShortName','CombinedMarketTypeName']).lower()
+              if ('over' in text and 'under' in text and 'run' in text) or ('o/u' in text and 'run' in text):
+                  if x.get('MarketTypeID') is not None: target_market_ids.append(int(x['MarketTypeID']))
+          target_scope_ids=[]
+          for x in mt+sc:
+              text=' '.join(str(x.get(k,'')) for k in ['ScopeName','ScopeShortName']).lower()
+              if '2nd' in text and 'inning' in text:
+                  if x.get('ScopeID') is not None: target_scope_ids.append(int(x['ScopeID']))
+          target_market_ids=sorted(set(target_market_ids))
+          target_scope_ids=sorted(set(target_scope_ids))
+          out.append(f'TARGET_MARKET_IDS_BY_NAME={target_market_ids}')
+          out.append(f'TARGET_SCOPE_IDS_BY_NAME={target_scope_ids}')
+
+          # If named records did not reveal IDs, enumerate current IDs and summarize API response metadata.
+          tests=[]
+          combos=[]
+          mids=target_market_ids or market_ids
+          sids=target_scope_ids or scope_ids or [0]
+          for mid in mids:
+              for sid in sids:
+                  q=urllib.parse.urlencode({'EventID':CURRENT_EVENT,'MarketTypeID':mid,'ScopeID':sid,'Lang':'en'})
+                  url=BASE+'/api/match?'+q
+                  try:
+                      st,txt=get(url)
+                      obj=json.loads(txt)
+                      summary={'event':'current','mid':mid,'sid':sid,'status':st,'keys':list(obj.keys()) if isinstance(obj,dict) else None}
+                      if isinstance(obj,dict):
+                          mkt=obj.get('market')
+                          scopes=obj.get('scopes')
+                          summary['market_meta']={k:mkt.get(k) for k in ['MarketTypeID','MarketTypeName','CombinedMarketTypeName','ScopeID','ScopeName','ParamID'] if isinstance(mkt,dict) and k in mkt}
+                          summary['scopes']=scopes
+                          summary['bets_count']=len(mkt.get('Bets',[])) if isinstance(mkt,dict) and isinstance(mkt.get('Bets'),list) else None
+                          summary['outcomes']=mkt.get('Outcomes') if isinstance(mkt,dict) else None
+                      tests.append(summary)
+                      text=json.dumps(summary).lower()
+                      if ('2nd' in text and 'inning' in text) or ('over' in text and 'under' in text): combos.append((mid,sid,summary))
+                  except Exception as e:
+                      tests.append({'event':'current','mid':mid,'sid':sid,'error':repr(e)})
+
+          out.append('\nCURRENT_API_TESTS')
+          out.extend(json.dumps(x,default=str) for x in tests)
+
+          # Prefer exact named IDs; otherwise any combo whose response metadata identifies target.
+          chosen=[]
+          if target_market_ids and target_scope_ids:
+              chosen=[(m,s) for m in target_market_ids for s in target_scope_ids]
+          else:
+              chosen=sorted({(m,s) for m,s,_ in combos})
+          out.append(f'\nCHOSEN_COMBOS={chosen}')
+
+          old_tests=[]
+          for mid,sid in chosen:
+              q=urllib.parse.urlencode({'EventID':OLD_EVENT,'MarketTypeID':mid,'ScopeID':sid,'Lang':'en'})
+              url=BASE+'/api/match?'+q
+              try:
+                  st,txt=get(url)
+                  obj=json.loads(txt)
+                  rec={'event':'2025','mid':mid,'sid':sid,'status':st,'response':obj}
+                  old_tests.append(rec)
+              except Exception as e:
+                  old_tests.append({'event':'2025','mid':mid,'sid':sid,'error':repr(e)})
+          out.append('\nOLD_2025_API_TESTS')
+          out.extend(json.dumps(x,default=str)[:200000] for x in old_tests)
+
+          Path('analysis_outputs/oddssafari_phase2_id_test.txt').write_text('\n'.join(out),encoding='utf-8')
+          print('\n'.join(out[-300:]))
+          PY
+      - name: Save Phase 2 ID test
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add analysis_outputs/oddssafari_phase2_id_test.txt
+          git commit -m "Save OddsSafari phase 2 market ID test" || exit 0
+          git push origin HEAD:analysis/i2-weekday-edge-20260906
