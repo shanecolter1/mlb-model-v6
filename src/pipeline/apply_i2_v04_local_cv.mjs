@@ -83,3 +83,5 @@ const out={
 };
 fs.writeFileSync(outPath,JSON.stringify(out,null,2));
 console.log(JSON.stringify({model:out.model,date:out.date,projectedGames:rows.length,ranking:rows.map(r=>({rank:r.rank,matchup:r.matchup,under05Pct:r.under05Pct,over05Pct:r.over05Pct,total:r.runEnvironment?.fullGameTotal??null,shrinkage:r.v04Calibration?.localCvShrinkage??null,bin:r.v04Calibration?.localCvBin??null}))},null,2));
+
+// requested STL-SF v0.4 production rerun trigger 2026-09-07
