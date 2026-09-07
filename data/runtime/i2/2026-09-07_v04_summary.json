@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-07",
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "generatedAt": "2026-09-07T22:03:35.285Z",
+  "underGateStatus": "CANDIDATE_PENDING_FULL_RETEST",
+  "underThresholdPct": 61.5,
+  "qualifiedUnders": [],
+  "ranking": [
+    {
+      "rank": 1,
+      "gamePk": 823175,
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "total": 7.5,
+      "under05Pct": 58.43,
+      "over05Pct": 41.57,
+      "fairUnder": -141,
+      "fairOver": 141,
+      "localCvBin": 6,
+      "shrinkage": 10,
+      "predictionClass": "FROZEN_FEED_CONFIRMED",
+      "underQualified": false
+    },
+    {
+      "rank": 2,
+      "gamePk": 824958,
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "total": 8.5,
+      "under05Pct": 57.44,
+      "over05Pct": 42.56,
+      "fairUnder": -135,
+      "fairOver": 135,
+      "localCvBin": 4,
+      "shrinkage": 10,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "underQualified": false
+    }
+  ]
+}
