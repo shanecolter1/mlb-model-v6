@@ -1,0 +1,51 @@
+name: I2 Cohort ID Export
+on:
+  push:
+    branches:
+      - analysis/i2-weekday-edge-20260906
+    paths:
+      - '.github/workflows/i2-cohort-id-export.yml'
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Export exact cohort IDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/retro
+          for y in 2021 2022 2023 2024 2025; do
+            curl -fsSL "https://www.retrosheet.org/downloads/${y}/${y}csvs.zip" -o "/tmp/retro/${y}.zip"
+            mkdir -p "/tmp/retro/${y}"
+            unzip -q "/tmp/retro/${y}.zip" -d "/tmp/retro/${y}"
+          done
+          python - <<'PY'
+          from pathlib import Path
+          import textwrap
+          p=Path('.github/workflows/i2-rotation-series-edge.yml')
+          t=p.read_text()
+          marker="          python - <<'PY'\n"
+          s=t.index(marker)+len(marker)
+          e=t.index("\n          PY",s)
+          code=textwrap.dedent(t[s:e])
+          extra=r'''
+print('\nCOHORT_ID_EXPORT')
+print('series_game,rotation_tier,rest_bucket,gid,date,day,under,a_rank,h_rank,rest_total')
+for sg in [1,2,3,4]:
+    for tlabel,tpred in [('both_top3',lambda g:g['both_top3']),('any_back',lambda g:g['any_back'])]:
+        for rlabel,rpred in [('0-1',lambda g:g.get('rest_total') is not None and g['rest_total']<=1),('2+',lambda g:g.get('rest_total') is not None and g['rest_total']>=2)]:
+            rr=[g for g in valid if g.get('sg')==sg and tpred(g) and rpred(g)]
+            for g in rr:
+                print(f"{sg},{tlabel},{rlabel},{g['gid']},{g['date']},{g['day']},{int(g['under'])},{g['away_qrank']},{g['home_qrank']},{g['rest_total']}")
+print('\nSUNDAY_G4_COHORT_ID_EXPORT')
+print('rotation_tier,rest_bucket,gid,date,under,a_rank,h_rank,rest_total')
+for tlabel,tpred in [('both_top3',lambda g:g['both_top3']),('any_back',lambda g:g['any_back'])]:
+    for rlabel,rpred in [('0-1',lambda g:g.get('rest_total') is not None and g['rest_total']<=1),('2+',lambda g:g.get('rest_total') is not None and g['rest_total']>=2)]:
+        rr=[g for g in valid if g.get('sg')==4 and g.get('day')=='Sunday' and tpred(g) and rpred(g)]
+        for g in rr:
+            print(f"{tlabel},{rlabel},{g['gid']},{g['date']},{int(g['under'])},{g['away_qrank']},{g['home_qrank']},{g['rest_total']}")
+'''
+          Path('/tmp/cohort.py').write_text(code+'\n'+extra)
+          PY
+          python /tmp/cohort.py
