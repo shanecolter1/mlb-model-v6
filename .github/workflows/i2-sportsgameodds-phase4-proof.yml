@@ -1,0 +1,88 @@
+name: I2 SportsGameOdds Phase 4 Proof
+on:
+  push:
+    branches:
+      - analysis/i2-weekday-edge-20260906
+    paths:
+      - '.github/workflows/i2-sportsgameodds-phase4-proof.yml'
+      - 'analysis/sportsgameodds_phase4_trigger.txt'
+permissions:
+  contents: write
+jobs:
+  proof:
+    runs-on: ubuntu-latest
+    env:
+      SGO_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/i2-weekday-edge-20260906
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test one 2025 MLB I2 market
+        run: |
+          python - <<'PY'
+          import json, os, urllib.parse, urllib.request, urllib.error
+          from pathlib import Path
+
+          key=os.environ.get('SGO_API_KEY','').strip()
+          out={
+            'phase':'4-one-game-proof',
+            'key_present': bool(key),
+            'request': {
+              'leagueID':'MLB',
+              'startsAfter':'2025-06-13T00:00:00Z',
+              'startsBefore':'2025-06-14T00:00:00Z',
+              'finalized':'true',
+              'oddID':'points-all-2i-ou-over,points-all-2i-ou-under',
+              'bookmakerID':'pinnacle,draftkings,fanduel',
+              'includeAltLines':'true',
+              'limit':'25'
+            }
+          }
+          if not key:
+            out['status']='BLOCKED_NO_API_KEY'
+          else:
+            params=dict(out['request'])
+            url='https://api.sportsgameodds.com/v2/events?'+urllib.parse.urlencode(params)
+            req=urllib.request.Request(url,headers={'x-api-key':key,'User-Agent':'mlb-i2-research/1.0'})
+            try:
+              with urllib.request.urlopen(req,timeout=60) as resp:
+                raw=resp.read().decode('utf-8','replace')
+                out['http_status']=resp.status
+                data=json.loads(raw)
+                out['api_success']=data.get('success')
+                events=data.get('data') or []
+                out['event_count']=len(events)
+                compact=[]
+                for e in events:
+                  odds=e.get('odds') or {}
+                  i2={k:v for k,v in odds.items() if k in ('points-all-2i-ou-over','points-all-2i-ou-under')}
+                  if not i2:
+                    continue
+                  compact.append({
+                    'eventID':e.get('eventID'),
+                    'startTime':e.get('startTime'),
+                    'teams':e.get('teams'),
+                    'i2':i2
+                  })
+                out['events_with_i2']=len(compact)
+                out['i2_events']=compact
+                out['nextCursor']=data.get('nextCursor')
+            except urllib.error.HTTPError as e:
+              out['http_status']=e.code
+              out['error_body']=e.read().decode('utf-8','replace')[:20000]
+            except Exception as e:
+              out['error']=repr(e)
+
+          Path('analysis_outputs/sportsgameodds_phase4_proof.json').write_text(json.dumps(out,indent=2),encoding='utf-8')
+          print(json.dumps(out,indent=2)[:50000])
+          PY
+      - name: Save Phase 4 output
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add analysis_outputs/sportsgameodds_phase4_proof.json
+          git commit -m "Save SportsGameOdds phase 4 I2 proof" || exit 0
+          git push origin HEAD:analysis/i2-weekday-edge-20260906
