@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 const overridePath = String(process.env.I2_LINEUP_OVERRIDES || '').trim();
-const overrides = overridePath && fs.existsSync(overridePath)
+const overrides = overridePath && fs.existsSync(overridePath, 'utf8')
   ? JSON.parse(fs.readFileSync(overridePath, 'utf8'))
   : null;
 const games = overrides?.games || {};
@@ -128,12 +128,17 @@ function applyStarter(payload, gamePk, side, spec) {
   const existing = payload.gameData.probablePitchers[side];
   if (existing?.id) return null; // MLB feed-confirmed/probable starter always wins.
 
-  const person = resolveStarter(payload, side, wanted.name);
-  payload.gameData.probablePitchers[side] = { id: person.id, fullName: person.fullName };
+  const person = wanted.id
+    ? { id: Number(wanted.id), fullName: wanted.name }
+    : resolveStarter(payload, side, wanted.name);
+  if (!Number.isFinite(Number(person.id))) throw new Error(`Invalid probable-starter MLB id for ${wanted.name}`);
+  payload.gameData.probablePitchers[side] = { id: Number(person.id), fullName: person.fullName };
   return {
     applied: true,
+    id: Number(person.id),
     name: person.fullName,
     source: wanted.source || null,
+    identitySource: wanted.identitySource || null,
     role: wanted.role || 'probable starter',
     note: wanted.note || null,
   };
