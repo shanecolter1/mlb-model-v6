@@ -1,8 +1,8 @@
 {
   "model": "MLB I2 Under/Over v0.3 Total-Conditioned Research Build",
   "date": "2026-09-07",
-  "cutoff": "2026-09-07T12:03:28Z",
-  "generatedAt": "2026-09-07T12:05:12.814Z",
+  "cutoff": "2026-09-07T12:08:13Z",
+  "generatedAt": "2026-09-07T12:10:18.914Z",
   "trialsPerGame": 50000,
   "marketDataUsed": true,
   "weights": {
@@ -34,8 +34,8 @@
     "Live conditioning currently uses the first observed DraftKings pregame total captured by the isolated run-environment endpoint; it is locked across reruns but is not guaranteed to equal the historical archive opening tick."
   ],
   "remainingGamesAtCutoff": 11,
-  "projectedGames": 10,
-  "pendingOrErroredGames": 1,
+  "projectedGames": 11,
+  "pendingOrErroredGames": 0,
   "ranking": [
     {
       "rank": 1,
@@ -459,8 +459,10 @@
       "probableStarterFallbacks": {
         "away": {
           "applied": true,
+          "id": 703615,
           "name": "Jose Cabrera",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         },
@@ -529,8 +531,10 @@
         "away": null,
         "home": {
           "applied": true,
+          "id": 678394,
           "name": "Brayan Bello",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         }
@@ -597,8 +601,10 @@
       "probableStarterFallbacks": {
         "away": {
           "applied": true,
+          "id": 687570,
           "name": "Connor Prielipp",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named primary multi-inning pitcher (PRIM); starter not officially confirmed",
           "note": "Used as the named pregame pitching assignment rather than inferring a rotation starter. Treat this game's pitcher input as lower-confidence until an opener/starter is confirmed."
         },
@@ -624,6 +630,77 @@
     },
     {
       "rank": 10,
+      "gamePk": 823902,
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "gameDate": "2026-09-08T01:10:00Z",
+      "under05Pct": 53.75,
+      "over05Pct": 46.25,
+      "fairUnder": -116,
+      "fairOver": 116,
+      "awayStarter": "Chase Burns",
+      "homeStarter": "Emmet Sheehan",
+      "awayStarterStats": {
+        "wins": 15,
+        "losses": 3,
+        "record": "15-3",
+        "era": "2.79",
+        "whip": "1.16",
+        "inningsPitched": "145.1",
+        "strikeOuts": 171,
+        "walks": 50,
+        "homeRunsAllowed": 15,
+        "battersFaced": 592,
+        "gamesStarted": 26
+      },
+      "homeStarterStats": {
+        "wins": 4,
+        "losses": 8,
+        "record": "4-8",
+        "era": "5.29",
+        "whip": "1.29",
+        "inningsPitched": "95.1",
+        "strikeOuts": 108,
+        "walks": 30,
+        "homeRunsAllowed": 20,
+        "battersFaced": 412,
+        "gamesStarted": 20
+      },
+      "top2ScorePct": 28.18,
+      "bottom2ScorePct": 25.17,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": {
+          "applied": true,
+          "id": 686218,
+          "name": "Emmet Sheehan",
+          "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": "MLB.com player page /player/emmet-sheehan-686218",
+          "role": "named probable pitcher",
+          "note": "RotoWire lists Sheehan as the pitching assignment; other reporting notes an opener is possible. No rotation inference was used."
+        }
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8.5,
+        "bucket": "8.5",
+        "totalPriorOverPct": 43.85,
+        "totalPriorUnderPct": 56.15,
+        "totalPriorN": 2871,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-07T12:01:00.178Z",
+        "latestObservedTotal": 8.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.09702053672090413,
+        "equalHalfLogitShift": 0.01528830418836885
+      }
+    },
+    {
+      "rank": 11,
       "gamePk": 823742,
       "matchup": "Chicago Cubs @ Milwaukee Brewers",
       "gameDate": "2026-09-07T18:10:00Z",
@@ -1149,8 +1226,10 @@
         "away": null,
         "home": {
           "applied": true,
+          "id": 678394,
           "name": "Brayan Bello",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         }
@@ -1490,8 +1569,10 @@
       "probableStarterFallbacks": {
         "away": {
           "applied": true,
+          "id": 703615,
           "name": "Jose Cabrera",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         },
@@ -1656,7 +1737,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.55,
       "homeMeanPitchesEnteringI2": 16.36,
-      "underRank": 10,
+      "underRank": 11,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1832,8 +1913,10 @@
       "probableStarterFallbacks": {
         "away": {
           "applied": true,
+          "id": 687570,
           "name": "Connor Prielipp",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named primary multi-inning pitcher (PRIM); starter not officially confirmed",
           "note": "Used as the named pregame pitching assignment rather than inferring a rotation starter. Treat this game's pitcher input as lower-confidence until an opener/starter is confirmed."
         },
@@ -2222,8 +2305,176 @@
       "gameDate": "2026-09-08T01:10:00Z",
       "away": "Cincinnati Reds",
       "home": "Los Angeles Dodgers",
-      "modelStatus": "ERROR",
-      "error": "Error: Unable to resolve probable-starter override: Emmet Sheehan"
+      "venue": "UNIQLO Field at Dodger Stadium",
+      "lineupConfirmed": true,
+      "awayLineup": [
+        "Elly De La Cruz",
+        "Sal Stewart",
+        "Dane Myers",
+        "Tyler Stephenson",
+        "Eugenio Suárez",
+        "Matt McLain",
+        "JJ Bleday",
+        "Jose Trevino",
+        "Héctor Rodríguez"
+      ],
+      "homeLineup": [
+        "Shohei Ohtani",
+        "Freddie Freeman",
+        "Mookie Betts",
+        "Max Muncy",
+        "Will Smith",
+        "Tommy Edman",
+        "Kyle Tucker",
+        "Teoscar Hernández",
+        "Enrique Hernández"
+      ],
+      "awayStarter": "Chase Burns",
+      "homeStarter": "Emmet Sheehan",
+      "awayStarterStats": {
+        "wins": 15,
+        "losses": 3,
+        "record": "15-3",
+        "era": "2.79",
+        "whip": "1.16",
+        "inningsPitched": "145.1",
+        "strikeOuts": 171,
+        "walks": 50,
+        "homeRunsAllowed": 15,
+        "battersFaced": 592,
+        "gamesStarted": 26
+      },
+      "homeStarterStats": {
+        "wins": 4,
+        "losses": 8,
+        "record": "4-8",
+        "era": "5.29",
+        "whip": "1.29",
+        "inningsPitched": "95.1",
+        "strikeOuts": 108,
+        "walks": 30,
+        "homeRunsAllowed": 20,
+        "battersFaced": 412,
+        "gamesStarted": 20
+      },
+      "venueProfile": null,
+      "status": "Scheduled",
+      "dataAudit": {
+        "awayStarterBF": 592,
+        "homeStarterBF": 412,
+        "awayStarterGamesStarted": 26,
+        "homeStarterGamesStarted": 20,
+        "awayStarterExtraBaseFallback": false,
+        "homeStarterExtraBaseFallback": false,
+        "awayStarterStatsError": null,
+        "homeStarterStatsError": null,
+        "venueProfileMatched": false
+      },
+      "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
+      "trials": 50000,
+      "under05": 0.537463990813825,
+      "over05": 0.462536009186175,
+      "under05Pct": 53.75,
+      "over05Pct": 46.25,
+      "fairUnder": -116,
+      "fairOver": 116,
+      "fullI2Exact": {
+        "0": 53.75,
+        "1": 20.88,
+        "2": 12.12,
+        "3": 6.61,
+        "4+": 6.65
+      },
+      "fullI2Cumulative": {
+        "1+": 46.25,
+        "2+": 25.38,
+        "3+": 13.26,
+        "4+": 6.65
+      },
+      "top2ScorePct": 28.18,
+      "bottom2ScorePct": 25.17,
+      "awayI2StartSlotPct": {
+        "1": 0.74,
+        "2": 0.32,
+        "3": 0.11,
+        "4": 34.1,
+        "5": 29.99,
+        "6": 18.55,
+        "7": 9.74,
+        "8": 4.34,
+        "9": 2.12
+      },
+      "homeI2StartSlotPct": {
+        "1": 0.79,
+        "2": 0.28,
+        "3": 0.1,
+        "4": 36.22,
+        "5": 29.22,
+        "6": 17.75,
+        "7": 9.35,
+        "8": 4.38,
+        "9": 1.91
+      },
+      "awayMeanPitchesEnteringI2": 16.67,
+      "homeMeanPitchesEnteringI2": 16.48,
+      "underRank": 10,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
+      "lineupFeedConfirmed": false,
+      "lineupSimulationReady": true,
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": {
+          "applied": true,
+          "id": 686218,
+          "name": "Emmet Sheehan",
+          "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": "MLB.com player page /player/emmet-sheehan-686218",
+          "role": "named probable pitcher",
+          "note": "RotoWire lists Sheehan as the pitching assignment; other reporting notes an opener is possible. No rotation inference was used."
+        }
+      },
+      "baseballOnlyRaw": {
+        "under05": 0.54098,
+        "over05": 0.45902,
+        "under05Pct": 54.1,
+        "over05Pct": 45.9,
+        "fairUnder": -118,
+        "fairOver": 118,
+        "fullI2Exact": {
+          "0": 54.1,
+          "1": 20.72,
+          "2": 12.03,
+          "3": 6.56,
+          "4+": 6.6
+        },
+        "fullI2Cumulative": {
+          "1+": 45.9,
+          "2+": 25.18,
+          "3+": 13.15,
+          "4+": 6.6
+        },
+        "top2ScorePct": 27.87,
+        "bottom2ScorePct": 24.88
+      },
+      "runEnvironmentConditioned": true,
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8.5,
+        "bucket": "8.5",
+        "totalPriorOverPct": 43.85,
+        "totalPriorUnderPct": 56.15,
+        "totalPriorN": 2871,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-07T12:01:00.178Z",
+        "latestObservedTotal": 8.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.09702053672090413,
+        "equalHalfLogitShift": 0.01528830418836885
+      }
     },
     {
       "gamePk": 824958,
@@ -2397,23 +2648,10 @@
   "sourcePriorityAudit": {
     "rule": "USER_DATA_FIRST",
     "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
-    "upstreamAttempts": 214,
-    "upstreamSuccesses": 211,
-    "officialFallbacks": 3,
-    "fallbackEvents": [
-      {
-        "reason": "Error: Unable to resolve probable-starter override: Emmet Sheehan",
-        "url": "https://statsapi.mlb.com/api/v1.1/game/823902/feed/live"
-      },
-      {
-        "reason": "Error: Unable to resolve probable-starter override: Emmet Sheehan",
-        "url": "https://statsapi.mlb.com/api/v1.1/game/823902/feed/live"
-      },
-      {
-        "reason": "Error: Unable to resolve probable-starter override: Emmet Sheehan",
-        "url": "https://statsapi.mlb.com/api/v1.1/game/823902/feed/live"
-      }
-    ],
+    "upstreamAttempts": 232,
+    "upstreamSuccesses": 232,
+    "officialFallbacks": 0,
+    "fallbackEvents": [],
     "unmappedOfficialCalls": 0
   },
   "primaryBaseballSource": "user-owned MLB Live Command Center upstream data layer",
@@ -2449,8 +2687,10 @@
         "awayStarter": null,
         "homeStarter": {
           "applied": true,
+          "id": 678394,
           "name": "Brayan Bello",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         },
@@ -2472,8 +2712,10 @@
         "homeApplied": true,
         "awayStarter": {
           "applied": true,
+          "id": 703615,
           "name": "Jose Cabrera",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         },
@@ -2496,8 +2738,10 @@
         "homeApplied": true,
         "awayStarter": {
           "applied": true,
+          "id": 687570,
           "name": "Connor Prielipp",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named primary multi-inning pitcher (PRIM); starter not officially confirmed",
           "note": "Used as the named pregame pitching assignment rather than inferring a rotation starter. Treat this game's pitcher input as lower-confidence until an opener/starter is confirmed."
         },
@@ -2524,6 +2768,23 @@
         "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD"
       },
       {
+        "gamePk": 823902,
+        "awayApplied": true,
+        "homeApplied": true,
+        "awayStarter": null,
+        "homeStarter": {
+          "applied": true,
+          "id": 686218,
+          "name": "Emmet Sheehan",
+          "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": "MLB.com player page /player/emmet-sheehan-686218",
+          "role": "named probable pitcher",
+          "note": "RotoWire lists Sheehan as the pitching assignment; other reporting notes an opener is possible. No rotation inference was used."
+        },
+        "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+        "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD"
+      },
+      {
         "gamePk": 824958,
         "awayApplied": true,
         "homeApplied": true,
@@ -2533,9 +2794,9 @@
         "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD"
       }
     ],
-    "appliedGameCount": 10,
+    "appliedGameCount": 11,
     "feedConfirmedProjectedGames": 0,
-    "provisionalProjectedGames": 10
+    "provisionalProjectedGames": 11
   },
   "fullSlateProjectionMode": "CONFIRMED_PLUS_PROVISIONAL_LINEUP_AND_SOURCED_PROBABLE_OVERRIDES",
   "baseballOnlyRawRanking": [
@@ -2813,8 +3074,10 @@
       "probableStarterFallbacks": {
         "away": {
           "applied": true,
+          "id": 703615,
           "name": "Jose Cabrera",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         },
@@ -2912,8 +3175,10 @@
         "away": null,
         "home": {
           "applied": true,
+          "id": 678394,
           "name": "Brayan Bello",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named probable starter",
           "note": null
         }
@@ -2963,8 +3228,10 @@
       "probableStarterFallbacks": {
         "away": {
           "applied": true,
+          "id": 687570,
           "name": "Connor Prielipp",
           "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": null,
           "role": "named primary multi-inning pitcher (PRIM); starter not officially confirmed",
           "note": "Used as the named pregame pitching assignment rather than inferring a rotation starter. Treat this game's pitcher input as lower-confidence until an opener/starter is confirmed."
         },
@@ -2973,6 +3240,60 @@
     },
     {
       "rank": 10,
+      "gamePk": 823902,
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "gameDate": "2026-09-08T01:10:00Z",
+      "under05Pct": 54.1,
+      "over05Pct": 45.9,
+      "fairUnder": -118,
+      "fairOver": 118,
+      "awayStarter": "Chase Burns",
+      "homeStarter": "Emmet Sheehan",
+      "awayStarterStats": {
+        "wins": 15,
+        "losses": 3,
+        "record": "15-3",
+        "era": "2.79",
+        "whip": "1.16",
+        "inningsPitched": "145.1",
+        "strikeOuts": 171,
+        "walks": 50,
+        "homeRunsAllowed": 15,
+        "battersFaced": 592,
+        "gamesStarted": 26
+      },
+      "homeStarterStats": {
+        "wins": 4,
+        "losses": 8,
+        "record": "4-8",
+        "era": "5.29",
+        "whip": "1.29",
+        "inningsPitched": "95.1",
+        "strikeOuts": 108,
+        "walks": 30,
+        "homeRunsAllowed": 20,
+        "battersFaced": 412,
+        "gamesStarted": 20
+      },
+      "top2ScorePct": 27.87,
+      "bottom2ScorePct": 24.88,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": {
+          "applied": true,
+          "id": 686218,
+          "name": "Emmet Sheehan",
+          "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+          "identitySource": "MLB.com player page /player/emmet-sheehan-686218",
+          "role": "named probable pitcher",
+          "note": "RotoWire lists Sheehan as the pitching assignment; other reporting notes an opener is possible. No rotation inference was used."
+        }
+      }
+    },
+    {
+      "rank": 11,
       "gamePk": 823742,
       "matchup": "Chicago Cubs @ Milwaukee Brewers",
       "gameDate": "2026-09-07T18:10:00Z",
@@ -3024,7 +3345,7 @@
   "predictionFrozenBeforeDerivativeMarketRetrieval": true,
   "runEnvironmentConditioning": {
     "required": true,
-    "appliedGames": 10,
+    "appliedGames": 11,
     "missingApprovedTotalGames": 0,
     "missingPriorBucketGames": 0,
     "totalArtifact": "data/runtime/i2/2026-09-07_run_environment.json",
