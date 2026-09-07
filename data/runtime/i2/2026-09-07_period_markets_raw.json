@@ -1,0 +1,161 @@
+{
+  "date": "2026-09-07",
+  "generatedAt": "2026-09-07T12:01:05.870Z",
+  "endpoint": "/period-markets/",
+  "queryMethod": "EVENT_BY_EVENT",
+  "sport_key": "baseball_mlb",
+  "eventCount": 8,
+  "events": [
+    {
+      "event_id": "ce94c6d5ef8ae9f29d29223e386beee1",
+      "home_team": "Philadelphia Phillies",
+      "away_team": "Atlanta Braves",
+      "start_time": "2026-09-07T17:06:00Z"
+    },
+    {
+      "event_id": "4645b2d34e3503155b3ff308836621dc",
+      "home_team": "Miami Marlins",
+      "away_team": "New York Mets",
+      "start_time": "2026-09-07T17:11:00Z"
+    },
+    {
+      "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+      "home_team": "Baltimore Orioles",
+      "away_team": "Cleveland Guardians",
+      "start_time": "2026-09-07T17:36:00Z"
+    },
+    {
+      "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+      "home_team": "Boston Red Sox",
+      "away_team": "Los Angeles Angels",
+      "start_time": "2026-09-07T17:36:00Z"
+    },
+    {
+      "event_id": "b4745820fda1c660f277b88a71e25596",
+      "home_team": "Kansas City Royals",
+      "away_team": "Arizona Diamondbacks",
+      "start_time": "2026-09-07T18:11:00Z"
+    },
+    {
+      "event_id": "0902d8258427af19994e87abb3519262",
+      "home_team": "Milwaukee Brewers",
+      "away_team": "Chicago Cubs",
+      "start_time": "2026-09-07T18:11:00Z"
+    },
+    {
+      "event_id": "a410afcc86bee1b6cbe7e60eafd8d50e",
+      "home_team": "Detroit Tigers",
+      "away_team": "Minnesota Twins",
+      "start_time": "2026-09-07T19:11:00Z"
+    },
+    {
+      "event_id": "4b966f5cc20bd2c8aabb3ffae91d489c",
+      "home_team": "San Diego Padres",
+      "away_team": "Washington Nationals",
+      "start_time": "2026-09-07T21:11:00Z"
+    }
+  ],
+  "probes": [
+    {
+      "event_id": "ce94c6d5ef8ae9f29d29223e386beee1",
+      "home_team": "Philadelphia Phillies",
+      "away_team": "Atlanta Braves",
+      "start_time": "2026-09-07T17:06:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event 'ce94c6d5ef8ae9f29d29223e386beee1' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "4645b2d34e3503155b3ff308836621dc",
+      "home_team": "Miami Marlins",
+      "away_team": "New York Mets",
+      "start_time": "2026-09-07T17:11:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '4645b2d34e3503155b3ff308836621dc' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "0a5522c3b427e5162e8c13c1ddb05dd7",
+      "home_team": "Baltimore Orioles",
+      "away_team": "Cleveland Guardians",
+      "start_time": "2026-09-07T17:36:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '0a5522c3b427e5162e8c13c1ddb05dd7' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "22430c880f9e9118f74aacf0b720b7ee",
+      "home_team": "Boston Red Sox",
+      "away_team": "Los Angeles Angels",
+      "start_time": "2026-09-07T17:36:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '22430c880f9e9118f74aacf0b720b7ee' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "b4745820fda1c660f277b88a71e25596",
+      "home_team": "Kansas City Royals",
+      "away_team": "Arizona Diamondbacks",
+      "start_time": "2026-09-07T18:11:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event 'b4745820fda1c660f277b88a71e25596' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "0902d8258427af19994e87abb3519262",
+      "home_team": "Milwaukee Brewers",
+      "away_team": "Chicago Cubs",
+      "start_time": "2026-09-07T18:11:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '0902d8258427af19994e87abb3519262' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "a410afcc86bee1b6cbe7e60eafd8d50e",
+      "home_team": "Detroit Tigers",
+      "away_team": "Minnesota Twins",
+      "start_time": "2026-09-07T19:11:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event 'a410afcc86bee1b6cbe7e60eafd8d50e' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "4b966f5cc20bd2c8aabb3ffae91d489c",
+      "home_team": "San Diego Padres",
+      "away_team": "Washington Nationals",
+      "start_time": "2026-09-07T21:11:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '4b966f5cc20bd2c8aabb3ffae91d489c' not found in baseball_mlb period markets cache."
+      }
+    }
+  ],
+  "normalized": {
+    "books": [],
+    "markets": [],
+    "rows": []
+  }
+}
