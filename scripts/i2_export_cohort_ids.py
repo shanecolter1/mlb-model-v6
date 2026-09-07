@@ -5,8 +5,9 @@ p=Path('.github/workflows/i2-rotation-series-edge.yml')
 t=p.read_text()
 marker="          python - <<'PY'\n"
 s=t.index(marker)+len(marker)
-e=t.index("\n          PY",s)
-code=textwrap.dedent(t[s:e])
+tail=t[s:].splitlines()
+end_idx=next(i for i,line in enumerate(tail) if line.strip()=='PY')
+code=textwrap.dedent('\n'.join(tail[:end_idx]))
 extra=r'''
 print('\nCOHORT_ID_EXPORT')
 print('series_game,rotation_tier,rest_bucket,gid,date,day,under,a_rank,h_rank,rest_total')
