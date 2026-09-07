@@ -1,0 +1,102 @@
+{
+  "date": "2026-09-07",
+  "governance": {
+    "sourceStatus": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+    "note": "Unconfirmed batting orders are preliminary only. They use the established weekday/game-series method: season-to-date and rolling regular offensive core, expected slot usage, opposing-starter handedness, roster/injury/rest adjustments, and current expected-lineup reconciliation. MLB feed-confirmed 9-man batting orders always override these projections. Pitchers are never inferred from rotation analysis: MLB-listed probable pitchers are used first; named current probable/primary-pitcher fallbacks are used only where MLB still lists TBD and are explicitly sourced below.",
+    "lineupCorroboration": "RotoWire MLB Daily Lineups, September 7, 2026",
+    "pitcherPriority": [
+      "MLB Probable Pitchers / MLB live feed",
+      "named current RotoWire probable/primary pitcher only when MLB is TBD"
+    ]
+  },
+  "games": {
+    "823415": {
+      "matchup": "Atlanta Braves @ Philadelphia Phillies",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Ronald Acuna Jr.", "Drake Baldwin", "Ozzie Albies", "Matt Olson", "Lane Thomas", "Mauricio Dubon", "Sean Murphy", "Austin Riley", "Ha-Seong Kim"],
+      "home": ["Kyle Schwarber", "Trea Turner", "Bryce Harper", "Luis Arraez", "Alec Bohm", "Bryson Stott", "Brandon Marsh", "J.T. Realmuto", "Justin Crawford"]
+    },
+    "823820": {
+      "matchup": "New York Mets @ Miami Marlins",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Francisco Lindor", "Juan Soto", "Bo Bichette", "Carson Benge", "Jared Young", "Marcus Semien", "A.J. Ewing", "Brett Baty", "Francisco Alvarez"],
+      "home": ["Kyle Stowers", "Griffin Conine", "Owen Caissie", "Jakob Marsee", "Heriberto Hernandez", "Joe Mack", "Otto Lopez", "Graham Pauley", "Javier Sanoja"]
+    },
+    "824715": {
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Zach Neto", "Mike Trout", "Wade Meckler", "Vaughn Grissom", "Moises Ballesteros", "Christian Moore", "Josh Lowe", "Adam Frazier", "Oswald Peraza"],
+      "home": ["Roman Anthony", "Mickey Gasper", "Adley Rutschman", "Wilyer Abreu", "Trevor Story", "Nick Sogard", "Caleb Durbin", "Jarren Duran", "Eli White"],
+      "homeStarter": {
+        "name": "Brayan Bello",
+        "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+        "role": "named probable starter"
+      }
+    },
+    "824793": {
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Steven Kwan", "Chase DeLauter", "Jose Ramirez", "Jo Adell", "Angel Martinez", "David Fry", "Angel Genao", "Austin Hedges", "Brayan Rocchio"],
+      "home": ["Blaze Alexander", "Pete Alonso", "Coby Mayo", "Christian Encarnacion-Strand", "Gunnar Henderson", "Rece Hinds", "Jackson Holliday", "Carlos Narvaez", "Leody Taveras"]
+    },
+    "824062": {
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Geraldo Perdomo", "Corbin Carroll", "Gabriel Moreno", "Ketel Marte", "Nolan Arenado", "Ildemaro Vargas", "Lourdes Gurriel Jr.", "Tim Tawa", "Jordan Lawlar"],
+      "home": ["Carter Jensen", "Bobby Witt Jr.", "Jac Caglianone", "Salvador Perez", "Vinnie Pasquantino", "Nick Loftin", "Michael Massey", "Isaac Collins", "Kyle Isbel"],
+      "awayStarter": {
+        "name": "Jose Cabrera",
+        "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+        "role": "named probable starter"
+      }
+    },
+    "823742": {
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Pete Crow-Armstrong", "Seiya Suzuki", "Alex Bregman", "Tyrone Taylor", "Nico Hoerner", "Michael Busch", "Pedro Ramirez", "Miguel Amaya", "Matt Shaw"],
+      "home": ["Jackson Chourio", "Luis Lara", "William Contreras", "Andrew Vaughn", "Brice Turang", "Joey Ortiz", "Garrett Mitchell", "Gary Sanchez", "Cooper Pratt"]
+    },
+    "824229": {
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Luke Keaschall", "Brooks Lee", "Ryan Jeffers", "Josh Bell", "Kody Clemens", "Royce Lewis", "Trevor Larnach", "Kaelen Culpepper", "Walker Jenkins"],
+      "home": ["Gleyber Torres", "Kevin McGonigle", "Hao-Yu Lee", "Dillon Dingler", "Riley Greene", "Eduardo Valencia", "Spencer Torkelson", "Ben Malgeri", "Max Clark"],
+      "awayStarter": {
+        "name": "Connor Prielipp",
+        "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+        "role": "named primary multi-inning pitcher (PRIM); starter not officially confirmed",
+        "note": "Used as the named pregame pitching assignment rather than inferring a rotation starter. Treat this game's pitcher input as lower-confidence until an opener/starter is confirmed."
+      }
+    },
+    "823254": {
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["James Wood", "Abimelec Ortiz", "CJ Abrams", "Daylen Lile", "Dylan Crews", "Keibert Ruiz", "Brady House", "Jacob Young", "Nasim Nunez"],
+      "home": ["Fernando Tatis Jr.", "Xander Bogaerts", "Manny Machado", "Ty France", "Jackson Merrill", "Austin Hays", "Luis Campusano", "Jake Cronenworth", "Samad Taylor"]
+    },
+    "823175": {
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Bryan Torres", "Ivan Herrera", "Alec Burleson", "Jordan Walker", "Leo Bernal", "Joshua Baez", "Nolan Gorman", "Thomas Saggese", "Nathan Church"],
+      "home": ["Drew Gilbert", "Rafael Devers", "Bryce Eldridge", "Turner Hill", "Jung Hoo Lee", "Drew Cavanaugh", "Osleivis Basabe", "Nate Furman", "Christian Koss"]
+    },
+    "823902": {
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Elly De La Cruz", "Sal Stewart", "Dane Myers", "Tyler Stephenson", "Eugenio Suarez", "Matt McLain", "JJ Bleday", "Jose Trevino", "Hector Rodriguez"],
+      "home": ["Shohei Ohtani", "Freddie Freeman", "Mookie Betts", "Max Muncy", "Will Smith", "Tommy Edman", "Kyle Tucker", "Teoscar Hernandez", "Enrique Hernandez"],
+      "homeStarter": {
+        "name": "Emmet Sheehan",
+        "source": "RotoWire MLB Daily Lineups, 2026-09-07; MLB probable-pitcher page still TBD",
+        "role": "named probable pitcher",
+        "note": "RotoWire lists Sheehan as the pitching assignment; other reporting notes an opener is possible. No rotation inference was used."
+      }
+    },
+    "824958": {
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD",
+      "away": ["Brett Bateman", "George Springer", "Vladimir Guerrero Jr.", "Alejandro Kirk", "Kazuma Okamoto", "Charles McAdoo", "Ernie Clement", "Nathan Lukes", "Myles Straw"],
+      "home": ["Henry Bolte", "Jeff McNeil", "Zack Gelof", "Lawrence Butler", "Tommy White", "Carlos Cortes", "Jonah Heim", "Donovan Walton", "Denzel Clarke"]
+    }
+  }
+}
