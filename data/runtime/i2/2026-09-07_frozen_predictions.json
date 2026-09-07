@@ -1,8 +1,8 @@
 {
   "model": "MLB I2 Under/Over v0.3 Total-Conditioned Research Build",
   "date": "2026-09-07",
-  "cutoff": "2026-09-07T18:43:54Z",
-  "generatedAt": "2026-09-07T18:44:48.499Z",
+  "cutoff": "2026-09-07T20:48:48Z",
+  "generatedAt": "2026-09-07T20:49:38.925Z",
   "trialsPerGame": 50000,
   "marketDataUsed": true,
   "weights": {
@@ -33,8 +33,8 @@
     "If MLB pitching stats omit doubles/triples allowed, non-HR hits are split using league event proportions and flagged in dataAudit.",
     "Live conditioning currently uses the first observed DraftKings pregame total captured by the isolated run-environment endpoint; it is locked across reruns but is not guaranteed to equal the historical archive opening tick."
   ],
-  "remainingGamesAtCutoff": 5,
-  "projectedGames": 5,
+  "remainingGamesAtCutoff": 4,
+  "projectedGames": 4,
   "pendingOrErroredGames": 0,
   "ranking": [
     {
@@ -42,10 +42,10 @@
       "gamePk": 823175,
       "matchup": "St. Louis Cardinals @ San Francisco Giants",
       "gameDate": "2026-09-08T00:10:00Z",
-      "under05Pct": 58.53,
-      "over05Pct": 41.47,
-      "fairUnder": -141,
-      "fairOver": 141,
+      "under05Pct": 58.74,
+      "over05Pct": 41.26,
+      "fairUnder": -142,
+      "fairOver": 142,
       "awayStarter": "Michael McGreevy",
       "homeStarter": "Logan Webb",
       "awayStarterStats": {
@@ -74,8 +74,8 @@
         "battersFaced": 621,
         "gamesStarted": 25
       },
-      "top2ScorePct": 23.41,
-      "bottom2ScorePct": 23.59,
+      "top2ScorePct": 23.21,
+      "bottom2ScorePct": 23.5,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -96,8 +96,8 @@
         "firstSeenAt": "2026-09-07T12:01:00.178Z",
         "latestObservedTotal": 7.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.018991868263192435,
-        "equalHalfLogitShift": -0.052264842567129155
+        "baseballLogitDelta": -0.027971524411421034,
+        "equalHalfLogitShift": -0.05531975474912032
       }
     },
     {
@@ -168,10 +168,10 @@
       "gamePk": 823254,
       "matchup": "Washington Nationals @ San Diego Padres",
       "gameDate": "2026-09-07T21:10:00Z",
-      "under05Pct": 56.81,
-      "over05Pct": 43.19,
-      "fairUnder": -132,
-      "fairOver": 132,
+      "under05Pct": 56.05,
+      "over05Pct": 43.95,
+      "fairUnder": -128,
+      "fairOver": 128,
       "awayStarter": "Jake Irvin",
       "homeStarter": "Nick Pivetta",
       "awayStarterStats": {
@@ -200,14 +200,10 @@
         "battersFaced": 66,
         "gamesStarted": 4
       },
-      "top2ScorePct": 23.38,
-      "bottom2ScorePct": 25.86,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
+      "top2ScorePct": 24.1,
+      "bottom2ScorePct": 26.15,
+      "predictionClass": "FROZEN_FEED_CONFIRMED",
+      "lineupSource": "MLB live feed",
       "runEnvironment": {
         "status": "APPLIED",
         "fullGameTotal": 8,
@@ -222,71 +218,12 @@
         "firstSeenAt": "2026-09-07T12:01:00.178Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.03790450911105536,
-        "equalHalfLogitShift": -0.044060748621971846
+        "baseballLogitDelta": 0.06887744412006278,
+        "equalHalfLogitShift": -0.04137933968999541
       }
     },
     {
       "rank": 4,
-      "gamePk": 824229,
-      "matchup": "Minnesota Twins @ Detroit Tigers",
-      "gameDate": "2026-09-07T19:10:00Z",
-      "under05Pct": 55.6,
-      "over05Pct": 44.4,
-      "fairUnder": -125,
-      "fairOver": 125,
-      "awayStarter": "Joe Ryan",
-      "homeStarter": "Troy Melton",
-      "awayStarterStats": {
-        "wins": 6,
-        "losses": 8,
-        "record": "6-8",
-        "era": "3.65",
-        "whip": "1.14",
-        "inningsPitched": "125.2",
-        "strikeOuts": 138,
-        "walks": 27,
-        "homeRunsAllowed": 17,
-        "battersFaced": 523,
-        "gamesStarted": 23
-      },
-      "homeStarterStats": {
-        "wins": 7,
-        "losses": 4,
-        "record": "7-4",
-        "era": "2.20",
-        "whip": "1.03",
-        "inningsPitched": "102.1",
-        "strikeOuts": 84,
-        "walks": 29,
-        "homeRunsAllowed": 12,
-        "battersFaced": 407,
-        "gamesStarted": 17
-      },
-      "top2ScorePct": 25.72,
-      "bottom2ScorePct": 25.15,
-      "predictionClass": "FROZEN_FEED_CONFIRMED",
-      "lineupSource": "MLB live feed",
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8.5,
-        "bucket": "8.5",
-        "totalPriorOverPct": 43.85,
-        "totalPriorUnderPct": 56.15,
-        "totalPriorN": 2871,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-07T12:01:00.178Z",
-        "latestObservedTotal": 8,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.022257130596941815,
-        "equalHalfLogitShift": 0.01109045331983316
-      }
-    },
-    {
-      "rank": 5,
       "gamePk": 823902,
       "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
       "gameDate": "2026-09-08T01:10:00Z",
@@ -359,170 +296,6 @@
   ],
   "games": [
     {
-      "gamePk": 824229,
-      "gameDate": "2026-09-07T19:10:00Z",
-      "away": "Minnesota Twins",
-      "home": "Detroit Tigers",
-      "venue": "Comerica Park",
-      "lineupConfirmed": true,
-      "awayLineup": [
-        "Luke Keaschall",
-        "Brooks Lee",
-        "Kody Clemens",
-        "Ryan Jeffers",
-        "Josh Bell",
-        "Royce Lewis",
-        "Trevor Larnach",
-        "Kaelen Culpepper",
-        "Walker Jenkins"
-      ],
-      "homeLineup": [
-        "Colt Keith",
-        "Kevin McGonigle",
-        "Gleyber Torres",
-        "Riley Greene",
-        "Dillon Dingler",
-        "Zach McKinstry",
-        "Spencer Torkelson",
-        "Max Clark",
-        "John Peck"
-      ],
-      "awayStarter": "Joe Ryan",
-      "homeStarter": "Troy Melton",
-      "awayStarterStats": {
-        "wins": 6,
-        "losses": 8,
-        "record": "6-8",
-        "era": "3.65",
-        "whip": "1.14",
-        "inningsPitched": "125.2",
-        "strikeOuts": 138,
-        "walks": 27,
-        "homeRunsAllowed": 17,
-        "battersFaced": 523,
-        "gamesStarted": 23
-      },
-      "homeStarterStats": {
-        "wins": 7,
-        "losses": 4,
-        "record": "7-4",
-        "era": "2.20",
-        "whip": "1.03",
-        "inningsPitched": "102.1",
-        "strikeOuts": 84,
-        "walks": 29,
-        "homeRunsAllowed": 12,
-        "battersFaced": 407,
-        "gamesStarted": 17
-      },
-      "venueProfile": null,
-      "status": "Pre-Game",
-      "dataAudit": {
-        "awayStarterBF": 523,
-        "homeStarterBF": 407,
-        "awayStarterGamesStarted": 23,
-        "homeStarterGamesStarted": 17,
-        "awayStarterExtraBaseFallback": false,
-        "homeStarterExtraBaseFallback": false,
-        "awayStarterStatsError": null,
-        "homeStarterStatsError": null,
-        "venueProfileMatched": false
-      },
-      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
-      "trials": 50000,
-      "under05": 0.5559893913907643,
-      "over05": 0.44401060860923564,
-      "under05Pct": 55.6,
-      "over05Pct": 44.4,
-      "fairUnder": -125,
-      "fairOver": 125,
-      "fullI2Exact": {
-        "0": 55.6,
-        "1": 20.84,
-        "2": 11.75,
-        "3": 6.08,
-        "4+": 5.73
-      },
-      "fullI2Cumulative": {
-        "1+": 44.4,
-        "2+": 23.56,
-        "3+": 11.81,
-        "4+": 5.73
-      },
-      "top2ScorePct": 25.72,
-      "bottom2ScorePct": 25.15,
-      "awayI2StartSlotPct": {
-        "1": 0.7,
-        "2": 0.27,
-        "3": 0.08,
-        "4": 39.56,
-        "5": 28.41,
-        "6": 16.91,
-        "7": 8.83,
-        "8": 3.68,
-        "9": 1.55
-      },
-      "homeI2StartSlotPct": {
-        "1": 0.69,
-        "2": 0.26,
-        "3": 0.09,
-        "4": 36.49,
-        "5": 29.17,
-        "6": 18.35,
-        "7": 9.26,
-        "8": 3.94,
-        "9": 1.76
-      },
-      "awayMeanPitchesEnteringI2": 15.75,
-      "homeMeanPitchesEnteringI2": 16.16,
-      "underRank": 3,
-      "predictionClass": "FROZEN_FEED_CONFIRMED",
-      "lineupSource": "MLB live feed batting order",
-      "lineupFeedConfirmed": true,
-      "lineupSimulationReady": true,
-      "baseballOnlyRaw": {
-        "under05": 0.55948,
-        "over05": 0.44052,
-        "under05Pct": 55.95,
-        "over05Pct": 44.05,
-        "fairUnder": -127,
-        "fairOver": 127,
-        "fullI2Exact": {
-          "0": 55.95,
-          "1": 20.68,
-          "2": 11.66,
-          "3": 6.03,
-          "4+": 5.69
-        },
-        "fullI2Cumulative": {
-          "1+": 44.05,
-          "2+": 23.37,
-          "3+": 11.71,
-          "4+": 5.69
-        },
-        "top2ScorePct": 25.51,
-        "bottom2ScorePct": 24.94
-      },
-      "runEnvironmentConditioned": true,
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8.5,
-        "bucket": "8.5",
-        "totalPriorOverPct": 43.85,
-        "totalPriorUnderPct": 56.15,
-        "totalPriorN": 2871,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-07T12:01:00.178Z",
-        "latestObservedTotal": 8,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.022257130596941815,
-        "equalHalfLogitShift": 0.01109045331983316
-      }
-    },
-    {
       "gamePk": 823254,
       "gameDate": "2026-09-07T21:10:00Z",
       "away": "Washington Nationals",
@@ -532,13 +305,13 @@
       "awayLineup": [
         "James Wood",
         "Abimelec Ortiz",
-        "CJ Abrams",
-        "Daylen Lile",
         "Dylan Crews",
-        "Keibert Ruiz",
+        "CJ Abrams",
         "Brady House",
-        "Jacob Young",
-        "Nasim Nuñez"
+        "Daylen Lile",
+        "Keibert Ruiz",
+        "Jorbit Vivas",
+        "Jacob Young"
       ],
       "homeLineup": [
         "Fernando Tatis Jr.",
@@ -592,84 +365,80 @@
         "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
-      "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5680778050701076,
-      "over05": 0.43192219492989237,
-      "under05Pct": 56.81,
-      "over05Pct": 43.19,
-      "fairUnder": -132,
-      "fairOver": 132,
+      "under05": 0.5604626698265056,
+      "over05": 0.43953733017349433,
+      "under05Pct": 56.05,
+      "over05Pct": 43.95,
+      "fairUnder": -128,
+      "fairOver": 128,
       "fullI2Exact": {
-        "0": 56.81,
-        "1": 20,
-        "2": 11.2,
-        "3": 6.1,
-        "4+": 5.89
+        "0": 56.05,
+        "1": 20.18,
+        "2": 11.44,
+        "3": 6.25,
+        "4+": 6.09
       },
       "fullI2Cumulative": {
-        "1+": 43.19,
-        "2+": 23.19,
-        "3+": 11.99,
-        "4+": 5.89
+        "1+": 43.95,
+        "2+": 23.78,
+        "3+": 12.34,
+        "4+": 6.09
       },
-      "top2ScorePct": 23.38,
-      "bottom2ScorePct": 25.86,
+      "top2ScorePct": 24.1,
+      "bottom2ScorePct": 26.15,
       "awayI2StartSlotPct": {
-        "1": 0.78,
-        "2": 0.26,
-        "3": 0.12,
-        "4": 36.62,
-        "5": 29.91,
-        "6": 17.87,
-        "7": 8.64,
-        "8": 4.1,
-        "9": 1.69
+        "1": 0.77,
+        "2": 0.29,
+        "3": 0.14,
+        "4": 38.06,
+        "5": 29.14,
+        "6": 17,
+        "7": 8.81,
+        "8": 4.04,
+        "9": 1.75
       },
       "homeI2StartSlotPct": {
-        "1": 1.01,
-        "2": 0.4,
-        "3": 0.16,
-        "4": 35.93,
-        "5": 28.44,
-        "6": 18.38,
-        "7": 9.17,
-        "8": 4.43,
+        "1": 1.02,
+        "2": 0.36,
+        "3": 0.15,
+        "4": 35.8,
+        "5": 28.53,
+        "6": 18.37,
+        "7": 8.97,
+        "8": 4.72,
         "9": 2.08
       },
-      "awayMeanPitchesEnteringI2": 16.38,
+      "awayMeanPitchesEnteringI2": 16.36,
       "homeMeanPitchesEnteringI2": 16.55,
-      "underRank": 4,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
-      "lineupFeedConfirmed": false,
+      "underRank": 3,
+      "predictionClass": "FROZEN_FEED_CONFIRMED",
+      "lineupSource": "MLB live feed batting order",
+      "lineupFeedConfirmed": true,
       "lineupSimulationReady": true,
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
       "baseballOnlyRaw": {
-        "under05": 0.55562,
-        "over05": 0.44438,
-        "under05Pct": 55.56,
-        "over05Pct": 44.44,
-        "fairUnder": -125,
-        "fairOver": 125,
+        "under05": 0.54796,
+        "over05": 0.45204,
+        "under05Pct": 54.8,
+        "over05Pct": 45.2,
+        "fairUnder": -121,
+        "fairOver": 121,
         "fullI2Exact": {
-          "0": 55.56,
-          "1": 20.58,
-          "2": 11.52,
-          "3": 6.28,
-          "4+": 6.06
+          "0": 54.8,
+          "1": 20.75,
+          "2": 11.76,
+          "3": 6.43,
+          "4+": 6.26
         },
         "fullI2Cumulative": {
-          "1+": 44.44,
-          "2+": 23.86,
-          "3+": 12.34,
-          "4+": 6.06
+          "1+": 45.2,
+          "2+": 24.45,
+          "3+": 12.7,
+          "4+": 6.26
         },
-        "top2ScorePct": 24.18,
-        "bottom2ScorePct": 26.71
+        "top2ScorePct": 24.87,
+        "bottom2ScorePct": 26.96
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -686,8 +455,8 @@
         "firstSeenAt": "2026-09-07T12:01:00.178Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.03790450911105536,
-        "equalHalfLogitShift": -0.044060748621971846
+        "baseballLogitDelta": 0.06887744412006278,
+        "equalHalfLogitShift": -0.04137933968999541
       }
     },
     {
@@ -703,8 +472,8 @@
         "Alec Burleson",
         "Jordan Walker",
         "Leo Bernal",
-        "Joshua Báez",
         "Nolan Gorman",
+        "Joshua Báez",
         "Thomas Saggese",
         "Nathan Church"
       ],
@@ -748,7 +517,7 @@
         "gamesStarted": 25
       },
       "venueProfile": null,
-      "status": "Scheduled",
+      "status": "Pre-Game",
       "dataAudit": {
         "awayStarterBF": 608,
         "homeStarterBF": 621,
@@ -762,51 +531,51 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5852624014853971,
-      "over05": 0.4147375985146029,
-      "under05Pct": 58.53,
-      "over05Pct": 41.47,
-      "fairUnder": -141,
-      "fairOver": 141,
+      "under05": 0.5874403541874527,
+      "over05": 0.41255964581254734,
+      "under05Pct": 58.74,
+      "over05Pct": 41.26,
+      "fairUnder": -142,
+      "fairOver": 142,
       "fullI2Exact": {
-        "0": 58.53,
-        "1": 19.59,
-        "2": 10.83,
-        "3": 5.75,
-        "4+": 5.3
+        "0": 58.74,
+        "1": 19.28,
+        "2": 10.93,
+        "3": 5.78,
+        "4+": 5.26
       },
       "fullI2Cumulative": {
-        "1+": 41.47,
-        "2+": 21.89,
-        "3+": 11.06,
-        "4+": 5.3
+        "1+": 41.26,
+        "2+": 21.97,
+        "3+": 11.04,
+        "4+": 5.26
       },
-      "top2ScorePct": 23.41,
-      "bottom2ScorePct": 23.59,
+      "top2ScorePct": 23.21,
+      "bottom2ScorePct": 23.5,
       "awayI2StartSlotPct": {
-        "1": 0.77,
-        "2": 0.26,
-        "3": 0.1,
-        "4": 37.05,
-        "5": 29.41,
-        "6": 17.16,
-        "7": 9.24,
-        "8": 4.31,
-        "9": 1.69
+        "1": 0.72,
+        "2": 0.25,
+        "3": 0.09,
+        "4": 36.94,
+        "5": 29.38,
+        "6": 17.24,
+        "7": 9.44,
+        "8": 4.22,
+        "9": 1.73
       },
       "homeI2StartSlotPct": {
-        "1": 0.72,
-        "2": 0.27,
-        "3": 0.11,
-        "4": 36.11,
-        "5": 29.29,
-        "6": 18.44,
-        "7": 8.86,
-        "8": 4.38,
-        "9": 1.82
+        "1": 0.75,
+        "2": 0.29,
+        "3": 0.12,
+        "4": 36.07,
+        "5": 29.39,
+        "6": 18.12,
+        "7": 9.13,
+        "8": 4.28,
+        "9": 1.85
       },
       "awayMeanPitchesEnteringI2": 16.01,
-      "homeMeanPitchesEnteringI2": 16.11,
+      "homeMeanPitchesEnteringI2": 16.13,
       "underRank": 2,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
@@ -817,27 +586,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.56962,
-        "over05": 0.43038,
-        "under05Pct": 56.96,
-        "over05Pct": 43.04,
-        "fairUnder": -132,
-        "fairOver": 132,
+        "under05": 0.57182,
+        "over05": 0.42818,
+        "under05Pct": 57.18,
+        "over05Pct": 42.82,
+        "fairUnder": -134,
+        "fairOver": 134,
         "fullI2Exact": {
-          "0": 56.96,
-          "1": 20.32,
-          "2": 11.24,
-          "3": 5.97,
-          "4+": 5.5
+          "0": 57.18,
+          "1": 20.02,
+          "2": 11.35,
+          "3": 6,
+          "4+": 5.46
         },
         "fullI2Cumulative": {
-          "1+": 43.04,
-          "2+": 22.72,
-          "3+": 11.47,
-          "4+": 5.5
+          "1+": 42.82,
+          "2+": 22.8,
+          "3+": 11.46,
+          "4+": 5.46
         },
-        "top2ScorePct": 24.36,
-        "bottom2ScorePct": 24.54
+        "top2ScorePct": 24.21,
+        "bottom2ScorePct": 24.51
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -854,8 +623,8 @@
         "firstSeenAt": "2026-09-07T12:01:00.178Z",
         "latestObservedTotal": 7.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.018991868263192435,
-        "equalHalfLogitShift": -0.052264842567129155
+        "baseballLogitDelta": -0.027971524411421034,
+        "equalHalfLogitShift": -0.05531975474912032
       }
     },
     {
@@ -975,7 +744,7 @@
       },
       "awayMeanPitchesEnteringI2": 16.67,
       "homeMeanPitchesEnteringI2": 16.48,
-      "underRank": 5,
+      "underRank": 4,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1206,8 +975,8 @@
   "sourcePriorityAudit": {
     "rule": "USER_DATA_FIRST",
     "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
-    "upstreamAttempts": 106,
-    "upstreamSuccesses": 106,
+    "upstreamAttempts": 85,
+    "upstreamSuccesses": 85,
     "officialFallbacks": 0,
     "fallbackEvents": [],
     "unmappedOfficialCalls": 0
@@ -1221,17 +990,8 @@
     "requestedGames": 11,
     "appliedGames": [
       {
-        "gamePk": 823254,
-        "awayApplied": true,
-        "homeApplied": false,
-        "awayStarter": null,
-        "homeStarter": null,
-        "matchup": "Washington Nationals @ San Diego Padres",
-        "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD"
-      },
-      {
         "gamePk": 823175,
-        "awayApplied": true,
+        "awayApplied": false,
         "homeApplied": true,
         "awayStarter": null,
         "homeStarter": null,
@@ -1265,9 +1025,9 @@
         "lineupMethod": "PRELIMINARY_WEEKDAY_SERIES_METHOD"
       }
     ],
-    "appliedGameCount": 4,
+    "appliedGameCount": 3,
     "feedConfirmedProjectedGames": 1,
-    "provisionalProjectedGames": 4
+    "provisionalProjectedGames": 3
   },
   "fullSlateProjectionMode": "CONFIRMED_PLUS_PROVISIONAL_LINEUP_AND_SOURCED_PROBABLE_OVERRIDES",
   "baseballOnlyRawRanking": [
@@ -1322,10 +1082,10 @@
       "gamePk": 823175,
       "matchup": "St. Louis Cardinals @ San Francisco Giants",
       "gameDate": "2026-09-08T00:10:00Z",
-      "under05Pct": 56.96,
-      "over05Pct": 43.04,
-      "fairUnder": -132,
-      "fairOver": 132,
+      "under05Pct": 57.18,
+      "over05Pct": 42.82,
+      "fairUnder": -134,
+      "fairOver": 134,
       "awayStarter": "Michael McGreevy",
       "homeStarter": "Logan Webb",
       "awayStarterStats": {
@@ -1354,8 +1114,8 @@
         "battersFaced": 621,
         "gamesStarted": 25
       },
-      "top2ScorePct": 24.36,
-      "bottom2ScorePct": 24.54,
+      "top2ScorePct": 24.21,
+      "bottom2ScorePct": 24.51,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -1365,55 +1125,13 @@
     },
     {
       "rank": 3,
-      "gamePk": 824229,
-      "matchup": "Minnesota Twins @ Detroit Tigers",
-      "gameDate": "2026-09-07T19:10:00Z",
-      "under05Pct": 55.95,
-      "over05Pct": 44.05,
-      "fairUnder": -127,
-      "fairOver": 127,
-      "awayStarter": "Joe Ryan",
-      "homeStarter": "Troy Melton",
-      "awayStarterStats": {
-        "wins": 6,
-        "losses": 8,
-        "record": "6-8",
-        "era": "3.65",
-        "whip": "1.14",
-        "inningsPitched": "125.2",
-        "strikeOuts": 138,
-        "walks": 27,
-        "homeRunsAllowed": 17,
-        "battersFaced": 523,
-        "gamesStarted": 23
-      },
-      "homeStarterStats": {
-        "wins": 7,
-        "losses": 4,
-        "record": "7-4",
-        "era": "2.20",
-        "whip": "1.03",
-        "inningsPitched": "102.1",
-        "strikeOuts": 84,
-        "walks": 29,
-        "homeRunsAllowed": 12,
-        "battersFaced": 407,
-        "gamesStarted": 17
-      },
-      "top2ScorePct": 25.51,
-      "bottom2ScorePct": 24.94,
-      "predictionClass": "FROZEN_FEED_CONFIRMED",
-      "lineupSource": "MLB live feed"
-    },
-    {
-      "rank": 4,
       "gamePk": 823254,
       "matchup": "Washington Nationals @ San Diego Padres",
       "gameDate": "2026-09-07T21:10:00Z",
-      "under05Pct": 55.56,
-      "over05Pct": 44.44,
-      "fairUnder": -125,
-      "fairOver": 125,
+      "under05Pct": 54.8,
+      "over05Pct": 45.2,
+      "fairUnder": -121,
+      "fairOver": 121,
       "awayStarter": "Jake Irvin",
       "homeStarter": "Nick Pivetta",
       "awayStarterStats": {
@@ -1442,17 +1160,13 @@
         "battersFaced": 66,
         "gamesStarted": 4
       },
-      "top2ScorePct": 24.18,
-      "bottom2ScorePct": 26.71,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
+      "top2ScorePct": 24.87,
+      "bottom2ScorePct": 26.96,
+      "predictionClass": "FROZEN_FEED_CONFIRMED",
+      "lineupSource": "MLB live feed"
     },
     {
-      "rank": 5,
+      "rank": 4,
       "gamePk": 823902,
       "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
       "gameDate": "2026-09-08T01:10:00Z",
@@ -1512,7 +1226,7 @@
   "predictionFrozenBeforeDerivativeMarketRetrieval": true,
   "runEnvironmentConditioning": {
     "required": true,
-    "appliedGames": 5,
+    "appliedGames": 4,
     "missingApprovedTotalGames": 0,
     "missingPriorBucketGames": 0,
     "totalArtifact": "data/runtime/i2/2026-09-07_run_environment.json",
