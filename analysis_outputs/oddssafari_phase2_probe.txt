@@ -1,0 +1,327 @@
+URL=https://www.oddssafari.com/matches/baseball/usa/mlb/phi-phillies-vs-tor-blue-jays/1944521
+
+TITLE=Odds comparison for PHI Phillies - TOR Blue Jays / MLB Baseball at 13/06/25 | OddsSafari
+
+BEFORE_BODY
+Odds comparison
+Sure bets
+Bookmakers
+Decimal
+Register
+Login
+Home
+Coupons
+Dropping odds
+Moving handicaps
+Moving O/U lines
+My Favourites
+Login to add your favorite leagues
+Sports
+Soccer
+Basketball
+Tennis
+Ice Hockey
+Am. Football
+Handball
+Volleyball
+Baseball
+Darts
+Snooker
+E-sports
+Rugby Union
+Rugby League
+Cricket
+MMA
+Boxing
+Friday 13/06/2025 22:45
+MLB
+PHI Phillies
+TOR Blue Jays
+No Markets Available
+
+1.By clicking "+" the respective selection will be added in your betslip.
+
+2. By hovering or clicking the icon "" you can browse historical odds changes.
+
+3.Please always check odds, rules, terms & conditions at the bookmakers' site before placing a bet.
+
+Bet Slip
+0
+MLB
+Monday 07/09
+PHI Phillies
+ATL Braves
+17:05
+MIA Marlins
+NY Mets
+17:10
+BAL Orioles
+CLE Guardians
+17:35
+BOS Red Sox
+LA Angels
+17:35
+MIL Brewers
+CHI Cubs
+18:10
+KC Royals
+ARI Diamondbacks
+18:10
+DET Tigers
+MIN Twins
+19:10
+Tuesday 08/09
+SD Padres
+WAS Nationals
+21:10
+SF Giants
+STL Cardinals
+00:10
+LA Dodgers
+CIN Reds
+01:10
+Athletics
+TOR Blue Jays
+02:05
+Leagues
+UEFA Champions League
+UEFA Europa League
+UEFA Supercup
+NBA
+Coupons
+Soccer
+Basketball
+Tennis
+Ice Hockey
+Market Analysis
+Dropping odds
+Moving handicaps
+Sure bets
+Widgets
+Dropping odds widget
+© OddsSafari. All rights reserved
+About us
+Privacy Policy
+Terms & Conditions
+Contact us
+Cookies
+
+OVER_UNDER_COUNT=0
+
+AFTER_OU_BODY
+Odds comparison
+Sure bets
+Bookmakers
+Decimal
+Register
+Login
+Home
+Coupons
+Dropping odds
+Moving handicaps
+Moving O/U lines
+My Favourites
+Login to add your favorite leagues
+Sports
+Soccer
+Basketball
+Tennis
+Ice Hockey
+Am. Football
+Handball
+Volleyball
+Baseball
+Darts
+Snooker
+E-sports
+Rugby Union
+Rugby League
+Cricket
+MMA
+Boxing
+Friday 13/06/2025 22:45
+MLB
+PHI Phillies
+TOR Blue Jays
+No Markets Available
+
+1.By clicking "+" the respective selection will be added in your betslip.
+
+2. By hovering or clicking the icon "" you can browse historical odds changes.
+
+3.Please always check odds, rules, terms & conditions at the bookmakers' site before placing a bet.
+
+Bet Slip
+0
+MLB
+Monday 07/09
+PHI Phillies
+ATL Braves
+17:05
+MIA Marlins
+NY Mets
+17:10
+BAL Orioles
+CLE Guardians
+17:35
+BOS Red Sox
+LA Angels
+17:35
+MIL Brewers
+CHI Cubs
+18:10
+KC Royals
+ARI Diamondbacks
+18:10
+DET Tigers
+MIN Twins
+19:10
+Tuesday 08/09
+SD Padres
+WAS Nationals
+21:10
+SF Giants
+STL Cardinals
+00:10
+LA Dodgers
+CIN Reds
+01:10
+Athletics
+TOR Blue Jays
+02:05
+Leagues
+UEFA Champions League
+UEFA Europa League
+UEFA Supercup
+NBA
+Coupons
+Soccer
+Basketball
+Tennis
+Ice Hockey
+Market Analysis
+Dropping odds
+Moving handicaps
+Sure bets
+Widgets
+Dropping odds widget
+© OddsSafari. All rights reserved
+About us
+Privacy Policy
+Terms & Conditions
+Contact us
+Cookies
+
+SECOND_INNING_COUNT=0
+
+AFTER_I2_BODY
+Odds comparison
+Sure bets
+Bookmakers
+Decimal
+Register
+Login
+Home
+Coupons
+Dropping odds
+Moving handicaps
+Moving O/U lines
+My Favourites
+Login to add your favorite leagues
+Sports
+Soccer
+Basketball
+Tennis
+Ice Hockey
+Am. Football
+Handball
+Volleyball
+Baseball
+Darts
+Snooker
+E-sports
+Rugby Union
+Rugby League
+Cricket
+MMA
+Boxing
+Friday 13/06/2025 22:45
+MLB
+PHI Phillies
+TOR Blue Jays
+No Markets Available
+
+1.By clicking "+" the respective selection will be added in your betslip.
+
+2. By hovering or clicking the icon "" you can browse historical odds changes.
+
+3.Please always check odds, rules, terms & conditions at the bookmakers' site before placing a bet.
+
+Bet Slip
+0
+MLB
+Monday 07/09
+PHI Phillies
+ATL Braves
+17:05
+MIA Marlins
+NY Mets
+17:10
+BAL Orioles
+CLE Guardians
+17:35
+BOS Red Sox
+LA Angels
+17:35
+MIL Brewers
+CHI Cubs
+18:10
+KC Royals
+ARI Diamondbacks
+18:10
+DET Tigers
+MIN Twins
+19:10
+Tuesday 08/09
+SD Padres
+WAS Nationals
+21:10
+SF Giants
+STL Cardinals
+00:10
+LA Dodgers
+CIN Reds
+01:10
+Athletics
+TOR Blue Jays
+02:05
+Leagues
+UEFA Champions League
+UEFA Europa League
+UEFA Supercup
+NBA
+Coupons
+Soccer
+Basketball
+Tennis
+Ice Hockey
+Market Analysis
+Dropping odds
+Moving handicaps
+Sure bets
+Widgets
+Dropping odds widget
+© OddsSafari. All rights reserved
+About us
+Privacy Policy
+Terms & Conditions
+Contact us
+Cookies
+
+RENDERED_0.5=[]
+
+RENDERED_OVER=["2. By hovering or clicking the icon \"\" you can browse historical odds changes."]
+
+RENDERED_UNDER=[]
+
+RENDERED_PINNACLE=[]
