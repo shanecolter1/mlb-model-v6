@@ -1,0 +1,15 @@
+{
+  "phase": "4-one-game-proof",
+  "key_present": false,
+  "request": {
+    "leagueID": "MLB",
+    "startsAfter": "2025-06-13T00:00:00Z",
+    "startsBefore": "2025-06-14T00:00:00Z",
+    "finalized": "true",
+    "oddID": "points-all-2i-ou-over,points-all-2i-ou-under",
+    "bookmakerID": "pinnacle,draftkings,fanduel",
+    "includeAltLines": "true",
+    "limit": "25"
+  },
+  "status": "BLOCKED_NO_API_KEY"
+}
