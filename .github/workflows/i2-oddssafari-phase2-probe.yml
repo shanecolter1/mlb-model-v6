@@ -1,0 +1,102 @@
+name: I2 OddsSafari Phase 2 Probe
+on:
+  push:
+    branches:
+      - analysis/i2-weekday-edge-20260906
+    paths:
+      - '.github/workflows/i2-oddssafari-phase2-probe.yml'
+      - 'analysis/oddssafari_phase2_trigger.txt'
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: analysis/i2-weekday-edge-20260906
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Playwright
+        run: |
+          pip install playwright
+          playwright install chromium --with-deps
+      - name: Probe archived 2025 I2 market
+        run: |
+          python - <<'PY'
+          import asyncio, json, re
+          from pathlib import Path
+          from playwright.async_api import async_playwright
+
+          URL='https://www.oddssafari.com/matches/baseball/usa/mlb/phi-phillies-vs-tor-blue-jays/1944521'
+          out=[]
+          net=[]
+          async def main():
+              async with async_playwright() as p:
+                  browser=await p.chromium.launch(headless=True)
+                  page=await browser.new_page(viewport={"width":1440,"height":1200})
+
+                  async def on_response(resp):
+                      req=resp.request
+                      if req.resource_type in ('xhr','fetch') or any(k in resp.url.lower() for k in ('api','odds','market','match')):
+                          rec={'status':resp.status,'type':req.resource_type,'method':req.method,'url':resp.url}
+                          try:
+                              ct=(resp.headers.get('content-type') or '').lower()
+                              if ('json' in ct or 'text' in ct) and int(resp.headers.get('content-length','0') or 0) < 500000:
+                                  txt=await resp.text()
+                                  rec['body']=txt[:100000]
+                          except Exception as e:
+                              rec['body_error']=str(e)
+                          net.append(rec)
+                  page.on('response', on_response)
+
+                  await page.goto(URL, wait_until='networkidle', timeout=120000)
+                  out.append('URL='+page.url)
+                  out.append('TITLE='+await page.title())
+                  out.append('BEFORE_BODY\n'+(await page.locator('body').inner_text())[:20000])
+
+                  # Click market family first.
+                  market=page.get_by_text('Over/Under Runs', exact=True)
+                  out.append(f'OVER_UNDER_COUNT={await market.count()}')
+                  if await market.count():
+                      await market.first.click(timeout=15000)
+                      await page.wait_for_timeout(2500)
+                  out.append('AFTER_OU_BODY\n'+(await page.locator('body').inner_text())[:25000])
+
+                  period=page.get_by_text('2nd Inning', exact=True)
+                  out.append(f'SECOND_INNING_COUNT={await period.count()}')
+                  if await period.count():
+                      await period.first.click(timeout=15000)
+                      await page.wait_for_timeout(4000)
+                  body=await page.locator('body').inner_text()
+                  out.append('AFTER_I2_BODY\n'+body[:35000])
+
+                  # Useful rendered snippets.
+                  for needle in ['0.5','Over','Under','Pinnacle']:
+                      loc=page.get_by_text(re.compile(re.escape(needle), re.I))
+                      vals=[]
+                      for i in range(min(await loc.count(),30)):
+                          try:
+                              t=(await loc.nth(i).inner_text()).strip()
+                              if t and t not in vals: vals.append(t)
+                          except: pass
+                      out.append(f'RENDERED_{needle.upper()}='+json.dumps(vals[:30]))
+
+                  Path('analysis_outputs/oddssafari_phase2_page.html').write_text(await page.content(),encoding='utf-8')
+                  await page.screenshot(path='analysis_outputs/oddssafari_phase2.png', full_page=True)
+                  await browser.close()
+
+          asyncio.run(main())
+          Path('analysis_outputs/oddssafari_phase2_probe.txt').write_text('\n\n'.join(out),encoding='utf-8')
+          Path('analysis_outputs/oddssafari_phase2_network.json').write_text(json.dumps(net,indent=2),encoding='utf-8')
+          print('\n\n'.join(out[-10:]))
+          print('NETWORK_RECORDS',len(net))
+          PY
+      - name: Save Phase 2 outputs
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add analysis_outputs/oddssafari_phase2_probe.txt analysis_outputs/oddssafari_phase2_network.json analysis_outputs/oddssafari_phase2_page.html analysis_outputs/oddssafari_phase2.png
+          git commit -m "Save OddsSafari phase 2 I2 extraction probe" || exit 0
+          git push origin HEAD:analysis/i2-weekday-edge-20260906
