@@ -1,0 +1,13 @@
+market_rows=10911
+juice_beta=0.7502342893141796
+total=6.0,n=12,i2_under_pct=66.66666667,mean_devig_under_pct=49.98799380
+total=6.5,n=149,i2_under_pct=61.74496644,mean_devig_under_pct=48.90674240
+total=7.0,n=655,i2_under_pct=63.81679389,mean_devig_under_pct=49.47115531
+total=7.5,n=1612,i2_under_pct=58.06451613,mean_devig_under_pct=49.98369359
+total=8.0,n=2146,i2_under_pct=57.73532153,mean_devig_under_pct=49.84977489
+total=8.5,n=2871,i2_under_pct=56.14768373,mean_devig_under_pct=49.87953611
+total=9.0,n=1839,i2_under_pct=55.89994562,mean_devig_under_pct=50.20751302
+total=9.5,n=875,i2_under_pct=52.11428571,mean_devig_under_pct=50.65191430
+total=10.0,n=261,i2_under_pct=50.19157088,mean_devig_under_pct=50.21442310
+total=10.5,n=186,i2_under_pct=44.62365591,mean_devig_under_pct=49.90610245
+total=11.0,n=124,i2_under_pct=47.58064516,mean_devig_under_pct=50.03767233
