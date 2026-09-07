@@ -1,277 +1,5107 @@
 {
   "season": 2026,
-  "endDate": "2026-08-16",
-  "finalGames": 1882,
+  "endDate": "2026-09-07",
+  "finalGames": 2183,
   "rows": [
     {
       "teamId": 144,
       "team": "Atlanta Braves",
-      "games": 125,
-      "i2Runs": 80,
-      "i2ScoreGames": 43,
-      "i2RunsPerGame": 0.64,
-      "i2ScorePct": 0.344
-    },
-    {
-      "teamId": 134,
-      "team": "Pittsburgh Pirates",
-      "games": 128,
-      "i2Runs": 78,
-      "i2ScoreGames": 32,
-      "i2RunsPerGame": 0.609375,
-      "i2ScorePct": 0.25
+      "games": 148,
+      "i2Runs": 90,
+      "i2ScoreGames": 49,
+      "i2RunsPerGame": 0.6081081081081081,
+      "i2ScorePct": 0.3310810810810811,
+      "last25": {
+        "games": 25,
+        "i2Runs": 10,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-14",
+        "throughDate": "2026-09-07",
+        "gamesDetail": [
+          {
+            "gamePk": 824882,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824884,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824880,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823668,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823667,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823664,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824589,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824589,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823746,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823743,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823745,
+            "officialDate": "2026-08-23",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824881,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824878,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824879,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824877,
+            "officialDate": "2026-08-28",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824874,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824876,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824911,
+            "officialDate": "2026-08-31",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824911,
+            "officialDate": "2026-08-31",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822687,
+            "officialDate": "2026-09-01",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822686,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823418,
+            "officialDate": "2026-09-04",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 823419,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823417,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823415,
+            "officialDate": "2026-09-07",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 112,
       "team": "Chicago Cubs",
-      "games": 127,
-      "i2Runs": 76,
-      "i2ScoreGames": 37,
-      "i2RunsPerGame": 0.5984251968503937,
-      "i2ScorePct": 0.29133858267716534
-    },
-    {
-      "teamId": 142,
-      "team": "Minnesota Twins",
-      "games": 124,
-      "i2Runs": 72,
-      "i2ScoreGames": 36,
-      "i2RunsPerGame": 0.5806451612903226,
-      "i2ScorePct": 0.2903225806451613
+      "games": 147,
+      "i2Runs": 87,
+      "i2ScoreGames": 43,
+      "i2RunsPerGame": 0.5918367346938775,
+      "i2ScorePct": 0.2925170068027211,
+      "last25": {
+        "games": 25,
+        "i2Runs": 15,
+        "i2ScoreGames": 8,
+        "i2ScorePct": 0.32,
+        "i2UnderPct": 0.68,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 822697,
+            "officialDate": "2026-08-11",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822698,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822696,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824643,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824644,
+            "officialDate": "2026-08-15",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824642,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824641,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824639,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824640,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823101,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823100,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823099,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825041,
+            "officialDate": "2026-08-24",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 825042,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825039,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824638,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824637,
+            "officialDate": "2026-08-29",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824636,
+            "officialDate": "2026-08-30",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824635,
+            "officialDate": "2026-08-31",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824633,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824634,
+            "officialDate": "2026-09-02",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824632,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823824,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823823,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823822,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 158,
       "team": "Milwaukee Brewers",
-      "games": 127,
-      "i2Runs": 72,
-      "i2ScoreGames": 35,
-      "i2RunsPerGame": 0.5669291338582677,
-      "i2ScorePct": 0.2755905511811024
+      "games": 147,
+      "i2Runs": 85,
+      "i2ScoreGames": 42,
+      "i2RunsPerGame": 0.5782312925170068,
+      "i2ScorePct": 0.2857142857142857,
+      "last25": {
+        "games": 25,
+        "i2Runs": 16,
+        "i2ScoreGames": 9,
+        "i2ScorePct": 0.36,
+        "i2UnderPct": 0.64,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823264,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823263,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823915,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823913,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823914,
+            "officialDate": "2026-08-15",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823912,
+            "officialDate": "2026-08-16",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823749,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823748,
+            "officialDate": "2026-08-19",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823747,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823746,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823743,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823745,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823585,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823584,
+            "officialDate": "2026-08-26",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 823581,
+            "officialDate": "2026-08-27",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823744,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823741,
+            "officialDate": "2026-08-29",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823740,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824635,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824633,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824634,
+            "officialDate": "2026-09-02",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824632,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824471,
+            "officialDate": "2026-09-04",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824468,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824469,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
-      "teamId": 146,
-      "team": "Miami Marlins",
-      "games": 124,
-      "i2Runs": 65,
-      "i2ScoreGames": 39,
-      "i2RunsPerGame": 0.5241935483870968,
-      "i2ScorePct": 0.31451612903225806
-    },
-    {
-      "teamId": 121,
-      "team": "New York Mets",
-      "games": 128,
-      "i2Runs": 66,
-      "i2ScoreGames": 39,
-      "i2RunsPerGame": 0.515625,
-      "i2ScorePct": 0.3046875
-    },
-    {
-      "teamId": 108,
-      "team": "Los Angeles Angels",
-      "games": 124,
-      "i2Runs": 62,
-      "i2ScoreGames": 26,
-      "i2RunsPerGame": 0.5,
-      "i2ScorePct": 0.20967741935483872
-    },
-    {
-      "teamId": 117,
-      "team": "Houston Astros",
-      "games": 125,
-      "i2Runs": 62,
+      "teamId": 134,
+      "team": "Pittsburgh Pirates",
+      "games": 147,
+      "i2Runs": 81,
       "i2ScoreGames": 34,
-      "i2RunsPerGame": 0.496,
-      "i2ScorePct": 0.272
+      "i2RunsPerGame": 0.5510204081632653,
+      "i2ScorePct": 0.23129251700680273,
+      "last25": {
+        "games": 25,
+        "i2Runs": 5,
+        "i2ScoreGames": 4,
+        "i2ScorePct": 0.16,
+        "i2UnderPct": 0.84,
+        "fromDate": "2026-08-09",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823345,
+            "officialDate": "2026-08-09",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823832,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823833,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823829,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823346,
+            "officialDate": "2026-08-14",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823347,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823344,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823343,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823341,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823342,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823911,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823910,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823909,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823260,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823259,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823255,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823013,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823011,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823010,
+            "officialDate": "2026-08-30",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823340,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823339,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823337,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823338,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823335,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823336,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
-      "teamId": 143,
-      "team": "Philadelphia Phillies",
-      "games": 125,
-      "i2Runs": 61,
-      "i2ScoreGames": 31,
-      "i2RunsPerGame": 0.488,
-      "i2ScorePct": 0.248
-    },
-    {
-      "teamId": 115,
-      "team": "Colorado Rockies",
-      "games": 125,
-      "i2Runs": 61,
-      "i2ScoreGames": 31,
-      "i2RunsPerGame": 0.488,
-      "i2ScorePct": 0.248
-    },
-    {
-      "teamId": 135,
-      "team": "San Diego Padres",
-      "games": 124,
-      "i2Runs": 59,
-      "i2ScoreGames": 27,
-      "i2RunsPerGame": 0.47580645161290325,
-      "i2ScorePct": 0.21774193548387097
+      "teamId": 142,
+      "team": "Minnesota Twins",
+      "games": 143,
+      "i2Runs": 78,
+      "i2ScoreGames": 40,
+      "i2RunsPerGame": 0.5454545454545454,
+      "i2ScorePct": 0.27972027972027974,
+      "last25": {
+        "games": 25,
+        "i2Runs": 8,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-09",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823751,
+            "officialDate": "2026-08-09",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823675,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823673,
+            "officialDate": "2026-08-11",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823672,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823669,
+            "officialDate": "2026-08-13",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823671,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823670,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823668,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823667,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823664,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823262,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823261,
+            "officialDate": "2026-08-22",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823258,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824964,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824962,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824963,
+            "officialDate": "2026-08-26",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823666,
+            "officialDate": "2026-08-28",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823665,
+            "officialDate": "2026-08-29",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823662,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823663,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823661,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823660,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824554,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824553,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824552,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 136,
       "team": "Seattle Mariners",
-      "games": 124,
-      "i2Runs": 59,
-      "i2ScoreGames": 36,
-      "i2RunsPerGame": 0.47580645161290325,
-      "i2ScorePct": 0.2903225806451613
+      "games": 144,
+      "i2Runs": 78,
+      "i2ScoreGames": 44,
+      "i2RunsPerGame": 0.5416666666666666,
+      "i2ScorePct": 0.3055555555555556,
+      "last25": {
+        "games": 25,
+        "i2Runs": 24,
+        "i2ScoreGames": 10,
+        "i2ScorePct": 0.4,
+        "i2UnderPct": 0.6,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823512,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823511,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823508,
+            "officialDate": "2026-08-13",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824159,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824157,
+            "officialDate": "2026-08-15",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 824156,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823749,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823748,
+            "officialDate": "2026-08-19",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 823747,
+            "officialDate": "2026-08-20",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823101,
+            "officialDate": "2026-08-21",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 823100,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823099,
+            "officialDate": "2026-08-23",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823097,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823098,
+            "officialDate": "2026-08-25",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823096,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822769,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822770,
+            "officialDate": "2026-08-29",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822766,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824719,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824716,
+            "officialDate": "2026-09-01",
+            "runs": 5,
+            "scored": true
+          },
+          {
+            "gamePk": 824717,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823095,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823093,
+            "officialDate": "2026-09-04",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823094,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823091,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
-      "teamId": 109,
-      "team": "Arizona Diamondbacks",
-      "games": 125,
-      "i2Runs": 58,
-      "i2ScoreGames": 27,
-      "i2RunsPerGame": 0.464,
-      "i2ScorePct": 0.216
+      "teamId": 146,
+      "team": "Miami Marlins",
+      "games": 144,
+      "i2Runs": 75,
+      "i2ScoreGames": 47,
+      "i2RunsPerGame": 0.5208333333333334,
+      "i2ScorePct": 0.3263888888888889,
+      "last25": {
+        "games": 25,
+        "i2Runs": 11,
+        "i2ScoreGames": 9,
+        "i2ScorePct": 0.36,
+        "i2UnderPct": 0.64,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823832,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823833,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823829,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824479,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824480,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824477,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823427,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823423,
+            "officialDate": "2026-08-18",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823424,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823830,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823831,
+            "officialDate": "2026-08-22",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823827,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823828,
+            "officialDate": "2026-08-24",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823826,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823825,
+            "officialDate": "2026-08-26",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822691,
+            "officialDate": "2026-08-28",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822690,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822688,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822689,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824070,
+            "officialDate": "2026-09-01",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824068,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824069,
+            "officialDate": "2026-09-03",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823824,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823823,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823822,
+            "officialDate": "2026-09-06",
+            "runs": 2,
+            "scored": true
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 143,
+      "team": "Philadelphia Phillies",
+      "games": 145,
+      "i2Runs": 74,
+      "i2ScoreGames": 40,
+      "i2RunsPerGame": 0.5103448275862069,
+      "i2ScorePct": 0.27586206896551724,
+      "last25": {
+        "games": 25,
+        "i2Runs": 16,
+        "i2ScoreGames": 11,
+        "i2ScorePct": 0.44,
+        "i2UnderPct": 0.56,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-07",
+        "gamesDetail": [
+          {
+            "gamePk": 823018,
+            "officialDate": "2026-08-10",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823019,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823017,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823669,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823671,
+            "officialDate": "2026-08-15",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823670,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823427,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823423,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823424,
+            "officialDate": "2026-08-19",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823420,
+            "officialDate": "2026-08-21",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823422,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823421,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823097,
+            "officialDate": "2026-08-24",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823098,
+            "officialDate": "2026-08-25",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823096,
+            "officialDate": "2026-08-26",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 823985,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823986,
+            "officialDate": "2026-08-29",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823987,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825040,
+            "officialDate": "2026-08-31",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 825038,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825037,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823418,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823419,
+            "officialDate": "2026-09-05",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823417,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823415,
+            "officialDate": "2026-09-07",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 121,
+      "team": "New York Mets",
+      "games": 147,
+      "i2Runs": 73,
+      "i2ScoreGames": 42,
+      "i2RunsPerGame": 0.4965986394557823,
+      "i2ScorePct": 0.2857142857142857,
+      "last25": {
+        "games": 25,
+        "i2Runs": 8,
+        "i2ScoreGames": 4,
+        "i2ScorePct": 0.16,
+        "i2UnderPct": 0.84,
+        "fromDate": "2026-08-09",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823345,
+            "officialDate": "2026-08-09",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824887,
+            "officialDate": "2026-08-10",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824886,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824883,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823591,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823588,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823590,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823589,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823586,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823587,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824559,
+            "officialDate": "2026-08-21",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824560,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824558,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823585,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823584,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823581,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823583,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823582,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823580,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822932,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822929,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822931,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823579,
+            "officialDate": "2026-09-04",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 823577,
+            "officialDate": "2026-09-05",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823578,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 108,
+      "team": "Los Angeles Angels",
+      "games": 143,
+      "i2Runs": 70,
+      "i2ScoreGames": 29,
+      "i2RunsPerGame": 0.48951048951048953,
+      "i2ScorePct": 0.20279720279720279,
+      "last25": {
+        "games": 25,
+        "i2Runs": 10,
+        "i2ScoreGames": 4,
+        "i2ScorePct": 0.16,
+        "i2UnderPct": 0.84,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823998,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823997,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823994,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823995,
+            "officialDate": "2026-08-13",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823993,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823990,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823991,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824154,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824155,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824153,
+            "officialDate": "2026-08-20",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 822857,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822858,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822856,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823992,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823989,
+            "officialDate": "2026-08-25",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 823988,
+            "officialDate": "2026-08-26",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823985,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823986,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823987,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823982,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823984,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823983,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823338,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823335,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823336,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 115,
+      "team": "Colorado Rockies",
+      "games": 145,
+      "i2Runs": 69,
+      "i2ScoreGames": 34,
+      "i2RunsPerGame": 0.47586206896551725,
+      "i2ScorePct": 0.23448275862068965,
+      "last25": {
+        "games": 25,
+        "i2Runs": 12,
+        "i2ScoreGames": 4,
+        "i2ScorePct": 0.16,
+        "i2UnderPct": 0.84,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 825048,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825046,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825047,
+            "officialDate": "2026-08-12",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 823185,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823184,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823182,
+            "officialDate": "2026-08-16",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 824320,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824319,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824318,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824317,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824316,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824315,
+            "officialDate": "2026-08-23",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 822695,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822693,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822692,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822694,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824877,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824874,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824876,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824314,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824313,
+            "officialDate": "2026-09-01",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824312,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824311,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824310,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824309,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 139,
       "team": "Tampa Bay Rays",
-      "games": 123,
-      "i2Runs": 57,
-      "i2ScoreGames": 29,
-      "i2RunsPerGame": 0.4634146341463415,
-      "i2ScorePct": 0.23577235772357724
-    },
-    {
-      "teamId": 120,
-      "team": "Washington Nationals",
-      "games": 125,
-      "i2Runs": 55,
+      "games": 144,
+      "i2Runs": 67,
       "i2ScoreGames": 33,
-      "i2RunsPerGame": 0.44,
-      "i2ScorePct": 0.264
-    },
-    {
-      "teamId": 145,
-      "team": "Chicago White Sox",
-      "games": 123,
-      "i2Runs": 54,
-      "i2ScoreGames": 26,
-      "i2RunsPerGame": 0.43902439024390244,
-      "i2ScorePct": 0.21138211382113822
-    },
-    {
-      "teamId": 113,
-      "team": "Cincinnati Reds",
-      "games": 124,
-      "i2Runs": 54,
-      "i2ScoreGames": 29,
-      "i2RunsPerGame": 0.43548387096774194,
-      "i2ScorePct": 0.23387096774193547
-    },
-    {
-      "teamId": 147,
-      "team": "New York Yankees",
-      "games": 125,
-      "i2Runs": 52,
-      "i2ScoreGames": 30,
-      "i2RunsPerGame": 0.416,
-      "i2ScorePct": 0.24
-    },
-    {
-      "teamId": 119,
-      "team": "Los Angeles Dodgers",
-      "games": 125,
-      "i2Runs": 52,
-      "i2ScoreGames": 35,
-      "i2RunsPerGame": 0.416,
-      "i2ScorePct": 0.28
+      "i2RunsPerGame": 0.4652777777777778,
+      "i2ScorePct": 0.22916666666666666,
+      "last25": {
+        "games": 25,
+        "i2Runs": 13,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 824970,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824967,
+            "officialDate": "2026-08-12",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 822942,
+            "officialDate": "2026-08-14",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822941,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822940,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822939,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822938,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822937,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822934,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824800,
+            "officialDate": "2026-08-21",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824798,
+            "officialDate": "2026-08-22",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824799,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824235,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824233,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824234,
+            "officialDate": "2026-08-26",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 822935,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822936,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822933,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822932,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822929,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822931,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822853,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822852,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822850,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822848,
+            "officialDate": "2026-09-06",
+            "runs": 4,
+            "scored": true
+          }
+        ]
+      }
     },
     {
       "teamId": 137,
       "team": "San Francisco Giants",
-      "games": 125,
-      "i2Runs": 51,
-      "i2ScoreGames": 28,
-      "i2RunsPerGame": 0.408,
-      "i2ScorePct": 0.224
+      "games": 147,
+      "i2Runs": 68,
+      "i2ScoreGames": 35,
+      "i2RunsPerGame": 0.46258503401360546,
+      "i2ScorePct": 0.23809523809523808,
+      "last25": {
+        "games": 25,
+        "i2Runs": 17,
+        "i2ScoreGames": 7,
+        "i2ScorePct": 0.28,
+        "i2UnderPct": 0.72,
+        "fromDate": "2026-08-12",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823187,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823185,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823184,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823182,
+            "officialDate": "2026-08-16",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 824398,
+            "officialDate": "2026-08-18",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824394,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824395,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824721,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824718,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824720,
+            "officialDate": "2026-08-23",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823183,
+            "officialDate": "2026-08-24",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 823181,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823180,
+            "officialDate": "2026-08-26",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823179,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823178,
+            "officialDate": "2026-08-28",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823176,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823177,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824911,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824911,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823340,
+            "officialDate": "2026-09-01",
+            "runs": 5,
+            "scored": true
+          },
+          {
+            "gamePk": 823339,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823337,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823579,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823577,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823578,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 135,
+      "team": "San Diego Padres",
+      "games": 143,
+      "i2Runs": 66,
+      "i2ScoreGames": 33,
+      "i2RunsPerGame": 0.46153846153846156,
+      "i2ScorePct": 0.23076923076923078,
+      "last25": {
+        "games": 25,
+        "i2Runs": 14,
+        "i2ScoreGames": 9,
+        "i2ScorePct": 0.36,
+        "i2UnderPct": 0.64,
+        "fromDate": "2026-08-09",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823268,
+            "officialDate": "2026-08-09",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823265,
+            "officialDate": "2026-08-10",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823264,
+            "officialDate": "2026-08-11",
+            "runs": 5,
+            "scored": true
+          },
+          {
+            "gamePk": 823263,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824399,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824400,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824397,
+            "officialDate": "2026-08-16",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823589,
+            "officialDate": "2026-08-17",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823586,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823587,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823262,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823261,
+            "officialDate": "2026-08-22",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823258,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823260,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823259,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823255,
+            "officialDate": "2026-08-26",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822935,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822936,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822933,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824473,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824472,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824470,
+            "officialDate": "2026-09-02",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823256,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823257,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823253,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 117,
+      "team": "Houston Astros",
+      "games": 145,
+      "i2Runs": 65,
+      "i2ScoreGames": 37,
+      "i2RunsPerGame": 0.4482758620689655,
+      "i2ScorePct": 0.25517241379310346,
+      "last25": {
+        "games": 25,
+        "i2Runs": 9,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823189,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823186,
+            "officialDate": "2026-08-11",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823187,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824159,
+            "officialDate": "2026-08-14",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 824157,
+            "officialDate": "2026-08-15",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824156,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824154,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824155,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824153,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824152,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824151,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824150,
+            "officialDate": "2026-08-23",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823505,
+            "officialDate": "2026-08-25",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823506,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823503,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823583,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823582,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823580,
+            "officialDate": "2026-08-30",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824149,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824148,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824147,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824144,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824146,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824145,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824142,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 113,
+      "team": "Cincinnati Reds",
+      "games": 146,
+      "i2Runs": 65,
+      "i2ScoreGames": 34,
+      "i2RunsPerGame": 0.4452054794520548,
+      "i2ScorePct": 0.2328767123287671,
+      "last25": {
+        "games": 25,
+        "i2Runs": 11,
+        "i2ScoreGames": 5,
+        "i2ScorePct": 0.2,
+        "i2UnderPct": 0.8,
+        "fromDate": "2026-08-13",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 824561,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824479,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824480,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824477,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824478,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824514,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824514,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824475,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824476,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824474,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825045,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825044,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825043,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823183,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823181,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823180,
+            "officialDate": "2026-08-26",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824638,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824637,
+            "officialDate": "2026-08-29",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824636,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824473,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824472,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824470,
+            "officialDate": "2026-09-02",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 824471,
+            "officialDate": "2026-09-04",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824468,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824469,
+            "officialDate": "2026-09-06",
+            "runs": 2,
+            "scored": true
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 145,
+      "team": "Chicago White Sox",
+      "games": 145,
+      "i2Runs": 63,
+      "i2ScoreGames": 32,
+      "i2RunsPerGame": 0.43448275862068964,
+      "i2ScorePct": 0.2206896551724138,
+      "last25": {
+        "games": 25,
+        "i2Runs": 12,
+        "i2ScoreGames": 7,
+        "i2ScorePct": 0.28,
+        "i2UnderPct": 0.72,
+        "fromDate": "2026-08-13",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 824561,
+            "officialDate": "2026-08-13",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824237,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824239,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824236,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824641,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824639,
+            "officialDate": "2026-08-18",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824640,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824589,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824589,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824559,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824560,
+            "officialDate": "2026-08-22",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824558,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824557,
+            "officialDate": "2026-08-24",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824556,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824555,
+            "officialDate": "2026-08-26",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823666,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823665,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823662,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824149,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824148,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824147,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824144,
+            "officialDate": "2026-09-03",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824554,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824553,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824552,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 109,
+      "team": "Arizona Diamondbacks",
+      "games": 145,
+      "i2Runs": 62,
+      "i2ScoreGames": 29,
+      "i2RunsPerGame": 0.42758620689655175,
+      "i2ScorePct": 0.2,
+      "last25": {
+        "games": 25,
+        "i2Runs": 10,
+        "i2ScoreGames": 4,
+        "i2ScorePct": 0.16,
+        "i2UnderPct": 0.84,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 825048,
+            "officialDate": "2026-08-10",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 825046,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825047,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824882,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824884,
+            "officialDate": "2026-08-15",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824880,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824725,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824723,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824722,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825045,
+            "officialDate": "2026-08-21",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 825044,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825043,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825041,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825042,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825039,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823179,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823178,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823176,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823177,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825040,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825038,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 825037,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824146,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824145,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824142,
+            "officialDate": "2026-09-06",
+            "runs": 1,
+            "scored": true
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 120,
+      "team": "Washington Nationals",
+      "games": 145,
+      "i2Runs": 62,
+      "i2ScoreGames": 37,
+      "i2RunsPerGame": 0.42758620689655175,
+      "i2ScorePct": 0.25517241379310346,
+      "last25": {
+        "games": 25,
+        "i2Runs": 9,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 822697,
+            "officialDate": "2026-08-11",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822698,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822696,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823591,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823588,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823590,
+            "officialDate": "2026-08-16",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822859,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822860,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822861,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823830,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823831,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823827,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822695,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822693,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822692,
+            "officialDate": "2026-08-26",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822694,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822691,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822690,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822688,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822689,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822687,
+            "officialDate": "2026-09-01",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 822686,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823905,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823904,
+            "officialDate": "2026-09-05",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823903,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 147,
+      "team": "New York Yankees",
+      "games": 146,
+      "i2Runs": 62,
+      "i2ScoreGames": 34,
+      "i2RunsPerGame": 0.4246575342465753,
+      "i2ScorePct": 0.2328767123287671,
+      "last25": {
+        "games": 25,
+        "i2Runs": 12,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-12",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823511,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823508,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822777,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822775,
+            "officialDate": "2026-08-15",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822774,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824803,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824801,
+            "officialDate": "2026-08-19",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824802,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823510,
+            "officialDate": "2026-08-21",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823509,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823507,
+            "officialDate": "2026-08-23",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823505,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823506,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823503,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823504,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823501,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823539,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823539,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823502,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823982,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823984,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823983,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823256,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823257,
+            "officialDate": "2026-09-05",
+            "runs": 4,
+            "scored": true
+          },
+          {
+            "gamePk": 823253,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 111,
       "team": "Boston Red Sox",
-      "games": 125,
-      "i2Runs": 50,
-      "i2ScoreGames": 31,
-      "i2RunsPerGame": 0.4,
-      "i2ScorePct": 0.248
-    },
-    {
-      "teamId": 116,
-      "team": "Detroit Tigers",
-      "games": 124,
-      "i2Runs": 48,
-      "i2ScoreGames": 31,
-      "i2RunsPerGame": 0.3870967741935484,
-      "i2ScorePct": 0.25
-    },
-    {
-      "teamId": 118,
-      "team": "Kansas City Royals",
-      "games": 125,
-      "i2Runs": 47,
-      "i2ScoreGames": 30,
-      "i2RunsPerGame": 0.376,
-      "i2ScorePct": 0.24
-    },
-    {
-      "teamId": 133,
-      "team": "Athletics",
-      "games": 123,
-      "i2Runs": 46,
-      "i2ScoreGames": 30,
-      "i2RunsPerGame": 0.37398373983739835,
-      "i2ScorePct": 0.24390243902439024
-    },
-    {
-      "teamId": 110,
-      "team": "Baltimore Orioles",
-      "games": 126,
-      "i2Runs": 46,
-      "i2ScoreGames": 30,
-      "i2RunsPerGame": 0.36507936507936506,
-      "i2ScorePct": 0.23809523809523808
+      "games": 147,
+      "i2Runs": 59,
+      "i2ScoreGames": 36,
+      "i2RunsPerGame": 0.4013605442176871,
+      "i2ScorePct": 0.24489795918367346,
+      "last25": {
+        "games": 25,
+        "i2Runs": 10,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-13",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 822776,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823346,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823347,
+            "officialDate": "2026-08-15",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823344,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824725,
+            "officialDate": "2026-08-17",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824723,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824722,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824721,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824718,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824720,
+            "officialDate": "2026-08-23",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823828,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823826,
+            "officialDate": "2026-08-25",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823825,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823504,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823501,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823539,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823539,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823502,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824719,
+            "officialDate": "2026-08-31",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824716,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824717,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824796,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824797,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824795,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824794,
+            "officialDate": "2026-09-06",
+            "runs": 3,
+            "scored": true
+          }
+        ]
+      }
     },
     {
       "teamId": 140,
       "team": "Texas Rangers",
-      "games": 124,
-      "i2Runs": 44,
-      "i2ScoreGames": 25,
-      "i2RunsPerGame": 0.3548387096774194,
-      "i2ScorePct": 0.20161290322580644
+      "games": 144,
+      "i2Runs": 57,
+      "i2ScoreGames": 35,
+      "i2RunsPerGame": 0.3958333333333333,
+      "i2ScorePct": 0.24305555555555555,
+      "last25": {
+        "games": 25,
+        "i2Runs": 14,
+        "i2ScoreGames": 11,
+        "i2ScorePct": 0.44,
+        "i2UnderPct": 0.56,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823997,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823994,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823995,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824968,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824966,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824965,
+            "officialDate": "2026-08-16",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822859,
+            "officialDate": "2026-08-18",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822860,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822861,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822857,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822858,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822856,
+            "officialDate": "2026-08-23",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824557,
+            "officialDate": "2026-08-24",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824556,
+            "officialDate": "2026-08-25",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824555,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823744,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823741,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823740,
+            "officialDate": "2026-08-30",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822855,
+            "officialDate": "2026-08-31",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 822854,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822851,
+            "officialDate": "2026-09-02",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822853,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822852,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822850,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822848,
+            "officialDate": "2026-09-06",
+            "runs": 1,
+            "scored": true
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 119,
+      "team": "Los Angeles Dodgers",
+      "games": 144,
+      "i2Runs": 57,
+      "i2ScoreGames": 39,
+      "i2RunsPerGame": 0.3958333333333333,
+      "i2ScorePct": 0.2708333333333333,
+      "last25": {
+        "games": 25,
+        "i2Runs": 7,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823918,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823917,
+            "officialDate": "2026-08-11",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823916,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823915,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823913,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823914,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823912,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824320,
+            "officialDate": "2026-08-17",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824319,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824318,
+            "officialDate": "2026-08-19",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823911,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823910,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823909,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824881,
+            "officialDate": "2026-08-25",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824878,
+            "officialDate": "2026-08-26",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824879,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824231,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824230,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824232,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823908,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823906,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823907,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823905,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823904,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823903,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 116,
+      "team": "Detroit Tigers",
+      "games": 145,
+      "i2Runs": 57,
+      "i2ScoreGames": 36,
+      "i2RunsPerGame": 0.3931034482758621,
+      "i2ScorePct": 0.2482758620689655,
+      "last25": {
+        "games": 25,
+        "i2Runs": 11,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-12",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 824241,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824238,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824237,
+            "officialDate": "2026-08-14",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824239,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824236,
+            "officialDate": "2026-08-16",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 823343,
+            "officialDate": "2026-08-17",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823341,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823342,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824072,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824073,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824071,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824235,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824233,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824234,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824231,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824230,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824232,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823663,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823661,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823660,
+            "officialDate": "2026-09-02",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824387,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824424,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824424,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824389,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824385,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 118,
+      "team": "Kansas City Royals",
+      "games": 145,
+      "i2Runs": 56,
+      "i2ScoreGames": 33,
+      "i2RunsPerGame": 0.38620689655172413,
+      "i2ScorePct": 0.22758620689655173,
+      "last25": {
+        "games": 25,
+        "i2Runs": 11,
+        "i2ScoreGames": 5,
+        "i2ScorePct": 0.2,
+        "i2UnderPct": 0.8,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823918,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823917,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823916,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823993,
+            "officialDate": "2026-08-14",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823990,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823991,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824077,
+            "officialDate": "2026-08-17",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824075,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824076,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824074,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824072,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824073,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824071,
+            "officialDate": "2026-08-23",
+            "runs": 5,
+            "scored": true
+          },
+          {
+            "gamePk": 822773,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822772,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822771,
+            "officialDate": "2026-08-27",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824396,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824392,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824393,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824070,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824068,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824069,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824067,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824066,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824065,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 133,
+      "team": "Athletics",
+      "games": 144,
+      "i2Runs": 53,
+      "i2ScoreGames": 35,
+      "i2RunsPerGame": 0.3680555555555556,
+      "i2ScorePct": 0.24305555555555555,
+      "last25": {
+        "games": 25,
+        "i2Runs": 10,
+        "i2ScoreGames": 6,
+        "i2ScorePct": 0.24,
+        "i2UnderPct": 0.76,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 824970,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824967,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824968,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824966,
+            "officialDate": "2026-08-15",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 824965,
+            "officialDate": "2026-08-16",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824077,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824075,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824076,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824074,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824152,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824151,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824150,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824964,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824962,
+            "officialDate": "2026-08-25",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824963,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824960,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824961,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824959,
+            "officialDate": "2026-08-30",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822855,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822854,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822851,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823095,
+            "officialDate": "2026-09-03",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823093,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823094,
+            "officialDate": "2026-09-05",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823091,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
+    },
+    {
+      "teamId": 110,
+      "team": "Baltimore Orioles",
+      "games": 147,
+      "i2Runs": 52,
+      "i2ScoreGames": 34,
+      "i2RunsPerGame": 0.35374149659863946,
+      "i2ScorePct": 0.23129251700680273,
+      "last25": {
+        "games": 25,
+        "i2Runs": 10,
+        "i2ScoreGames": 7,
+        "i2ScorePct": 0.28,
+        "i2UnderPct": 0.72,
+        "fromDate": "2026-08-11",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823673,
+            "officialDate": "2026-08-11",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823672,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822942,
+            "officialDate": "2026-08-14",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822941,
+            "officialDate": "2026-08-15",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822940,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822939,
+            "officialDate": "2026-08-17",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824803,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824801,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824802,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824800,
+            "officialDate": "2026-08-21",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824798,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824799,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823016,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823015,
+            "officialDate": "2026-08-26",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823014,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824960,
+            "officialDate": "2026-08-28",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824961,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824959,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824314,
+            "officialDate": "2026-08-31",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824313,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824312,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824796,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824797,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824795,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824794,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 138,
       "team": "St. Louis Cardinals",
-      "games": 126,
-      "i2Runs": 41,
-      "i2ScoreGames": 25,
-      "i2RunsPerGame": 0.3253968253968254,
-      "i2ScorePct": 0.1984126984126984
+      "games": 148,
+      "i2Runs": 52,
+      "i2ScoreGames": 32,
+      "i2RunsPerGame": 0.35135135135135137,
+      "i2ScorePct": 0.21621621621621623,
+      "last25": {
+        "games": 25,
+        "i2Runs": 12,
+        "i2ScoreGames": 8,
+        "i2ScorePct": 0.32,
+        "i2UnderPct": 0.68,
+        "fromDate": "2026-08-12",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 823017,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824643,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824644,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824642,
+            "officialDate": "2026-08-16",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824478,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824514,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824514,
+            "officialDate": "2026-08-17",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824475,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824476,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824474,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823420,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823422,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823421,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823016,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823015,
+            "officialDate": "2026-08-26",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823014,
+            "officialDate": "2026-08-27",
+            "runs": 3,
+            "scored": true
+          },
+          {
+            "gamePk": 823013,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823011,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823010,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823908,
+            "officialDate": "2026-09-01",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823906,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823907,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824311,
+            "officialDate": "2026-09-04",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824310,
+            "officialDate": "2026-09-05",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824309,
+            "officialDate": "2026-09-06",
+            "runs": 1,
+            "scored": true
+          }
+        ]
+      }
     },
     {
       "teamId": 114,
       "team": "Cleveland Guardians",
-      "games": 127,
-      "i2Runs": 33,
-      "i2ScoreGames": 20,
-      "i2RunsPerGame": 0.25984251968503935,
-      "i2ScorePct": 0.15748031496062992
+      "games": 148,
+      "i2Runs": 39,
+      "i2ScoreGames": 23,
+      "i2RunsPerGame": 0.2635135135135135,
+      "i2ScorePct": 0.1554054054054054,
+      "last25": {
+        "games": 25,
+        "i2Runs": 8,
+        "i2ScoreGames": 5,
+        "i2ScorePct": 0.2,
+        "i2UnderPct": 0.8,
+        "fromDate": "2026-08-12",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 824241,
+            "officialDate": "2026-08-12",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824238,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824399,
+            "officialDate": "2026-08-14",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824400,
+            "officialDate": "2026-08-15",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824397,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824398,
+            "officialDate": "2026-08-18",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824394,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824395,
+            "officialDate": "2026-08-20",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824317,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824316,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824315,
+            "officialDate": "2026-08-23",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 823992,
+            "officialDate": "2026-08-24",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823989,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823988,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824396,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824392,
+            "officialDate": "2026-08-29",
+            "runs": 2,
+            "scored": true
+          },
+          {
+            "gamePk": 824393,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824391,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824390,
+            "officialDate": "2026-09-02",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824388,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824387,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824424,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824424,
+            "officialDate": "2026-09-04",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824389,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824385,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     },
     {
       "teamId": 141,
       "team": "Toronto Blue Jays",
-      "games": 127,
-      "i2Runs": 31,
-      "i2ScoreGames": 19,
-      "i2RunsPerGame": 0.2440944881889764,
-      "i2ScorePct": 0.14960629921259844
+      "games": 146,
+      "i2Runs": 38,
+      "i2ScoreGames": 22,
+      "i2RunsPerGame": 0.2602739726027397,
+      "i2ScorePct": 0.1506849315068493,
+      "last25": {
+        "games": 25,
+        "i2Runs": 8,
+        "i2ScoreGames": 4,
+        "i2ScorePct": 0.16,
+        "i2UnderPct": 0.84,
+        "fromDate": "2026-08-10",
+        "throughDate": "2026-09-06",
+        "gamesDetail": [
+          {
+            "gamePk": 822780,
+            "officialDate": "2026-08-10",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822778,
+            "officialDate": "2026-08-11",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822779,
+            "officialDate": "2026-08-12",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 822776,
+            "officialDate": "2026-08-13",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822777,
+            "officialDate": "2026-08-14",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822775,
+            "officialDate": "2026-08-15",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822774,
+            "officialDate": "2026-08-16",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822938,
+            "officialDate": "2026-08-18",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822937,
+            "officialDate": "2026-08-19",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822934,
+            "officialDate": "2026-08-20",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 823510,
+            "officialDate": "2026-08-21",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823509,
+            "officialDate": "2026-08-22",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 823507,
+            "officialDate": "2026-08-23",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822773,
+            "officialDate": "2026-08-25",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822772,
+            "officialDate": "2026-08-26",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822771,
+            "officialDate": "2026-08-27",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822769,
+            "officialDate": "2026-08-28",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822770,
+            "officialDate": "2026-08-29",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 822766,
+            "officialDate": "2026-08-30",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824391,
+            "officialDate": "2026-09-01",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824390,
+            "officialDate": "2026-09-02",
+            "runs": 5,
+            "scored": true
+          },
+          {
+            "gamePk": 824388,
+            "officialDate": "2026-09-03",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824067,
+            "officialDate": "2026-09-04",
+            "runs": 1,
+            "scored": true
+          },
+          {
+            "gamePk": 824066,
+            "officialDate": "2026-09-05",
+            "runs": 0,
+            "scored": false
+          },
+          {
+            "gamePk": 824065,
+            "officialDate": "2026-09-06",
+            "runs": 0,
+            "scored": false
+          }
+        ]
+      }
     }
   ]
 }
