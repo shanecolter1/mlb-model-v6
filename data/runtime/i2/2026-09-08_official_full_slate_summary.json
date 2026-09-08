@@ -1,0 +1,1069 @@
+{
+  "date": "2026-09-08",
+  "generatedAt": "2026-09-08T21:54:56.672Z",
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "productionGatePct": 61.5,
+  "scheduledGames": 15,
+  "confirmedLineupGames": 10,
+  "projectedGames": 10,
+  "qualifiedUnders": [
+    {
+      "rank": 1,
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Alex Bregman",
+        "Michael Busch",
+        "Nico Hoerner",
+        "Ian Happ",
+        "Matt Shaw",
+        "Tyrone Taylor",
+        "Miguel Amaya"
+      ],
+      "homeLineup": [
+        "Jackson Chourio",
+        "Brice Turang",
+        "Andrew Vaughn",
+        "William Contreras",
+        "Gary Sánchez",
+        "Luis Lara",
+        "Joey Ortiz",
+        "Garrett Mitchell",
+        "Cooper Pratt"
+      ],
+      "awayStarter": "David Peterson",
+      "homeStarter": "Jacob Misiorowski",
+      "awayStarterStats": {
+        "era": "5.39",
+        "whip": "1.56",
+        "inningsPitched": "127.0",
+        "gamesStarted": 19,
+        "strikeOuts": 113,
+        "baseOnBalls": 56,
+        "homeRuns": 14
+      },
+      "homeStarterStats": {
+        "era": "1.97",
+        "whip": "0.79",
+        "inningsPitched": "155.0",
+        "gamesStarted": 26,
+        "strikeOuts": 227,
+        "baseOnBalls": 39,
+        "homeRuns": 14
+      },
+      "total": 7,
+      "productionUnderPct": 64.43,
+      "productionFairUnder": -181,
+      "underQualified": true,
+      "top2ScorePct": 16.85,
+      "bottom2ScorePct": 22.39,
+      "empiricalUnderPct": 53.173305263157886,
+      "empiricalTop2ScorelessPct": 83.80000000000001,
+      "empiricalBottom2ScorelessPct": 63.45263157894736,
+      "awayStarterI2": {
+        "id": 656849,
+        "name": "David Peterson",
+        "n": 19,
+        "scoreless": 12,
+        "scorelessPct": 0.631578947368421,
+        "i2Runs": 14,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.5
+      },
+      "homeStarterI2": {
+        "id": 694819,
+        "name": "Jacob Misiorowski",
+        "n": 26,
+        "scoreless": 24,
+        "scorelessPct": 0.9230769230769231,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7074829931972789,
+        "last25Under": 0.68,
+        "last25Runs": 15,
+        "last25ScoreGames": 8
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7142857142857143,
+        "last25Under": 0.64,
+        "last25Runs": 16,
+        "last25ScoreGames": 9
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Alex Bregman",
+        "Michael Busch",
+        "Nico Hoerner",
+        "Ian Happ",
+        "Matt Shaw",
+        "Tyrone Taylor",
+        "Miguel Amaya"
+      ],
+      "homeLineup": [
+        "Jackson Chourio",
+        "Brice Turang",
+        "Andrew Vaughn",
+        "William Contreras",
+        "Gary Sánchez",
+        "Luis Lara",
+        "Joey Ortiz",
+        "Garrett Mitchell",
+        "Cooper Pratt"
+      ],
+      "awayStarter": "David Peterson",
+      "homeStarter": "Jacob Misiorowski",
+      "awayStarterStats": {
+        "era": "5.39",
+        "whip": "1.56",
+        "inningsPitched": "127.0",
+        "gamesStarted": 19,
+        "strikeOuts": 113,
+        "baseOnBalls": 56,
+        "homeRuns": 14
+      },
+      "homeStarterStats": {
+        "era": "1.97",
+        "whip": "0.79",
+        "inningsPitched": "155.0",
+        "gamesStarted": 26,
+        "strikeOuts": 227,
+        "baseOnBalls": 39,
+        "homeRuns": 14
+      },
+      "total": 7,
+      "productionUnderPct": 64.43,
+      "productionFairUnder": -181,
+      "underQualified": true,
+      "top2ScorePct": 16.85,
+      "bottom2ScorePct": 22.39,
+      "empiricalUnderPct": 53.173305263157886,
+      "empiricalTop2ScorelessPct": 83.80000000000001,
+      "empiricalBottom2ScorelessPct": 63.45263157894736,
+      "awayStarterI2": {
+        "id": 656849,
+        "name": "David Peterson",
+        "n": 19,
+        "scoreless": 12,
+        "scorelessPct": 0.631578947368421,
+        "i2Runs": 14,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.5
+      },
+      "homeStarterI2": {
+        "id": 694819,
+        "name": "Jacob Misiorowski",
+        "n": 26,
+        "scoreless": 24,
+        "scorelessPct": 0.9230769230769231,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7074829931972789,
+        "last25Under": 0.68,
+        "last25Runs": 15,
+        "last25ScoreGames": 8
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7142857142857143,
+        "last25Under": 0.64,
+        "last25Runs": 16,
+        "last25ScoreGames": 9
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 2,
+      "gamePk": 824714,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "gameDate": "2026-09-08T22:45:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Zach Neto",
+        "Mike Trout",
+        "Jose Siri",
+        "Vaughn Grissom",
+        "Moisés Ballesteros",
+        "Christian Moore",
+        "Kyren Paris",
+        "Denzer Guzman",
+        "Travis d'Arnaud"
+      ],
+      "homeLineup": [
+        "Roman Anthony",
+        "Jahmai Jones",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Nick Sogard",
+        "Caleb Durbin",
+        "Andruw Monasterio",
+        "Eli White",
+        "Connor Wong"
+      ],
+      "awayStarter": "Reid Detmers",
+      "homeStarter": "Patrick Sandoval",
+      "awayStarterStats": {
+        "era": "3.44",
+        "whip": "1.06",
+        "inningsPitched": "162.0",
+        "gamesStarted": 28,
+        "strikeOuts": 182,
+        "baseOnBalls": 44,
+        "homeRuns": 17
+      },
+      "homeStarterStats": {
+        "era": "4.41",
+        "whip": "1.73",
+        "inningsPitched": "49.0",
+        "gamesStarted": 10,
+        "strikeOuts": 50,
+        "baseOnBalls": 25,
+        "homeRuns": 6
+      },
+      "total": 7.5,
+      "productionUnderPct": 58.33,
+      "productionFairUnder": -140,
+      "underQualified": false,
+      "top2ScorePct": 24.66,
+      "bottom2ScorePct": 22.57,
+      "empiricalUnderPct": 67.00382857142858,
+      "empiricalTop2ScorelessPct": 81.4,
+      "empiricalBottom2ScorelessPct": 82.31428571428572,
+      "awayStarterI2": {
+        "id": 672282,
+        "name": "Reid Detmers",
+        "n": 28,
+        "scoreless": 24,
+        "scorelessPct": 0.8571428571428571,
+        "i2Runs": 4,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 1
+      },
+      "homeStarterI2": {
+        "id": 663776,
+        "name": "Patrick Sandoval",
+        "n": 10,
+        "scoreless": 8,
+        "scorelessPct": 0.8,
+        "i2Runs": 3,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7972027972027972,
+        "last25Under": 0.84,
+        "last25Runs": 10,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7551020408163265,
+        "last25Under": 0.76,
+        "last25Runs": 10,
+        "last25ScoreGames": 6
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 3,
+      "gamePk": 823500,
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "gameDate": "2026-09-08T23:05:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Jake McCarthy",
+        "Cole Carrigg",
+        "TJ Rumfield",
+        "Hunter Goodman",
+        "Mickey Moniak",
+        "Kyle Karros",
+        "Adael Amador",
+        "Zac Veen",
+        "Ezequiel Tovar"
+      ],
+      "homeLineup": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Aaron Judge",
+        "Luis García Jr.",
+        "Spencer Jones",
+        "Jazz Chisholm Jr.",
+        "George Lombard Jr.",
+        "Ryan McMahon",
+        "Austin Wells"
+      ],
+      "awayStarter": "Gabriel Hughes",
+      "homeStarter": "Cam Schlittler",
+      "awayStarterStats": {
+        "era": "6.19",
+        "whip": "1.43",
+        "inningsPitched": "52.1",
+        "gamesStarted": 10,
+        "strikeOuts": 42,
+        "baseOnBalls": 21,
+        "homeRuns": 5
+      },
+      "homeStarterStats": {
+        "era": "2.04",
+        "whip": "0.94",
+        "inningsPitched": "171.2",
+        "gamesStarted": 29,
+        "strikeOuts": 210,
+        "baseOnBalls": 42,
+        "homeRuns": 15
+      },
+      "total": 7.5,
+      "productionUnderPct": 58.11,
+      "productionFairUnder": -139,
+      "underQualified": false,
+      "top2ScorePct": 22.58,
+      "bottom2ScorePct": 24.93,
+      "empiricalUnderPct": 68.91322758620689,
+      "empiricalTop2ScorelessPct": 87.67586206896551,
+      "empiricalBottom2ScorelessPct": 78.60000000000001,
+      "awayStarterI2": {
+        "id": 687312,
+        "name": "Gabriel Hughes",
+        "n": 10,
+        "scoreless": 8,
+        "scorelessPct": 0.8,
+        "i2Runs": 7,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.8
+      },
+      "homeStarterI2": {
+        "id": 693645,
+        "name": "Cam Schlittler",
+        "n": 29,
+        "scoreless": 26,
+        "scorelessPct": 0.896551724137931,
+        "i2Runs": 4,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 0.9
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7655172413793103,
+        "last25Under": 0.84,
+        "last25Runs": 12,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7671232876712328,
+        "last25Under": 0.76,
+        "last25Runs": 12,
+        "last25ScoreGames": 6
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 4,
+      "gamePk": 824792,
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "gameDate": "2026-09-08T22:35:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Steven Kwan",
+        "Travis Bazzana",
+        "José Ramírez",
+        "Jo Adell",
+        "Nathaniel Lowe",
+        "Angel Martínez",
+        "Patrick Bailey",
+        "Petey Halpin",
+        "Brayan Rocchio"
+      ],
+      "homeLineup": [
+        "Jackson Holliday",
+        "Pete Alonso",
+        "Gunnar Henderson",
+        "Coby Mayo",
+        "Samuel Basallo",
+        "Dylan Beavers",
+        "Blaze Alexander",
+        "Colton Cowser",
+        "Leody Taveras"
+      ],
+      "awayStarter": "Tanner Bibee",
+      "homeStarter": "Brandon Young",
+      "awayStarterStats": {
+        "era": "4.06",
+        "whip": "1.18",
+        "inningsPitched": "166.1",
+        "gamesStarted": 29,
+        "strikeOuts": 132,
+        "baseOnBalls": 51,
+        "homeRuns": 26
+      },
+      "homeStarterStats": {
+        "era": "3.42",
+        "whip": "1.31",
+        "inningsPitched": "137.0",
+        "gamesStarted": 24,
+        "strikeOuts": 110,
+        "baseOnBalls": 48,
+        "homeRuns": 19
+      },
+      "total": 8,
+      "productionUnderPct": 57.73,
+      "productionFairUnder": -137,
+      "underQualified": false,
+      "top2ScorePct": 23.84,
+      "bottom2ScorePct": 24.2,
+      "empiricalUnderPct": 53.50914655172414,
+      "empiricalTop2ScorelessPct": 74.04166666666667,
+      "empiricalBottom2ScorelessPct": 72.26896551724138,
+      "awayStarterI2": {
+        "id": 676440,
+        "name": "Tanner Bibee",
+        "n": 29,
+        "scoreless": 21,
+        "scorelessPct": 0.7241379310344828,
+        "i2Runs": 15,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.7
+      },
+      "homeStarterI2": {
+        "id": 687064,
+        "name": "Brandon Young",
+        "n": 24,
+        "scoreless": 17,
+        "scorelessPct": 0.7083333333333334,
+        "i2Runs": 9,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.8445945945945946,
+        "last25Under": 0.8,
+        "last25Runs": 8,
+        "last25ScoreGames": 5
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7687074829931972,
+        "last25Under": 0.72,
+        "last25Runs": 10,
+        "last25ScoreGames": 7
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 5,
+      "gamePk": 823821,
+      "matchup": "New York Mets @ Miami Marlins",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Francisco Lindor",
+        "Juan Soto",
+        "Bo Bichette",
+        "Carson Benge",
+        "Jared Young",
+        "Marcus Semien",
+        "A.J. Ewing",
+        "Brett Baty",
+        "Francisco Alvarez"
+      ],
+      "homeLineup": [
+        "Heriberto Hernández",
+        "Otto Lopez",
+        "Agustín Ramírez",
+        "Javier Sanoja",
+        "Esteury Ruiz",
+        "Deyvison De Los Santos",
+        "Jakob Marsee",
+        "Jared Serna",
+        "Brian Navarreto"
+      ],
+      "awayStarter": "Sean Manaea",
+      "homeStarter": "Sandy Alcantara",
+      "awayStarterStats": {
+        "era": "4.70",
+        "whip": "1.36",
+        "inningsPitched": "128.1",
+        "gamesStarted": 15,
+        "strikeOuts": 122,
+        "baseOnBalls": 41,
+        "homeRuns": 21
+      },
+      "homeStarterStats": {
+        "era": "3.54",
+        "whip": "1.19",
+        "inningsPitched": "195.2",
+        "gamesStarted": 30,
+        "strikeOuts": 142,
+        "baseOnBalls": 51,
+        "homeRuns": 19
+      },
+      "total": 8,
+      "productionUnderPct": 56.39,
+      "productionFairUnder": -129,
+      "underQualified": false,
+      "top2ScorePct": 23.09,
+      "bottom2ScorePct": 26.68,
+      "empiricalUnderPct": 52.47993333333332,
+      "empiricalTop2ScorelessPct": 74.89999999999999,
+      "empiricalBottom2ScorelessPct": 70.06666666666665,
+      "awayStarterI2": {
+        "id": 640455,
+        "name": "Sean Manaea",
+        "n": 15,
+        "scoreless": 11,
+        "scorelessPct": 0.7333333333333333,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.9
+      },
+      "homeStarterI2": {
+        "id": 645261,
+        "name": "Sandy Alcantara",
+        "n": 30,
+        "scoreless": 21,
+        "scorelessPct": 0.7,
+        "i2Runs": 13,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7142857142857143,
+        "last25Under": 0.84,
+        "last25Runs": 8,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.6736111111111112,
+        "last25Under": 0.64,
+        "last25Runs": 11,
+        "last25ScoreGames": 9
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 6,
+      "gamePk": 823414,
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Daulton Varsho",
+        "Yainer Diaz",
+        "Christian Walker",
+        "Taylor Trammell",
+        "Cam Smith"
+      ],
+      "homeLineup": [
+        "Kyle Schwarber",
+        "Trea Turner",
+        "Bryce Harper",
+        "Luis Arraez",
+        "Alec Bohm",
+        "Bryson Stott",
+        "Brandon Marsh",
+        "J.T. Realmuto",
+        "Justin Crawford"
+      ],
+      "awayStarter": "Hayden Wesneski",
+      "homeStarter": "Andrew Painter",
+      "awayStarterStats": {
+        "era": "3.18",
+        "whip": "1.06",
+        "inningsPitched": "39.2",
+        "gamesStarted": 7,
+        "strikeOuts": 33,
+        "baseOnBalls": 14,
+        "homeRuns": 2
+      },
+      "homeStarterStats": {
+        "era": "5.55",
+        "whip": "1.37",
+        "inningsPitched": "105.1",
+        "gamesStarted": 19,
+        "strikeOuts": 91,
+        "baseOnBalls": 37,
+        "homeRuns": 17
+      },
+      "total": 8.5,
+      "productionUnderPct": 55.75,
+      "productionFairUnder": -126,
+      "underQualified": false,
+      "top2ScorePct": 26.73,
+      "bottom2ScorePct": 23.91,
+      "empiricalUnderPct": 58.68172030075187,
+      "empiricalTop2ScorelessPct": 77.9157894736842,
+      "empiricalBottom2ScorelessPct": 75.31428571428572,
+      "awayStarterI2": {
+        "id": 669713,
+        "name": "Hayden Wesneski",
+        "n": 7,
+        "scoreless": 6,
+        "scorelessPct": 0.8571428571428571,
+        "i2Runs": 4,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8571428571428571
+      },
+      "homeStarterI2": {
+        "id": 691725,
+        "name": "Andrew Painter",
+        "n": 19,
+        "scoreless": 15,
+        "scorelessPct": 0.7894736842105263,
+        "i2Runs": 8,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7448275862068965,
+        "last25Under": 0.76,
+        "last25Runs": 9,
+        "last25ScoreGames": 6
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7241379310344828,
+        "last25Under": 0.56,
+        "last25Runs": 16,
+        "last25ScoreGames": 11
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 7,
+      "gamePk": 824551,
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Konnor Griffin",
+        "Brandon Lowe",
+        "Bryan Reynolds",
+        "Oneil Cruz",
+        "Esmerlyn Valdez",
+        "Spencer Horwitz",
+        "Rafael Flores Jr.",
+        "Jacob Gonzalez",
+        "Jake Mangum"
+      ],
+      "homeLineup": [
+        "Sam Antonacci",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Colson Montgomery",
+        "Braden Montgomery",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Kyle Teel"
+      ],
+      "awayStarter": "Bubba Chandler",
+      "homeStarter": "Sean Burke",
+      "awayStarterStats": {
+        "era": "4.30",
+        "whip": "1.37",
+        "inningsPitched": "136.0",
+        "gamesStarted": 26,
+        "strikeOuts": 121,
+        "baseOnBalls": 71,
+        "homeRuns": 12
+      },
+      "homeStarterStats": {
+        "era": "3.20",
+        "whip": "1.14",
+        "inningsPitched": "154.2",
+        "gamesStarted": 24,
+        "strikeOuts": 167,
+        "baseOnBalls": 54,
+        "homeRuns": 18
+      },
+      "total": 8.5,
+      "productionUnderPct": 54.92,
+      "productionFairUnder": -122,
+      "underQualified": false,
+      "top2ScorePct": 25.91,
+      "bottom2ScorePct": 25.89,
+      "empiricalUnderPct": 62.82692499999999,
+      "empiricalTop2ScorelessPct": 80.85833333333332,
+      "empiricalBottom2ScorelessPct": 77.7,
+      "awayStarterI2": {
+        "id": 696149,
+        "name": "Bubba Chandler",
+        "n": 26,
+        "scoreless": 21,
+        "scorelessPct": 0.8076923076923077,
+        "i2Runs": 8,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "homeStarterI2": {
+        "id": 680732,
+        "name": "Sean Burke",
+        "n": 24,
+        "scoreless": 19,
+        "scorelessPct": 0.7916666666666666,
+        "i2Runs": 7,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7687074829931972,
+        "last25Under": 0.84,
+        "last25Runs": 5,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7793103448275862,
+        "last25Under": 0.72,
+        "last25Runs": 12,
+        "last25ScoreGames": 7
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 8,
+      "gamePk": 824875,
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "gameDate": "2026-09-08T23:15:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Yandy Díaz",
+        "Jonathan Aranda",
+        "Junior Caminero",
+        "Liam Hicks",
+        "Chandler Simpson",
+        "Jonny DeLuca",
+        "Victor Mesa Jr.",
+        "Richie Palacios",
+        "Jorge Mateo"
+      ],
+      "homeLineup": [
+        "Michael Harris II",
+        "Ronald Acuña Jr.",
+        "Matt Olson",
+        "Drake Baldwin",
+        "Mauricio Dubón",
+        "Ozzie Albies",
+        "Austin Riley",
+        "Mike Yastrzemski",
+        "Sean Murphy"
+      ],
+      "awayStarter": "Freddy Peralta",
+      "homeStarter": "AJ Smith-Shawver",
+      "awayStarterStats": {
+        "era": "4.96",
+        "whip": "1.37",
+        "inningsPitched": "147.0",
+        "gamesStarted": 28,
+        "strikeOuts": 140,
+        "baseOnBalls": 54,
+        "homeRuns": 23
+      },
+      "homeStarterStats": {
+        "era": "7.13",
+        "whip": "1.75",
+        "inningsPitched": "17.2",
+        "gamesStarted": 4,
+        "strikeOuts": 15,
+        "baseOnBalls": 11,
+        "homeRuns": 2
+      },
+      "total": 8.5,
+      "productionUnderPct": 54.15,
+      "productionFairUnder": -118,
+      "underQualified": false,
+      "top2ScorePct": 25.85,
+      "bottom2ScorePct": 26.98,
+      "empiricalUnderPct": 43.15988571428571,
+      "empiricalTop2ScorelessPct": 59.099999999999994,
+      "empiricalBottom2ScorelessPct": 73.02857142857142,
+      "awayStarterI2": {
+        "id": 642547,
+        "name": "Freddy Peralta",
+        "n": 28,
+        "scoreless": 20,
+        "scorelessPct": 0.7142857142857143,
+        "i2Runs": 13,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.7
+      },
+      "homeStarterI2": {
+        "id": 700363,
+        "name": "AJ Smith-Shawver",
+        "n": 4,
+        "scoreless": 2,
+        "scorelessPct": 0.5,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.5,
+        "last10ScorelessPct": 0.5
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7708333333333334,
+        "last25Under": 0.76,
+        "last25Runs": 13,
+        "last25ScoreGames": 6
+      },
+      "homeOffense": {
+        "seasonUnder": 0.6689189189189189,
+        "last25Under": 0.76,
+        "last25Runs": 10,
+        "last25ScoreGames": 6
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 9,
+      "gamePk": 824228,
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Luke Keaschall",
+        "Brooks Lee",
+        "Kody Clemens",
+        "Ryan Jeffers",
+        "Josh Bell",
+        "Royce Lewis",
+        "Trevor Larnach",
+        "Kaelen Culpepper",
+        "Walker Jenkins"
+      ],
+      "homeLineup": [
+        "Kevin McGonigle",
+        "Gleyber Torres",
+        "Colt Keith",
+        "Riley Greene",
+        "Eduardo Valencia",
+        "Brett Callahan",
+        "Max Clark",
+        "Hao-Yu Lee",
+        "Zach McKinstry"
+      ],
+      "awayStarter": "Dean Kremer",
+      "homeStarter": "Drew Anderson",
+      "awayStarterStats": {
+        "era": "5.81",
+        "whip": "1.31",
+        "inningsPitched": "66.2",
+        "gamesStarted": 13,
+        "strikeOuts": 66,
+        "baseOnBalls": 24,
+        "homeRuns": 15
+      },
+      "homeStarterStats": {
+        "era": "3.73",
+        "whip": "1.30",
+        "inningsPitched": "91.2",
+        "gamesStarted": 8,
+        "strikeOuts": 101,
+        "baseOnBalls": 37,
+        "homeRuns": 13
+      },
+      "total": 8.5,
+      "productionUnderPct": 52.32,
+      "productionFairUnder": -110,
+      "underQualified": false,
+      "top2ScorePct": 27.38,
+      "bottom2ScorePct": 27.96,
+      "empiricalUnderPct": 70.1656,
+      "empiricalTop2ScorelessPct": 91.6,
+      "empiricalBottom2ScorelessPct": 76.6,
+      "awayStarterI2": {
+        "id": 665152,
+        "name": "Dean Kremer",
+        "n": 13,
+        "scoreless": 10,
+        "scorelessPct": 0.7692307692307693,
+        "i2Runs": 6,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.7
+      },
+      "homeStarterI2": {
+        "id": 623454,
+        "name": "Drew Anderson",
+        "n": 8,
+        "scoreless": 8,
+        "scorelessPct": 1,
+        "i2Runs": 0,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 1
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7202797202797202,
+        "last25Under": 0.76,
+        "last25Runs": 8,
+        "last25ScoreGames": 6
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7517241379310344,
+        "last25Under": 0.76,
+        "last25Runs": 11,
+        "last25ScoreGames": 6
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    },
+    {
+      "rank": 10,
+      "gamePk": 824063,
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Lars Nootbaar",
+        "Ketel Marte",
+        "Gabriel Moreno",
+        "Geraldo Perdomo",
+        "Corbin Carroll",
+        "Nolan Arenado",
+        "Tommy Troy",
+        "Tim Tawa",
+        "Ryan Waldschmidt"
+      ],
+      "homeLineup": [
+        "Carter Jensen",
+        "Bobby Witt Jr.",
+        "Vinnie Pasquantino",
+        "Salvador Perez",
+        "Michael Massey",
+        "Nick Loftin",
+        "Isaac Collins",
+        "Matthew Lugo",
+        "Kyle Isbel"
+      ],
+      "awayStarter": "Corbin Burnes",
+      "homeStarter": "Michael Wacha",
+      "awayStarterStats": {
+        "era": null,
+        "whip": null,
+        "inningsPitched": null,
+        "gamesStarted": null,
+        "strikeOuts": null,
+        "baseOnBalls": null,
+        "homeRuns": null
+      },
+      "homeStarterStats": {
+        "era": "3.36",
+        "whip": "1.10",
+        "inningsPitched": "176.2",
+        "gamesStarted": 28,
+        "strikeOuts": 143,
+        "baseOnBalls": 44,
+        "homeRuns": 24
+      },
+      "total": 9.5,
+      "productionUnderPct": 50.94,
+      "productionFairUnder": -104,
+      "underQualified": false,
+      "top2ScorePct": 28.67,
+      "bottom2ScorePct": 28.65,
+      "empiricalUnderPct": null,
+      "empiricalTop2ScorelessPct": 73.50714285714287,
+      "empiricalBottom2ScorelessPct": null,
+      "awayStarterI2": {
+        "id": 669203,
+        "name": "Corbin Burnes",
+        "n": 0,
+        "scoreless": 0,
+        "scorelessPct": null,
+        "i2Runs": 0,
+        "last5ScorelessPct": null,
+        "last10ScorelessPct": null
+      },
+      "homeStarterI2": {
+        "id": 608379,
+        "name": "Michael Wacha",
+        "n": 28,
+        "scoreless": 19,
+        "scorelessPct": 0.6785714285714286,
+        "i2Runs": 12,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.6
+      },
+      "awayOffense": {
+        "seasonUnder": 0.8,
+        "last25Under": 0.84,
+        "last25Runs": 10,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7724137931034483,
+        "last25Under": 0.8,
+        "last25Runs": 11,
+        "last25ScoreGames": 5
+      },
+      "bestI2UnderMarket": null,
+      "fanduelI2Under": null,
+      "draftkingsI2Under": null
+    }
+  ],
+  "unresolved": [
+    {
+      "gamePk": 823250,
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "status": "PENDING_CONFIRMED_LINEUP",
+      "reason": null
+    },
+    {
+      "gamePk": 823092,
+      "matchup": "Texas Rangers @ Seattle Mariners",
+      "status": "PENDING_CONFIRMED_LINEUP",
+      "reason": null
+    },
+    {
+      "gamePk": 824957,
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "status": "PENDING_CONFIRMED_LINEUP",
+      "reason": null
+    },
+    {
+      "gamePk": 823174,
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "status": "PENDING_CONFIRMED_LINEUP",
+      "reason": null
+    },
+    {
+      "gamePk": 823901,
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "status": "PENDING_CONFIRMED_LINEUP",
+      "reason": null
+    }
+  ],
+  "marketPullIsPostFreeze": true
+}

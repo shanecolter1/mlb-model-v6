@@ -1,0 +1,272 @@
+{
+  "date": "2026-09-08",
+  "generatedAt": "2026-09-08T21:51:49.790Z",
+  "governance": {
+    "sourceStatus": "MLB_CONFIRMED_LINEUPS_ONLY",
+    "methodology": "MLB Stats API live-feed battingOrder arrays. No previous-game or projected batting order is used. Games without two nine-man MLB batting orders remain unconfirmed.",
+    "source": "MLB Stats API schedule + live feed",
+    "marketDataUsed": false
+  },
+  "games": {
+    "823414": {
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Daulton Varsho",
+        "Yainer Diaz",
+        "Christian Walker",
+        "Taylor Trammell",
+        "Cam Smith"
+      ],
+      "home": [
+        "Kyle Schwarber",
+        "Trea Turner",
+        "Bryce Harper",
+        "Luis Arraez",
+        "Alec Bohm",
+        "Bryson Stott",
+        "Brandon Marsh",
+        "J.T. Realmuto",
+        "Justin Crawford"
+      ]
+    },
+    "823500": {
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Jake McCarthy",
+        "Cole Carrigg",
+        "TJ Rumfield",
+        "Hunter Goodman",
+        "Mickey Moniak",
+        "Kyle Karros",
+        "Adael Amador",
+        "Zac Veen",
+        "Ezequiel Tovar"
+      ],
+      "home": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Aaron Judge",
+        "Luis García Jr.",
+        "Spencer Jones",
+        "Jazz Chisholm Jr.",
+        "George Lombard Jr.",
+        "Ryan McMahon",
+        "Austin Wells"
+      ]
+    },
+    "823738": {
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Alex Bregman",
+        "Michael Busch",
+        "Nico Hoerner",
+        "Ian Happ",
+        "Matt Shaw",
+        "Tyrone Taylor",
+        "Miguel Amaya"
+      ],
+      "home": [
+        "Jackson Chourio",
+        "Brice Turang",
+        "Andrew Vaughn",
+        "William Contreras",
+        "Gary Sánchez",
+        "Luis Lara",
+        "Joey Ortiz",
+        "Garrett Mitchell",
+        "Cooper Pratt"
+      ]
+    },
+    "823821": {
+      "matchup": "New York Mets @ Miami Marlins",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Francisco Lindor",
+        "Juan Soto",
+        "Bo Bichette",
+        "Carson Benge",
+        "Jared Young",
+        "Marcus Semien",
+        "A.J. Ewing",
+        "Brett Baty",
+        "Francisco Alvarez"
+      ],
+      "home": [
+        "Heriberto Hernández",
+        "Otto Lopez",
+        "Agustín Ramírez",
+        "Javier Sanoja",
+        "Esteury Ruiz",
+        "Deyvison De Los Santos",
+        "Jakob Marsee",
+        "Jared Serna",
+        "Brian Navarreto"
+      ]
+    },
+    "824063": {
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Lars Nootbaar",
+        "Ketel Marte",
+        "Gabriel Moreno",
+        "Geraldo Perdomo",
+        "Corbin Carroll",
+        "Nolan Arenado",
+        "Tommy Troy",
+        "Tim Tawa",
+        "Ryan Waldschmidt"
+      ],
+      "home": [
+        "Carter Jensen",
+        "Bobby Witt Jr.",
+        "Vinnie Pasquantino",
+        "Salvador Perez",
+        "Michael Massey",
+        "Nick Loftin",
+        "Isaac Collins",
+        "Matthew Lugo",
+        "Kyle Isbel"
+      ]
+    },
+    "824228": {
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Luke Keaschall",
+        "Brooks Lee",
+        "Kody Clemens",
+        "Ryan Jeffers",
+        "Josh Bell",
+        "Royce Lewis",
+        "Trevor Larnach",
+        "Kaelen Culpepper",
+        "Walker Jenkins"
+      ],
+      "home": [
+        "Kevin McGonigle",
+        "Gleyber Torres",
+        "Colt Keith",
+        "Riley Greene",
+        "Eduardo Valencia",
+        "Brett Callahan",
+        "Max Clark",
+        "Hao-Yu Lee",
+        "Zach McKinstry"
+      ]
+    },
+    "824551": {
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Konnor Griffin",
+        "Brandon Lowe",
+        "Bryan Reynolds",
+        "Oneil Cruz",
+        "Esmerlyn Valdez",
+        "Spencer Horwitz",
+        "Rafael Flores Jr.",
+        "Jacob Gonzalez",
+        "Jake Mangum"
+      ],
+      "home": [
+        "Sam Antonacci",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Colson Montgomery",
+        "Braden Montgomery",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Kyle Teel"
+      ]
+    },
+    "824714": {
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Zach Neto",
+        "Mike Trout",
+        "Jose Siri",
+        "Vaughn Grissom",
+        "Moisés Ballesteros",
+        "Christian Moore",
+        "Kyren Paris",
+        "Denzer Guzman",
+        "Travis d'Arnaud"
+      ],
+      "home": [
+        "Roman Anthony",
+        "Jahmai Jones",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Nick Sogard",
+        "Caleb Durbin",
+        "Andruw Monasterio",
+        "Eli White",
+        "Connor Wong"
+      ]
+    },
+    "824792": {
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Steven Kwan",
+        "Travis Bazzana",
+        "José Ramírez",
+        "Jo Adell",
+        "Nathaniel Lowe",
+        "Angel Martínez",
+        "Patrick Bailey",
+        "Petey Halpin",
+        "Brayan Rocchio"
+      ],
+      "home": [
+        "Jackson Holliday",
+        "Pete Alonso",
+        "Gunnar Henderson",
+        "Coby Mayo",
+        "Samuel Basallo",
+        "Dylan Beavers",
+        "Blaze Alexander",
+        "Colton Cowser",
+        "Leody Taveras"
+      ]
+    },
+    "824875": {
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "lineupMethod": "MLB Stats API confirmed batting order",
+      "away": [
+        "Yandy Díaz",
+        "Jonathan Aranda",
+        "Junior Caminero",
+        "Liam Hicks",
+        "Chandler Simpson",
+        "Jonny DeLuca",
+        "Victor Mesa Jr.",
+        "Richie Palacios",
+        "Jorge Mateo"
+      ],
+      "home": [
+        "Michael Harris II",
+        "Ronald Acuña Jr.",
+        "Matt Olson",
+        "Drake Baldwin",
+        "Mauricio Dubón",
+        "Ozzie Albies",
+        "Austin Riley",
+        "Mike Yastrzemski",
+        "Sean Murphy"
+      ]
+    }
+  }
+}

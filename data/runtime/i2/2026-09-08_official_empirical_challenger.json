@@ -1,0 +1,397 @@
+{
+  "date": "2026-09-08",
+  "generatedAt": "2026-09-08T21:54:53.289Z",
+  "method": "65% exact starter 2026 regular-season I2 scoreless + 35% opponent offense last-25 I2 scoreless; research challenger only",
+  "games": [
+    {
+      "gamePk": 824792,
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "awayStarter": {
+        "id": 676440,
+        "name": "Tanner Bibee",
+        "n": 29,
+        "scoreless": 21,
+        "scorelessPct": 0.7241379310344828,
+        "i2Runs": 15,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.7
+      },
+      "homeStarter": {
+        "id": 687064,
+        "name": "Brandon Young",
+        "n": 24,
+        "scoreless": 17,
+        "scorelessPct": 0.7083333333333334,
+        "i2Runs": 9,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.8445945945945946,
+        "last25Under": 0.8,
+        "last25Runs": 8,
+        "last25ScoreGames": 5
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7687074829931972,
+        "last25Under": 0.72,
+        "last25Runs": 10,
+        "last25ScoreGames": 7
+      },
+      "top2Scoreless": 0.7404166666666667,
+      "bottom2Scoreless": 0.7226896551724138,
+      "fullUnder": 0.5350914655172414
+    },
+    {
+      "gamePk": 824228,
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "awayStarter": {
+        "id": 665152,
+        "name": "Dean Kremer",
+        "n": 13,
+        "scoreless": 10,
+        "scorelessPct": 0.7692307692307693,
+        "i2Runs": 6,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.7
+      },
+      "homeStarter": {
+        "id": 623454,
+        "name": "Drew Anderson",
+        "n": 8,
+        "scoreless": 8,
+        "scorelessPct": 1,
+        "i2Runs": 0,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 1
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7202797202797202,
+        "last25Under": 0.76,
+        "last25Runs": 8,
+        "last25ScoreGames": 6
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7517241379310344,
+        "last25Under": 0.76,
+        "last25Runs": 11,
+        "last25ScoreGames": 6
+      },
+      "top2Scoreless": 0.9159999999999999,
+      "bottom2Scoreless": 0.766,
+      "fullUnder": 0.701656
+    },
+    {
+      "gamePk": 823414,
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "awayStarter": {
+        "id": 669713,
+        "name": "Hayden Wesneski",
+        "n": 7,
+        "scoreless": 6,
+        "scorelessPct": 0.8571428571428571,
+        "i2Runs": 4,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8571428571428571
+      },
+      "homeStarter": {
+        "id": 691725,
+        "name": "Andrew Painter",
+        "n": 19,
+        "scoreless": 15,
+        "scorelessPct": 0.7894736842105263,
+        "i2Runs": 8,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7448275862068965,
+        "last25Under": 0.76,
+        "last25Runs": 9,
+        "last25ScoreGames": 6
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7241379310344828,
+        "last25Under": 0.56,
+        "last25Runs": 16,
+        "last25ScoreGames": 11
+      },
+      "top2Scoreless": 0.779157894736842,
+      "bottom2Scoreless": 0.7531428571428571,
+      "fullUnder": 0.5868172030075187
+    },
+    {
+      "gamePk": 823821,
+      "matchup": "New York Mets @ Miami Marlins",
+      "awayStarter": {
+        "id": 640455,
+        "name": "Sean Manaea",
+        "n": 15,
+        "scoreless": 11,
+        "scorelessPct": 0.7333333333333333,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.9
+      },
+      "homeStarter": {
+        "id": 645261,
+        "name": "Sandy Alcantara",
+        "n": 30,
+        "scoreless": 21,
+        "scorelessPct": 0.7,
+        "i2Runs": 13,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7142857142857143,
+        "last25Under": 0.84,
+        "last25Runs": 8,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.6736111111111112,
+        "last25Under": 0.64,
+        "last25Runs": 11,
+        "last25ScoreGames": 9
+      },
+      "top2Scoreless": 0.7489999999999999,
+      "bottom2Scoreless": 0.7006666666666665,
+      "fullUnder": 0.5247993333333332
+    },
+    {
+      "gamePk": 824714,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "awayStarter": {
+        "id": 672282,
+        "name": "Reid Detmers",
+        "n": 28,
+        "scoreless": 24,
+        "scorelessPct": 0.8571428571428571,
+        "i2Runs": 4,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 1
+      },
+      "homeStarter": {
+        "id": 663776,
+        "name": "Patrick Sandoval",
+        "n": 10,
+        "scoreless": 8,
+        "scorelessPct": 0.8,
+        "i2Runs": 3,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7972027972027972,
+        "last25Under": 0.84,
+        "last25Runs": 10,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7551020408163265,
+        "last25Under": 0.76,
+        "last25Runs": 10,
+        "last25ScoreGames": 6
+      },
+      "top2Scoreless": 0.8140000000000001,
+      "bottom2Scoreless": 0.8231428571428572,
+      "fullUnder": 0.6700382857142858
+    },
+    {
+      "gamePk": 823500,
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "awayStarter": {
+        "id": 687312,
+        "name": "Gabriel Hughes",
+        "n": 10,
+        "scoreless": 8,
+        "scorelessPct": 0.8,
+        "i2Runs": 7,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.8
+      },
+      "homeStarter": {
+        "id": 693645,
+        "name": "Cam Schlittler",
+        "n": 29,
+        "scoreless": 26,
+        "scorelessPct": 0.896551724137931,
+        "i2Runs": 4,
+        "last5ScorelessPct": 1,
+        "last10ScorelessPct": 0.9
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7655172413793103,
+        "last25Under": 0.84,
+        "last25Runs": 12,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7671232876712328,
+        "last25Under": 0.76,
+        "last25Runs": 12,
+        "last25ScoreGames": 6
+      },
+      "top2Scoreless": 0.8767586206896552,
+      "bottom2Scoreless": 0.786,
+      "fullUnder": 0.6891322758620689
+    },
+    {
+      "gamePk": 824875,
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "awayStarter": {
+        "id": 642547,
+        "name": "Freddy Peralta",
+        "n": 28,
+        "scoreless": 20,
+        "scorelessPct": 0.7142857142857143,
+        "i2Runs": 13,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.7
+      },
+      "homeStarter": {
+        "id": 700363,
+        "name": "AJ Smith-Shawver",
+        "n": 4,
+        "scoreless": 2,
+        "scorelessPct": 0.5,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.5,
+        "last10ScorelessPct": 0.5
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7708333333333334,
+        "last25Under": 0.76,
+        "last25Runs": 13,
+        "last25ScoreGames": 6
+      },
+      "homeOffense": {
+        "seasonUnder": 0.6689189189189189,
+        "last25Under": 0.76,
+        "last25Runs": 10,
+        "last25ScoreGames": 6
+      },
+      "top2Scoreless": 0.591,
+      "bottom2Scoreless": 0.7302857142857142,
+      "fullUnder": 0.43159885714285706
+    },
+    {
+      "gamePk": 824063,
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "awayStarter": {
+        "id": 669203,
+        "name": "Corbin Burnes",
+        "n": 0,
+        "scoreless": 0,
+        "scorelessPct": null,
+        "i2Runs": 0,
+        "last5ScorelessPct": null,
+        "last10ScorelessPct": null
+      },
+      "homeStarter": {
+        "id": 608379,
+        "name": "Michael Wacha",
+        "n": 28,
+        "scoreless": 19,
+        "scorelessPct": 0.6785714285714286,
+        "i2Runs": 12,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.6
+      },
+      "awayOffense": {
+        "seasonUnder": 0.8,
+        "last25Under": 0.84,
+        "last25Runs": 10,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7724137931034483,
+        "last25Under": 0.8,
+        "last25Runs": 11,
+        "last25ScoreGames": 5
+      },
+      "top2Scoreless": 0.7350714285714286,
+      "bottom2Scoreless": null,
+      "fullUnder": null
+    },
+    {
+      "gamePk": 824551,
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "awayStarter": {
+        "id": 696149,
+        "name": "Bubba Chandler",
+        "n": 26,
+        "scoreless": 21,
+        "scorelessPct": 0.8076923076923077,
+        "i2Runs": 8,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "homeStarter": {
+        "id": 680732,
+        "name": "Sean Burke",
+        "n": 24,
+        "scoreless": 19,
+        "scorelessPct": 0.7916666666666666,
+        "i2Runs": 7,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7687074829931972,
+        "last25Under": 0.84,
+        "last25Runs": 5,
+        "last25ScoreGames": 4
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7793103448275862,
+        "last25Under": 0.72,
+        "last25Runs": 12,
+        "last25ScoreGames": 7
+      },
+      "top2Scoreless": 0.8085833333333332,
+      "bottom2Scoreless": 0.777,
+      "fullUnder": 0.6282692499999999
+    },
+    {
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "awayStarter": {
+        "id": 656849,
+        "name": "David Peterson",
+        "n": 19,
+        "scoreless": 12,
+        "scorelessPct": 0.631578947368421,
+        "i2Runs": 14,
+        "last5ScorelessPct": 0.6,
+        "last10ScorelessPct": 0.5
+      },
+      "homeStarter": {
+        "id": 694819,
+        "name": "Jacob Misiorowski",
+        "n": 26,
+        "scoreless": 24,
+        "scorelessPct": 0.9230769230769231,
+        "i2Runs": 5,
+        "last5ScorelessPct": 0.8,
+        "last10ScorelessPct": 0.8
+      },
+      "awayOffense": {
+        "seasonUnder": 0.7074829931972789,
+        "last25Under": 0.68,
+        "last25Runs": 15,
+        "last25ScoreGames": 8
+      },
+      "homeOffense": {
+        "seasonUnder": 0.7142857142857143,
+        "last25Under": 0.64,
+        "last25Runs": 16,
+        "last25ScoreGames": 9
+      },
+      "top2Scoreless": 0.8380000000000001,
+      "bottom2Scoreless": 0.6345263157894736,
+      "fullUnder": 0.5317330526315789
+    }
+  ]
+}

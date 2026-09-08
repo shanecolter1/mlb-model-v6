@@ -1,0 +1,778 @@
+{
+  "date": "2026-09-08",
+  "generatedAt": "2026-09-08T21:51:50.846Z",
+  "scheduledGames": 15,
+  "confirmedGames": 10,
+  "games": [
+    {
+      "gamePk": 824792,
+      "gameDate": "2026-09-08T22:35:00Z",
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Steven Kwan",
+        "Travis Bazzana",
+        "José Ramírez",
+        "Jo Adell",
+        "Nathaniel Lowe",
+        "Angel Martínez",
+        "Patrick Bailey",
+        "Petey Halpin",
+        "Brayan Rocchio"
+      ],
+      "homeLineup": [
+        "Jackson Holliday",
+        "Pete Alonso",
+        "Gunnar Henderson",
+        "Coby Mayo",
+        "Samuel Basallo",
+        "Dylan Beavers",
+        "Blaze Alexander",
+        "Colton Cowser",
+        "Leody Taveras"
+      ],
+      "awayStarter": {
+        "id": 676440,
+        "name": "Tanner Bibee",
+        "stats": {
+          "era": "4.06",
+          "whip": "1.18",
+          "inningsPitched": "166.1",
+          "gamesStarted": 29,
+          "strikeOuts": 132,
+          "baseOnBalls": 51,
+          "homeRuns": 26
+        }
+      },
+      "homeStarter": {
+        "id": 687064,
+        "name": "Brandon Young",
+        "stats": {
+          "era": "3.42",
+          "whip": "1.31",
+          "inningsPitched": "137.0",
+          "gamesStarted": 24,
+          "strikeOuts": 110,
+          "baseOnBalls": 48,
+          "homeRuns": 19
+        }
+      }
+    },
+    {
+      "gamePk": 824228,
+      "gameDate": "2026-09-08T22:40:00Z",
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Luke Keaschall",
+        "Brooks Lee",
+        "Kody Clemens",
+        "Ryan Jeffers",
+        "Josh Bell",
+        "Royce Lewis",
+        "Trevor Larnach",
+        "Kaelen Culpepper",
+        "Walker Jenkins"
+      ],
+      "homeLineup": [
+        "Kevin McGonigle",
+        "Gleyber Torres",
+        "Colt Keith",
+        "Riley Greene",
+        "Eduardo Valencia",
+        "Brett Callahan",
+        "Max Clark",
+        "Hao-Yu Lee",
+        "Zach McKinstry"
+      ],
+      "awayStarter": {
+        "id": 665152,
+        "name": "Dean Kremer",
+        "stats": {
+          "era": "5.81",
+          "whip": "1.31",
+          "inningsPitched": "66.2",
+          "gamesStarted": 13,
+          "strikeOuts": 66,
+          "baseOnBalls": 24,
+          "homeRuns": 15
+        }
+      },
+      "homeStarter": {
+        "id": 623454,
+        "name": "Drew Anderson",
+        "stats": {
+          "era": "3.73",
+          "whip": "1.30",
+          "inningsPitched": "91.2",
+          "gamesStarted": 8,
+          "strikeOuts": 101,
+          "baseOnBalls": 37,
+          "homeRuns": 13
+        }
+      }
+    },
+    {
+      "gamePk": 823414,
+      "gameDate": "2026-09-08T22:40:00Z",
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Daulton Varsho",
+        "Yainer Diaz",
+        "Christian Walker",
+        "Taylor Trammell",
+        "Cam Smith"
+      ],
+      "homeLineup": [
+        "Kyle Schwarber",
+        "Trea Turner",
+        "Bryce Harper",
+        "Luis Arraez",
+        "Alec Bohm",
+        "Bryson Stott",
+        "Brandon Marsh",
+        "J.T. Realmuto",
+        "Justin Crawford"
+      ],
+      "awayStarter": {
+        "id": 669713,
+        "name": "Hayden Wesneski",
+        "stats": {
+          "era": "3.18",
+          "whip": "1.06",
+          "inningsPitched": "39.2",
+          "gamesStarted": 7,
+          "strikeOuts": 33,
+          "baseOnBalls": 14,
+          "homeRuns": 2
+        }
+      },
+      "homeStarter": {
+        "id": 691725,
+        "name": "Andrew Painter",
+        "stats": {
+          "era": "5.55",
+          "whip": "1.37",
+          "inningsPitched": "105.1",
+          "gamesStarted": 19,
+          "strikeOuts": 91,
+          "baseOnBalls": 37,
+          "homeRuns": 17
+        }
+      }
+    },
+    {
+      "gamePk": 823821,
+      "gameDate": "2026-09-08T22:40:00Z",
+      "matchup": "New York Mets @ Miami Marlins",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Francisco Lindor",
+        "Juan Soto",
+        "Bo Bichette",
+        "Carson Benge",
+        "Jared Young",
+        "Marcus Semien",
+        "A.J. Ewing",
+        "Brett Baty",
+        "Francisco Alvarez"
+      ],
+      "homeLineup": [
+        "Heriberto Hernández",
+        "Otto Lopez",
+        "Agustín Ramírez",
+        "Javier Sanoja",
+        "Esteury Ruiz",
+        "Deyvison De Los Santos",
+        "Jakob Marsee",
+        "Jared Serna",
+        "Brian Navarreto"
+      ],
+      "awayStarter": {
+        "id": 640455,
+        "name": "Sean Manaea",
+        "stats": {
+          "era": "4.70",
+          "whip": "1.36",
+          "inningsPitched": "128.1",
+          "gamesStarted": 15,
+          "strikeOuts": 122,
+          "baseOnBalls": 41,
+          "homeRuns": 21
+        }
+      },
+      "homeStarter": {
+        "id": 645261,
+        "name": "Sandy Alcantara",
+        "stats": {
+          "era": "3.54",
+          "whip": "1.19",
+          "inningsPitched": "195.2",
+          "gamesStarted": 30,
+          "strikeOuts": 142,
+          "baseOnBalls": 51,
+          "homeRuns": 19
+        }
+      }
+    },
+    {
+      "gamePk": 824714,
+      "gameDate": "2026-09-08T22:45:00Z",
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Zach Neto",
+        "Mike Trout",
+        "Jose Siri",
+        "Vaughn Grissom",
+        "Moisés Ballesteros",
+        "Christian Moore",
+        "Kyren Paris",
+        "Denzer Guzman",
+        "Travis d'Arnaud"
+      ],
+      "homeLineup": [
+        "Roman Anthony",
+        "Jahmai Jones",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Nick Sogard",
+        "Caleb Durbin",
+        "Andruw Monasterio",
+        "Eli White",
+        "Connor Wong"
+      ],
+      "awayStarter": {
+        "id": 672282,
+        "name": "Reid Detmers",
+        "stats": {
+          "era": "3.44",
+          "whip": "1.06",
+          "inningsPitched": "162.0",
+          "gamesStarted": 28,
+          "strikeOuts": 182,
+          "baseOnBalls": 44,
+          "homeRuns": 17
+        }
+      },
+      "homeStarter": {
+        "id": 663776,
+        "name": "Patrick Sandoval",
+        "stats": {
+          "era": "4.41",
+          "whip": "1.73",
+          "inningsPitched": "49.0",
+          "gamesStarted": 10,
+          "strikeOuts": 50,
+          "baseOnBalls": 25,
+          "homeRuns": 6
+        }
+      }
+    },
+    {
+      "gamePk": 823500,
+      "gameDate": "2026-09-08T23:05:00Z",
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Jake McCarthy",
+        "Cole Carrigg",
+        "TJ Rumfield",
+        "Hunter Goodman",
+        "Mickey Moniak",
+        "Kyle Karros",
+        "Adael Amador",
+        "Zac Veen",
+        "Ezequiel Tovar"
+      ],
+      "homeLineup": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Aaron Judge",
+        "Luis García Jr.",
+        "Spencer Jones",
+        "Jazz Chisholm Jr.",
+        "George Lombard Jr.",
+        "Ryan McMahon",
+        "Austin Wells"
+      ],
+      "awayStarter": {
+        "id": 687312,
+        "name": "Gabriel Hughes",
+        "stats": {
+          "era": "6.19",
+          "whip": "1.43",
+          "inningsPitched": "52.1",
+          "gamesStarted": 10,
+          "strikeOuts": 42,
+          "baseOnBalls": 21,
+          "homeRuns": 5
+        }
+      },
+      "homeStarter": {
+        "id": 693645,
+        "name": "Cam Schlittler",
+        "stats": {
+          "era": "2.04",
+          "whip": "0.94",
+          "inningsPitched": "171.2",
+          "gamesStarted": 29,
+          "strikeOuts": 210,
+          "baseOnBalls": 42,
+          "homeRuns": 15
+        }
+      }
+    },
+    {
+      "gamePk": 824875,
+      "gameDate": "2026-09-08T23:15:00Z",
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Yandy Díaz",
+        "Jonathan Aranda",
+        "Junior Caminero",
+        "Liam Hicks",
+        "Chandler Simpson",
+        "Jonny DeLuca",
+        "Victor Mesa Jr.",
+        "Richie Palacios",
+        "Jorge Mateo"
+      ],
+      "homeLineup": [
+        "Michael Harris II",
+        "Ronald Acuña Jr.",
+        "Matt Olson",
+        "Drake Baldwin",
+        "Mauricio Dubón",
+        "Ozzie Albies",
+        "Austin Riley",
+        "Mike Yastrzemski",
+        "Sean Murphy"
+      ],
+      "awayStarter": {
+        "id": 642547,
+        "name": "Freddy Peralta",
+        "stats": {
+          "era": "4.96",
+          "whip": "1.37",
+          "inningsPitched": "147.0",
+          "gamesStarted": 28,
+          "strikeOuts": 140,
+          "baseOnBalls": 54,
+          "homeRuns": 23
+        }
+      },
+      "homeStarter": {
+        "id": 700363,
+        "name": "AJ Smith-Shawver",
+        "stats": {
+          "era": "7.13",
+          "whip": "1.75",
+          "inningsPitched": "17.2",
+          "gamesStarted": 4,
+          "strikeOuts": 15,
+          "baseOnBalls": 11,
+          "homeRuns": 2
+        }
+      }
+    },
+    {
+      "gamePk": 824063,
+      "gameDate": "2026-09-08T23:40:00Z",
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Lars Nootbaar",
+        "Ketel Marte",
+        "Gabriel Moreno",
+        "Geraldo Perdomo",
+        "Corbin Carroll",
+        "Nolan Arenado",
+        "Tommy Troy",
+        "Tim Tawa",
+        "Ryan Waldschmidt"
+      ],
+      "homeLineup": [
+        "Carter Jensen",
+        "Bobby Witt Jr.",
+        "Vinnie Pasquantino",
+        "Salvador Perez",
+        "Michael Massey",
+        "Nick Loftin",
+        "Isaac Collins",
+        "Matthew Lugo",
+        "Kyle Isbel"
+      ],
+      "awayStarter": {
+        "id": 669203,
+        "name": "Corbin Burnes",
+        "stats": {
+          "era": null,
+          "whip": null,
+          "inningsPitched": null,
+          "gamesStarted": null,
+          "strikeOuts": null,
+          "baseOnBalls": null,
+          "homeRuns": null
+        }
+      },
+      "homeStarter": {
+        "id": 608379,
+        "name": "Michael Wacha",
+        "stats": {
+          "era": "3.36",
+          "whip": "1.10",
+          "inningsPitched": "176.2",
+          "gamesStarted": 28,
+          "strikeOuts": 143,
+          "baseOnBalls": 44,
+          "homeRuns": 24
+        }
+      }
+    },
+    {
+      "gamePk": 824551,
+      "gameDate": "2026-09-08T23:40:00Z",
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Konnor Griffin",
+        "Brandon Lowe",
+        "Bryan Reynolds",
+        "Oneil Cruz",
+        "Esmerlyn Valdez",
+        "Spencer Horwitz",
+        "Rafael Flores Jr.",
+        "Jacob Gonzalez",
+        "Jake Mangum"
+      ],
+      "homeLineup": [
+        "Sam Antonacci",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Colson Montgomery",
+        "Braden Montgomery",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Kyle Teel"
+      ],
+      "awayStarter": {
+        "id": 696149,
+        "name": "Bubba Chandler",
+        "stats": {
+          "era": "4.30",
+          "whip": "1.37",
+          "inningsPitched": "136.0",
+          "gamesStarted": 26,
+          "strikeOuts": 121,
+          "baseOnBalls": 71,
+          "homeRuns": 12
+        }
+      },
+      "homeStarter": {
+        "id": 680732,
+        "name": "Sean Burke",
+        "stats": {
+          "era": "3.20",
+          "whip": "1.14",
+          "inningsPitched": "154.2",
+          "gamesStarted": 24,
+          "strikeOuts": 167,
+          "baseOnBalls": 54,
+          "homeRuns": 18
+        }
+      }
+    },
+    {
+      "gamePk": 823738,
+      "gameDate": "2026-09-08T23:40:00Z",
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": true,
+      "awayLineup": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Alex Bregman",
+        "Michael Busch",
+        "Nico Hoerner",
+        "Ian Happ",
+        "Matt Shaw",
+        "Tyrone Taylor",
+        "Miguel Amaya"
+      ],
+      "homeLineup": [
+        "Jackson Chourio",
+        "Brice Turang",
+        "Andrew Vaughn",
+        "William Contreras",
+        "Gary Sánchez",
+        "Luis Lara",
+        "Joey Ortiz",
+        "Garrett Mitchell",
+        "Cooper Pratt"
+      ],
+      "awayStarter": {
+        "id": 656849,
+        "name": "David Peterson",
+        "stats": {
+          "era": "5.39",
+          "whip": "1.56",
+          "inningsPitched": "127.0",
+          "gamesStarted": 19,
+          "strikeOuts": 113,
+          "baseOnBalls": 56,
+          "homeRuns": 14
+        }
+      },
+      "homeStarter": {
+        "id": 694819,
+        "name": "Jacob Misiorowski",
+        "stats": {
+          "era": "1.97",
+          "whip": "0.79",
+          "inningsPitched": "155.0",
+          "gamesStarted": 26,
+          "strikeOuts": 227,
+          "baseOnBalls": 39,
+          "homeRuns": 14
+        }
+      }
+    },
+    {
+      "gamePk": 823250,
+      "gameDate": "2026-09-09T01:40:00Z",
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [
+        "Fernando Tatis Jr.",
+        "Jake Cronenworth",
+        "Manny Machado",
+        "Ty France",
+        "Jackson Merrill",
+        "Luis Campusano",
+        "Dustin Harris",
+        "Xander Bogaerts",
+        "Freddy Fermin"
+      ],
+      "awayStarter": {
+        "id": 683000,
+        "name": "Riley Cornelio",
+        "stats": {
+          "era": "5.96",
+          "whip": "1.81",
+          "inningsPitched": "22.2",
+          "gamesStarted": 0,
+          "strikeOuts": 23,
+          "baseOnBalls": 21,
+          "homeRuns": 2
+        }
+      },
+      "homeStarter": {
+        "id": 663554,
+        "name": "Casey Mize",
+        "stats": {
+          "era": "3.64",
+          "whip": "1.12",
+          "inningsPitched": "113.2",
+          "gamesStarted": 22,
+          "strikeOuts": 100,
+          "baseOnBalls": 28,
+          "homeRuns": 13
+        }
+      }
+    },
+    {
+      "gamePk": 823092,
+      "gameDate": "2026-09-09T01:40:00Z",
+      "matchup": "Texas Rangers @ Seattle Mariners",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [
+        "Randy Arozarena",
+        "Dominic Canzone",
+        "Julio Rodríguez",
+        "Cal Raleigh",
+        "J.P. Crawford",
+        "Josh Naylor",
+        "Cole Young",
+        "Lazaro Montes",
+        "Brock Rodden"
+      ],
+      "awayStarter": {
+        "id": 615698,
+        "name": "Cal Quantrill",
+        "stats": {
+          "era": "2.79",
+          "whip": "1.07",
+          "inningsPitched": "96.2",
+          "gamesStarted": 12,
+          "strikeOuts": 73,
+          "baseOnBalls": 24,
+          "homeRuns": 11
+        }
+      },
+      "homeStarter": {
+        "id": 682243,
+        "name": "Bryce Miller",
+        "stats": {
+          "era": "4.01",
+          "whip": "1.11",
+          "inningsPitched": "98.2",
+          "gamesStarted": 17,
+          "strikeOuts": 95,
+          "baseOnBalls": 26,
+          "homeRuns": 17
+        }
+      }
+    },
+    {
+      "gamePk": 824957,
+      "gameDate": "2026-09-09T01:40:00Z",
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "abstractGameState": "Preview",
+      "detailedState": "Scheduled",
+      "lineupsConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": {
+        "id": 667755,
+        "name": "José Soriano",
+        "stats": {
+          "era": "3.52",
+          "whip": "1.29",
+          "inningsPitched": "156.0",
+          "gamesStarted": 28,
+          "strikeOuts": 151,
+          "baseOnBalls": 70,
+          "homeRuns": 14
+        }
+      },
+      "homeStarter": {
+        "id": 678022,
+        "name": "Jack Perkins",
+        "stats": {
+          "era": "6.50",
+          "whip": "1.54",
+          "inningsPitched": "98.1",
+          "gamesStarted": 13,
+          "strikeOuts": 116,
+          "baseOnBalls": 47,
+          "homeRuns": 18
+        }
+      }
+    },
+    {
+      "gamePk": 823174,
+      "gameDate": "2026-09-09T01:45:00Z",
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "abstractGameState": "Preview",
+      "detailedState": "Pre-Game",
+      "lineupsConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [
+        "Jonah Cox",
+        "Rafael Devers",
+        "Bryce Eldridge",
+        "Osleivis Basabe",
+        "Turner Hill",
+        "Andrew Knizner",
+        "Shay Whitcomb",
+        "Grant McCray",
+        "Christian Koss"
+      ],
+      "awayStarter": {
+        "id": 687273,
+        "name": "Quinn Mathews",
+        "stats": {
+          "era": "4.38",
+          "whip": "1.58",
+          "inningsPitched": "24.2",
+          "gamesStarted": 5,
+          "strikeOuts": 24,
+          "baseOnBalls": 12,
+          "homeRuns": 1
+        }
+      },
+      "homeStarter": {
+        "id": 694738,
+        "name": "Landen Roupp",
+        "stats": {
+          "era": "4.17",
+          "whip": "1.29",
+          "inningsPitched": "144.2",
+          "gamesStarted": 27,
+          "strikeOuts": 137,
+          "baseOnBalls": 68,
+          "homeRuns": 11
+        }
+      }
+    },
+    {
+      "gamePk": 823901,
+      "gameDate": "2026-09-09T02:10:00Z",
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "abstractGameState": "Preview",
+      "detailedState": "Scheduled",
+      "lineupsConfirmed": false,
+      "awayLineup": [],
+      "homeLineup": [],
+      "awayStarter": {
+        "id": 666157,
+        "name": "Nick Lodolo",
+        "stats": {
+          "era": "5.08",
+          "whip": "1.52",
+          "inningsPitched": "85.0",
+          "gamesStarted": 17,
+          "strikeOuts": 69,
+          "baseOnBalls": 35,
+          "homeRuns": 16
+        }
+      },
+      "homeStarter": {
+        "id": 669373,
+        "name": "Tarik Skubal",
+        "stats": {
+          "era": "2.86",
+          "whip": "0.98",
+          "inningsPitched": "132.1",
+          "gamesStarted": 22,
+          "strikeOuts": 159,
+          "baseOnBalls": 22,
+          "homeRuns": 12
+        }
+      }
+    }
+  ]
+}
