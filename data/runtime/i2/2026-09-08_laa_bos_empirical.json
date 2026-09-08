@@ -20,16 +20,16 @@
         "battersFaced": 651
       },
       "seasonI1": {
-        "n": 31,
-        "scoreless": 24,
-        "pct": 77.4,
-        "runs": 12
+        "n": 28,
+        "scoreless": 22,
+        "pct": 78.6,
+        "runs": 11
       },
       "seasonI2": {
-        "n": 31,
-        "scoreless": 25,
-        "pct": 80.6,
-        "runs": 7
+        "n": 28,
+        "scoreless": 24,
+        "pct": 85.7,
+        "runs": 4
       },
       "last5I2": {
         "n": 5,
@@ -50,36 +50,6 @@
         "runs": 2
       },
       "starts": [
-        {
-          "gamePk": 831827,
-          "date": "2026-03-01",
-          "opponent": "Los Angeles Dodgers",
-          "homeAway": "away",
-          "i1Runs": 1,
-          "i2Runs": 1,
-          "i1Scoreless": false,
-          "i2Scoreless": false
-        },
-        {
-          "gamePk": 831826,
-          "date": "2026-03-06",
-          "opponent": "Cleveland Guardians",
-          "homeAway": "away",
-          "i1Runs": 0,
-          "i2Runs": 2,
-          "i1Scoreless": true,
-          "i2Scoreless": false
-        },
-        {
-          "gamePk": 831821,
-          "date": "2026-03-23",
-          "opponent": "Los Angeles Dodgers",
-          "homeAway": "away",
-          "i1Runs": 0,
-          "i2Runs": 0,
-          "i1Scoreless": true,
-          "i2Scoreless": true
-        },
         {
           "gamePk": 824213,
           "date": "2026-03-28",
@@ -519,6 +489,7 @@
       "scored": 4,
       "totalRuns": 10,
       "last10ScorelessPct": 100,
+      "last15ScorelessPct": 86.7,
       "rows": [
         {
           "date": "2026-08-11",
@@ -680,6 +651,7 @@
       "scored": 7,
       "totalRuns": 14,
       "last10ScorelessPct": 70,
+      "last15ScorelessPct": 73.3,
       "rows": [
         {
           "date": "2026-08-13",
@@ -835,10 +807,10 @@
     }
   },
   "challenger": {
-    "method": "65% pitcher season I2 scoreless + 35% opponent offense last25 I2 scoreless",
+    "method": "65% pitcher regular-season I2 scoreless + 35% opponent offense last25 regular-season I2 scoreless",
     "top2ScorelessPct": 81.4,
-    "bottom2ScorelessPct": 77.59,
-    "underPct": 63.16,
-    "overPct": 36.84
+    "bottom2ScorelessPct": 80.91,
+    "underPct": 65.86,
+    "overPct": 34.14
   }
 }
