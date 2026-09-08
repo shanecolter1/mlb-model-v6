@@ -22,6 +22,21 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Normalize two projected roster identities
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const p='data/runtime/i2/2026-09-08_lineup_overrides.json';
+          const d=JSON.parse(fs.readFileSync(p,'utf8'));
+          // RotoWire abbreviates Pittsburgh's catcher as R. Flores; MLB's active-roster full name is Rafael Flores Jr.
+          d.games['824551'].away[7]='Rafael Flores Jr.';
+          // RotoWire projects Edwin Arroyo, but he is not exposed in this game's MLB live-feed player map yet.
+          // Use active-roster switch-hitting 2B Juan Brito as the provisional slot-8 fallback so the game remains simulatable.
+          d.games['823901'].away[7]='Juan Brito';
+          d.games['823901'].lineupMethod='RotoWire expected lineup Sep 8 with Juan Brito active-roster fallback at slot 8 because Edwin Arroyo is absent from the pregame MLB game player map';
+          fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');
+          NODE
+
       - name: Refresh locked DraftKings full-game totals
         env:
           I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_run_environment.json
@@ -53,8 +68,8 @@ jobs:
           const out=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-08_v04_predictions.json','utf8'));
           const gate=61.5;
           const rows=(out.ranking||[]).map(r=>({rank:r.rank,gamePk:r.gamePk,matchup:r.matchup,gameDate:r.gameDate,awayStarter:r.awayStarter,homeStarter:r.homeStarter,total:r.runEnvironment?.fullGameTotal??null,under05Pct:r.under05Pct,over05Pct:r.over05Pct,fairUnder:r.fairUnder,fairOver:r.fairOver,top2ScorePct:r.top2ScorePct,bottom2ScorePct:r.bottom2ScorePct,predictionClass:r.predictionClass||null,lineupSource:r.lineupSource||null,probableStarterFallbacks:r.probableStarterFallbacks||null,underQualified:Number(r.under05Pct)>=gate}));
-          const pending=(out.games||[]).filter(g=>g.modelStatus==='PENDING_RUN_ENVIRONMENT'||g.runEnvironment?.status==='MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL').map(g=>({gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,gameDate:g.gameDate,awayStarter:g.awayStarter,homeStarter:g.homeStarter,status:'PENDING_FULL_GAME_TOTAL',baseballOnlyUnder05Pct:g.baseballOnlyRaw?.under05Pct??g.under05Pct??null,baseballOnlyFairUnder:g.baseballOnlyRaw?.fairUnder??g.fairUnder??null}));
-          const summary={date:'2026-09-08',model:out.model,generatedAt:new Date().toISOString(),trialsPerProjectedGame:out.trialsPerGame||50000,underThresholdPct:gate,scheduledGames:(out.games||[]).length,projectedGames:rows.length,pendingGames:pending.length,qualifiedUnders:rows.filter(x=>x.underQualified),ranking:rows,pending};
+          const unresolved=(out.games||[]).filter(g=>!rows.some(r=>r.gamePk===g.gamePk)).map(g=>({gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,gameDate:g.gameDate,awayStarter:g.awayStarter||null,homeStarter:g.homeStarter||null,status:g.modelStatus||g.runEnvironment?.status||'UNRESOLVED',reason:g.error||g.reason||g.runEnvironment?.reason||null,baseballOnlyUnder05Pct:g.baseballOnlyRaw?.under05Pct??g.under05Pct??null,baseballOnlyFairUnder:g.baseballOnlyRaw?.fairUnder??g.fairUnder??null}));
+          const summary={date:'2026-09-08',model:out.model,generatedAt:new Date().toISOString(),trialsPerProjectedGame:out.trialsPerGame||50000,underThresholdPct:gate,scheduledGames:(out.games||[]).length,projectedGames:rows.length,unresolvedGames:unresolved.length,qualifiedUnders:rows.filter(x=>x.underQualified),ranking:rows,unresolved};
           fs.writeFileSync('data/runtime/i2/2026-09-08_v04_summary.json',JSON.stringify(summary,null,2));
           console.log(JSON.stringify(summary,null,2));
           NODE
@@ -63,7 +78,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
-          git add data/runtime/i2/2026-09-08_run_environment.json data/runtime/i2/2026-09-08_v04_parent_predictions.json data/runtime/i2/2026-09-08_v04_predictions.json data/runtime/i2/2026-09-08_v04_summary.json
+          git add data/runtime/i2/2026-09-08_lineup_overrides.json data/runtime/i2/2026-09-08_run_environment.json data/runtime/i2/2026-09-08_v04_parent_predictions.json data/runtime/i2/2026-09-08_v04_predictions.json data/runtime/i2/2026-09-08_v04_summary.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m 'Run corrected preliminary I2 v0.4 slate 2026-09-08'
+          git commit -m 'Complete corrected preliminary I2 v0.4 slate 2026-09-08'
           git push origin HEAD:main
