@@ -1,0 +1,844 @@
+{
+  "date": "2026-09-08",
+  "gamePk": 824714,
+  "matchup": "Los Angeles Angels @ Boston Red Sox",
+  "productionUnderPct": 57.74,
+  "total": 8,
+  "starters": {
+    "away": {
+      "id": 672282,
+      "name": "Reid Detmers",
+      "seasonStats": {
+        "record": "4-8",
+        "era": "3.44",
+        "whip": "1.06",
+        "inningsPitched": "162.0",
+        "strikeOuts": 182,
+        "baseOnBalls": 44,
+        "homeRuns": 17,
+        "gamesStarted": 28,
+        "battersFaced": 651
+      },
+      "seasonI1": {
+        "n": 31,
+        "scoreless": 24,
+        "pct": 77.4,
+        "runs": 12
+      },
+      "seasonI2": {
+        "n": 31,
+        "scoreless": 25,
+        "pct": 80.6,
+        "runs": 7
+      },
+      "last5I2": {
+        "n": 5,
+        "scoreless": 5,
+        "pct": 100,
+        "runs": 0
+      },
+      "last10I2": {
+        "n": 10,
+        "scoreless": 10,
+        "pct": 100,
+        "runs": 0
+      },
+      "last15I2": {
+        "n": 15,
+        "scoreless": 13,
+        "pct": 86.7,
+        "runs": 2
+      },
+      "starts": [
+        {
+          "gamePk": 831827,
+          "date": "2026-03-01",
+          "opponent": "Los Angeles Dodgers",
+          "homeAway": "away",
+          "i1Runs": 1,
+          "i2Runs": 1,
+          "i1Scoreless": false,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 831826,
+          "date": "2026-03-06",
+          "opponent": "Cleveland Guardians",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 2,
+          "i1Scoreless": true,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 831821,
+          "date": "2026-03-23",
+          "opponent": "Los Angeles Dodgers",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824213,
+          "date": "2026-03-28",
+          "opponent": "Houston Astros",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824056,
+          "date": "2026-04-03",
+          "opponent": "Seattle Mariners",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824050,
+          "date": "2026-04-08",
+          "opponent": "Atlanta Braves",
+          "homeAway": "home",
+          "i1Runs": 1,
+          "i2Runs": 1,
+          "i1Scoreless": false,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 823562,
+          "date": "2026-04-14",
+          "opponent": "New York Yankees",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824046,
+          "date": "2026-04-20",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824122,
+          "date": "2026-04-26",
+          "opponent": "Kansas City Royals",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824042,
+          "date": "2026-05-02",
+          "opponent": "New York Mets",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 822822,
+          "date": "2026-05-08",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824438,
+          "date": "2026-05-13",
+          "opponent": "Cleveland Guardians",
+          "homeAway": "away",
+          "i1Runs": 2,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824033,
+          "date": "2026-05-19",
+          "opponent": "Athletics",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824028,
+          "date": "2026-05-24",
+          "opponent": "Texas Rangers",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 1,
+          "i1Scoreless": true,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 822975,
+          "date": "2026-05-30",
+          "opponent": "Tampa Bay Rays",
+          "homeAway": "away",
+          "i1Runs": 1,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823943,
+          "date": "2026-06-05",
+          "opponent": "Los Angeles Dodgers",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824022,
+          "date": "2026-06-10",
+          "opponent": "Houston Astros",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 825070,
+          "date": "2026-06-16",
+          "opponent": "Arizona Diamondbacks",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824987,
+          "date": "2026-06-21",
+          "opponent": "Athletics",
+          "homeAway": "away",
+          "i1Runs": 4,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824015,
+          "date": "2026-06-27",
+          "opponent": "Athletics",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 1,
+          "i1Scoreless": true,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 824013,
+          "date": "2026-07-03",
+          "opponent": "Boston Red Sox",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 1,
+          "i1Scoreless": true,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 822877,
+          "date": "2026-07-09",
+          "opponent": "Texas Rangers",
+          "homeAway": "away",
+          "i1Runs": 2,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824009,
+          "date": "2026-07-17",
+          "opponent": "Detroit Tigers",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824004,
+          "date": "2026-07-22",
+          "opponent": "St. Louis Cardinals",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824003,
+          "date": "2026-07-28",
+          "opponent": "Houston Astros",
+          "homeAway": "home",
+          "i1Runs": 1,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824806,
+          "date": "2026-08-05",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823998,
+          "date": "2026-08-10",
+          "opponent": "Texas Rangers",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823990,
+          "date": "2026-08-15",
+          "opponent": "Kansas City Royals",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 822857,
+          "date": "2026-08-21",
+          "opponent": "Texas Rangers",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823985,
+          "date": "2026-08-28",
+          "opponent": "Philadelphia Phillies",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823983,
+          "date": "2026-09-02",
+          "opponent": "New York Yankees",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        }
+      ]
+    },
+    "home": {
+      "id": 663776,
+      "name": "Patrick Sandoval",
+      "seasonStats": {
+        "record": "1-4",
+        "era": "4.41",
+        "whip": "1.73",
+        "inningsPitched": "49.0",
+        "strikeOuts": 50,
+        "baseOnBalls": 25,
+        "homeRuns": 6,
+        "gamesStarted": 10,
+        "battersFaced": 227
+      },
+      "seasonI1": {
+        "n": 10,
+        "scoreless": 8,
+        "pct": 80,
+        "runs": 3
+      },
+      "seasonI2": {
+        "n": 10,
+        "scoreless": 8,
+        "pct": 80,
+        "runs": 3
+      },
+      "last5I2": {
+        "n": 5,
+        "scoreless": 5,
+        "pct": 100,
+        "runs": 0
+      },
+      "last10I2": {
+        "n": 10,
+        "scoreless": 8,
+        "pct": 80,
+        "runs": 3
+      },
+      "last15I2": {
+        "n": 10,
+        "scoreless": 8,
+        "pct": 80,
+        "runs": 3
+      },
+      "starts": [
+        {
+          "gamePk": 824577,
+          "date": "2026-07-09",
+          "opponent": "Chicago White Sox",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824738,
+          "date": "2026-07-18",
+          "opponent": "Tampa Bay Rays",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 2,
+          "i1Scoreless": true,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 824733,
+          "date": "2026-07-24",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824973,
+          "date": "2026-07-29",
+          "opponent": "Athletics",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 1,
+          "i1Scoreless": true,
+          "i2Scoreless": false
+        },
+        {
+          "gamePk": 824731,
+          "date": "2026-08-04",
+          "opponent": "Chicago White Sox",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 822778,
+          "date": "2026-08-11",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823344,
+          "date": "2026-08-16",
+          "opponent": "Pittsburgh Pirates",
+          "homeAway": "away",
+          "i1Runs": 2,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824718,
+          "date": "2026-08-22",
+          "opponent": "San Francisco Giants",
+          "homeAway": "home",
+          "i1Runs": 1,
+          "i2Runs": 0,
+          "i1Scoreless": false,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 823504,
+          "date": "2026-08-28",
+          "opponent": "New York Yankees",
+          "homeAway": "away",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        },
+        {
+          "gamePk": 824717,
+          "date": "2026-09-02",
+          "opponent": "Seattle Mariners",
+          "homeAway": "home",
+          "i1Runs": 0,
+          "i2Runs": 0,
+          "i1Scoreless": true,
+          "i2Scoreless": true
+        }
+      ]
+    }
+  },
+  "offense": {
+    "away": {
+      "team": "Los Angeles Angels",
+      "n": 25,
+      "scoreless": 21,
+      "scorelessPct": 84,
+      "scored": 4,
+      "totalRuns": 10,
+      "last10ScorelessPct": 100,
+      "rows": [
+        {
+          "date": "2026-08-11",
+          "opponent": "Texas Rangers",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-12",
+          "opponent": "Texas Rangers",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-13",
+          "opponent": "Texas Rangers",
+          "i2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-14",
+          "opponent": "Kansas City Royals",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-15",
+          "opponent": "Kansas City Royals",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-16",
+          "opponent": "Kansas City Royals",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-18",
+          "opponent": "Houston Astros",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-19",
+          "opponent": "Houston Astros",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-20",
+          "opponent": "Houston Astros",
+          "i2Runs": 3,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-21",
+          "opponent": "Texas Rangers",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-22",
+          "opponent": "Texas Rangers",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-23",
+          "opponent": "Texas Rangers",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-24",
+          "opponent": "Cleveland Guardians",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-25",
+          "opponent": "Cleveland Guardians",
+          "i2Runs": 3,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-26",
+          "opponent": "Cleveland Guardians",
+          "i2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-28",
+          "opponent": "Philadelphia Phillies",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-29",
+          "opponent": "Philadelphia Phillies",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-30",
+          "opponent": "Philadelphia Phillies",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-31",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-01",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-02",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-04",
+          "opponent": "Pittsburgh Pirates",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-05",
+          "opponent": "Pittsburgh Pirates",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-06",
+          "opponent": "Pittsburgh Pirates",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-07",
+          "opponent": "Boston Red Sox",
+          "i2Runs": 0,
+          "scoreless": true
+        }
+      ]
+    },
+    "home": {
+      "team": "Boston Red Sox",
+      "n": 25,
+      "scoreless": 18,
+      "scorelessPct": 72,
+      "scored": 7,
+      "totalRuns": 14,
+      "last10ScorelessPct": 70,
+      "rows": [
+        {
+          "date": "2026-08-13",
+          "opponent": "Toronto Blue Jays",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-14",
+          "opponent": "Pittsburgh Pirates",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-15",
+          "opponent": "Pittsburgh Pirates",
+          "i2Runs": 1,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-16",
+          "opponent": "Pittsburgh Pirates",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-17",
+          "opponent": "Arizona Diamondbacks",
+          "i2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-18",
+          "opponent": "Arizona Diamondbacks",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-19",
+          "opponent": "Arizona Diamondbacks",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-21",
+          "opponent": "San Francisco Giants",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-22",
+          "opponent": "San Francisco Giants",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-23",
+          "opponent": "San Francisco Giants",
+          "i2Runs": 1,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-24",
+          "opponent": "Miami Marlins",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-25",
+          "opponent": "Miami Marlins",
+          "i2Runs": 1,
+          "scoreless": false
+        },
+        {
+          "date": "2026-08-26",
+          "opponent": "Miami Marlins",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-28",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-29",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-29",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-30",
+          "opponent": "New York Yankees",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-08-31",
+          "opponent": "Seattle Mariners",
+          "i2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "date": "2026-09-01",
+          "opponent": "Seattle Mariners",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-02",
+          "opponent": "Seattle Mariners",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-03",
+          "opponent": "Baltimore Orioles",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-04",
+          "opponent": "Baltimore Orioles",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-05",
+          "opponent": "Baltimore Orioles",
+          "i2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "date": "2026-09-06",
+          "opponent": "Baltimore Orioles",
+          "i2Runs": 3,
+          "scoreless": false
+        },
+        {
+          "date": "2026-09-07",
+          "opponent": "Los Angeles Angels",
+          "i2Runs": 4,
+          "scoreless": false
+        }
+      ]
+    }
+  },
+  "challenger": {
+    "method": "65% pitcher season I2 scoreless + 35% opponent offense last25 I2 scoreless",
+    "top2ScorelessPct": 81.4,
+    "bottom2ScorelessPct": 77.59,
+    "underPct": 63.16,
+    "overPct": 36.84
+  }
+}
