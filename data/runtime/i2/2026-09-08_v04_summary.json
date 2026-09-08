@@ -1,12 +1,12 @@
 {
   "date": "2026-09-08",
   "model": "MLB I2 Under/Over v0.4 Local-CV Production",
-  "generatedAt": "2026-09-08T01:12:23.980Z",
+  "generatedAt": "2026-09-08T01:16:59.420Z",
   "trialsPerProjectedGame": 50000,
   "underThresholdPct": 61.5,
   "scheduledGames": 15,
-  "projectedGames": 12,
-  "pendingGames": 1,
+  "projectedGames": 14,
+  "unresolvedGames": 1,
   "qualifiedUnders": [],
   "ranking": [
     {
@@ -187,6 +187,28 @@
     },
     {
       "rank": 9,
+      "gamePk": 824551,
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "awayStarter": "Bubba Chandler",
+      "homeStarter": "Sean Burke",
+      "total": 8.5,
+      "under05Pct": 55.14,
+      "over05Pct": 44.86,
+      "fairUnder": -123,
+      "fairOver": 123,
+      "top2ScorePct": 25.76,
+      "bottom2ScorePct": 25.74,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 10,
       "gamePk": 824792,
       "matchup": "Cleveland Guardians @ Baltimore Orioles",
       "gameDate": "2026-09-08T22:35:00Z",
@@ -208,7 +230,29 @@
       "underQualified": false
     },
     {
-      "rank": 10,
+      "rank": 11,
+      "gamePk": 823901,
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "gameDate": "2026-09-09T02:10:00Z",
+      "awayStarter": "Nick Lodolo",
+      "homeStarter": "Tarik Skubal",
+      "total": 8.5,
+      "under05Pct": 54.69,
+      "over05Pct": 45.31,
+      "fairUnder": -121,
+      "fairOver": 121,
+      "top2ScorePct": 23.33,
+      "bottom2ScorePct": 28.68,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 12,
       "gamePk": 824228,
       "matchup": "Minnesota Twins @ Detroit Tigers",
       "gameDate": "2026-09-08T22:40:00Z",
@@ -230,7 +274,7 @@
       "underQualified": false
     },
     {
-      "rank": 11,
+      "rank": 13,
       "gamePk": 824957,
       "matchup": "Toronto Blue Jays @ Athletics",
       "gameDate": "2026-09-09T01:40:00Z",
@@ -252,7 +296,7 @@
       "underQualified": false
     },
     {
-      "rank": 12,
+      "rank": 14,
       "gamePk": 824063,
       "matchup": "Arizona Diamondbacks @ Kansas City Royals",
       "gameDate": "2026-09-08T23:40:00Z",
@@ -274,7 +318,7 @@
       "underQualified": false
     }
   ],
-  "pending": [
+  "unresolved": [
     {
       "gamePk": 823092,
       "matchup": "Texas Rangers @ Seattle Mariners",
@@ -282,6 +326,7 @@
       "awayStarter": "Cody Bradford",
       "homeStarter": "Bryce Miller",
       "status": "PENDING_FULL_GAME_TOTAL",
+      "reason": null,
       "baseballOnlyUnder05Pct": 53.94,
       "baseballOnlyFairUnder": -117
     }

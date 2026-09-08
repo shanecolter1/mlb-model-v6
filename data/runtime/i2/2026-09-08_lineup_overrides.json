@@ -14,20 +14,431 @@
     }
   },
   "games": {
-    "824792": {"matchup":"Cleveland Guardians @ Baltimore Orioles","lineupMethod":"RotoWire expected lineup Sep 8","away":["Steven Kwan","Chase DeLauter","José Ramírez","Jo Adell","Nathaniel Lowe","Angel Genao","Travis Bazzana","Patrick Bailey","Brayan Rocchio"],"home":["Jackson Holliday","Blaze Alexander","Gunnar Henderson","Pete Alonso","Samuel Basallo","Christian Encarnacion-Strand","Coby Mayo","Dylan Beavers","Colton Cowser"]},
-    "824228": {"matchup":"Minnesota Twins @ Detroit Tigers","lineupMethod":"RotoWire expected lineup Sep 8","away":["Luke Keaschall","Brooks Lee","Ryan Jeffers","Josh Bell","Kody Clemens","Royce Lewis","Trevor Larnach","Kaelen Culpepper","Walker Jenkins"],"home":["Kevin McGonigle","Hao-Yu Lee","Dillon Dingler","Riley Greene","Colt Keith","Spencer Torkelson","Max Clark","John Peck","Zach McKinstry"]},
-    "823414": {"matchup":"Houston Astros @ Philadelphia Phillies","lineupMethod":"RotoWire expected lineup Sep 8","away":["Jeremy Peña","Yordan Alvarez","Isaac Paredes","Jose Altuve","Daulton Varsho","Christian Walker","Yainer Diaz","Taylor Trammell","Cam Smith"],"home":["Kyle Schwarber","Trea Turner","Bryce Harper","Luis Arraez","Alec Bohm","Bryson Stott","Brandon Marsh","J.T. Realmuto","Justin Crawford"]},
-    "823821": {"matchup":"New York Mets @ Miami Marlins","lineupMethod":"RotoWire expected lineup Sep 8","away":["Francisco Lindor","Juan Soto","Bo Bichette","Carson Benge","Jared Young","Marcus Semien","A.J. Ewing","Brett Baty","Francisco Alvarez"],"home":["Heriberto Hernández","Otto Lopez","Kyle Stowers","Agustín Ramírez","Javier Sanoja","Jakob Marsee","Esteury Ruiz","Jared Serna","Joe Mack"]},
-    "824714": {"matchup":"Los Angeles Angels @ Boston Red Sox","lineupMethod":"RotoWire expected lineup Sep 8","away":["Zach Neto","Mike Trout","Vaughn Grissom","Moisés Ballesteros","Christian Moore","Jose Siri","Denzer Guzman","Travis d'Arnaud","Wade Meckler"],"home":["Roman Anthony","Jahmai Jones","Adley Rutschman","Wilyer Abreu","Trevor Story","Caleb Durbin","Eli White","Andruw Monasterio","Nick Sogard"]},
-    "823500": {"matchup":"Colorado Rockies @ New York Yankees","lineupMethod":"RotoWire expected lineup Sep 8","away":["Jake McCarthy","Mickey Moniak","Hunter Goodman","TJ Rumfield","Cole Carrigg","Connor Norby","Troy Johnston","Adael Amador","Ezequiel Tovar"],"home":["Ben Rice","Cody Bellinger","Luis García Jr.","Spencer Jones","Jazz Chisholm Jr.","Jasson Domínguez","George Lombard Jr.","Ryan McMahon","Austin Wells"]},
-    "824875": {"matchup":"Tampa Bay Rays @ Atlanta Braves","lineupMethod":"RotoWire expected lineup Sep 8","away":["Yandy Díaz","Jonathan Aranda","Junior Caminero","Liam Hicks","Chandler Simpson","Victor Mesa Jr.","Cedric Mullins","Richie Palacios","Taylor Walls"],"home":["Drake Baldwin","Ronald Acuña Jr.","Matt Olson","Michael Harris II","Mauricio Dubón","Ozzie Albies","Sean Murphy","Austin Riley","Mike Yastrzemski"],"homeStarter":{"name":"AJ Smith-Shawver","source":"RotoWire Sep 8 expected starter","role":"probable starter","note":"MLB.com listed Atlanta starter TBD at capture."}},
-    "824063": {"matchup":"Arizona Diamondbacks @ Kansas City Royals","lineupMethod":"RotoWire expected lineup Sep 8","away":["Geraldo Perdomo","Ketel Marte","Gabriel Moreno","Nolan Arenado","Corbin Carroll","Lars Nootbaar","Tim Tawa","Ryan Waldschmidt","Jordan Lawlar"],"home":["Carter Jensen","Bobby Witt Jr.","Jac Caglianone","Salvador Perez","Vinnie Pasquantino","Nick Loftin","Michael Massey","Isaac Collins","Kyle Isbel"],"awayStarter":{"name":"Corbin Burnes","source":"RotoWire Sep 8 expected starter","role":"probable starter","note":"MLB.com listed Arizona starter TBD at capture."}},
-    "824551": {"matchup":"Pittsburgh Pirates @ Chicago White Sox","lineupMethod":"RotoWire expected lineup Sep 8","away":["Konnor Griffin","Brandon Lowe","Bryan Reynolds","Nick Gonzales","Oneil Cruz","Esmerlyn Valdez","Spencer Horwitz","Rafael Flores","Jacob Gonzalez"],"home":["Sam Antonacci","Miguel Vargas","Munetaka Murakami","Andrew Benintendi","Colson Montgomery","Braden Montgomery","Tristan Peters","Chase Meidroth","Kyle Teel"]},
-    "823738": {"matchup":"Chicago Cubs @ Milwaukee Brewers","lineupMethod":"RotoWire expected lineup Sep 8","away":["Pete Crow-Armstrong","Seiya Suzuki","Michael Busch","Alex Bregman","Ian Happ","Nico Hoerner","Pedro Ramírez","Michael Conforto","Carson Kelly"],"home":["Jackson Chourio","Luis Lara","William Contreras","Andrew Vaughn","Brice Turang","Joey Ortiz","Garrett Mitchell","Gary Sánchez","Cooper Pratt"]},
-    "823250": {"matchup":"Washington Nationals @ San Diego Padres","lineupMethod":"RotoWire expected lineup Sep 8","away":["James Wood","Abimelec Ortiz","CJ Abrams","Daylen Lile","Dylan Crews","Keibert Ruiz","Brady House","Jacob Young","Nasim Nuñez"],"home":["Fernando Tatis Jr.","Jake Cronenworth","Manny Machado","Ty France","Jackson Merrill","Luis Campusano","Dustin Harris","Xander Bogaerts","Ethan Salas"],"awayStarter":{"name":"Matt Waldron","source":"RotoWire Sep 8 expected starter","role":"probable starter","note":"MLB.com listed Washington starter TBD at capture."},"homeStarter":{"name":"Casey Mize","source":"RotoWire Sep 8 expected starter","role":"probable starter","note":"MLB.com listed San Diego starter TBD at capture."}},
-    "823092": {"matchup":"Texas Rangers @ Seattle Mariners","lineupMethod":"RotoWire expected lineup Sep 8","away":["Joc Pederson","Corey Seager","Wyatt Langford","Brandon Nimmo","Ezequiel Duran","Jake Burger","Evan Carter","Cody Freeman","Elias Díaz"],"home":["Randy Arozarena","Dominic Canzone","Julio Rodríguez","Cal Raleigh","Josh Naylor","J.P. Crawford","Taylor Ward","Cole Young","Michael Arroyo"],"awayStarter":{"name":"Cody Bradford","source":"RotoWire Sep 8 expected starter","role":"probable starter","note":"MLB.com listed Texas starter TBD at capture."},"homeStarter":{"name":"Bryce Miller","source":"RotoWire Sep 8 expected starter","role":"probable starter","note":"MLB.com listed Seattle starter TBD at capture."}},
-    "824957": {"matchup":"Toronto Blue Jays @ Athletics","lineupMethod":"RotoWire expected lineup Sep 8","away":["Brett Bateman","George Springer","Vladimir Guerrero Jr.","Alejandro Kirk","Nathan Lukes","Kazuma Okamoto","Andrés Giménez","Ernie Clement","Myles Straw"],"home":["Henry Bolte","Jeff McNeil","Zack Gelof","Lawrence Butler","Tommy White","Carlos Cortes","Jonah Heim","Donovan Walton","Denzel Clarke"]},
-    "823174": {"matchup":"St. Louis Cardinals @ San Francisco Giants","lineupMethod":"RotoWire expected lineup Sep 8","away":["Bryan Torres","Iván Herrera","Alec Burleson","Jordan Walker","Leo Bernal","Joshua Báez","Nolan Gorman","Thomas Saggese","Nathan Church"],"home":["Jonah Cox","Rafael Devers","Bryce Eldridge","Jung Hoo Lee","Shay Whitcomb","Turner Hill","Andrew Knizner","Osleivis Basabe","Christian Koss"]},
-    "823901": {"matchup":"Cincinnati Reds @ Los Angeles Dodgers","lineupMethod":"RotoWire expected lineup Sep 8","away":["Héctor Rodríguez","Elly De La Cruz","Sal Stewart","JJ Bleday","Tyler Stephenson","Eugenio Suárez","Matt McLain","Edwin Arroyo","Carlos Jorge"],"home":["Shohei Ohtani","Tommy Edman","Mookie Betts","Freddie Freeman","Will Smith","Teoscar Hernández","Miguel Rojas","Kyle Tucker","Enrique Hernández"]}
+    "823092": {
+      "matchup": "Texas Rangers @ Seattle Mariners",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Joc Pederson",
+        "Corey Seager",
+        "Wyatt Langford",
+        "Brandon Nimmo",
+        "Ezequiel Duran",
+        "Jake Burger",
+        "Evan Carter",
+        "Cody Freeman",
+        "Elias Díaz"
+      ],
+      "home": [
+        "Randy Arozarena",
+        "Dominic Canzone",
+        "Julio Rodríguez",
+        "Cal Raleigh",
+        "Josh Naylor",
+        "J.P. Crawford",
+        "Taylor Ward",
+        "Cole Young",
+        "Michael Arroyo"
+      ],
+      "awayStarter": {
+        "name": "Cody Bradford",
+        "source": "RotoWire Sep 8 expected starter",
+        "role": "probable starter",
+        "note": "MLB.com listed Texas starter TBD at capture."
+      },
+      "homeStarter": {
+        "name": "Bryce Miller",
+        "source": "RotoWire Sep 8 expected starter",
+        "role": "probable starter",
+        "note": "MLB.com listed Seattle starter TBD at capture."
+      }
+    },
+    "823174": {
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Bryan Torres",
+        "Iván Herrera",
+        "Alec Burleson",
+        "Jordan Walker",
+        "Leo Bernal",
+        "Joshua Báez",
+        "Nolan Gorman",
+        "Thomas Saggese",
+        "Nathan Church"
+      ],
+      "home": [
+        "Jonah Cox",
+        "Rafael Devers",
+        "Bryce Eldridge",
+        "Jung Hoo Lee",
+        "Shay Whitcomb",
+        "Turner Hill",
+        "Andrew Knizner",
+        "Osleivis Basabe",
+        "Christian Koss"
+      ]
+    },
+    "823250": {
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "James Wood",
+        "Abimelec Ortiz",
+        "CJ Abrams",
+        "Daylen Lile",
+        "Dylan Crews",
+        "Keibert Ruiz",
+        "Brady House",
+        "Jacob Young",
+        "Nasim Nuñez"
+      ],
+      "home": [
+        "Fernando Tatis Jr.",
+        "Jake Cronenworth",
+        "Manny Machado",
+        "Ty France",
+        "Jackson Merrill",
+        "Luis Campusano",
+        "Dustin Harris",
+        "Xander Bogaerts",
+        "Ethan Salas"
+      ],
+      "awayStarter": {
+        "name": "Matt Waldron",
+        "source": "RotoWire Sep 8 expected starter",
+        "role": "probable starter",
+        "note": "MLB.com listed Washington starter TBD at capture."
+      },
+      "homeStarter": {
+        "name": "Casey Mize",
+        "source": "RotoWire Sep 8 expected starter",
+        "role": "probable starter",
+        "note": "MLB.com listed San Diego starter TBD at capture."
+      }
+    },
+    "823414": {
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Daulton Varsho",
+        "Christian Walker",
+        "Yainer Diaz",
+        "Taylor Trammell",
+        "Cam Smith"
+      ],
+      "home": [
+        "Kyle Schwarber",
+        "Trea Turner",
+        "Bryce Harper",
+        "Luis Arraez",
+        "Alec Bohm",
+        "Bryson Stott",
+        "Brandon Marsh",
+        "J.T. Realmuto",
+        "Justin Crawford"
+      ]
+    },
+    "823500": {
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Jake McCarthy",
+        "Mickey Moniak",
+        "Hunter Goodman",
+        "TJ Rumfield",
+        "Cole Carrigg",
+        "Connor Norby",
+        "Troy Johnston",
+        "Adael Amador",
+        "Ezequiel Tovar"
+      ],
+      "home": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Luis García Jr.",
+        "Spencer Jones",
+        "Jazz Chisholm Jr.",
+        "Jasson Domínguez",
+        "George Lombard Jr.",
+        "Ryan McMahon",
+        "Austin Wells"
+      ]
+    },
+    "823738": {
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Michael Busch",
+        "Alex Bregman",
+        "Ian Happ",
+        "Nico Hoerner",
+        "Pedro Ramírez",
+        "Michael Conforto",
+        "Carson Kelly"
+      ],
+      "home": [
+        "Jackson Chourio",
+        "Luis Lara",
+        "William Contreras",
+        "Andrew Vaughn",
+        "Brice Turang",
+        "Joey Ortiz",
+        "Garrett Mitchell",
+        "Gary Sánchez",
+        "Cooper Pratt"
+      ]
+    },
+    "823821": {
+      "matchup": "New York Mets @ Miami Marlins",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Francisco Lindor",
+        "Juan Soto",
+        "Bo Bichette",
+        "Carson Benge",
+        "Jared Young",
+        "Marcus Semien",
+        "A.J. Ewing",
+        "Brett Baty",
+        "Francisco Alvarez"
+      ],
+      "home": [
+        "Heriberto Hernández",
+        "Otto Lopez",
+        "Kyle Stowers",
+        "Agustín Ramírez",
+        "Javier Sanoja",
+        "Jakob Marsee",
+        "Esteury Ruiz",
+        "Jared Serna",
+        "Joe Mack"
+      ]
+    },
+    "823901": {
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "lineupMethod": "RotoWire expected lineup Sep 8 with Juan Brito active-roster fallback at slot 8 because Edwin Arroyo is absent from the pregame MLB game player map",
+      "away": [
+        "Héctor Rodríguez",
+        "Elly De La Cruz",
+        "Sal Stewart",
+        "JJ Bleday",
+        "Tyler Stephenson",
+        "Eugenio Suárez",
+        "Matt McLain",
+        "Juan Brito",
+        "Carlos Jorge"
+      ],
+      "home": [
+        "Shohei Ohtani",
+        "Tommy Edman",
+        "Mookie Betts",
+        "Freddie Freeman",
+        "Will Smith",
+        "Teoscar Hernández",
+        "Miguel Rojas",
+        "Kyle Tucker",
+        "Enrique Hernández"
+      ]
+    },
+    "824063": {
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Geraldo Perdomo",
+        "Ketel Marte",
+        "Gabriel Moreno",
+        "Nolan Arenado",
+        "Corbin Carroll",
+        "Lars Nootbaar",
+        "Tim Tawa",
+        "Ryan Waldschmidt",
+        "Jordan Lawlar"
+      ],
+      "home": [
+        "Carter Jensen",
+        "Bobby Witt Jr.",
+        "Jac Caglianone",
+        "Salvador Perez",
+        "Vinnie Pasquantino",
+        "Nick Loftin",
+        "Michael Massey",
+        "Isaac Collins",
+        "Kyle Isbel"
+      ],
+      "awayStarter": {
+        "name": "Corbin Burnes",
+        "source": "RotoWire Sep 8 expected starter",
+        "role": "probable starter",
+        "note": "MLB.com listed Arizona starter TBD at capture."
+      }
+    },
+    "824228": {
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Luke Keaschall",
+        "Brooks Lee",
+        "Ryan Jeffers",
+        "Josh Bell",
+        "Kody Clemens",
+        "Royce Lewis",
+        "Trevor Larnach",
+        "Kaelen Culpepper",
+        "Walker Jenkins"
+      ],
+      "home": [
+        "Kevin McGonigle",
+        "Hao-Yu Lee",
+        "Dillon Dingler",
+        "Riley Greene",
+        "Colt Keith",
+        "Spencer Torkelson",
+        "Max Clark",
+        "John Peck",
+        "Zach McKinstry"
+      ]
+    },
+    "824551": {
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Konnor Griffin",
+        "Brandon Lowe",
+        "Bryan Reynolds",
+        "Nick Gonzales",
+        "Oneil Cruz",
+        "Esmerlyn Valdez",
+        "Spencer Horwitz",
+        "Rafael Flores Jr.",
+        "Jacob Gonzalez"
+      ],
+      "home": [
+        "Sam Antonacci",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Colson Montgomery",
+        "Braden Montgomery",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Kyle Teel"
+      ]
+    },
+    "824714": {
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Zach Neto",
+        "Mike Trout",
+        "Vaughn Grissom",
+        "Moisés Ballesteros",
+        "Christian Moore",
+        "Jose Siri",
+        "Denzer Guzman",
+        "Travis d'Arnaud",
+        "Wade Meckler"
+      ],
+      "home": [
+        "Roman Anthony",
+        "Jahmai Jones",
+        "Adley Rutschman",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Caleb Durbin",
+        "Eli White",
+        "Andruw Monasterio",
+        "Nick Sogard"
+      ]
+    },
+    "824792": {
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Steven Kwan",
+        "Chase DeLauter",
+        "José Ramírez",
+        "Jo Adell",
+        "Nathaniel Lowe",
+        "Angel Genao",
+        "Travis Bazzana",
+        "Patrick Bailey",
+        "Brayan Rocchio"
+      ],
+      "home": [
+        "Jackson Holliday",
+        "Blaze Alexander",
+        "Gunnar Henderson",
+        "Pete Alonso",
+        "Samuel Basallo",
+        "Christian Encarnacion-Strand",
+        "Coby Mayo",
+        "Dylan Beavers",
+        "Colton Cowser"
+      ]
+    },
+    "824875": {
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Yandy Díaz",
+        "Jonathan Aranda",
+        "Junior Caminero",
+        "Liam Hicks",
+        "Chandler Simpson",
+        "Victor Mesa Jr.",
+        "Cedric Mullins",
+        "Richie Palacios",
+        "Taylor Walls"
+      ],
+      "home": [
+        "Drake Baldwin",
+        "Ronald Acuña Jr.",
+        "Matt Olson",
+        "Michael Harris II",
+        "Mauricio Dubón",
+        "Ozzie Albies",
+        "Sean Murphy",
+        "Austin Riley",
+        "Mike Yastrzemski"
+      ],
+      "homeStarter": {
+        "name": "AJ Smith-Shawver",
+        "source": "RotoWire Sep 8 expected starter",
+        "role": "probable starter",
+        "note": "MLB.com listed Atlanta starter TBD at capture."
+      }
+    },
+    "824957": {
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "lineupMethod": "RotoWire expected lineup Sep 8",
+      "away": [
+        "Brett Bateman",
+        "George Springer",
+        "Vladimir Guerrero Jr.",
+        "Alejandro Kirk",
+        "Nathan Lukes",
+        "Kazuma Okamoto",
+        "Andrés Giménez",
+        "Ernie Clement",
+        "Myles Straw"
+      ],
+      "home": [
+        "Henry Bolte",
+        "Jeff McNeil",
+        "Zack Gelof",
+        "Lawrence Butler",
+        "Tommy White",
+        "Carlos Cortes",
+        "Jonah Heim",
+        "Donovan Walton",
+        "Denzel Clarke"
+      ]
+    }
   }
 }
