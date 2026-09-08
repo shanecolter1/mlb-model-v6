@@ -22,43 +22,46 @@ jobs:
         run: |
           node <<'NODE'
           const fs=require('fs');
-          const teams=[
-            {id:115,name:'Colorado Rockies',abbr:'COL'},
-            {id:147,name:'New York Yankees',abbr:'NYY'}
-          ];
-          const cutoff='2026-09-08';
-          const start='2026-07-25';
-          async function j(url){const r=await fetch(url); if(!r.ok) throw new Error(`${r.status} ${url}`); return r.json();}
-          const out={cutoff,definition:'Team offense scored 0 runs in the 2nd inning',source:'MLB Stats API linescore/feed',teams:{}};
-          for(const t of teams){
-            const sched=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${t.id}&startDate=${start}&endDate=2026-09-07&hydrate=linescore`);
-            const games=[];
-            for(const d of sched.dates||[]) for(const g of d.games||[]){
-              if(!['Final','Game Over','Completed Early'].includes(g.status?.detailedState)) continue;
-              games.push(g);
-            }
-            games.sort((a,b)=>Date.parse(b.gameDate)-Date.parse(a.gameDate));
-            const last25=games.slice(0,25).reverse();
-            const rows=[];
-            for(const g of last25){
-              let inn2=null;
-              let side=null;
-              if(g.teams?.away?.team?.id===t.id){side='away'; inn2=g.linescore?.innings?.find(x=>x.num===2)?.away?.runs;}
-              else if(g.teams?.home?.team?.id===t.id){side='home'; inn2=g.linescore?.innings?.find(x=>x.num===2)?.home?.runs;}
-              if(inn2==null){
-                const feed=await j(`https://statsapi.mlb.com/api/v1.1/game/${g.gamePk}/feed/live`);
-                const i2=(feed.liveData?.linescore?.innings||[]).find(x=>x.num===2);
-                inn2=side==='away'?i2?.away?.runs:i2?.home?.runs;
+          (async()=>{
+            const teams=[
+              {id:115,name:'Colorado Rockies',abbr:'COL'},
+              {id:147,name:'New York Yankees',abbr:'NYY'}
+            ];
+            const cutoff='2026-09-08';
+            const start='2026-07-25';
+            async function j(url){const r=await fetch(url); if(!r.ok) throw new Error(`${r.status} ${url}`); return r.json();}
+            const out={cutoff,definition:'Team offense scored 0 runs in the 2nd inning',source:'MLB Stats API linescore/feed',teams:{}};
+            for(const t of teams){
+              const sched=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${t.id}&startDate=${start}&endDate=2026-09-07&hydrate=linescore`);
+              const games=[];
+              for(const d of sched.dates||[]) for(const g of d.games||[]){
+                if(!['Final','Game Over','Completed Early'].includes(g.status?.detailedState)) continue;
+                games.push(g);
               }
-              rows.push({gamePk:g.gamePk,date:g.officialDate,opponent:g.teams.away.team.id===t.id?g.teams.home.team.name:g.teams.away.team.name,homeAway:side,inning2Runs:Number(inn2??0),scoreless:Number(inn2??0)===0});
+              games.sort((a,b)=>Date.parse(b.gameDate)-Date.parse(a.gameDate));
+              const last25=games.slice(0,25).reverse();
+              const rows=[];
+              for(const g of last25){
+                let inn2=null;
+                let side=null;
+                if(g.teams?.away?.team?.id===t.id){side='away'; inn2=g.linescore?.innings?.find(x=>x.num===2)?.away?.runs;}
+                else if(g.teams?.home?.team?.id===t.id){side='home'; inn2=g.linescore?.innings?.find(x=>x.num===2)?.home?.runs;}
+                if(inn2==null){
+                  const feed=await j(`https://statsapi.mlb.com/api/v1.1/game/${g.gamePk}/feed/live`);
+                  const i2=(feed.liveData?.linescore?.innings||[]).find(x=>x.num===2);
+                  inn2=side==='away'?i2?.away?.runs:i2?.home?.runs;
+                }
+                if(inn2==null) throw new Error(`Missing inning 2 runs for game ${g.gamePk}`);
+                rows.push({gamePk:g.gamePk,date:g.officialDate,opponent:g.teams.away.team.id===t.id?g.teams.home.team.name:g.teams.away.team.name,homeAway:side,inning2Runs:Number(inn2),scoreless:Number(inn2)===0});
+              }
+              const scoreless=rows.filter(r=>r.scoreless).length;
+              out.teams[t.abbr]={team:t.name,n:rows.length,scorelessCount:scoreless,scorelessPct:Number((100*scoreless/rows.length).toFixed(1)),scoredCount:rows.length-scoreless,rows};
             }
-            const scoreless=rows.filter(r=>r.scoreless).length;
-            out.teams[t.abbr]={team:t.name,n:rows.length,scorelessCount:scoreless,scorelessPct:Number((100*scoreless/rows.length).toFixed(1)),scoredCount:rows.length-scoreless,rows};
-          }
-          fs.mkdirSync('data/runtime/i2',{recursive:true});
-          const p='data/runtime/i2/2026-09-08_col_nyy_last25_i2_offense.json';
-          fs.writeFileSync(p,JSON.stringify(out,null,2)+'\n');
-          console.log(JSON.stringify(out,null,2));
+            fs.mkdirSync('data/runtime/i2',{recursive:true});
+            const p='data/runtime/i2/2026-09-08_col_nyy_last25_i2_offense.json';
+            fs.writeFileSync(p,JSON.stringify(out,null,2)+'\n');
+            console.log(JSON.stringify(out,null,2));
+          })().catch(e=>{console.error(e);process.exit(1)});
           NODE
       - name: Commit artifact
         run: |
