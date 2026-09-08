@@ -1,0 +1,265 @@
+{
+  "date": "2026-09-08",
+  "method": "65% pitcher start I2 scoreless frequency + 35% opponent offense last-25 I2 scoreless frequency; full I2 Under = product of halves",
+  "source": "MLB Stats API linescores/game logs",
+  "games": [
+    {
+      "gamePk": 823500,
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "productionUnderPct": 59.02,
+      "total": 8,
+      "awayStarter": "Gabriel Hughes",
+      "homeStarter": "Cam Schlittler",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 21,
+        "scorelessPct": 84,
+        "scored": 4,
+        "totalRuns": 12
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 19,
+        "scorelessPct": 76,
+        "scored": 6,
+        "totalRuns": 12
+      },
+      "awayPitcher": {
+        "starts": 10,
+        "i1Scoreless": 5,
+        "i1ScorelessPct": 50,
+        "i1Runs": 11,
+        "i2Scoreless": 8,
+        "i2ScorelessPct": 80,
+        "i2Runs": 7
+      },
+      "homePitcher": {
+        "starts": 29,
+        "i1Scoreless": 25,
+        "i1ScorelessPct": 86.20689655172414,
+        "i1Runs": 9,
+        "i2Scoreless": 26,
+        "i2ScorelessPct": 89.65517241379311,
+        "i2Runs": 4
+      },
+      "top2ScorelessPct": 87.68,
+      "bottom2ScorelessPct": 78.6,
+      "challengerUnderPct": 68.91
+    },
+    {
+      "gamePk": 823174,
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "productionUnderPct": 58.17,
+      "total": 8,
+      "awayStarter": "Quinn Mathews",
+      "homeStarter": "Landen Roupp",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 17,
+        "scorelessPct": 68,
+        "scored": 8,
+        "totalRuns": 12
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 17,
+        "scorelessPct": 68,
+        "scored": 8,
+        "totalRuns": 18
+      },
+      "awayPitcher": {
+        "starts": 5,
+        "i1Scoreless": 4,
+        "i1ScorelessPct": 80,
+        "i1Runs": 3,
+        "i2Scoreless": 5,
+        "i2ScorelessPct": 100,
+        "i2Runs": 0
+      },
+      "homePitcher": {
+        "starts": 27,
+        "i1Scoreless": 22,
+        "i1ScorelessPct": 81.48148148148148,
+        "i1Runs": 9,
+        "i2Scoreless": 22,
+        "i2ScorelessPct": 81.48148148148148,
+        "i2Runs": 18
+      },
+      "top2ScorelessPct": 76.76,
+      "bottom2ScorelessPct": 88.8,
+      "challengerUnderPct": 68.17
+    },
+    {
+      "gamePk": 824714,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "productionUnderPct": 57.74,
+      "total": 8,
+      "awayStarter": "Reid Detmers",
+      "homeStarter": "Patrick Sandoval",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 21,
+        "scorelessPct": 84,
+        "scored": 4,
+        "totalRuns": 10
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 18,
+        "scorelessPct": 72,
+        "scored": 7,
+        "totalRuns": 14
+      },
+      "awayPitcher": {
+        "starts": 28,
+        "i1Scoreless": 22,
+        "i1ScorelessPct": 78.57142857142857,
+        "i1Runs": 11,
+        "i2Scoreless": 24,
+        "i2ScorelessPct": 85.71428571428571,
+        "i2Runs": 4
+      },
+      "homePitcher": {
+        "starts": 10,
+        "i1Scoreless": 8,
+        "i1ScorelessPct": 80,
+        "i1Runs": 3,
+        "i2Scoreless": 8,
+        "i2ScorelessPct": 80,
+        "i2Runs": 3
+      },
+      "top2ScorelessPct": 81.4,
+      "bottom2ScorelessPct": 80.91,
+      "challengerUnderPct": 65.86
+    },
+    {
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "productionUnderPct": 58.97,
+      "total": 7.5,
+      "awayStarter": "David Peterson",
+      "homeStarter": "Jacob Misiorowski",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 18,
+        "scorelessPct": 72,
+        "scored": 7,
+        "totalRuns": 14
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 16,
+        "scorelessPct": 64,
+        "scored": 9,
+        "totalRuns": 16
+      },
+      "awayPitcher": {
+        "starts": 19,
+        "i1Scoreless": 9,
+        "i1ScorelessPct": 47.36842105263158,
+        "i1Runs": 16,
+        "i2Scoreless": 12,
+        "i2ScorelessPct": 63.1578947368421,
+        "i2Runs": 14
+      },
+      "homePitcher": {
+        "starts": 26,
+        "i1Scoreless": 21,
+        "i1ScorelessPct": 80.76923076923077,
+        "i1Runs": 9,
+        "i2Scoreless": 24,
+        "i2ScorelessPct": 92.3076923076923,
+        "i2Runs": 5
+      },
+      "top2ScorelessPct": 85.2,
+      "bottom2ScorelessPct": 63.45,
+      "challengerUnderPct": 54.06
+    },
+    {
+      "gamePk": 823821,
+      "matchup": "New York Mets @ Miami Marlins",
+      "productionUnderPct": 56.49,
+      "total": 7.5,
+      "awayStarter": "Sean Manaea",
+      "homeStarter": "Sandy Alcantara",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 20,
+        "scorelessPct": 80,
+        "scored": 5,
+        "totalRuns": 9
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 15,
+        "scorelessPct": 60,
+        "scored": 10,
+        "totalRuns": 15
+      },
+      "awayPitcher": {
+        "starts": 15,
+        "i1Scoreless": 9,
+        "i1ScorelessPct": 60,
+        "i1Runs": 8,
+        "i2Scoreless": 11,
+        "i2ScorelessPct": 73.33333333333333,
+        "i2Runs": 5
+      },
+      "homePitcher": {
+        "starts": 30,
+        "i1Scoreless": 26,
+        "i1ScorelessPct": 86.66666666666667,
+        "i1Runs": 10,
+        "i2Scoreless": 21,
+        "i2ScorelessPct": 70,
+        "i2Runs": 13
+      },
+      "top2ScorelessPct": 73.5,
+      "bottom2ScorelessPct": 68.67,
+      "challengerUnderPct": 50.47
+    },
+    {
+      "gamePk": 823250,
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "productionUnderPct": 57.14,
+      "total": 7.5,
+      "awayStarter": "Riley Cornelio",
+      "homeStarter": "Casey Mize",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 20,
+        "scorelessPct": 80,
+        "scored": 5,
+        "totalRuns": 8
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 17,
+        "scorelessPct": 68,
+        "scored": 8,
+        "totalRuns": 13
+      },
+      "awayPitcher": {
+        "starts": 0,
+        "i1Scoreless": 0,
+        "i1ScorelessPct": null,
+        "i1Runs": 0,
+        "i2Scoreless": 0,
+        "i2ScorelessPct": null,
+        "i2Runs": 0
+      },
+      "homePitcher": {
+        "starts": 22,
+        "i1Scoreless": 21,
+        "i1ScorelessPct": 95.45454545454545,
+        "i1Runs": 1,
+        "i2Scoreless": 17,
+        "i2ScorelessPct": 77.27272727272727,
+        "i2Runs": 10
+      },
+      "top2ScorelessPct": 78.23,
+      "bottom2ScorelessPct": null,
+      "challengerUnderPct": null
+    }
+  ]
+}
