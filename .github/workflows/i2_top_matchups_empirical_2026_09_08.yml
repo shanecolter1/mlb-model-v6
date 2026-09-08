@@ -1,0 +1,97 @@
+name: Compare top Sep 8 I2 matchups empirically
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_top_matchups_empirical_2026_09_08.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compute empirical matchup comparison
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          (async()=>{
+            const targets=[823500,823738,823174,824714,823250,823821];
+            const prod=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-08_v04_summary.json','utf8'));
+            const prodByPk=new Map((prod.ranking||[]).map(x=>[Number(x.gamePk),x]));
+            async function j(url){const r=await fetch(url); if(!r.ok) throw new Error(`${r.status} ${url}`); return r.json();}
+            async function offenseLast25(teamId){
+              const sched=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${teamId}&startDate=2026-07-20&endDate=2026-09-07&hydrate=linescore`);
+              const games=[];
+              for(const d of sched.dates||[]) for(const g of d.games||[]) if(['Final','Game Over','Completed Early'].includes(g.status?.detailedState)) games.push(g);
+              games.sort((a,b)=>Date.parse(b.gameDate)-Date.parse(a.gameDate));
+              const rows=[];
+              for(const g of games.slice(0,25)){
+                const away=g.teams?.away?.team?.id===teamId;
+                let i2=g.linescore?.innings?.find(x=>x.num===2)?.[away?'away':'home']?.runs;
+                if(i2==null){
+                  const f=await j(`https://statsapi.mlb.com/api/v1.1/game/${g.gamePk}/feed/live`);
+                  i2=(f.liveData?.linescore?.innings||[]).find(x=>x.num===2)?.[away?'away':'home']?.runs;
+                }
+                if(i2==null) throw new Error(`Missing team I2 ${teamId} ${g.gamePk}`);
+                rows.push({gamePk:g.gamePk,date:g.officialDate,i2Runs:Number(i2)});
+              }
+              const z=rows.filter(x=>x.i2Runs===0).length;
+              return {n:rows.length,scoreless:z,scorelessPct:100*z/rows.length,scored:rows.length-z,totalRuns:rows.reduce((a,b)=>a+b.i2Runs,0)};
+            }
+            async function pitcherI1I2(playerId){
+              const gl=await j(`https://statsapi.mlb.com/api/v1/people/${playerId}/stats?stats=gameLog&group=pitching&season=2026`);
+              const splits=gl?.stats?.[0]?.splits||[];
+              const starts=splits.filter(s=>Number(s?.stat?.gamesStarted||0)>0 && s?.game?.gamePk);
+              const rows=[];
+              for(const s of starts){
+                const f=await j(`https://statsapi.mlb.com/api/v1.1/game/${s.game.gamePk}/feed/live`);
+                const awayPlayers=f.liveData?.boxscore?.teams?.away?.players||{};
+                const homePlayers=f.liveData?.boxscore?.teams?.home?.players||{};
+                const side=awayPlayers[`ID${playerId}`]?'away':homePlayers[`ID${playerId}`]?'home':null;
+                if(!side) continue;
+                const opp=side==='away'?'home':'away';
+                const inns=f.liveData?.linescore?.innings||[];
+                const i1=inns.find(x=>x.num===1)?.[opp]?.runs;
+                const i2=inns.find(x=>x.num===2)?.[opp]?.runs;
+                if(i1==null||i2==null) continue;
+                rows.push({gamePk:s.game.gamePk,date:s.date,i1Runs:Number(i1),i2Runs:Number(i2),ip:s.stat.inningsPitched});
+              }
+              const i1z=rows.filter(x=>x.i1Runs===0).length, i2z=rows.filter(x=>x.i2Runs===0).length;
+              return {starts:rows.length,i1Scoreless:i1z,i1ScorelessPct:100*i1z/rows.length,i1Runs:rows.reduce((a,b)=>a+b.i1Runs,0),i2Scoreless:i2z,i2ScorelessPct:100*i2z/rows.length,i2Runs:rows.reduce((a,b)=>a+b.i2Runs,0)};
+            }
+            const teamCache=new Map(), pitcherCache=new Map();
+            const out={date:'2026-09-08',method:'65% pitcher start I2 scoreless frequency + 35% opponent offense last-25 I2 scoreless frequency; full I2 Under = product of halves',source:'MLB Stats API linescores/game logs',games:[]};
+            for(const pk of targets){
+              const f=await j(`https://statsapi.mlb.com/api/v1.1/game/${pk}/feed/live`);
+              const away=f.gameData.teams.away, home=f.gameData.teams.home;
+              const ap=f.gameData.probablePitchers?.away, hp=f.gameData.probablePitchers?.home;
+              if(!ap?.id||!hp?.id){out.games.push({gamePk:pk,matchup:`${away.name} @ ${home.name}`,error:'missing probable pitcher'});continue;}
+              for(const t of [away,home]) if(!teamCache.has(t.id)) teamCache.set(t.id,await offenseLast25(t.id));
+              for(const p of [ap,hp]) if(!pitcherCache.has(p.id)) pitcherCache.set(p.id,await pitcherI1I2(p.id));
+              const aOff=teamCache.get(away.id), hOff=teamCache.get(home.id), aPit=pitcherCache.get(ap.id), hPit=pitcherCache.get(hp.id);
+              const top2Scoreless=.65*(hPit.i2ScorelessPct/100)+.35*(aOff.scorelessPct/100);
+              const bot2Scoreless=.65*(aPit.i2ScorelessPct/100)+.35*(hOff.scorelessPct/100);
+              const challenger=top2Scoreless*bot2Scoreless;
+              const pr=prodByPk.get(pk)||{};
+              out.games.push({gamePk:pk,matchup:`${away.name} @ ${home.name}`,productionUnderPct:pr.under05Pct??null,total:pr.total??null,awayStarter:ap.fullName,homeStarter:hp.fullName,awayOffenseLast25I2:aOff,homeOffenseLast25I2:hOff,awayPitcher:aPit,homePitcher:hPit,top2ScorelessPct:Number((100*top2Scoreless).toFixed(2)),bottom2ScorelessPct:Number((100*bot2Scoreless).toFixed(2)),challengerUnderPct:Number((100*challenger).toFixed(2))});
+            }
+            out.games.sort((a,b)=>(b.challengerUnderPct||0)-(a.challengerUnderPct||0));
+            fs.writeFileSync('data/runtime/i2/2026-09-08_top_matchups_empirical.json',JSON.stringify(out,null,2)+'\n');
+            console.log(JSON.stringify(out,null,2));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Commit artifact
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add data/runtime/i2/2026-09-08_top_matchups_empirical.json
+          git commit -m 'Add Sep 8 top I2 empirical matchup comparison' || exit 0
+          git push origin HEAD:main
