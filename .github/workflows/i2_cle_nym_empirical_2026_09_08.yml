@@ -1,0 +1,75 @@
+name: I2 CLE-BAL and NYM-MIA empirical Sep 8
+on:
+  push:
+    paths:
+      - '.github/workflows/i2_cle_nym_empirical_2026_09_08.yml'
+  workflow_dispatch:
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Compute exact regular-season pitcher I2 and offense last-25
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const offense = JSON.parse(fs.readFileSync('data/derived/i2/2026_team_second_inning_runs.json','utf8'));
+          const players = [
+            {name:'Tanner Bibee', id:676440, opp:'Baltimore Orioles'},
+            {name:'Brandon Young', id:687064, opp:'Cleveland Guardians'},
+            {name:'Sean Manaea', id:640455, opp:'Miami Marlins'},
+            {name:'Sandy Alcantara', id:645261, opp:'New York Mets'},
+          ];
+          function off(name){
+            const r=offense.rows.find(x=>x.team===name);
+            return {team:name, season:{games:r.games, scoreGames:r.i2ScoreGames, scorePct:r.i2ScorePct, underPct:1-r.i2ScorePct, runs:r.i2Runs}, last25:r.last25};
+          }
+          async function j(url){ const r=await fetch(url); if(!r.ok) throw new Error(`${r.status} ${url}`); return r.json(); }
+          async function pitcher(p){
+            const gl=await j(`https://statsapi.mlb.com/api/v1/people/${p.id}/stats?stats=gameLog&group=pitching&season=2026`);
+            const splits=(gl.stats?.[0]?.splits||[]).filter(s=>Number(s.stat?.gamesStarted||0)>0 && s.game?.gamePk);
+            let rows=[];
+            for(const s of splits){
+              const g=await j(`https://statsapi.mlb.com/api/v1.1/game/${s.game.gamePk}/feed/live`);
+              if(g.gameData?.game?.type && g.gameData.game.type!=='R') continue;
+              let runs=0, faced=false;
+              for(const play of (g.liveData?.plays?.allPlays||[])){
+                if(play.about?.inning!==2) continue;
+                if(play.matchup?.pitcher?.id!==p.id) continue;
+                faced=true;
+                for(const rr of (play.runners||[])) if(rr.movement?.end==='score') runs++;
+              }
+              if(faced) rows.push({gamePk:s.game.gamePk,date:s.date,runs,scoreless:runs===0});
+            }
+            rows.sort((a,b)=>a.date.localeCompare(b.date));
+            const n=rows.length, scoreless=rows.filter(x=>x.scoreless).length, runs=rows.reduce((a,b)=>a+b.runs,0);
+            return {name:p.name, startsWithI2:n, scoreless, scorelessPct:n?scoreless/n:null, i2Runs:runs, last5:rows.slice(-5), last10:rows.slice(-10), rows};
+          }
+          (async()=>{
+            const out={date:'2026-09-08', offense:{
+              Cleveland:off('Cleveland Guardians'), Baltimore:off('Baltimore Orioles'), Mets:off('New York Mets'), Miami:off('Miami Marlins')
+            }, pitchers:{}};
+            for(const p of players) out.pitchers[p.name]=await pitcher(p);
+            function blend(pitcherName, offenseName){
+              const pr=out.pitchers[pitcherName].scorelessPct;
+              const or=out.offense[offenseName].last25.i2UnderPct;
+              return .65*pr+.35*or;
+            }
+            out.matchups={
+              'CLE@BAL':{
+                cleTop2Scoreless:blend('Brandon Young','Cleveland'),
+                balBottom2Scoreless:blend('Tanner Bibee','Baltimore')
+              },
+              'NYM@MIA':{
+                nymTop2Scoreless:blend('Sandy Alcantara','Mets'),
+                miaBottom2Scoreless:blend('Sean Manaea','Miami')
+              }
+            };
+            out.matchups['CLE@BAL'].fullUnder=out.matchups['CLE@BAL'].cleTop2Scoreless*out.matchups['CLE@BAL'].balBottom2Scoreless;
+            out.matchups['NYM@MIA'].fullUnder=out.matchups['NYM@MIA'].nymTop2Scoreless*out.matchups['NYM@MIA'].miaBottom2Scoreless;
+            console.log('RESULT_JSON='+JSON.stringify(out));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
