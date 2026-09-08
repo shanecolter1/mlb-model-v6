@@ -1,0 +1,323 @@
+{
+  "date": "2026-09-08",
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "generatedAt": "2026-09-08T00:24:04.318Z",
+  "trialsPerProjectedGame": 50000,
+  "underThresholdPct": 61.5,
+  "scheduledGames": 15,
+  "projectedGames": 13,
+  "pendingGames": 2,
+  "qualifiedUnders": [],
+  "ranking": [
+    {
+      "rank": 1,
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "awayStarter": "David Peterson",
+      "homeStarter": "Jacob Misiorowski",
+      "total": 7.5,
+      "under05Pct": 59.6,
+      "over05Pct": 40.4,
+      "fairUnder": -148,
+      "fairOver": 148,
+      "top2ScorePct": 19.32,
+      "bottom2ScorePct": 26.11,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 2,
+      "gamePk": 823500,
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "gameDate": "2026-09-08T23:05:00Z",
+      "awayStarter": "Gabriel Hughes",
+      "homeStarter": "Cam Schlittler",
+      "total": 8,
+      "under05Pct": 58.66,
+      "over05Pct": 41.34,
+      "fairUnder": -142,
+      "fairOver": 142,
+      "top2ScorePct": 22.53,
+      "bottom2ScorePct": 24.28,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 3,
+      "gamePk": 824714,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "gameDate": "2026-09-08T22:45:00Z",
+      "awayStarter": "Reid Detmers",
+      "homeStarter": "Patrick Sandoval",
+      "total": 8,
+      "under05Pct": 58.6,
+      "over05Pct": 41.4,
+      "fairUnder": -142,
+      "fairOver": 142,
+      "top2ScorePct": 24.57,
+      "bottom2ScorePct": 22.3,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 4,
+      "gamePk": 823174,
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "gameDate": "2026-09-09T01:45:00Z",
+      "awayStarter": "Quinn Mathews",
+      "homeStarter": "Landen Roupp",
+      "total": 8,
+      "under05Pct": 58.37,
+      "over05Pct": 41.63,
+      "fairUnder": -140,
+      "fairOver": 140,
+      "top2ScorePct": 23.71,
+      "bottom2ScorePct": 23.49,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 5,
+      "gamePk": 823821,
+      "matchup": "New York Mets @ Miami Marlins",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "awayStarter": "Sean Manaea",
+      "homeStarter": "Sandy Alcantara",
+      "total": 7.5,
+      "under05Pct": 57.16,
+      "over05Pct": 42.84,
+      "fairUnder": -133,
+      "fairOver": 133,
+      "top2ScorePct": 22.84,
+      "bottom2ScorePct": 25.9,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 6,
+      "gamePk": 824875,
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "gameDate": "2026-09-08T23:15:00Z",
+      "awayStarter": "Freddy Peralta",
+      "homeStarter": "AJ Smith-Shawver",
+      "total": 8,
+      "under05Pct": 55.82,
+      "over05Pct": 44.18,
+      "fairUnder": -126,
+      "fairOver": 126,
+      "top2ScorePct": 24.66,
+      "bottom2ScorePct": 25.91,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 7,
+      "gamePk": 823414,
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "awayStarter": "Hayden Wesneski",
+      "homeStarter": "Andrew Painter",
+      "total": 8.5,
+      "under05Pct": 55.76,
+      "over05Pct": 44.24,
+      "fairUnder": -126,
+      "fairOver": 126,
+      "top2ScorePct": 26.66,
+      "bottom2ScorePct": 23.97,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 8,
+      "gamePk": 824792,
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "gameDate": "2026-09-08T22:35:00Z",
+      "awayStarter": "Tanner Bibee",
+      "homeStarter": "Brandon Young",
+      "total": 8.5,
+      "under05Pct": 55.69,
+      "over05Pct": 44.31,
+      "fairUnder": -126,
+      "fairOver": 126,
+      "top2ScorePct": 25,
+      "bottom2ScorePct": 25.75,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 9,
+      "gamePk": 824551,
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "awayStarter": "Bubba Chandler",
+      "homeStarter": "Sean Burke",
+      "total": 8.5,
+      "under05Pct": 55.49,
+      "over05Pct": 44.51,
+      "fairUnder": -125,
+      "fairOver": 125,
+      "top2ScorePct": 25.29,
+      "bottom2ScorePct": 25.72,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 10,
+      "gamePk": 823901,
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "gameDate": "2026-09-09T02:10:00Z",
+      "awayStarter": "Nick Lodolo",
+      "homeStarter": "Tarik Skubal",
+      "total": 8.5,
+      "under05Pct": 54.67,
+      "over05Pct": 45.33,
+      "fairUnder": -121,
+      "fairOver": 121,
+      "top2ScorePct": 23.51,
+      "bottom2ScorePct": 28.53,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 11,
+      "gamePk": 824228,
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "awayStarter": "Dean Kremer",
+      "homeStarter": "Drew Anderson",
+      "total": 8,
+      "under05Pct": 54.02,
+      "over05Pct": 45.98,
+      "fairUnder": -117,
+      "fairOver": 117,
+      "top2ScorePct": 26.63,
+      "bottom2ScorePct": 26.37,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 12,
+      "gamePk": 824063,
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "awayStarter": "Corbin Burnes",
+      "homeStarter": "Michael Wacha",
+      "total": 9.5,
+      "under05Pct": 51.58,
+      "over05Pct": 48.42,
+      "fairUnder": -107,
+      "fairOver": 107,
+      "top2ScorePct": 27.64,
+      "bottom2ScorePct": 28.78,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    },
+    {
+      "rank": 13,
+      "gamePk": 824957,
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "gameDate": "2026-09-09T01:40:00Z",
+      "awayStarter": "José Soriano",
+      "homeStarter": "Jack Perkins",
+      "total": 9.5,
+      "under05Pct": 50.72,
+      "over05Pct": 49.28,
+      "fairUnder": -103,
+      "fairOver": 103,
+      "top2ScorePct": 30.3,
+      "bottom2ScorePct": 27.29,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "underQualified": false
+    }
+  ],
+  "pending": [
+    {
+      "gamePk": 823250,
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "gameDate": "2026-09-09T01:40:00Z",
+      "awayStarter": "Riley Cornelio",
+      "homeStarter": "Casey Mize",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823092,
+      "matchup": "Texas Rangers @ Seattle Mariners",
+      "gameDate": "2026-09-09T01:40:00Z",
+      "awayStarter": "Cody Bradford",
+      "homeStarter": "Bryce Miller",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    }
+  ]
+}
