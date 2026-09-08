@@ -1,0 +1,169 @@
+{
+  "date": "2026-09-09",
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "generatedAt": "2026-09-08T00:19:10.709Z",
+  "trialsPerProjectedGame": 50000,
+  "underThresholdPct": 61.5,
+  "scheduledGames": 15,
+  "projectedGames": 0,
+  "pendingGames": 15,
+  "qualifiedUnders": [],
+  "ranking": [],
+  "pending": [
+    {
+      "gamePk": 824226,
+      "matchup": "Minnesota Twins @ Detroit Tigers",
+      "gameDate": "2026-09-09T17:10:00Z",
+      "awayStarter": "Zebby Matthews",
+      "homeStarter": "Keider Montero",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 824956,
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "gameDate": "2026-09-09T19:05:00Z",
+      "awayStarter": null,
+      "homeStarter": null,
+      "status": "PENDING_PROBABLE_STARTER",
+      "runEnvironment": null
+    },
+    {
+      "gamePk": 823172,
+      "matchup": "St. Louis Cardinals @ San Francisco Giants",
+      "gameDate": "2026-09-09T19:45:00Z",
+      "awayStarter": "Andre Pallante",
+      "homeStarter": "Blade Tidwell",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823251,
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "gameDate": "2026-09-09T20:10:00Z",
+      "awayStarter": "Jackson Kent",
+      "homeStarter": "Walker Buehler",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823090,
+      "matchup": "Texas Rangers @ Seattle Mariners",
+      "gameDate": "2026-09-09T20:10:00Z",
+      "awayStarter": "Cal Quantrill",
+      "homeStarter": "Kade Anderson",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 824791,
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "gameDate": "2026-09-09T22:35:00Z",
+      "awayStarter": "Foster Griffin",
+      "homeStarter": "Shane Baz",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823416,
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "gameDate": "2026-09-09T22:40:00Z",
+      "awayStarter": "Hunter Brown",
+      "homeStarter": "Cristopher Sánchez",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823818,
+      "matchup": "New York Mets @ Miami Marlins",
+      "gameDate": "2026-09-09T22:40:00Z",
+      "awayStarter": "Robert Stock",
+      "homeStarter": "Janson Junk",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 824713,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "gameDate": "2026-09-09T22:45:00Z",
+      "awayStarter": "Ryan Johnson",
+      "homeStarter": "Jake Bennett",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823497,
+      "matchup": "Colorado Rockies @ New York Yankees",
+      "gameDate": "2026-09-09T23:05:00Z",
+      "awayStarter": "Tomoyuki Sugano",
+      "homeStarter": "Will Warren",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 824871,
+      "matchup": "Tampa Bay Rays @ Atlanta Braves",
+      "gameDate": "2026-09-09T23:15:00Z",
+      "status": "ERROR",
+      "runEnvironment": null
+    },
+    {
+      "gamePk": 824064,
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "gameDate": "2026-09-09T23:40:00Z",
+      "awayStarter": null,
+      "homeStarter": "Daniel Lynch IV",
+      "status": "PENDING_PROBABLE_STARTER",
+      "runEnvironment": null
+    },
+    {
+      "gamePk": 824549,
+      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
+      "gameDate": "2026-09-09T23:40:00Z",
+      "awayStarter": null,
+      "homeStarter": "Davis Martin",
+      "status": "PENDING_PROBABLE_STARTER",
+      "runEnvironment": null
+    },
+    {
+      "gamePk": 823739,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "gameDate": "2026-09-09T23:40:00Z",
+      "awayStarter": "Kevin Gausman",
+      "homeStarter": "Logan Henderson",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    },
+    {
+      "gamePk": 823900,
+      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
+      "gameDate": "2026-09-10T02:10:00Z",
+      "awayStarter": "Rhett Lowder",
+      "homeStarter": "Yoshinobu Yamamoto",
+      "status": "PENDING_FULL_GAME_TOTAL",
+      "runEnvironment": {
+        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+      }
+    }
+  ]
+}
