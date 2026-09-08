@@ -1,0 +1,183 @@
+name: Sep 8 I2 official full-slate model
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_official_full_slate_2026_09_08.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  official-full-slate:
+    runs-on: ubuntu-latest
+    env:
+      I2_DATE: '2026-09-08'
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Pull MLB official lineups, probable starters, and starter season stats
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          async function j(u){const r=await fetch(u);if(!r.ok)throw new Error(`${r.status} ${u}`);return r.json();}
+          const date='2026-09-08';
+          const sched=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${date}`);
+          const games=(sched.dates?.[0]?.games||[]);
+          const overrides={date,generatedAt:new Date().toISOString(),governance:{sourceStatus:'MLB_CONFIRMED_LINEUPS_ONLY',methodology:'MLB Stats API live-feed battingOrder arrays. No previous-game or projected batting order is used. Games without two nine-man MLB batting orders remain unconfirmed.',source:'MLB Stats API schedule + live feed',marketDataUsed:false},games:{}};
+          const audit=[];
+          async function starterStats(id){
+            if(!id) return null;
+            try{
+              const x=await j(`https://statsapi.mlb.com/api/v1/people/${id}/stats?stats=season&group=pitching&season=2026`);
+              const s=x.stats?.[0]?.splits?.[0]?.stat||{};
+              return {era:s.era??null,whip:s.whip??null,inningsPitched:s.inningsPitched??null,gamesStarted:s.gamesStarted??null,strikeOuts:s.strikeOuts??null,baseOnBalls:s.baseOnBalls??null,homeRuns:s.homeRuns??null};
+            }catch{return null;}
+          }
+          for(const sg of games){
+            const feed=await j(`https://statsapi.mlb.com/api/v1.1/game/${sg.gamePk}/feed/live`);
+            const gd=feed.gameData||{}, bs=feed.liveData?.boxscore?.teams||{};
+            const playerName=id=>gd.players?.[`ID${id}`]?.fullName||null;
+            const awayIds=Array.isArray(bs.away?.battingOrder)?bs.away.battingOrder:[];
+            const homeIds=Array.isArray(bs.home?.battingOrder)?bs.home.battingOrder:[];
+            const away=awayIds.map(playerName).filter(Boolean), home=homeIds.map(playerName).filter(Boolean);
+            const ap=gd.probablePitchers?.away||null, hp=gd.probablePitchers?.home||null;
+            const aStats=await starterStats(ap?.id), hStats=await starterStats(hp?.id);
+            const confirmed=away.length===9&&home.length===9;
+            if(confirmed){
+              overrides.games[String(sg.gamePk)]={matchup:`${gd.teams?.away?.name||sg.teams.away.team.name} @ ${gd.teams?.home?.name||sg.teams.home.team.name}`,lineupMethod:'MLB Stats API confirmed batting order',away,home};
+            }
+            audit.push({gamePk:sg.gamePk,gameDate:sg.gameDate,matchup:`${sg.teams.away.team.name} @ ${sg.teams.home.team.name}`,abstractGameState:sg.status?.abstractGameState,detailedState:sg.status?.detailedState,lineupsConfirmed:confirmed,awayLineup:away,homeLineup:home,awayStarter:ap?{id:ap.id,name:ap.fullName,stats:aStats}:null,homeStarter:hp?{id:hp.id,name:hp.fullName,stats:hStats}:null});
+          }
+          fs.writeFileSync(`data/runtime/i2/${date}_official_lineups.json`,JSON.stringify(overrides,null,2)+'\n');
+          fs.writeFileSync(`data/runtime/i2/${date}_official_lineup_audit.json`,JSON.stringify({date,generatedAt:new Date().toISOString(),scheduledGames:games.length,confirmedGames:audit.filter(x=>x.lineupsConfirmed).length,games:audit},null,2)+'\n');
+          console.log(JSON.stringify({scheduled:games.length,confirmed:audit.filter(x=>x.lineupsConfirmed).length,games:audit.map(x=>({gamePk:x.gamePk,matchup:x.matchup,confirmed:x.lineupsConfirmed,awayStarter:x.awayStarter?.name,homeStarter:x.homeStarter?.name}))},null,2));
+          NODE
+
+      - name: Refresh DraftKings full-game totals pre-freeze
+        env:
+          I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_official_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Run parent model on official lineups
+        env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+          I2_CUTOFF: '1970-01-01T00:00:00Z'
+          I2_TRIALS: '50000'
+          I2_OUTPUT: data/runtime/i2/2026-09-08_official_parent_predictions.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+          I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-08_official_lineups.json
+          I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_official_run_environment.json
+          I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Apply v0.4 Local-CV production calibration and freeze
+        env:
+          I2_INPUT: data/runtime/i2/2026-09-08_official_parent_predictions.json
+          I2_OUTPUT: data/runtime/i2/2026-09-08_official_v04_predictions.json
+        run: node src/pipeline/apply_i2_v04_local_cv.mjs
+
+      - name: Build all-slate empirical I2 challenger from exact 2026 regular-season innings
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          async function j(u){const r=await fetch(u);if(!r.ok)throw new Error(`${r.status} ${u}`);return r.json();}
+          const date='2026-09-08';
+          const audit=JSON.parse(fs.readFileSync(`data/runtime/i2/${date}_official_lineup_audit.json`,'utf8'));
+          const offense=JSON.parse(fs.readFileSync('data/derived/i2/2026_team_second_inning_runs.json','utf8'));
+          function off(team){const r=offense.rows.find(x=>x.team===team);return r?{seasonUnder:1-r.i2ScorePct,last25Under:r.last25?.i2UnderPct??null,last25Runs:r.last25?.i2Runs??null,last25ScoreGames:r.last25?.i2ScoreGames??null}:null;}
+          async function pitcher(p){
+            if(!p?.id)return null;
+            const gl=await j(`https://statsapi.mlb.com/api/v1/people/${p.id}/stats?stats=gameLog&group=pitching&season=2026`);
+            const splits=(gl.stats?.[0]?.splits||[]).filter(s=>Number(s.stat?.gamesStarted||0)>0&&s.game?.gamePk);
+            const rows=[];
+            for(const s of splits){
+              const g=await j(`https://statsapi.mlb.com/api/v1.1/game/${s.game.gamePk}/feed/live`);
+              if(g.gameData?.game?.type&&g.gameData.game.type!=='R')continue;
+              let runs=0,faced=false;
+              for(const play of (g.liveData?.plays?.allPlays||[])){
+                if(play.about?.inning!==2||play.matchup?.pitcher?.id!==p.id)continue;
+                faced=true;
+                for(const rr of (play.runners||[]))if(rr.movement?.end==='score')runs++;
+              }
+              if(faced)rows.push({gamePk:s.game.gamePk,date:s.date,runs,scoreless:runs===0});
+            }
+            rows.sort((a,b)=>a.date.localeCompare(b.date));
+            const n=rows.length,scoreless=rows.filter(x=>x.scoreless).length;
+            return {id:p.id,name:p.name,n,scoreless,scorelessPct:n?scoreless/n:null,i2Runs:rows.reduce((a,b)=>a+b.runs,0),last5ScorelessPct:rows.length?rows.slice(-5).filter(x=>x.scoreless).length/Math.min(5,rows.length):null,last10ScorelessPct:rows.length?rows.slice(-10).filter(x=>x.scoreless).length/Math.min(10,rows.length):null};
+          }
+          const results=[];
+          for(const g of audit.games){
+            if(!g.lineupsConfirmed)continue;
+            const aP=await pitcher(g.awayStarter), hP=await pitcher(g.homeStarter);
+            const awayTeam=g.matchup.split(' @ ')[0],homeTeam=g.matchup.split(' @ ')[1];
+            const aOff=off(awayTeam),hOff=off(homeTeam);
+            const top=aP&&hP&&aOff&&hOff&&hP.scorelessPct!=null&&aOff.last25Under!=null ? .65*hP.scorelessPct+.35*aOff.last25Under : null;
+            const bot=aP&&hP&&aOff&&hOff&&aP.scorelessPct!=null&&hOff.last25Under!=null ? .65*aP.scorelessPct+.35*hOff.last25Under : null;
+            results.push({gamePk:g.gamePk,matchup:g.matchup,awayStarter:aP,homeStarter:hP,awayOffense:aOff,homeOffense:hOff,top2Scoreless:top,bottom2Scoreless:bot,fullUnder:top!=null&&bot!=null?top*bot:null});
+          }
+          fs.writeFileSync(`data/runtime/i2/${date}_official_empirical_challenger.json`,JSON.stringify({date,generatedAt:new Date().toISOString(),method:'65% exact starter 2026 regular-season I2 scoreless + 35% opponent offense last-25 I2 scoreless; half-inning products; research challenger only',games:results},null,2)+'\n');
+          console.log(JSON.stringify(results.map(x=>({matchup:x.matchup,awayStarter:`${x.awayStarter?.scoreless}/${x.awayStarter?.n}`,homeStarter:`${x.homeStarter?.scoreless}/${x.homeStarter?.n}`,top2:x.top2Scoreless,bottom2:x.bottom2Scoreless,full:x.fullUnder})),null,2));
+          NODE
+
+      - name: Pull post-freeze I2 period markets across full local-date window
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const key=process.env.ODDS_API_KEY;
+          if(!key)throw new Error('ODDS_API_KEY missing');
+          async function get(path,params={}){const u=new URL(path,'https://api.theoddsapi.com');for(const[k,v]of Object.entries(params))u.searchParams.set(k,String(v));const r=await fetch(u,{headers:{'x-api-key':key,accept:'application/json'}});const t=await r.text();let b;try{b=JSON.parse(t)}catch{b={raw:t}};if(!r.ok)throw new Error(`${r.status} ${t.slice(0,400)}`);return b;}
+          const from='2026-09-08T05:00:00Z',to='2026-09-09T05:00:00Z';
+          const ev=await get('/odds/',{sport_key:'baseball_mlb',markets:'h2h',commenceTimeFrom:from,commenceTimeTo:to});
+          const events=Array.isArray(ev?.data)?ev.data:[];const probes=[];
+          for(const e of events){try{const p=await get('/period-markets/',{sport_key:'baseball_mlb',event_id:e.event_id});probes.push({event_id:e.event_id,away_team:e.away_team,home_team:e.home_team,start_time:e.start_time,response:p});}catch(error){probes.push({event_id:e.event_id,away_team:e.away_team,home_team:e.home_team,start_time:e.start_time,error:String(error.message||error)});}}
+          const rows=[];
+          for(const p of probes){const raw=p.response?.data;const items=Array.isArray(raw)?raw:(raw&&typeof raw==='object'?[raw]:[]);for(const item of items)for(const m of(item.markets||[]))for(const b of(m.books||[]))rows.push({event_id:item.event_id||p.event_id,matchup:`${item.away_team||p.away_team} @ ${item.home_team||p.home_team}`,start_time:item.start_time||p.start_time,market:m.market,sportsbook:b.book,updated_at:b.updated_at||null,outcomes:b.outcomes||[]});}
+          fs.writeFileSync('data/runtime/i2/2026-09-08_official_period_markets.json',JSON.stringify({date:'2026-09-08',generatedAt:new Date().toISOString(),window:{from,to},events:events.length,rows,probes},null,2)+'\n');
+          console.log(JSON.stringify({events:events.length,rows:rows.length,markets:[...new Set(rows.map(x=>x.market))],books:[...new Set(rows.map(x=>x.sportsbook))]},null,2));
+          NODE
+
+      - name: Write consolidated official full-slate summary with post-freeze EV
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const date='2026-09-08', gate=61.5;
+          const pred=JSON.parse(fs.readFileSync(`data/runtime/i2/${date}_official_v04_predictions.json`,'utf8'));
+          const emp=JSON.parse(fs.readFileSync(`data/runtime/i2/${date}_official_empirical_challenger.json`,'utf8'));
+          const audit=JSON.parse(fs.readFileSync(`data/runtime/i2/${date}_official_lineup_audit.json`,'utf8'));
+          const mk=JSON.parse(fs.readFileSync(`data/runtime/i2/${date}_official_period_markets.json`,'utf8'));
+          const normalize=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+          const amerToDec=a=>a>0?1+a/100:1+100/Math.abs(a);
+          const ev=(p,a)=>p*amerToDec(a)-1;
+          function marketFor(matchup){
+            const [away,home]=matchup.split(' @ ');const aa=normalize(away),hh=normalize(home);
+            const candidates=[];
+            for(const r of mk.rows||[]){const rm=normalize(r.matchup);if(!(rm.includes(aa)&&rm.includes(hh)))continue;const ml=String(r.market||'').toLowerCase();if(!(ml.includes('2')&&ml.includes('inning')))continue;for(const o of r.outcomes||[]){if(String(o.name||'').toLowerCase()!=='under'||Number(o.point)!==0.5||o.price==null)continue;candidates.push({sportsbook:r.sportsbook,market:r.market,price:Number(o.price),updatedAt:r.updated_at});}}
+            return candidates.sort((a,b)=>b.price-a.price);
+          }
+          const rows=(pred.ranking||[]).map(r=>{
+            const e=emp.games.find(x=>x.gamePk===r.gamePk);const a=audit.games.find(x=>x.gamePk===r.gamePk);const markets=marketFor(r.matchup);const fd=markets.find(x=>/fan.?duel/i.test(x.sportsbook));const dk=markets.find(x=>/draft.?kings/i.test(x.sportsbook));const best=markets[0]||null;const p=Number(r.under05Pct)/100;
+            return {rank:r.rank,gamePk:r.gamePk,matchup:r.matchup,gameDate:r.gameDate,lineupsConfirmed:a?.lineupsConfirmed||false,awayLineup:a?.awayLineup||[],homeLineup:a?.homeLineup||[],awayStarter:r.awayStarter,homeStarter:r.homeStarter,awayStarterStats:a?.awayStarter?.stats||null,homeStarterStats:a?.homeStarter?.stats||null,total:r.runEnvironment?.fullGameTotal??null,productionUnderPct:r.under05Pct,productionFairUnder:r.fairUnder,underQualified:Number(r.under05Pct)>=gate,top2ScorePct:r.top2ScorePct,bottom2ScorePct:r.bottom2ScorePct,empiricalUnderPct:e?.fullUnder!=null?100*e.fullUnder:null,empiricalTop2ScorelessPct:e?.top2Scoreless!=null?100*e.top2Scoreless:null,empiricalBottom2ScorelessPct:e?.bottom2Scoreless!=null?100*e.bottom2Scoreless:null,awayStarterI2:e?.awayStarter||null,homeStarterI2:e?.homeStarter||null,awayOffense:e?.awayOffense||null,homeOffense:e?.homeOffense||null,bestI2UnderMarket:best?{...best,productionEVPct:100*ev(p,best.price),empiricalEVPct:e?.fullUnder!=null?100*ev(e.fullUnder,best.price):null}:null,fanduelI2Under:fd?{...fd,productionEVPct:100*ev(p,fd.price),empiricalEVPct:e?.fullUnder!=null?100*ev(e.fullUnder,fd.price):null}:null,draftkingsI2Under:dk?{...dk,productionEVPct:100*ev(p,dk.price),empiricalEVPct:e?.fullUnder!=null?100*ev(e.fullUnder,dk.price):null}:null};
+          });
+          const unresolved=(pred.games||[]).filter(g=>!rows.some(r=>r.gamePk===g.gamePk)).map(g=>({gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,status:g.modelStatus||g.runEnvironment?.status||'UNRESOLVED',reason:g.error||g.reason||g.runEnvironment?.reason||null}));
+          const out={date,generatedAt:new Date().toISOString(),model:pred.model,productionGatePct:gate,scheduledGames:audit.scheduledGames,confirmedLineupGames:audit.confirmedGames,projectedGames:rows.length,qualifiedUnders:rows.filter(x=>x.underQualified),ranking:rows,unresolved,marketPullIsPostFreeze:true};
+          fs.writeFileSync(`data/runtime/i2/${date}_official_full_slate_summary.json`,JSON.stringify(out,null,2)+'\n');
+          console.log(JSON.stringify(out,null,2));
+          NODE
+
+      - name: Commit official full-slate artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add data/runtime/i2/2026-09-08_official_lineups.json data/runtime/i2/2026-09-08_official_lineup_audit.json data/runtime/i2/2026-09-08_official_run_environment.json data/runtime/i2/2026-09-08_official_parent_predictions.json data/runtime/i2/2026-09-08_official_v04_predictions.json data/runtime/i2/2026-09-08_official_empirical_challenger.json data/runtime/i2/2026-09-08_official_period_markets.json data/runtime/i2/2026-09-08_official_full_slate_summary.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Run official Sep 8 I2 full-slate model'
+          git pull --rebase origin main
+          git push origin HEAD:main
