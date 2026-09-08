@@ -1,0 +1,425 @@
+{
+  "cutoff": "2026-09-08",
+  "definition": "Team offense scored 0 runs in the 2nd inning",
+  "source": "MLB Stats API linescore/feed",
+  "teams": {
+    "COL": {
+      "team": "Colorado Rockies",
+      "n": 25,
+      "scorelessCount": 21,
+      "scorelessPct": 84,
+      "scoredCount": 4,
+      "rows": [
+        {
+          "gamePk": 825048,
+          "date": "2026-08-10",
+          "opponent": "Arizona Diamondbacks",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 825046,
+          "date": "2026-08-11",
+          "opponent": "Arizona Diamondbacks",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 825047,
+          "date": "2026-08-12",
+          "opponent": "Arizona Diamondbacks",
+          "homeAway": "away",
+          "inning2Runs": 4,
+          "scoreless": false
+        },
+        {
+          "gamePk": 823185,
+          "date": "2026-08-14",
+          "opponent": "San Francisco Giants",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823184,
+          "date": "2026-08-15",
+          "opponent": "San Francisco Giants",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823182,
+          "date": "2026-08-16",
+          "opponent": "San Francisco Giants",
+          "homeAway": "away",
+          "inning2Runs": 4,
+          "scoreless": false
+        },
+        {
+          "gamePk": 824320,
+          "date": "2026-08-17",
+          "opponent": "Los Angeles Dodgers",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824319,
+          "date": "2026-08-18",
+          "opponent": "Los Angeles Dodgers",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824318,
+          "date": "2026-08-19",
+          "opponent": "Los Angeles Dodgers",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824317,
+          "date": "2026-08-21",
+          "opponent": "Cleveland Guardians",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824316,
+          "date": "2026-08-22",
+          "opponent": "Cleveland Guardians",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824315,
+          "date": "2026-08-23",
+          "opponent": "Cleveland Guardians",
+          "homeAway": "home",
+          "inning2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "gamePk": 822695,
+          "date": "2026-08-24",
+          "opponent": "Washington Nationals",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 822693,
+          "date": "2026-08-25",
+          "opponent": "Washington Nationals",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 822692,
+          "date": "2026-08-26",
+          "opponent": "Washington Nationals",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 822694,
+          "date": "2026-08-27",
+          "opponent": "Washington Nationals",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824877,
+          "date": "2026-08-28",
+          "opponent": "Atlanta Braves",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824874,
+          "date": "2026-08-29",
+          "opponent": "Atlanta Braves",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824876,
+          "date": "2026-08-30",
+          "opponent": "Atlanta Braves",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824314,
+          "date": "2026-08-31",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824313,
+          "date": "2026-09-01",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "home",
+          "inning2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "gamePk": 824312,
+          "date": "2026-09-02",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824311,
+          "date": "2026-09-04",
+          "opponent": "St. Louis Cardinals",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824310,
+          "date": "2026-09-05",
+          "opponent": "St. Louis Cardinals",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824309,
+          "date": "2026-09-06",
+          "opponent": "St. Louis Cardinals",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        }
+      ]
+    },
+    "NYY": {
+      "team": "New York Yankees",
+      "n": 25,
+      "scorelessCount": 19,
+      "scorelessPct": 76,
+      "scoredCount": 6,
+      "rows": [
+        {
+          "gamePk": 823512,
+          "date": "2026-08-11",
+          "opponent": "Seattle Mariners",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823511,
+          "date": "2026-08-12",
+          "opponent": "Seattle Mariners",
+          "homeAway": "home",
+          "inning2Runs": 1,
+          "scoreless": false
+        },
+        {
+          "gamePk": 823508,
+          "date": "2026-08-13",
+          "opponent": "Seattle Mariners",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 822777,
+          "date": "2026-08-14",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 822775,
+          "date": "2026-08-15",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "away",
+          "inning2Runs": 1,
+          "scoreless": false
+        },
+        {
+          "gamePk": 822774,
+          "date": "2026-08-16",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824803,
+          "date": "2026-08-18",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 824801,
+          "date": "2026-08-19",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "away",
+          "inning2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "gamePk": 824802,
+          "date": "2026-08-20",
+          "opponent": "Baltimore Orioles",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823510,
+          "date": "2026-08-21",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "home",
+          "inning2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "gamePk": 823509,
+          "date": "2026-08-22",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823507,
+          "date": "2026-08-23",
+          "opponent": "Toronto Blue Jays",
+          "homeAway": "home",
+          "inning2Runs": 2,
+          "scoreless": false
+        },
+        {
+          "gamePk": 823505,
+          "date": "2026-08-25",
+          "opponent": "Houston Astros",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823506,
+          "date": "2026-08-26",
+          "opponent": "Houston Astros",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823503,
+          "date": "2026-08-27",
+          "opponent": "Houston Astros",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823504,
+          "date": "2026-08-28",
+          "opponent": "Boston Red Sox",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823539,
+          "date": "2026-08-29",
+          "opponent": "Boston Red Sox",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823501,
+          "date": "2026-08-29",
+          "opponent": "Boston Red Sox",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823502,
+          "date": "2026-08-30",
+          "opponent": "Boston Red Sox",
+          "homeAway": "home",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823982,
+          "date": "2026-08-31",
+          "opponent": "Los Angeles Angels",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823984,
+          "date": "2026-09-01",
+          "opponent": "Los Angeles Angels",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823983,
+          "date": "2026-09-02",
+          "opponent": "Los Angeles Angels",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823256,
+          "date": "2026-09-04",
+          "opponent": "San Diego Padres",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        },
+        {
+          "gamePk": 823257,
+          "date": "2026-09-05",
+          "opponent": "San Diego Padres",
+          "homeAway": "away",
+          "inning2Runs": 4,
+          "scoreless": false
+        },
+        {
+          "gamePk": 823253,
+          "date": "2026-09-06",
+          "opponent": "San Diego Padres",
+          "homeAway": "away",
+          "inning2Runs": 0,
+          "scoreless": true
+        }
+      ]
+    }
+  }
+}
