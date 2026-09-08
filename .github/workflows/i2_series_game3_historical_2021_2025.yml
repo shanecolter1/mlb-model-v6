@@ -1,0 +1,97 @@
+name: I2 series game 3 historical 2021-2025
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_series_game3_historical_2021_2025.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Analyze series game number and Wednesday game 3 effects
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          (async()=>{
+            async function j(url){const r=await fetch(url); if(!r.ok) throw new Error(`${r.status} ${url}`); return r.json();}
+            const years=[2021,2022,2023,2024,2025];
+            const all=[];
+            for(const year of years){
+              for(let month=3;month<=10;month++){
+                const start=`${year}-${String(month).padStart(2,'0')}-01`;
+                const endDate=new Date(Date.UTC(year,month,0));
+                const end=`${year}-${String(month).padStart(2,'0')}-${String(endDate.getUTCDate()).padStart(2,'0')}`;
+                const u=`https://statsapi.mlb.com/api/v1/schedule?sportId=1&gameType=R&startDate=${start}&endDate=${end}&hydrate=linescore`;
+                const s=await j(u);
+                for(const d of s.dates||[]) for(const g of d.games||[]){
+                  if(!['Final','Game Over','Completed Early'].includes(g.status?.detailedState)) continue;
+                  const i2=(g.linescore?.innings||[]).find(x=>x.num===2);
+                  if(i2?.away?.runs==null||i2?.home?.runs==null) continue;
+                  const ar=Number(i2.away.runs), hr=Number(i2.home.runs);
+                  const dt=new Date(`${g.officialDate}T12:00:00Z`);
+                  all.push({
+                    year,gamePk:g.gamePk,date:g.officialDate,dow:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][dt.getUTCDay()],
+                    dayNight:g.dayNight||null,seriesGameNumber:g.seriesGameNumber??null,gamesInSeries:g.gamesInSeries??null,
+                    homeId:g.teams.home.team.id,awayId:g.teams.away.team.id,
+                    homeScore:Number(g.teams.home.score??0),awayScore:Number(g.teams.away.score??0),
+                    i2Runs:ar+hr,under:(ar+hr)===0
+                  });
+                }
+              }
+            }
+            all.sort((a,b)=>a.date.localeCompare(b.date)||a.gamePk-b.gamePk);
+            function stat(arr){const n=arr.length,u=arr.filter(x=>x.under).length,p=n?u/n:null;return {n,under:u,underPct:p==null?null:Number((100*p).toFixed(2)),over:n-u};}
+            const bySeriesNo={};
+            for(const n of [1,2,3,4]) bySeriesNo[n]=stat(all.filter(x=>x.seriesGameNumber===n));
+            const allStat=stat(all);
+            const g3=all.filter(x=>x.seriesGameNumber===3);
+            const g3of3=g3.filter(x=>x.gamesInSeries===3);
+            const wedG3=g3of3.filter(x=>x.dow==='Wed');
+            const wedG3Day=wedG3.filter(x=>x.dayNight==='day');
+            const wedG3Night=wedG3.filter(x=>x.dayNight==='night');
+            const g3NotWed=g3of3.filter(x=>x.dow!=='Wed');
+
+            // derive series status entering Game 3 from same home/away pair and game numbers 1/2 within previous 5 days
+            const enter=[];
+            for(const g of g3of3){
+              const gd=new Date(g.date+'T12:00:00Z');
+              const prior=all.filter(x=>x.year===g.year&&x.homeId===g.homeId&&x.awayId===g.awayId&&x.seriesGameNumber<3&&x.seriesGameNumber>=1&&((gd-new Date(x.date+'T12:00:00Z'))/86400000)>=0&&((gd-new Date(x.date+'T12:00:00Z'))/86400000)<=5);
+              const p1=prior.find(x=>x.seriesGameNumber===1),p2=prior.find(x=>x.seriesGameNumber===2);
+              if(!p1||!p2) continue;
+              const homeWins=[p1,p2].filter(x=>x.homeScore>x.awayScore).length;
+              const status=homeWins===1?'split_1_1':(homeWins===2?'home_up_2_0':'away_up_2_0');
+              enter.push({...g,enterStatus:status});
+            }
+            const byStatus={split_1_1:stat(enter.filter(x=>x.enterStatus==='split_1_1')),home_up_2_0:stat(enter.filter(x=>x.enterStatus==='home_up_2_0')),away_up_2_0:stat(enter.filter(x=>x.enterStatus==='away_up_2_0')),either_team_up_2_0:stat(enter.filter(x=>x.enterStatus!=='split_1_1'))};
+            const byYear={};
+            for(const y of years) byYear[y]={all:stat(all.filter(x=>x.year===y)),game3of3:stat(g3of3.filter(x=>x.year===y)),wedGame3of3:stat(wedG3.filter(x=>x.year===y))};
+
+            // simple two-proportion z difference vs all non-game3-of3 games
+            function erf(x){const sign=x<0?-1:1;x=Math.abs(x);const a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=.3275911,t=1/(1+p*x);const y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);return sign*y;}
+            function diff(a,b){const n1=a.length,n2=b.length,x1=a.filter(x=>x.under).length,x2=b.filter(x=>x.under).length,p1=x1/n1,p2=x2/n2,p=(x1+x2)/(n1+n2),se=Math.sqrt(p*(1-p)*(1/n1+1/n2)),z=(p1-p2)/se,pv=2*(1-(.5*(1+erf(Math.abs(z)/Math.sqrt(2)))));return {pctPointDiff:Number((100*(p1-p2)).toFixed(2)),z:Number(z.toFixed(3)),pValue:Number(pv.toFixed(4))};}
+            const nonG3of3=all.filter(x=>!(x.seriesGameNumber===3&&x.gamesInSeries===3));
+            const nonWedG3=all.filter(x=>!(x.seriesGameNumber===3&&x.gamesInSeries===3&&x.dow==='Wed'));
+
+            const out={years,definition:'I2 Under 0.5 = zero combined runs in second inning',all:allStat,bySeriesGameNumber:bySeriesNo,game3of3:stat(g3of3),wednesdayGame3of3:stat(wedG3),wednesdayGame3Day:stat(wedG3Day),wednesdayGame3Night:stat(wedG3Night),game3of3OtherDays:stat(g3NotWed),enteringGame3SeriesStatus:byStatus,byYear,tests:{game3of3_vs_allOther:diff(g3of3,nonG3of3),wednesdayGame3of3_vs_allOther:diff(wedG3,nonWedG3)},notes:['Regular-season MLB only','Series position from MLB schedule seriesGameNumber/gamesInSeries','No pregame-total adjustment in this diagnostic','Series-status derivation requires Games 1 and 2 to be present within five days with same home/away pairing']};
+            fs.mkdirSync('data/runtime/i2',{recursive:true});
+            fs.writeFileSync('data/runtime/i2/2021_2025_series_game3_i2_analysis.json',JSON.stringify(out,null,2)+'\n');
+            console.log(JSON.stringify(out,null,2));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Commit artifact
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add data/runtime/i2/2021_2025_series_game3_i2_analysis.json
+          git commit -m 'Add 2021-2025 I2 series game 3 analysis' || exit 0
+          git push origin HEAD:main
