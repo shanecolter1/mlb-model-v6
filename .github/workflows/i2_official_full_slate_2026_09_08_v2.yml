@@ -1,0 +1,69 @@
+name: Sep 8 I2 official full-slate model v2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_official_full_slate_2026_09_08_v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  official-full-slate:
+    runs-on: ubuntu-latest
+    env:
+      I2_DATE: '2026-09-08'
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Pull MLB official lineups and starter stats
+        run: node src/pipeline/build_i2_official_lineups.mjs
+
+      - name: Refresh DraftKings full-game totals pre-freeze
+        env:
+          I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_official_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Run parent model on official lineups
+        env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+          I2_CUTOFF: '1970-01-01T00:00:00Z'
+          I2_TRIALS: '50000'
+          I2_OUTPUT: data/runtime/i2/2026-09-08_official_parent_predictions.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+          I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-08_official_lineups.json
+          I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_official_run_environment.json
+          I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Apply v0.4 Local-CV production calibration and freeze
+        env:
+          I2_INPUT: data/runtime/i2/2026-09-08_official_parent_predictions.json
+          I2_OUTPUT: data/runtime/i2/2026-09-08_official_v04_predictions.json
+        run: node src/pipeline/apply_i2_v04_local_cv.mjs
+
+      - name: Build exact empirical challenger
+        run: node src/pipeline/build_i2_empirical_challenger_current.mjs
+
+      - name: Pull post-freeze I2 markets across full local date
+        run: node src/pipeline/fetch_i2_period_markets_localdate.mjs
+
+      - name: Consolidate official full slate
+        run: node src/pipeline/consolidate_i2_official_full_slate.mjs
+
+      - name: Commit official full-slate artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add data/runtime/i2/2026-09-08_official_lineups.json data/runtime/i2/2026-09-08_official_lineup_audit.json data/runtime/i2/2026-09-08_official_run_environment.json data/runtime/i2/2026-09-08_official_parent_predictions.json data/runtime/i2/2026-09-08_official_v04_predictions.json data/runtime/i2/2026-09-08_official_empirical_challenger.json data/runtime/i2/2026-09-08_official_period_markets.json data/runtime/i2/2026-09-08_official_full_slate_summary.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Run official Sep 8 I2 full-slate model v2'
+          git pull --rebase origin main
+          git push origin HEAD:main
