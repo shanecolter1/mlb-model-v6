@@ -1,0 +1,69 @@
+name: Corrected Sep 8 I2 v0.4 preliminary slate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_v04_preliminary_corrected_2026_09_08.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-corrected-prelim:
+    runs-on: ubuntu-latest
+    env:
+      I2_DATE: '2026-09-08'
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Refresh locked DraftKings full-game totals
+        env:
+          I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Run parent with corrected expected lineups
+        env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+          I2_CUTOFF: '1970-01-01T00:00:00Z'
+          I2_TRIALS: '50000'
+          I2_OUTPUT: data/runtime/i2/2026-09-08_v04_parent_predictions.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+          I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-08_lineup_overrides.json
+          I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-08_run_environment.json
+          I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Apply v0.4 Local-CV calibration
+        env:
+          I2_INPUT: data/runtime/i2/2026-09-08_v04_parent_predictions.json
+          I2_OUTPUT: data/runtime/i2/2026-09-08_v04_predictions.json
+        run: node src/pipeline/apply_i2_v04_local_cv.mjs
+
+      - name: Write complete preliminary summary
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          const out=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-08_v04_predictions.json','utf8'));
+          const gate=61.5;
+          const rows=(out.ranking||[]).map(r=>({rank:r.rank,gamePk:r.gamePk,matchup:r.matchup,gameDate:r.gameDate,awayStarter:r.awayStarter,homeStarter:r.homeStarter,total:r.runEnvironment?.fullGameTotal??null,under05Pct:r.under05Pct,over05Pct:r.over05Pct,fairUnder:r.fairUnder,fairOver:r.fairOver,top2ScorePct:r.top2ScorePct,bottom2ScorePct:r.bottom2ScorePct,predictionClass:r.predictionClass||null,lineupSource:r.lineupSource||null,probableStarterFallbacks:r.probableStarterFallbacks||null,underQualified:Number(r.under05Pct)>=gate}));
+          const pending=(out.games||[]).filter(g=>g.modelStatus==='PENDING_RUN_ENVIRONMENT'||g.runEnvironment?.status==='MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL').map(g=>({gamePk:g.gamePk,matchup:`${g.away} @ ${g.home}`,gameDate:g.gameDate,awayStarter:g.awayStarter,homeStarter:g.homeStarter,status:'PENDING_FULL_GAME_TOTAL',baseballOnlyUnder05Pct:g.baseballOnlyRaw?.under05Pct??g.under05Pct??null,baseballOnlyFairUnder:g.baseballOnlyRaw?.fairUnder??g.fairUnder??null}));
+          const summary={date:'2026-09-08',model:out.model,generatedAt:new Date().toISOString(),trialsPerProjectedGame:out.trialsPerGame||50000,underThresholdPct:gate,scheduledGames:(out.games||[]).length,projectedGames:rows.length,pendingGames:pending.length,qualifiedUnders:rows.filter(x=>x.underQualified),ranking:rows,pending};
+          fs.writeFileSync('data/runtime/i2/2026-09-08_v04_summary.json',JSON.stringify(summary,null,2));
+          console.log(JSON.stringify(summary,null,2));
+          NODE
+
+      - name: Commit corrected preliminary artifacts
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add data/runtime/i2/2026-09-08_run_environment.json data/runtime/i2/2026-09-08_v04_parent_predictions.json data/runtime/i2/2026-09-08_v04_predictions.json data/runtime/i2/2026-09-08_v04_summary.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Run corrected preliminary I2 v0.4 slate 2026-09-08'
+          git push origin HEAD:main
