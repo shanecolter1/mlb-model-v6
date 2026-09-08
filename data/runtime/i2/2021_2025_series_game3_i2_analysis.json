@@ -1,0 +1,218 @@
+{
+  "years": [
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "definition": "I2 Under 0.5 = zero combined runs in second inning",
+  "all": {
+    "n": 12169,
+    "under": 6797,
+    "underPct": 55.86,
+    "over": 5372
+  },
+  "bySeriesGameNumber": {
+    "1": {
+      "n": 3906,
+      "under": 2163,
+      "underPct": 55.38,
+      "over": 1743
+    },
+    "2": {
+      "n": 3883,
+      "under": 2163,
+      "underPct": 55.7,
+      "over": 1720
+    },
+    "3": {
+      "n": 3612,
+      "under": 2018,
+      "underPct": 55.87,
+      "over": 1594
+    },
+    "4": {
+      "n": 721,
+      "under": 425,
+      "underPct": 58.95,
+      "over": 296
+    }
+  },
+  "game3of3": {
+    "n": 2895,
+    "under": 1600,
+    "underPct": 55.27,
+    "over": 1295
+  },
+  "wednesdayGame3of3": {
+    "n": 865,
+    "under": 472,
+    "underPct": 54.57,
+    "over": 393
+  },
+  "wednesdayGame3Day": {
+    "n": 569,
+    "under": 312,
+    "underPct": 54.83,
+    "over": 257
+  },
+  "wednesdayGame3Night": {
+    "n": 296,
+    "under": 160,
+    "underPct": 54.05,
+    "over": 136
+  },
+  "game3of3OtherDays": {
+    "n": 2030,
+    "under": 1128,
+    "underPct": 55.57,
+    "over": 902
+  },
+  "enteringGame3SeriesStatus": {
+    "split_1_1": {
+      "n": 1373,
+      "under": 772,
+      "underPct": 56.23,
+      "over": 601
+    },
+    "home_up_2_0": {
+      "n": 850,
+      "under": 460,
+      "underPct": 54.12,
+      "over": 390
+    },
+    "away_up_2_0": {
+      "n": 670,
+      "under": 367,
+      "underPct": 54.78,
+      "over": 303
+    },
+    "either_team_up_2_0": {
+      "n": 1520,
+      "under": 827,
+      "underPct": 54.41,
+      "over": 693
+    }
+  },
+  "byYear": {
+    "2021": {
+      "all": {
+        "n": 2437,
+        "under": 1356,
+        "underPct": 55.64,
+        "over": 1081
+      },
+      "game3of3": {
+        "n": 516,
+        "under": 289,
+        "underPct": 56.01,
+        "over": 227
+      },
+      "wedGame3of3": {
+        "n": 129,
+        "under": 71,
+        "underPct": 55.04,
+        "over": 58
+      }
+    },
+    "2022": {
+      "all": {
+        "n": 2431,
+        "under": 1411,
+        "underPct": 58.04,
+        "over": 1020
+      },
+      "game3of3": {
+        "n": 495,
+        "under": 293,
+        "underPct": 59.19,
+        "over": 202
+      },
+      "wedGame3of3": {
+        "n": 154,
+        "under": 93,
+        "underPct": 60.39,
+        "over": 61
+      }
+    },
+    "2023": {
+      "all": {
+        "n": 2437,
+        "under": 1332,
+        "underPct": 54.66,
+        "over": 1105
+      },
+      "game3of3": {
+        "n": 604,
+        "under": 328,
+        "underPct": 54.3,
+        "over": 276
+      },
+      "wedGame3of3": {
+        "n": 196,
+        "under": 109,
+        "underPct": 55.61,
+        "over": 87
+      }
+    },
+    "2024": {
+      "all": {
+        "n": 2430,
+        "under": 1356,
+        "underPct": 55.8,
+        "over": 1074
+      },
+      "game3of3": {
+        "n": 607,
+        "under": 341,
+        "underPct": 56.18,
+        "over": 266
+      },
+      "wedGame3of3": {
+        "n": 181,
+        "under": 95,
+        "underPct": 52.49,
+        "over": 86
+      }
+    },
+    "2025": {
+      "all": {
+        "n": 2434,
+        "under": 1342,
+        "underPct": 55.14,
+        "over": 1092
+      },
+      "game3of3": {
+        "n": 673,
+        "under": 349,
+        "underPct": 51.86,
+        "over": 324
+      },
+      "wedGame3of3": {
+        "n": 205,
+        "under": 104,
+        "underPct": 50.73,
+        "over": 101
+      }
+    }
+  },
+  "tests": {
+    "game3of3_vs_allOther": {
+      "pctPointDiff": -0.77,
+      "z": -0.729,
+      "pValue": 0.466
+    },
+    "wednesdayGame3of3_vs_allOther": {
+      "pctPointDiff": -1.39,
+      "z": -0.792,
+      "pValue": 0.4284
+    }
+  },
+  "notes": [
+    "Regular-season MLB only",
+    "Series position from MLB schedule seriesGameNumber/gamesInSeries",
+    "No pregame-total adjustment in this diagnostic",
+    "Series-status derivation requires Games 1 and 2 to be present within five days with same home/away pairing"
+  ]
+}
