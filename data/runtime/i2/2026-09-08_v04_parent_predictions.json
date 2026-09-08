@@ -2,7 +2,7 @@
   "model": "MLB I2 Under/Over v0.3 Total-Conditioned Research Build",
   "date": "2026-09-08",
   "cutoff": "1970-01-01T00:00:00Z",
-  "generatedAt": "2026-09-08T00:24:04.214Z",
+  "generatedAt": "2026-09-08T01:12:23.868Z",
   "trialsPerGame": 50000,
   "marketDataUsed": true,
   "weights": {
@@ -34,81 +34,18 @@
     "Live conditioning currently uses the first observed DraftKings pregame total captured by the isolated run-environment endpoint; it is locked across reruns but is not guaranteed to equal the historical archive opening tick."
   ],
   "remainingGamesAtCutoff": 15,
-  "projectedGames": 13,
-  "pendingOrErroredGames": 2,
+  "projectedGames": 12,
+  "pendingOrErroredGames": 3,
   "ranking": [
     {
       "rank": 1,
-      "gamePk": 823738,
-      "matchup": "Chicago Cubs @ Milwaukee Brewers",
-      "gameDate": "2026-09-08T23:40:00Z",
-      "under05Pct": 59.61,
-      "over05Pct": 40.39,
-      "fairUnder": -148,
-      "fairOver": 148,
-      "awayStarter": "David Peterson",
-      "homeStarter": "Jacob Misiorowski",
-      "awayStarterStats": {
-        "wins": 7,
-        "losses": 8,
-        "record": "7-8",
-        "era": "5.39",
-        "whip": "1.56",
-        "inningsPitched": "127.0",
-        "strikeOuts": 113,
-        "walks": 56,
-        "homeRunsAllowed": 14,
-        "battersFaced": 579,
-        "gamesStarted": 19
-      },
-      "homeStarterStats": {
-        "wins": 14,
-        "losses": 5,
-        "record": "14-5",
-        "era": "1.97",
-        "whip": "0.79",
-        "inningsPitched": "155.0",
-        "strikeOuts": 227,
-        "walks": 39,
-        "homeRunsAllowed": 14,
-        "battersFaced": 592,
-        "gamesStarted": 26
-      },
-      "top2ScorePct": 19.32,
-      "bottom2ScorePct": 26.11,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 7.5,
-        "bucket": "7.5",
-        "totalPriorOverPct": 41.94,
-        "totalPriorUnderPct": 58.06,
-        "totalPriorN": 1612,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 7.5,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.06392786891140834,
-        "equalHalfLogitShift": -0.05919723480093608
-      }
-    },
-    {
-      "rank": 2,
       "gamePk": 823500,
       "matchup": "Colorado Rockies @ New York Yankees",
       "gameDate": "2026-09-08T23:05:00Z",
-      "under05Pct": 58.66,
-      "over05Pct": 41.34,
-      "fairUnder": -142,
-      "fairOver": 142,
+      "under05Pct": 59.02,
+      "over05Pct": 40.98,
+      "fairUnder": -144,
+      "fairOver": 144,
       "awayStarter": "Gabriel Hughes",
       "homeStarter": "Cam Schlittler",
       "awayStarterStats": {
@@ -137,8 +74,8 @@
         "battersFaced": 677,
         "gamesStarted": 29
       },
-      "top2ScorePct": 22.53,
-      "bottom2ScorePct": 24.28,
+      "top2ScorePct": 22.01,
+      "bottom2ScorePct": 24.33,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -159,82 +96,82 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.052767536646989355,
+        "equalHalfLogitShift": -0.04040966647693478
+      }
+    },
+    {
+      "rank": 2,
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "under05Pct": 58.99,
+      "over05Pct": 41.01,
+      "fairUnder": -144,
+      "fairOver": 144,
+      "awayStarter": "David Peterson",
+      "homeStarter": "Jacob Misiorowski",
+      "awayStarterStats": {
+        "wins": 7,
+        "losses": 8,
+        "record": "7-8",
+        "era": "5.39",
+        "whip": "1.56",
+        "inningsPitched": "127.0",
+        "strikeOuts": 113,
+        "walks": 56,
+        "homeRunsAllowed": 14,
+        "battersFaced": 579,
+        "gamesStarted": 19
+      },
+      "homeStarterStats": {
+        "wins": 14,
+        "losses": 5,
+        "record": "14-5",
+        "era": "1.97",
+        "whip": "0.79",
+        "inningsPitched": "155.0",
+        "strikeOuts": 227,
+        "walks": 39,
+        "homeRunsAllowed": 14,
+        "battersFaced": 592,
+        "gamesStarted": 26
+      },
+      "top2ScorePct": 19.81,
+      "bottom2ScorePct": 26.44,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7.5,
+        "bucket": "7.5",
+        "totalPriorOverPct": 41.94,
+        "totalPriorUnderPct": 58.06,
+        "totalPriorN": 1612,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-08T00:21:33.488Z",
+        "latestObservedTotal": 7.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
         "baseballLogitDelta": -0.038026164875348045,
-        "equalHalfLogitShift": -0.04358642325223461
+        "equalHalfLogitShift": -0.05329335206879049
       }
     },
     {
       "rank": 3,
-      "gamePk": 824714,
-      "matchup": "Los Angeles Angels @ Boston Red Sox",
-      "gameDate": "2026-09-08T22:45:00Z",
-      "under05Pct": 58.6,
-      "over05Pct": 41.4,
-      "fairUnder": -142,
-      "fairOver": 142,
-      "awayStarter": "Reid Detmers",
-      "homeStarter": "Patrick Sandoval",
-      "awayStarterStats": {
-        "wins": 4,
-        "losses": 8,
-        "record": "4-8",
-        "era": "3.44",
-        "whip": "1.06",
-        "inningsPitched": "162.0",
-        "strikeOuts": 182,
-        "walks": 44,
-        "homeRunsAllowed": 17,
-        "battersFaced": 651,
-        "gamesStarted": 28
-      },
-      "homeStarterStats": {
-        "wins": 1,
-        "losses": 4,
-        "record": "1-4",
-        "era": "4.41",
-        "whip": "1.73",
-        "inningsPitched": "49.0",
-        "strikeOuts": 50,
-        "walks": 25,
-        "homeRunsAllowed": 6,
-        "battersFaced": 227,
-        "gamesStarted": 10
-      },
-      "top2ScorePct": 24.57,
-      "bottom2ScorePct": 22.3,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8,
-        "bucket": "8.0",
-        "totalPriorOverPct": 42.26,
-        "totalPriorUnderPct": 57.74,
-        "totalPriorN": 2146,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.03573600086195533,
-        "equalHalfLogitShift": -0.04149340134081114
-      }
-    },
-    {
-      "rank": 4,
       "gamePk": 823174,
       "matchup": "St. Louis Cardinals @ San Francisco Giants",
       "gameDate": "2026-09-09T01:45:00Z",
-      "under05Pct": 58.37,
-      "over05Pct": 41.63,
-      "fairUnder": -140,
-      "fairOver": 140,
+      "under05Pct": 58.17,
+      "over05Pct": 41.83,
+      "fairUnder": -139,
+      "fairOver": 139,
       "awayStarter": "Quinn Mathews",
       "homeStarter": "Landen Roupp",
       "awayStarterStats": {
@@ -263,8 +200,8 @@
         "battersFaced": 614,
         "gamesStarted": 27
       },
-      "top2ScorePct": 23.71,
-      "bottom2ScorePct": 23.49,
+      "top2ScorePct": 23.74,
+      "bottom2ScorePct": 23.72,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -285,19 +222,145 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.026011350912684805,
-        "equalHalfLogitShift": -0.04275125281192793
+        "baseballLogitDelta": -0.017686679685669726,
+        "equalHalfLogitShift": -0.045686020256591964
+      }
+    },
+    {
+      "rank": 4,
+      "gamePk": 824714,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "gameDate": "2026-09-08T22:45:00Z",
+      "under05Pct": 57.74,
+      "over05Pct": 42.26,
+      "fairUnder": -137,
+      "fairOver": 137,
+      "awayStarter": "Reid Detmers",
+      "homeStarter": "Patrick Sandoval",
+      "awayStarterStats": {
+        "wins": 4,
+        "losses": 8,
+        "record": "4-8",
+        "era": "3.44",
+        "whip": "1.06",
+        "inningsPitched": "162.0",
+        "strikeOuts": 182,
+        "walks": 44,
+        "homeRunsAllowed": 17,
+        "battersFaced": 651,
+        "gamesStarted": 28
+      },
+      "homeStarterStats": {
+        "wins": 1,
+        "losses": 4,
+        "record": "1-4",
+        "era": "4.41",
+        "whip": "1.73",
+        "inningsPitched": "49.0",
+        "strikeOuts": 50,
+        "walks": 25,
+        "homeRunsAllowed": 6,
+        "battersFaced": 227,
+        "gamesStarted": 10
+      },
+      "top2ScorePct": 25.48,
+      "bottom2ScorePct": 22.52,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 8,
+        "bucket": "8.0",
+        "totalPriorOverPct": 42.26,
+        "totalPriorUnderPct": 57.74,
+        "totalPriorN": 2146,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-08T00:21:33.488Z",
+        "latestObservedTotal": 8,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": -0.00008926103525092044,
+        "equalHalfLogitShift": -0.040452629597914735
       }
     },
     {
       "rank": 5,
+      "gamePk": 823250,
+      "matchup": "Washington Nationals @ San Diego Padres",
+      "gameDate": "2026-09-09T01:40:00Z",
+      "under05Pct": 57.15,
+      "over05Pct": 42.85,
+      "fairUnder": -133,
+      "fairOver": 133,
+      "awayStarter": "Riley Cornelio",
+      "homeStarter": "Casey Mize",
+      "awayStarterStats": {
+        "wins": 2,
+        "losses": 2,
+        "record": "2-2",
+        "era": "5.96",
+        "whip": "1.81",
+        "inningsPitched": "22.2",
+        "strikeOuts": 23,
+        "walks": 21,
+        "homeRunsAllowed": 2,
+        "battersFaced": 107,
+        "gamesStarted": 0
+      },
+      "homeStarterStats": {
+        "wins": 5,
+        "losses": 9,
+        "record": "5-9",
+        "era": "3.64",
+        "whip": "1.12",
+        "inningsPitched": "113.2",
+        "strikeOuts": 100,
+        "walks": 28,
+        "homeRunsAllowed": 13,
+        "battersFaced": 464,
+        "gamesStarted": 22
+      },
+      "top2ScorePct": 23.66,
+      "bottom2ScorePct": 25.14,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 7.5,
+        "bucket": "7.5",
+        "totalPriorOverPct": 41.94,
+        "totalPriorUnderPct": 58.06,
+        "totalPriorN": 1612,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-08T01:10:01.362Z",
+        "latestObservedTotal": 7.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.037337474760027745,
+        "equalHalfLogitShift": -0.056827069290378174
+      }
+    },
+    {
+      "rank": 6,
       "gamePk": 823821,
       "matchup": "New York Mets @ Miami Marlins",
       "gameDate": "2026-09-08T22:40:00Z",
-      "under05Pct": 57.18,
-      "over05Pct": 42.82,
-      "fairUnder": -134,
-      "fairOver": 134,
+      "under05Pct": 56.5,
+      "over05Pct": 43.5,
+      "fairUnder": -130,
+      "fairOver": 130,
       "awayStarter": "Sean Manaea",
       "homeStarter": "Sandy Alcantara",
       "awayStarterStats": {
@@ -326,8 +389,8 @@
         "battersFaced": 808,
         "gamesStarted": 30
       },
-      "top2ScorePct": 22.84,
-      "bottom2ScorePct": 25.9,
+      "top2ScorePct": 23.12,
+      "bottom2ScorePct": 26.51,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -348,19 +411,19 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 7.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.03636533239294376,
-        "equalHalfLogitShift": -0.054424818269278474
+        "baseballLogitDelta": 0.06387017248310672,
+        "equalHalfLogitShift": -0.056213813736213036
       }
     },
     {
-      "rank": 6,
+      "rank": 7,
       "gamePk": 824875,
       "matchup": "Tampa Bay Rays @ Atlanta Braves",
       "gameDate": "2026-09-08T23:15:00Z",
-      "under05Pct": 55.82,
-      "over05Pct": 44.18,
-      "fairUnder": -126,
-      "fairOver": 126,
+      "under05Pct": 55.92,
+      "over05Pct": 44.08,
+      "fairUnder": -127,
+      "fairOver": 127,
       "awayStarter": "Freddy Peralta",
       "homeStarter": "AJ Smith-Shawver",
       "awayStarterStats": {
@@ -389,8 +452,8 @@
         "battersFaced": 84,
         "gamesStarted": 4
       },
-      "top2ScorePct": 24.66,
-      "bottom2ScorePct": 25.91,
+      "top2ScorePct": 24.51,
+      "bottom2ScorePct": 25.93,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -409,21 +472,21 @@
         "totalSource": "THE_ODDS_API",
         "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8,
+        "latestObservedTotal": 8.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.07791678854007389,
-        "equalHalfLogitShift": -0.04957535085646858
+        "baseballLogitDelta": 0.07404371997944939,
+        "equalHalfLogitShift": -0.04653141776170877
       }
     },
     {
-      "rank": 7,
+      "rank": 8,
       "gamePk": 823414,
       "matchup": "Houston Astros @ Philadelphia Phillies",
       "gameDate": "2026-09-08T22:40:00Z",
-      "under05Pct": 55.76,
-      "over05Pct": 44.24,
-      "fairUnder": -126,
-      "fairOver": 126,
+      "under05Pct": 55.45,
+      "over05Pct": 44.55,
+      "fairUnder": -124,
+      "fairOver": 124,
       "awayStarter": "Hayden Wesneski",
       "homeStarter": "Andrew Painter",
       "awayStarterStats": {
@@ -452,8 +515,8 @@
         "battersFaced": 456,
         "gamesStarted": 19
       },
-      "top2ScorePct": 26.66,
-      "bottom2ScorePct": 23.97,
+      "top2ScorePct": 26.98,
+      "bottom2ScorePct": 24.06,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -474,19 +537,19 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.015925152733366615,
-        "equalHalfLogitShift": 0.014530008207881306
+        "baseballLogitDelta": 0.028422164707848557,
+        "equalHalfLogitShift": 0.013906506281676667
       }
     },
     {
-      "rank": 8,
+      "rank": 9,
       "gamePk": 824792,
       "matchup": "Cleveland Guardians @ Baltimore Orioles",
       "gameDate": "2026-09-08T22:35:00Z",
-      "under05Pct": 55.69,
-      "over05Pct": 44.31,
-      "fairUnder": -126,
-      "fairOver": 126,
+      "under05Pct": 54.81,
+      "over05Pct": 45.19,
+      "fairUnder": -121,
+      "fairOver": 121,
       "awayStarter": "Tanner Bibee",
       "homeStarter": "Brandon Young",
       "awayStarterStats": {
@@ -515,8 +578,8 @@
         "battersFaced": 583,
         "gamesStarted": 24
       },
-      "top2ScorePct": 25,
-      "bottom2ScorePct": 25.75,
+      "top2ScorePct": 25.34,
+      "bottom2ScorePct": 26.58,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -537,145 +600,19 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.018604656578956186,
-        "equalHalfLogitShift": 0.009472101468165017
-      }
-    },
-    {
-      "rank": 9,
-      "gamePk": 824551,
-      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
-      "gameDate": "2026-09-08T23:40:00Z",
-      "under05Pct": 55.49,
-      "over05Pct": 44.51,
-      "fairUnder": -125,
-      "fairOver": 125,
-      "awayStarter": "Bubba Chandler",
-      "homeStarter": "Sean Burke",
-      "awayStarterStats": {
-        "wins": 6,
-        "losses": 9,
-        "record": "6-9",
-        "era": "4.30",
-        "whip": "1.37",
-        "inningsPitched": "136.0",
-        "strikeOuts": 121,
-        "walks": 71,
-        "homeRunsAllowed": 12,
-        "battersFaced": 592,
-        "gamesStarted": 26
-      },
-      "homeStarterStats": {
-        "wins": 8,
-        "losses": 6,
-        "record": "8-6",
-        "era": "3.20",
-        "whip": "1.14",
-        "inningsPitched": "154.2",
-        "strikeOuts": 167,
-        "walks": 54,
-        "homeRunsAllowed": 18,
-        "battersFaced": 635,
-        "gamesStarted": 24
-      },
-      "top2ScorePct": 25.29,
-      "bottom2ScorePct": 25.72,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8.5,
-        "bucket": "8.5",
-        "totalPriorOverPct": 43.85,
-        "totalPriorUnderPct": 56.15,
-        "totalPriorN": 2871,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8.5,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.026638007726024426,
-        "equalHalfLogitShift": 0.010688819763846724
+        "baseballLogitDelta": 0.05400988575805926,
+        "equalHalfLogitShift": 0.00813981989784096
       }
     },
     {
       "rank": 10,
-      "gamePk": 823901,
-      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
-      "gameDate": "2026-09-09T02:10:00Z",
-      "under05Pct": 54.66,
-      "over05Pct": 45.34,
-      "fairUnder": -121,
-      "fairOver": 121,
-      "awayStarter": "Nick Lodolo",
-      "homeStarter": "Tarik Skubal",
-      "awayStarterStats": {
-        "wins": 3,
-        "losses": 3,
-        "record": "3-3",
-        "era": "5.08",
-        "whip": "1.52",
-        "inningsPitched": "85.0",
-        "strikeOuts": 69,
-        "walks": 35,
-        "homeRunsAllowed": 16,
-        "battersFaced": 383,
-        "gamesStarted": 17
-      },
-      "homeStarterStats": {
-        "wins": 8,
-        "losses": 7,
-        "record": "8-7",
-        "era": "2.86",
-        "whip": "0.98",
-        "inningsPitched": "132.1",
-        "strikeOuts": 159,
-        "walks": 22,
-        "homeRunsAllowed": 12,
-        "battersFaced": 521,
-        "gamesStarted": 22
-      },
-      "top2ScorePct": 23.51,
-      "bottom2ScorePct": 28.53,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8.5,
-        "bucket": "8.5",
-        "totalPriorOverPct": 43.85,
-        "totalPriorUnderPct": 56.15,
-        "totalPriorN": 2871,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8.5,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.060072696169590156,
-        "equalHalfLogitShift": 0.009013867279659027
-      }
-    },
-    {
-      "rank": 11,
       "gamePk": 824228,
       "matchup": "Minnesota Twins @ Detroit Tigers",
       "gameDate": "2026-09-08T22:40:00Z",
-      "under05Pct": 54.02,
-      "over05Pct": 45.98,
-      "fairUnder": -118,
-      "fairOver": 118,
+      "under05Pct": 54.42,
+      "over05Pct": 45.58,
+      "fairUnder": -119,
+      "fairOver": 119,
       "awayStarter": "Dean Kremer",
       "homeStarter": "Drew Anderson",
       "awayStarterStats": {
@@ -704,8 +641,8 @@
         "battersFaced": 393,
         "gamesStarted": 8
       },
-      "top2ScorePct": 26.63,
-      "bottom2ScorePct": 26.37,
+      "top2ScorePct": 26.12,
+      "bottom2ScorePct": 26.34,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -726,82 +663,19 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.15063623796366338,
-        "equalHalfLogitShift": -0.04147652137090729
+        "baseballLogitDelta": 0.13474036909577375,
+        "equalHalfLogitShift": -0.045178382352578095
       }
     },
     {
-      "rank": 12,
-      "gamePk": 824063,
-      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
-      "gameDate": "2026-09-08T23:40:00Z",
-      "under05Pct": 51.54,
-      "over05Pct": 48.46,
-      "fairUnder": -106,
-      "fairOver": 106,
-      "awayStarter": "Corbin Burnes",
-      "homeStarter": "Michael Wacha",
-      "awayStarterStats": {
-        "wins": null,
-        "losses": null,
-        "record": null,
-        "era": null,
-        "whip": null,
-        "inningsPitched": null,
-        "strikeOuts": null,
-        "walks": null,
-        "homeRunsAllowed": null,
-        "battersFaced": 0,
-        "gamesStarted": null
-      },
-      "homeStarterStats": {
-        "wins": 9,
-        "losses": 8,
-        "record": "9-8",
-        "era": "3.36",
-        "whip": "1.10",
-        "inningsPitched": "176.2",
-        "strikeOuts": 143,
-        "walks": 44,
-        "homeRunsAllowed": 24,
-        "battersFaced": 712,
-        "gamesStarted": 28
-      },
-      "top2ScorePct": 27.64,
-      "bottom2ScorePct": 28.78,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 9.5,
-        "bucket": "9.5",
-        "totalPriorOverPct": 47.89,
-        "totalPriorUnderPct": 52.11,
-        "totalPriorN": 875,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 9.5,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.023149715331791387,
-        "equalHalfLogitShift": 0.15706248004666196
-      }
-    },
-    {
-      "rank": 13,
+      "rank": 11,
       "gamePk": 824957,
       "matchup": "Toronto Blue Jays @ Athletics",
       "gameDate": "2026-09-09T01:40:00Z",
-      "under05Pct": 50.68,
-      "over05Pct": 49.32,
-      "fairUnder": -103,
-      "fairOver": 103,
+      "under05Pct": 51.17,
+      "over05Pct": 48.83,
+      "fairUnder": -105,
+      "fairOver": 105,
       "awayStarter": "José Soriano",
       "homeStarter": "Jack Perkins",
       "awayStarterStats": {
@@ -830,8 +704,8 @@
         "battersFaced": 452,
         "gamesStarted": 13
       },
-      "top2ScorePct": 30.3,
-      "bottom2ScorePct": 27.29,
+      "top2ScorePct": 30.54,
+      "bottom2ScorePct": 26.34,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -852,8 +726,71 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 9.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.057567187729965164,
-        "equalHalfLogitShift": 0.15599021544695918
+        "baseballLogitDelta": 0.037985511096587876,
+        "equalHalfLogitShift": 0.1575744086526069
+      }
+    },
+    {
+      "rank": 12,
+      "gamePk": 824063,
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "under05Pct": 50.78,
+      "over05Pct": 49.22,
+      "fairUnder": -103,
+      "fairOver": 103,
+      "awayStarter": "Corbin Burnes",
+      "homeStarter": "Michael Wacha",
+      "awayStarterStats": {
+        "wins": null,
+        "losses": null,
+        "record": null,
+        "era": null,
+        "whip": null,
+        "inningsPitched": null,
+        "strikeOuts": null,
+        "walks": null,
+        "homeRunsAllowed": null,
+        "battersFaced": 0,
+        "gamesStarted": null
+      },
+      "homeStarterStats": {
+        "wins": 9,
+        "losses": 8,
+        "record": "9-8",
+        "era": "3.36",
+        "whip": "1.10",
+        "inningsPitched": "176.2",
+        "strikeOuts": 143,
+        "walks": 44,
+        "homeRunsAllowed": 24,
+        "battersFaced": 712,
+        "gamesStarted": 28
+      },
+      "top2ScorePct": 28.85,
+      "bottom2ScorePct": 28.63,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      },
+      "runEnvironment": {
+        "status": "APPLIED",
+        "fullGameTotal": 9.5,
+        "bucket": "9.5",
+        "totalPriorOverPct": 47.89,
+        "totalPriorUnderPct": 52.11,
+        "totalPriorN": 875,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-08T00:21:33.488Z",
+        "latestObservedTotal": 9.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.05344383140873471,
+        "equalHalfLogitShift": 0.15489761900959226
       }
     }
   ],
@@ -867,25 +804,25 @@
       "lineupConfirmed": true,
       "awayLineup": [
         "Steven Kwan",
-        "Jo Adell",
+        "Chase DeLauter",
         "José Ramírez",
-        "Angel Martínez",
-        "David Fry",
+        "Jo Adell",
+        "Nathaniel Lowe",
         "Angel Genao",
-        "Austin Hedges",
-        "Petey Halpin",
+        "Travis Bazzana",
+        "Patrick Bailey",
         "Brayan Rocchio"
       ],
       "homeLineup": [
-        "Blaze Alexander",
-        "Pete Alonso",
         "Jackson Holliday",
-        "Coby Mayo",
+        "Blaze Alexander",
         "Gunnar Henderson",
-        "Christian Encarnacion-Strand",
+        "Pete Alonso",
         "Samuel Basallo",
-        "Rece Hinds",
-        "Dylan Beavers"
+        "Christian Encarnacion-Strand",
+        "Coby Mayo",
+        "Dylan Beavers",
+        "Colton Cowser"
       ],
       "awayStarter": "Tanner Bibee",
       "homeStarter": "Brandon Young",
@@ -930,52 +867,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5568908747207186,
-      "over05": 0.4431091252792813,
-      "under05Pct": 55.69,
-      "over05Pct": 44.31,
-      "fairUnder": -126,
-      "fairOver": 126,
+      "under05": 0.5481374418920764,
+      "over05": 0.45186255810792364,
+      "under05Pct": 54.81,
+      "over05Pct": 45.19,
+      "fairUnder": -121,
+      "fairOver": 121,
       "fullI2Exact": {
-        "0": 55.69,
-        "1": 20.71,
-        "2": 11.85,
-        "3": 6,
-        "4+": 5.75
+        "0": 54.81,
+        "1": 20.97,
+        "2": 11.9,
+        "3": 6.48,
+        "4+": 5.84
       },
       "fullI2Cumulative": {
-        "1+": 44.31,
-        "2+": 23.6,
-        "3+": 11.75,
-        "4+": 5.75
+        "1+": 45.19,
+        "2+": 24.22,
+        "3+": 12.32,
+        "4+": 5.84
       },
-      "top2ScorePct": 25,
-      "bottom2ScorePct": 25.75,
+      "top2ScorePct": 25.34,
+      "bottom2ScorePct": 26.58,
       "awayI2StartSlotPct": {
-        "1": 0.68,
-        "2": 0.28,
-        "3": 0.12,
-        "4": 36.99,
-        "5": 29.7,
-        "6": 17.32,
-        "7": 8.97,
-        "8": 4,
-        "9": 1.94
+        "1": 0.81,
+        "2": 0.33,
+        "3": 0.13,
+        "4": 35.64,
+        "5": 29.67,
+        "6": 17.67,
+        "7": 9.37,
+        "8": 4.33,
+        "9": 2.04
       },
       "homeI2StartSlotPct": {
-        "1": 0.64,
-        "2": 0.27,
-        "3": 0.12,
-        "4": 36.79,
-        "5": 30.53,
+        "1": 0.72,
+        "2": 0.28,
+        "3": 0.11,
+        "4": 37.89,
+        "5": 28.77,
         "6": 17.52,
-        "7": 8.36,
-        "8": 3.96,
+        "7": 8.95,
+        "8": 3.95,
         "9": 1.81
       },
-      "awayMeanPitchesEnteringI2": 16,
-      "homeMeanPitchesEnteringI2": 16.07,
-      "underRank": 6,
+      "awayMeanPitchesEnteringI2": 16.19,
+      "homeMeanPitchesEnteringI2": 16.06,
+      "underRank": 9,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -985,27 +922,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.56038,
-        "over05": 0.43962,
-        "under05Pct": 56.04,
-        "over05Pct": 43.96,
-        "fairUnder": -127,
-        "fairOver": 127,
+        "under05": 0.55164,
+        "over05": 0.44836,
+        "under05Pct": 55.16,
+        "over05Pct": 44.84,
+        "fairUnder": -123,
+        "fairOver": 123,
         "fullI2Exact": {
-          "0": 56.04,
-          "1": 20.55,
-          "2": 11.76,
-          "3": 5.95,
-          "4+": 5.71
+          "0": 55.16,
+          "1": 20.8,
+          "2": 11.81,
+          "3": 6.43,
+          "4+": 5.79
         },
         "fullI2Cumulative": {
-          "1+": 43.96,
-          "2+": 23.42,
-          "3+": 11.66,
-          "4+": 5.71
+          "1+": 44.84,
+          "2+": 24.04,
+          "3+": 12.22,
+          "4+": 5.79
         },
-        "top2ScorePct": 24.82,
-        "bottom2ScorePct": 25.57
+        "top2ScorePct": 25.19,
+        "bottom2ScorePct": 26.42
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -1022,8 +959,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.018604656578956186,
-        "equalHalfLogitShift": 0.009472101468165017
+        "baseballLogitDelta": 0.05400988575805926,
+        "equalHalfLogitShift": 0.00813981989784096
       }
     },
     {
@@ -1036,24 +973,24 @@
       "awayLineup": [
         "Luke Keaschall",
         "Brooks Lee",
-        "Kody Clemens",
         "Ryan Jeffers",
         "Josh Bell",
+        "Kody Clemens",
         "Royce Lewis",
         "Trevor Larnach",
         "Kaelen Culpepper",
         "Walker Jenkins"
       ],
       "homeLineup": [
-        "Colt Keith",
         "Kevin McGonigle",
-        "Gleyber Torres",
-        "Riley Greene",
+        "Hao-Yu Lee",
         "Dillon Dingler",
-        "Zach McKinstry",
+        "Riley Greene",
+        "Colt Keith",
         "Spencer Torkelson",
         "Max Clark",
-        "John Peck"
+        "John Peck",
+        "Zach McKinstry"
       ],
       "awayStarter": "Dean Kremer",
       "homeStarter": "Drew Anderson",
@@ -1098,52 +1035,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5402331254301839,
-      "over05": 0.45976687456981613,
-      "under05Pct": 54.02,
-      "over05Pct": 45.98,
-      "fairUnder": -118,
-      "fairOver": 118,
+      "under05": 0.5441787554633954,
+      "over05": 0.4558212445366046,
+      "under05Pct": 54.42,
+      "over05Pct": 45.58,
+      "fairUnder": -119,
+      "fairOver": 119,
       "fullI2Exact": {
-        "0": 54.02,
-        "1": 20.62,
-        "2": 12.29,
-        "3": 6.54,
-        "4+": 6.53
+        "0": 54.42,
+        "1": 20.46,
+        "2": 12.17,
+        "3": 6.51,
+        "4+": 6.44
       },
       "fullI2Cumulative": {
-        "1+": 45.98,
-        "2+": 25.36,
-        "3+": 13.07,
-        "4+": 6.53
+        "1+": 45.58,
+        "2+": 25.12,
+        "3+": 12.96,
+        "4+": 6.44
       },
-      "top2ScorePct": 26.63,
-      "bottom2ScorePct": 26.37,
+      "top2ScorePct": 26.12,
+      "bottom2ScorePct": 26.34,
       "awayI2StartSlotPct": {
-        "1": 0.87,
+        "1": 0.9,
         "2": 0.35,
-        "3": 0.18,
-        "4": 36.79,
-        "5": 28.38,
-        "6": 17.75,
-        "7": 9.44,
-        "8": 4.38,
-        "9": 1.86
+        "3": 0.15,
+        "4": 34.84,
+        "5": 29.58,
+        "6": 18.42,
+        "7": 9.32,
+        "8": 4.47,
+        "9": 1.98
       },
       "homeI2StartSlotPct": {
-        "1": 0.86,
-        "2": 0.36,
+        "1": 0.83,
+        "2": 0.32,
         "3": 0.12,
-        "4": 34.78,
-        "5": 28.76,
-        "6": 18.74,
-        "7": 9.91,
-        "8": 4.52,
-        "9": 1.95
+        "4": 36.15,
+        "5": 28.59,
+        "6": 18.05,
+        "7": 9.5,
+        "8": 4.4,
+        "9": 2.04
       },
-      "awayMeanPitchesEnteringI2": 16.31,
-      "homeMeanPitchesEnteringI2": 16.54,
-      "underRank": 15,
+      "awayMeanPitchesEnteringI2": 16.44,
+      "homeMeanPitchesEnteringI2": 16.41,
+      "underRank": 13,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1153,27 +1090,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.52764,
-        "over05": 0.47236,
-        "under05Pct": 52.76,
-        "over05Pct": 47.24,
-        "fairUnder": -112,
-        "fairOver": 112,
+        "under05": 0.5316,
+        "over05": 0.46840000000000004,
+        "under05Pct": 53.16,
+        "over05Pct": 46.84,
+        "fairUnder": -113,
+        "fairOver": 113,
         "fullI2Exact": {
-          "0": 52.76,
-          "1": 21.18,
-          "2": 12.62,
-          "3": 6.72,
-          "4+": 6.71
+          "0": 53.16,
+          "1": 21.02,
+          "2": 12.5,
+          "3": 6.69,
+          "4+": 6.62
         },
         "fullI2Cumulative": {
-          "1+": 47.24,
-          "2+": 26.05,
-          "3+": 13.43,
-          "4+": 6.71
+          "1+": 46.84,
+          "2+": 25.82,
+          "3+": 13.31,
+          "4+": 6.62
         },
-        "top2ScorePct": 27.45,
-        "bottom2ScorePct": 27.18
+        "top2ScorePct": 27,
+        "bottom2ScorePct": 27.23
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -1190,8 +1127,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.15063623796366338,
-        "equalHalfLogitShift": -0.04147652137090729
+        "baseballLogitDelta": 0.13474036909577375,
+        "equalHalfLogitShift": -0.045178382352578095
       }
     },
     {
@@ -1206,11 +1143,11 @@
         "Yordan Alvarez",
         "Isaac Paredes",
         "Jose Altuve",
-        "Christian Walker",
-        "Nelson Velázquez",
         "Daulton Varsho",
-        "Cam Smith",
-        "Christian Vázquez"
+        "Christian Walker",
+        "Yainer Diaz",
+        "Taylor Trammell",
+        "Cam Smith"
       ],
       "homeLineup": [
         "Kyle Schwarber",
@@ -1266,50 +1203,50 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5575519771024551,
-      "over05": 0.44244802289754487,
-      "under05Pct": 55.76,
-      "over05Pct": 44.24,
-      "fairUnder": -126,
-      "fairOver": 126,
+      "under05": 0.5544669383926892,
+      "over05": 0.4455330616073107,
+      "under05Pct": 55.45,
+      "over05Pct": 44.55,
+      "fairUnder": -124,
+      "fairOver": 124,
       "fullI2Exact": {
-        "0": 55.76,
-        "1": 20.39,
-        "2": 11.85,
-        "3": 6.22,
-        "4+": 5.79
+        "0": 55.45,
+        "1": 20.34,
+        "2": 12.01,
+        "3": 6.25,
+        "4+": 5.96
       },
       "fullI2Cumulative": {
-        "1+": 44.24,
-        "2+": 23.86,
-        "3+": 12,
-        "4+": 5.79
+        "1+": 44.55,
+        "2+": 24.22,
+        "3+": 12.2,
+        "4+": 5.96
       },
-      "top2ScorePct": 26.66,
-      "bottom2ScorePct": 23.97,
+      "top2ScorePct": 26.98,
+      "bottom2ScorePct": 24.06,
       "awayI2StartSlotPct": {
-        "1": 0.83,
-        "2": 0.33,
+        "1": 0.89,
+        "2": 0.35,
         "3": 0.13,
-        "4": 34.04,
-        "5": 29.35,
-        "6": 18.54,
-        "7": 10.03,
-        "8": 4.64,
-        "9": 2.11
+        "4": 33.71,
+        "5": 29.63,
+        "6": 18.92,
+        "7": 9.63,
+        "8": 4.65,
+        "9": 2.09
       },
       "homeI2StartSlotPct": {
-        "1": 0.72,
-        "2": 0.27,
-        "3": 0.11,
-        "4": 36.15,
-        "5": 30.19,
-        "6": 17.94,
-        "7": 8.69,
-        "8": 4.14,
-        "9": 1.8
+        "1": 0.69,
+        "2": 0.26,
+        "3": 0.1,
+        "4": 36.27,
+        "5": 30.05,
+        "6": 17.99,
+        "7": 8.65,
+        "8": 4.24,
+        "9": 1.75
       },
-      "awayMeanPitchesEnteringI2": 16.47,
+      "awayMeanPitchesEnteringI2": 16.46,
       "homeMeanPitchesEnteringI2": 16.21,
       "underRank": 5,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
@@ -1321,27 +1258,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.56104,
-        "over05": 0.43896,
-        "under05Pct": 56.1,
-        "over05Pct": 43.9,
-        "fairUnder": -128,
-        "fairOver": 128,
+        "under05": 0.55796,
+        "over05": 0.44204,
+        "under05Pct": 55.8,
+        "over05Pct": 44.2,
+        "fairUnder": -126,
+        "fairOver": 126,
         "fullI2Exact": {
-          "0": 56.1,
-          "1": 20.23,
-          "2": 11.76,
-          "3": 6.17,
-          "4+": 5.74
+          "0": 55.8,
+          "1": 20.18,
+          "2": 11.92,
+          "3": 6.2,
+          "4+": 5.91
         },
         "fullI2Cumulative": {
-          "1+": 43.9,
-          "2+": 23.67,
-          "3+": 11.91,
-          "4+": 5.74
+          "1+": 44.2,
+          "2+": 24.02,
+          "3+": 12.1,
+          "4+": 5.91
         },
-        "top2ScorePct": 26.38,
-        "bottom2ScorePct": 23.71
+        "top2ScorePct": 26.71,
+        "bottom2ScorePct": 23.81
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -1358,8 +1295,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.015925152733366615,
-        "equalHalfLogitShift": 0.014530008207881306
+        "baseballLogitDelta": 0.028422164707848557,
+        "equalHalfLogitShift": 0.013906506281676667
       }
     },
     {
@@ -1374,21 +1311,21 @@
         "Juan Soto",
         "Bo Bichette",
         "Carson Benge",
+        "Jared Young",
         "Marcus Semien",
         "A.J. Ewing",
-        "Francisco Alvarez",
         "Brett Baty",
-        "Nick Morabito"
+        "Francisco Alvarez"
       ],
       "homeLineup": [
-        "Kyle Stowers",
         "Heriberto Hernández",
-        "Griffin Conine",
         "Otto Lopez",
-        "Jakob Marsee",
+        "Kyle Stowers",
+        "Agustín Ramírez",
         "Javier Sanoja",
-        "Owen Caissie",
-        "Graham Pauley",
+        "Jakob Marsee",
+        "Esteury Ruiz",
+        "Jared Serna",
         "Joe Mack"
       ],
       "awayStarter": "Sean Manaea",
@@ -1434,52 +1371,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5717652719206854,
-      "over05": 0.42823472807931456,
-      "under05Pct": 57.18,
-      "over05Pct": 42.82,
-      "fairUnder": -134,
-      "fairOver": 134,
+      "under05": 0.5650178254590472,
+      "over05": 0.4349821745409527,
+      "under05Pct": 56.5,
+      "over05Pct": 43.5,
+      "fairUnder": -130,
+      "fairOver": 130,
       "fullI2Exact": {
-        "0": 57.18,
-        "1": 19.27,
-        "2": 11.49,
-        "3": 5.96,
-        "4+": 6.1
+        "0": 56.5,
+        "1": 19.72,
+        "2": 11.32,
+        "3": 6.11,
+        "4+": 6.35
       },
       "fullI2Cumulative": {
-        "1+": 42.82,
-        "2+": 23.55,
-        "3+": 12.06,
-        "4+": 6.1
+        "1+": 43.5,
+        "2+": 23.78,
+        "3+": 12.46,
+        "4+": 6.35
       },
-      "top2ScorePct": 22.84,
-      "bottom2ScorePct": 25.9,
+      "top2ScorePct": 23.12,
+      "bottom2ScorePct": 26.51,
       "awayI2StartSlotPct": {
         "1": 0.73,
-        "2": 0.28,
+        "2": 0.31,
         "3": 0.11,
-        "4": 37.18,
-        "5": 29.18,
-        "6": 18.14,
-        "7": 8.6,
-        "8": 3.91,
-        "9": 1.88
+        "4": 36.96,
+        "5": 29.26,
+        "6": 17.56,
+        "7": 9.14,
+        "8": 4.13,
+        "9": 1.81
       },
       "homeI2StartSlotPct": {
-        "1": 0.88,
-        "2": 0.38,
-        "3": 0.15,
-        "4": 34.52,
-        "5": 29.25,
-        "6": 18.18,
-        "7": 9.82,
-        "8": 4.71,
-        "9": 2.1
+        "1": 0.98,
+        "2": 0.4,
+        "3": 0.14,
+        "4": 34.81,
+        "5": 29.42,
+        "6": 18.36,
+        "7": 9.44,
+        "8": 4.32,
+        "9": 2.13
       },
-      "awayMeanPitchesEnteringI2": 15.95,
-      "homeMeanPitchesEnteringI2": 16.6,
-      "underRank": 9,
+      "awayMeanPitchesEnteringI2": 15.97,
+      "homeMeanPitchesEnteringI2": 16.48,
+      "underRank": 10,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1489,27 +1426,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.556,
-        "over05": 0.44399999999999995,
-        "under05Pct": 55.6,
-        "over05Pct": 44.4,
-        "fairUnder": -125,
-        "fairOver": 125,
+        "under05": 0.5492,
+        "over05": 0.4508,
+        "under05Pct": 54.92,
+        "over05Pct": 45.08,
+        "fairUnder": -122,
+        "fairOver": 122,
         "fullI2Exact": {
-          "0": 55.6,
-          "1": 19.98,
-          "2": 11.91,
-          "3": 6.18,
-          "4+": 6.32
+          "0": 54.92,
+          "1": 20.44,
+          "2": 11.73,
+          "3": 6.33,
+          "4+": 6.58
         },
         "fullI2Cumulative": {
-          "1+": 44.4,
-          "2+": 24.42,
-          "3+": 12.5,
-          "4+": 6.32
+          "1+": 45.08,
+          "2+": 24.64,
+          "3+": 12.91,
+          "4+": 6.58
         },
-        "top2ScorePct": 23.81,
-        "bottom2ScorePct": 26.96
+        "top2ScorePct": 24.13,
+        "bottom2ScorePct": 27.62
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -1526,8 +1463,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 7.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.03636533239294376,
-        "equalHalfLogitShift": -0.054424818269278474
+        "baseballLogitDelta": 0.06387017248310672,
+        "equalHalfLogitShift": -0.056213813736213036
       }
     },
     {
@@ -1540,24 +1477,24 @@
       "awayLineup": [
         "Zach Neto",
         "Mike Trout",
-        "Wade Meckler",
         "Vaughn Grissom",
         "Moisés Ballesteros",
         "Christian Moore",
-        "Josh Lowe",
-        "Kyren Paris",
-        "Tyler Heineman"
+        "Jose Siri",
+        "Denzer Guzman",
+        "Travis d'Arnaud",
+        "Wade Meckler"
       ],
       "homeLineup": [
         "Roman Anthony",
-        "Mickey Gasper",
+        "Jahmai Jones",
         "Adley Rutschman",
         "Wilyer Abreu",
         "Trevor Story",
         "Caleb Durbin",
-        "Jarren Duran",
-        "Isiah Kiner-Falefa",
-        "Eli White"
+        "Eli White",
+        "Andruw Monasterio",
+        "Nick Sogard"
       ],
       "awayStarter": "Reid Detmers",
       "homeStarter": "Patrick Sandoval",
@@ -1602,52 +1539,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5860484269600049,
-      "over05": 0.4139515730399951,
-      "under05Pct": 58.6,
-      "over05Pct": 41.4,
-      "fairUnder": -142,
-      "fairOver": 142,
+      "under05": 0.5773749962974762,
+      "over05": 0.42262500370252376,
+      "under05Pct": 57.74,
+      "over05Pct": 42.26,
+      "fairUnder": -137,
+      "fairOver": 137,
       "fullI2Exact": {
-        "0": 58.6,
-        "1": 19.44,
-        "2": 10.79,
-        "3": 5.73,
-        "4+": 5.44
+        "0": 57.74,
+        "1": 19.65,
+        "2": 10.93,
+        "3": 5.95,
+        "4+": 5.73
       },
       "fullI2Cumulative": {
-        "1+": 41.4,
-        "2+": 21.96,
-        "3+": 11.17,
-        "4+": 5.44
+        "1+": 42.26,
+        "2+": 22.61,
+        "3+": 11.69,
+        "4+": 5.73
       },
-      "top2ScorePct": 24.57,
-      "bottom2ScorePct": 22.3,
+      "top2ScorePct": 25.48,
+      "bottom2ScorePct": 22.52,
       "awayI2StartSlotPct": {
-        "1": 1.02,
-        "2": 0.4,
-        "3": 0.16,
-        "4": 32.23,
-        "5": 29.61,
-        "6": 19.17,
-        "7": 10.24,
-        "8": 4.96,
-        "9": 2.21
+        "1": 0.83,
+        "2": 0.38,
+        "3": 0.13,
+        "4": 33.58,
+        "5": 29.73,
+        "6": 18.73,
+        "7": 9.67,
+        "8": 4.82,
+        "9": 2.13
       },
       "homeI2StartSlotPct": {
-        "1": 0.65,
-        "2": 0.21,
-        "3": 0.08,
-        "4": 37.88,
-        "5": 29.83,
-        "6": 17.61,
-        "7": 8.46,
-        "8": 3.8,
-        "9": 1.49
+        "1": 0.6,
+        "2": 0.23,
+        "3": 0.07,
+        "4": 38.79,
+        "5": 29.42,
+        "6": 17.42,
+        "7": 8.37,
+        "8": 3.65,
+        "9": 1.45
       },
-      "awayMeanPitchesEnteringI2": 16.98,
+      "awayMeanPitchesEnteringI2": 16.76,
       "homeMeanPitchesEnteringI2": 16.05,
-      "underRank": 3,
+      "underRank": 4,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1657,27 +1594,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.57372,
-        "over05": 0.42628,
-        "under05Pct": 57.37,
-        "over05Pct": 42.63,
-        "fairUnder": -135,
-        "fairOver": 135,
+        "under05": 0.56498,
+        "over05": 0.43501999999999996,
+        "under05Pct": 56.5,
+        "over05Pct": 43.5,
+        "fairUnder": -130,
+        "fairOver": 130,
         "fullI2Exact": {
-          "0": 57.37,
-          "1": 20.02,
-          "2": 11.11,
-          "3": 5.9,
-          "4+": 5.6
+          "0": 56.5,
+          "1": 20.23,
+          "2": 11.25,
+          "3": 6.13,
+          "4+": 5.9
         },
         "fullI2Cumulative": {
-          "1+": 42.63,
-          "2+": 22.61,
-          "3+": 11.5,
-          "4+": 5.6
+          "1+": 43.5,
+          "2+": 23.27,
+          "3+": 12.02,
+          "4+": 5.9
         },
-        "top2ScorePct": 25.35,
-        "bottom2ScorePct": 23.03
+        "top2ScorePct": 26.26,
+        "bottom2ScorePct": 23.23
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -1694,8 +1631,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.03573600086195533,
-        "equalHalfLogitShift": -0.04149340134081114
+        "baseballLogitDelta": -0.00008926103525092044,
+        "equalHalfLogitShift": -0.040452629597914735
       }
     },
     {
@@ -1707,13 +1644,13 @@
       "lineupConfirmed": true,
       "awayLineup": [
         "Jake McCarthy",
-        "Troy Johnston",
-        "Cole Carrigg",
-        "TJ Rumfield",
         "Mickey Moniak",
+        "Hunter Goodman",
+        "TJ Rumfield",
+        "Cole Carrigg",
+        "Connor Norby",
+        "Troy Johnston",
         "Adael Amador",
-        "Brett Sullivan",
-        "Vimael Machín",
         "Ezequiel Tovar"
       ],
       "homeLineup": [
@@ -1770,52 +1707,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5866039011218587,
-      "over05": 0.41339609887814127,
-      "under05Pct": 58.66,
-      "over05Pct": 41.34,
-      "fairUnder": -142,
-      "fairOver": 142,
+      "under05": 0.5901740577730765,
+      "over05": 0.4098259422269235,
+      "under05Pct": 59.02,
+      "over05Pct": 40.98,
+      "fairUnder": -144,
+      "fairOver": 144,
       "fullI2Exact": {
-        "0": 58.66,
-        "1": 19.8,
-        "2": 10.93,
-        "3": 5.65,
-        "4+": 4.96
+        "0": 59.02,
+        "1": 19.63,
+        "2": 10.65,
+        "3": 5.63,
+        "4+": 5.07
       },
       "fullI2Cumulative": {
-        "1+": 41.34,
-        "2+": 21.54,
-        "3+": 10.61,
-        "4+": 4.96
+        "1+": 40.98,
+        "2+": 21.35,
+        "3+": 10.7,
+        "4+": 5.07
       },
-      "top2ScorePct": 22.53,
-      "bottom2ScorePct": 24.28,
+      "top2ScorePct": 22.01,
+      "bottom2ScorePct": 24.33,
       "awayI2StartSlotPct": {
-        "1": 0.57,
-        "2": 0.21,
-        "3": 0.05,
-        "4": 39.05,
-        "5": 29.1,
-        "6": 17.98,
-        "7": 7.86,
-        "8": 3.76,
-        "9": 1.43
+        "1": 0.58,
+        "2": 0.22,
+        "3": 0.07,
+        "4": 40.47,
+        "5": 28.54,
+        "6": 17.01,
+        "7": 8.16,
+        "8": 3.57,
+        "9": 1.37
       },
       "homeI2StartSlotPct": {
-        "1": 0.9,
+        "1": 0.85,
         "2": 0.32,
         "3": 0.13,
-        "4": 35.31,
-        "5": 28.97,
-        "6": 18.2,
-        "7": 9.66,
+        "4": 35.7,
+        "5": 28.74,
+        "6": 18.07,
+        "7": 9.72,
         "8": 4.46,
-        "9": 2.05
+        "9": 2.01
       },
       "awayMeanPitchesEnteringI2": 15.88,
-      "homeMeanPitchesEnteringI2": 16.42,
-      "underRank": 2,
+      "homeMeanPitchesEnteringI2": 16.38,
+      "underRank": 1,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1825,27 +1762,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.57428,
-        "over05": 0.42572,
-        "under05Pct": 57.43,
-        "over05Pct": 42.57,
-        "fairUnder": -135,
-        "fairOver": 135,
+        "under05": 0.57788,
+        "over05": 0.42212000000000005,
+        "under05Pct": 57.79,
+        "over05Pct": 42.21,
+        "fairUnder": -137,
+        "fairOver": 137,
         "fullI2Exact": {
-          "0": 57.43,
-          "1": 20.39,
-          "2": 11.26,
-          "3": 5.82,
-          "4+": 5.11
+          "0": 57.79,
+          "1": 20.22,
+          "2": 10.97,
+          "3": 5.8,
+          "4+": 5.22
         },
         "fullI2Cumulative": {
-          "1+": 42.57,
-          "2+": 22.18,
-          "3+": 10.92,
-          "4+": 5.11
+          "1+": 42.21,
+          "2+": 21.99,
+          "3+": 11.01,
+          "4+": 5.22
         },
-        "top2ScorePct": 23.3,
-        "bottom2ScorePct": 25.09
+        "top2ScorePct": 22.71,
+        "bottom2ScorePct": 25.08
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -1862,8 +1799,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.038026164875348045,
-        "equalHalfLogitShift": -0.04358642325223461
+        "baseballLogitDelta": -0.052767536646989355,
+        "equalHalfLogitShift": -0.04040966647693478
       }
     },
     {
@@ -1877,23 +1814,23 @@
         "Yandy Díaz",
         "Jonathan Aranda",
         "Junior Caminero",
-        "Ryan Vilade",
+        "Liam Hicks",
         "Chandler Simpson",
-        "Jonny DeLuca",
-        "Jorge Mateo",
         "Victor Mesa Jr.",
-        "Nick Fortes"
+        "Cedric Mullins",
+        "Richie Palacios",
+        "Taylor Walls"
       ],
       "homeLineup": [
-        "Ronald Acuña Jr.",
         "Drake Baldwin",
-        "Ozzie Albies",
+        "Ronald Acuña Jr.",
         "Matt Olson",
-        "Lane Thomas",
         "Michael Harris II",
         "Mauricio Dubón",
+        "Ozzie Albies",
+        "Sean Murphy",
         "Austin Riley",
-        "Ha-Seong Kim"
+        "Mike Yastrzemski"
       ],
       "awayStarter": "Freddy Peralta",
       "homeStarter": "AJ Smith-Shawver",
@@ -1938,52 +1875,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5582346766410963,
-      "over05": 0.4417653233589037,
-      "under05Pct": 55.82,
-      "over05Pct": 44.18,
-      "fairUnder": -126,
-      "fairOver": 126,
+      "under05": 0.5591895925587234,
+      "over05": 0.4408104074412766,
+      "under05Pct": 55.92,
+      "over05Pct": 44.08,
+      "fairUnder": -127,
+      "fairOver": 127,
       "fullI2Exact": {
-        "0": 55.82,
-        "1": 19.98,
-        "2": 11.47,
-        "3": 6.37,
-        "4+": 6.35
+        "0": 55.92,
+        "1": 19.62,
+        "2": 11.45,
+        "3": 6.33,
+        "4+": 6.68
       },
       "fullI2Cumulative": {
-        "1+": 44.18,
-        "2+": 24.19,
-        "3+": 12.72,
-        "4+": 6.35
+        "1+": 44.08,
+        "2+": 24.46,
+        "3+": 13.01,
+        "4+": 6.68
       },
-      "top2ScorePct": 24.66,
-      "bottom2ScorePct": 25.91,
+      "top2ScorePct": 24.51,
+      "bottom2ScorePct": 25.93,
       "awayI2StartSlotPct": {
-        "1": 0.94,
-        "2": 0.34,
+        "1": 0.95,
+        "2": 0.36,
         "3": 0.16,
-        "4": 33.11,
-        "5": 29.18,
-        "6": 19.03,
-        "7": 10.15,
-        "8": 4.92,
-        "9": 2.16
+        "4": 32.79,
+        "5": 28.61,
+        "6": 19.23,
+        "7": 10.53,
+        "8": 5.12,
+        "9": 2.25
       },
       "homeI2StartSlotPct": {
-        "1": 0.86,
-        "2": 0.29,
+        "1": 0.85,
+        "2": 0.33,
         "3": 0.14,
-        "4": 34.94,
-        "5": 29.26,
-        "6": 17.87,
-        "7": 9.93,
-        "8": 4.64,
-        "9": 2.08
+        "4": 35,
+        "5": 29.46,
+        "6": 18.07,
+        "7": 9.6,
+        "8": 4.54,
+        "9": 2.01
       },
-      "awayMeanPitchesEnteringI2": 16.69,
-      "homeMeanPitchesEnteringI2": 16.49,
-      "underRank": 13,
+      "awayMeanPitchesEnteringI2": 16.71,
+      "homeMeanPitchesEnteringI2": 16.46,
+      "underRank": 11,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -1993,27 +1930,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.54572,
-        "over05": 0.45428,
-        "under05Pct": 54.57,
-        "over05Pct": 45.43,
-        "fairUnder": -120,
-        "fairOver": 120,
+        "under05": 0.54668,
+        "over05": 0.45331999999999995,
+        "under05Pct": 54.67,
+        "over05Pct": 45.33,
+        "fairUnder": -121,
+        "fairOver": 121,
         "fullI2Exact": {
-          "0": 54.57,
-          "1": 20.55,
-          "2": 11.8,
-          "3": 6.55,
-          "4+": 6.53
+          "0": 54.67,
+          "1": 20.18,
+          "2": 11.78,
+          "3": 6.51,
+          "4+": 6.87
         },
         "fullI2Cumulative": {
-          "1+": 45.43,
-          "2+": 24.88,
-          "3+": 13.08,
-          "4+": 6.53
+          "1+": 45.33,
+          "2+": 25.15,
+          "3+": 13.38,
+          "4+": 6.87
         },
-        "top2ScorePct": 25.59,
-        "bottom2ScorePct": 26.87
+        "top2ScorePct": 25.38,
+        "bottom2ScorePct": 26.83
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -2028,10 +1965,10 @@
         "totalSource": "THE_ODDS_API",
         "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8,
+        "latestObservedTotal": 8.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.07791678854007389,
-        "equalHalfLogitShift": -0.04957535085646858
+        "baseballLogitDelta": 0.07404371997944939,
+        "equalHalfLogitShift": -0.04653141776170877
       }
     },
     {
@@ -2046,21 +1983,21 @@
         "Ketel Marte",
         "Gabriel Moreno",
         "Nolan Arenado",
-        "Lourdes Gurriel Jr.",
-        "Ildemaro Vargas",
+        "Corbin Carroll",
+        "Lars Nootbaar",
         "Tim Tawa",
-        "Jordan Lawlar",
-        "Ryan Waldschmidt"
+        "Ryan Waldschmidt",
+        "Jordan Lawlar"
       ],
       "homeLineup": [
         "Carter Jensen",
         "Bobby Witt Jr.",
-        "Vinnie Pasquantino",
+        "Jac Caglianone",
         "Salvador Perez",
-        "Michael Massey",
+        "Vinnie Pasquantino",
         "Nick Loftin",
-        "John Rave",
-        "Matthew Lugo",
+        "Michael Massey",
+        "Isaac Collins",
         "Kyle Isbel"
       ],
       "awayStarter": "Corbin Burnes",
@@ -2106,52 +2043,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5153632059601096,
-      "over05": 0.48463679403989035,
-      "under05Pct": 51.54,
-      "over05Pct": 48.46,
-      "fairUnder": -106,
-      "fairOver": 106,
+      "under05": 0.5077938832052507,
+      "over05": 0.49220611679474935,
+      "under05Pct": 50.78,
+      "over05Pct": 49.22,
+      "fairUnder": -103,
+      "fairOver": 103,
       "fullI2Exact": {
-        "0": 51.54,
-        "1": 22.53,
-        "2": 12.99,
-        "3": 6.66,
-        "4+": 6.28
+        "0": 50.78,
+        "1": 23.24,
+        "2": 12.7,
+        "3": 6.65,
+        "4+": 6.63
       },
       "fullI2Cumulative": {
-        "1+": 48.46,
-        "2+": 25.93,
-        "3+": 12.94,
-        "4+": 6.28
+        "1+": 49.22,
+        "2+": 25.98,
+        "3+": 13.29,
+        "4+": 6.63
       },
-      "top2ScorePct": 27.64,
-      "bottom2ScorePct": 28.78,
+      "top2ScorePct": 28.85,
+      "bottom2ScorePct": 28.63,
       "awayI2StartSlotPct": {
-        "1": 0.71,
+        "1": 0.72,
         "2": 0.24,
         "3": 0.1,
-        "4": 37.19,
-        "5": 29.91,
-        "6": 17.99,
-        "7": 8.49,
-        "8": 3.81,
-        "9": 1.55
+        "4": 37.31,
+        "5": 29.8,
+        "6": 17.46,
+        "7": 8.65,
+        "8": 4,
+        "9": 1.72
       },
       "homeI2StartSlotPct": {
-        "1": 0.82,
-        "2": 0.32,
-        "3": 0.11,
-        "4": 35.49,
-        "5": 30.68,
-        "6": 17.89,
-        "7": 8.76,
-        "8": 4.16,
-        "9": 1.75
+        "1": 0.8,
+        "2": 0.34,
+        "3": 0.12,
+        "4": 35.02,
+        "5": 30.67,
+        "6": 17.64,
+        "7": 9.17,
+        "8": 4.35,
+        "9": 1.89
       },
-      "awayMeanPitchesEnteringI2": 15.8,
-      "homeMeanPitchesEnteringI2": 16.23,
-      "underRank": 7,
+      "awayMeanPitchesEnteringI2": 15.9,
+      "homeMeanPitchesEnteringI2": 16.35,
+      "underRank": 8,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -2161,27 +2098,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.55926,
-        "over05": 0.44074,
-        "under05Pct": 55.93,
-        "over05Pct": 44.07,
-        "fairUnder": -127,
-        "fairOver": 127,
+        "under05": 0.55178,
+        "over05": 0.44821999999999995,
+        "under05Pct": 55.18,
+        "over05Pct": 44.82,
+        "fairUnder": -123,
+        "fairOver": 123,
         "fullI2Exact": {
-          "0": 55.93,
-          "1": 20.49,
-          "2": 11.81,
+          "0": 55.18,
+          "1": 21.16,
+          "2": 11.56,
           "3": 6.06,
-          "4+": 5.71
+          "4+": 6.04
         },
         "fullI2Cumulative": {
-          "1+": 44.07,
-          "2+": 23.58,
-          "3+": 11.77,
-          "4+": 5.71
+          "1+": 44.82,
+          "2+": 23.66,
+          "3+": 12.1,
+          "4+": 6.04
         },
-        "top2ScorePct": 24.61,
-        "bottom2ScorePct": 25.67
+        "top2ScorePct": 25.78,
+        "bottom2ScorePct": 25.57
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -2198,8 +2135,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 9.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.023149715331791387,
-        "equalHalfLogitShift": 0.15706248004666196
+        "baseballLogitDelta": 0.05344383140873471,
+        "equalHalfLogitShift": 0.15489761900959226
       }
     },
     {
@@ -2207,168 +2144,8 @@
       "gameDate": "2026-09-08T23:40:00Z",
       "away": "Pittsburgh Pirates",
       "home": "Chicago White Sox",
-      "venue": "Rate Field",
-      "lineupConfirmed": true,
-      "awayLineup": [
-        "Konnor Griffin",
-        "Brandon Lowe",
-        "Bryan Reynolds",
-        "Nick Gonzales",
-        "Oneil Cruz",
-        "Esmerlyn Valdez",
-        "Spencer Horwitz",
-        "Jacob Gonzalez",
-        "Henry Davis"
-      ],
-      "homeLineup": [
-        "Sam Antonacci",
-        "Miguel Vargas",
-        "Munetaka Murakami",
-        "Andrew Benintendi",
-        "Colson Montgomery",
-        "Braden Montgomery",
-        "Tristan Peters",
-        "Chase Meidroth",
-        "Kyle Teel"
-      ],
-      "awayStarter": "Bubba Chandler",
-      "homeStarter": "Sean Burke",
-      "awayStarterStats": {
-        "wins": 6,
-        "losses": 9,
-        "record": "6-9",
-        "era": "4.30",
-        "whip": "1.37",
-        "inningsPitched": "136.0",
-        "strikeOuts": 121,
-        "walks": 71,
-        "homeRunsAllowed": 12,
-        "battersFaced": 592,
-        "gamesStarted": 26
-      },
-      "homeStarterStats": {
-        "wins": 8,
-        "losses": 6,
-        "record": "8-6",
-        "era": "3.20",
-        "whip": "1.14",
-        "inningsPitched": "154.2",
-        "strikeOuts": 167,
-        "walks": 54,
-        "homeRunsAllowed": 18,
-        "battersFaced": 635,
-        "gamesStarted": 24
-      },
-      "venueProfile": null,
-      "status": "Scheduled",
-      "dataAudit": {
-        "awayStarterBF": 592,
-        "homeStarterBF": 635,
-        "awayStarterGamesStarted": 26,
-        "homeStarterGamesStarted": 24,
-        "awayStarterExtraBaseFallback": false,
-        "homeStarterExtraBaseFallback": false,
-        "awayStarterStatsError": null,
-        "homeStarterStatsError": null,
-        "venueProfileMatched": false
-      },
-      "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
-      "trials": 50000,
-      "under05": 0.5549076417301302,
-      "over05": 0.4450923582698698,
-      "under05Pct": 55.49,
-      "over05Pct": 44.51,
-      "fairUnder": -125,
-      "fairOver": 125,
-      "fullI2Exact": {
-        "0": 55.49,
-        "1": 20.31,
-        "2": 11.89,
-        "3": 6.3,
-        "4+": 6.01
-      },
-      "fullI2Cumulative": {
-        "1+": 44.51,
-        "2+": 24.19,
-        "3+": 12.3,
-        "4+": 6.01
-      },
-      "top2ScorePct": 25.29,
-      "bottom2ScorePct": 25.72,
-      "awayI2StartSlotPct": {
-        "1": 0.81,
-        "2": 0.29,
-        "3": 0.13,
-        "4": 36.35,
-        "5": 29.49,
-        "6": 17.59,
-        "7": 9.04,
-        "8": 4.38,
-        "9": 1.91
-      },
-      "homeI2StartSlotPct": {
-        "1": 0.86,
-        "2": 0.4,
-        "3": 0.15,
-        "4": 34.33,
-        "5": 30.03,
-        "6": 18.29,
-        "7": 9.67,
-        "8": 4.24,
-        "9": 2.02
-      },
-      "awayMeanPitchesEnteringI2": 16.51,
-      "homeMeanPitchesEnteringI2": 16.72,
-      "underRank": 8,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
-      "lineupFeedConfirmed": false,
-      "lineupSimulationReady": true,
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "baseballOnlyRaw": {
-        "under05": 0.5584,
-        "over05": 0.4416,
-        "under05Pct": 55.84,
-        "over05Pct": 44.16,
-        "fairUnder": -126,
-        "fairOver": 126,
-        "fullI2Exact": {
-          "0": 55.84,
-          "1": 20.16,
-          "2": 11.8,
-          "3": 6.25,
-          "4+": 5.96
-        },
-        "fullI2Cumulative": {
-          "1+": 44.16,
-          "2+": 24,
-          "3+": 12.2,
-          "4+": 5.96
-        },
-        "top2ScorePct": 25.09,
-        "bottom2ScorePct": 25.52
-      },
-      "runEnvironmentConditioned": true,
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8.5,
-        "bucket": "8.5",
-        "totalPriorOverPct": 43.85,
-        "totalPriorUnderPct": 56.15,
-        "totalPriorN": 2871,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8.5,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.026638007726024426,
-        "equalHalfLogitShift": 0.010688819763846724
-      }
+      "modelStatus": "ERROR",
+      "error": "Error: Unable to resolve lineup override player: Rafael Flores"
     },
     {
       "gamePk": 823738,
@@ -2380,24 +2157,24 @@
       "awayLineup": [
         "Pete Crow-Armstrong",
         "Seiya Suzuki",
+        "Michael Busch",
         "Alex Bregman",
-        "Tyrone Taylor",
+        "Ian Happ",
         "Nico Hoerner",
-        "Matt Shaw",
-        "Carson Kelly",
-        "BJ Murray Jr.",
-        "Pedro Ramírez"
+        "Pedro Ramírez",
+        "Michael Conforto",
+        "Carson Kelly"
       ],
       "homeLineup": [
         "Jackson Chourio",
-        "Brice Turang",
+        "Luis Lara",
         "William Contreras",
         "Andrew Vaughn",
-        "Christian Yelich",
-        "Luis Lara",
-        "Cooper Pratt",
+        "Brice Turang",
+        "Joey Ortiz",
         "Garrett Mitchell",
-        "Joey Ortiz"
+        "Gary Sánchez",
+        "Cooper Pratt"
       ],
       "awayStarter": "David Peterson",
       "homeStarter": "Jacob Misiorowski",
@@ -2442,52 +2219,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.59612628008944,
-      "over05": 0.4038737199105599,
-      "under05Pct": 59.61,
-      "over05Pct": 40.39,
-      "fairUnder": -148,
-      "fairOver": 148,
+      "under05": 0.589874977391059,
+      "over05": 0.41012502260894096,
+      "under05Pct": 58.99,
+      "over05Pct": 41.01,
+      "fairUnder": -144,
+      "fairOver": 144,
       "fullI2Exact": {
-        "0": 59.61,
-        "1": 18.56,
-        "2": 10.73,
-        "3": 5.68,
-        "4+": 5.42
+        "0": 58.99,
+        "1": 18.72,
+        "2": 10.76,
+        "3": 5.93,
+        "4+": 5.6
       },
       "fullI2Cumulative": {
-        "1+": 40.39,
-        "2+": 21.83,
-        "3+": 11.1,
-        "4+": 5.42
+        "1+": 41.01,
+        "2+": 22.29,
+        "3+": 11.53,
+        "4+": 5.6
       },
-      "top2ScorePct": 19.32,
-      "bottom2ScorePct": 26.11,
+      "top2ScorePct": 19.81,
+      "bottom2ScorePct": 26.44,
       "awayI2StartSlotPct": {
-        "1": 0.46,
-        "2": 0.2,
+        "1": 0.5,
+        "2": 0.17,
         "3": 0.06,
-        "4": 39.32,
-        "5": 30.59,
-        "6": 16.84,
-        "7": 7.88,
-        "8": 3.27,
-        "9": 1.38
+        "4": 39.38,
+        "5": 30.08,
+        "6": 17.03,
+        "7": 8.03,
+        "8": 3.48,
+        "9": 1.27
       },
       "homeI2StartSlotPct": {
-        "1": 1.13,
-        "2": 0.42,
-        "3": 0.21,
-        "4": 33.44,
-        "5": 27.81,
-        "6": 19.15,
-        "7": 10.33,
-        "8": 5.17,
-        "9": 2.35
+        "1": 1.08,
+        "2": 0.48,
+        "3": 0.18,
+        "4": 34.1,
+        "5": 27.3,
+        "6": 18.73,
+        "7": 10.63,
+        "8": 5.16,
+        "9": 2.33
       },
-      "awayMeanPitchesEnteringI2": 16.01,
-      "homeMeanPitchesEnteringI2": 16.86,
-      "underRank": 1,
+      "awayMeanPitchesEnteringI2": 16.16,
+      "homeMeanPitchesEnteringI2": 16.81,
+      "underRank": 2,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -2497,27 +2274,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.5806,
-        "over05": 0.4194,
-        "under05Pct": 58.06,
-        "over05Pct": 41.94,
-        "fairUnder": -138,
-        "fairOver": 138,
+        "under05": 0.57428,
+        "over05": 0.42572,
+        "under05Pct": 57.43,
+        "over05Pct": 42.57,
+        "fairUnder": -135,
+        "fairOver": 135,
         "fullI2Exact": {
-          "0": 58.06,
-          "1": 19.27,
-          "2": 11.14,
-          "3": 5.9,
-          "4+": 5.63
+          "0": 57.43,
+          "1": 19.43,
+          "2": 11.17,
+          "3": 6.16,
+          "4+": 5.81
         },
         "fullI2Cumulative": {
-          "1+": 41.94,
-          "2+": 22.67,
-          "3+": 11.53,
-          "4+": 5.63
+          "1+": 42.57,
+          "2+": 23.14,
+          "3+": 11.97,
+          "4+": 5.81
         },
-        "top2ScorePct": 20.26,
-        "bottom2ScorePct": 27.27
+        "top2ScorePct": 20.67,
+        "bottom2ScorePct": 27.49
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -2534,8 +2311,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 7.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.06392786891140834,
-        "equalHalfLogitShift": -0.05919723480093608
+        "baseballLogitDelta": -0.038026164875348045,
+        "equalHalfLogitShift": -0.05329335206879049
       }
     },
     {
@@ -2548,13 +2325,13 @@
       "awayLineup": [
         "James Wood",
         "Abimelec Ortiz",
-        "Dylan Crews",
         "CJ Abrams",
-        "Brady House",
         "Daylen Lile",
+        "Dylan Crews",
         "Keibert Ruiz",
-        "Jorbit Vivas",
-        "Jacob Young"
+        "Brady House",
+        "Jacob Young",
+        "Nasim Nuñez"
       ],
       "homeLineup": [
         "Fernando Tatis Jr.",
@@ -2608,43 +2385,54 @@
         "homeStarterStatsError": null,
         "venueProfileMatched": false
       },
-      "modelStatus": "PENDING_FULL_GAME_TOTAL",
+      "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": null,
-      "over05": null,
-      "under05Pct": null,
-      "over05Pct": null,
-      "fairUnder": null,
-      "fairOver": null,
-      "fullI2Exact": null,
-      "fullI2Cumulative": null,
-      "top2ScorePct": null,
-      "bottom2ScorePct": null,
+      "under05": 0.5715272265205332,
+      "over05": 0.4284727734794668,
+      "under05Pct": 57.15,
+      "over05Pct": 42.85,
+      "fairUnder": -133,
+      "fairOver": 133,
+      "fullI2Exact": {
+        "0": 57.15,
+        "1": 19.82,
+        "2": 11.31,
+        "3": 5.96,
+        "4+": 5.76
+      },
+      "fullI2Cumulative": {
+        "1+": 42.85,
+        "2+": 23.02,
+        "3+": 11.72,
+        "4+": 5.76
+      },
+      "top2ScorePct": 23.66,
+      "bottom2ScorePct": 25.14,
       "awayI2StartSlotPct": {
-        "1": 0.61,
-        "2": 0.22,
-        "3": 0.11,
-        "4": 38.59,
-        "5": 29.39,
-        "6": 17.28,
-        "7": 8.48,
-        "8": 3.74,
-        "9": 1.58
+        "1": 0.6,
+        "2": 0.23,
+        "3": 0.09,
+        "4": 37.6,
+        "5": 29.98,
+        "6": 17.57,
+        "7": 8.46,
+        "8": 3.88,
+        "9": 1.59
       },
       "homeI2StartSlotPct": {
-        "1": 0.99,
-        "2": 0.33,
-        "3": 0.17,
-        "4": 35.02,
-        "5": 28.73,
-        "6": 18.51,
-        "7": 9.26,
-        "8": 4.84,
-        "9": 2.15
+        "1": 0.98,
+        "2": 0.36,
+        "3": 0.16,
+        "4": 35.27,
+        "5": 28.64,
+        "6": 18.29,
+        "7": 9.24,
+        "8": 4.8,
+        "9": 2.26
       },
       "awayMeanPitchesEnteringI2": 15.96,
-      "homeMeanPitchesEnteringI2": 16.75,
-      "underRank": 12,
+      "homeMeanPitchesEnteringI2": 16.73,
+      "underRank": 6,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -2654,31 +2442,45 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.54636,
-        "over05": 0.45364000000000004,
-        "under05Pct": 54.64,
-        "over05Pct": 45.36,
-        "fairUnder": -120,
-        "fairOver": 120,
+        "under05": 0.55576,
+        "over05": 0.44423999999999997,
+        "under05Pct": 55.58,
+        "over05Pct": 44.42,
+        "fairUnder": -125,
+        "fairOver": 125,
         "fullI2Exact": {
-          "0": 54.64,
-          "1": 20.9,
-          "2": 12.09,
+          "0": 55.58,
+          "1": 20.55,
+          "2": 11.72,
           "3": 6.18,
-          "4+": 6.19
+          "4+": 5.97
         },
         "fullI2Cumulative": {
-          "1+": 45.36,
-          "2+": 24.46,
-          "3+": 12.38,
-          "4+": 6.19
+          "1+": 44.42,
+          "2+": 23.87,
+          "3+": 12.15,
+          "4+": 5.97
         },
-        "top2ScorePct": 25.66,
-        "bottom2ScorePct": 26.41
+        "top2ScorePct": 24.7,
+        "bottom2ScorePct": 26.22
       },
-      "runEnvironmentConditioned": false,
+      "runEnvironmentConditioned": true,
       "runEnvironment": {
-        "status": "MISSING_APPROVED_PREGAME_FULL_GAME_TOTAL"
+        "status": "APPLIED",
+        "fullGameTotal": 7.5,
+        "bucket": "7.5",
+        "totalPriorOverPct": 41.94,
+        "totalPriorUnderPct": 58.06,
+        "totalPriorN": 1612,
+        "broadOverPct": 43.5,
+        "broadUnderPct": 56.5,
+        "totalSource": "THE_ODDS_API",
+        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+        "firstSeenAt": "2026-09-08T01:10:01.362Z",
+        "latestObservedTotal": 7.5,
+        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
+        "baseballLogitDelta": 0.037337474760027745,
+        "equalHalfLogitShift": -0.056827069290378174
       }
     },
     {
@@ -2689,26 +2491,26 @@
       "venue": "T-Mobile Park",
       "lineupConfirmed": true,
       "awayLineup": [
-        "Ezequiel Duran",
+        "Joc Pederson",
         "Corey Seager",
-        "Justin Foscue",
-        "Brandon Nimmo",
         "Wyatt Langford",
+        "Brandon Nimmo",
+        "Ezequiel Duran",
         "Jake Burger",
-        "Logan O'Hoppe",
-        "Elias Díaz",
-        "Cody Freeman"
+        "Evan Carter",
+        "Cody Freeman",
+        "Elias Díaz"
       ],
       "homeLineup": [
         "Randy Arozarena",
         "Dominic Canzone",
         "Julio Rodríguez",
         "Cal Raleigh",
-        "J.P. Crawford",
         "Josh Naylor",
-        "Weston Wilson",
-        "Michael Arroyo",
-        "Jhonny Pereda"
+        "J.P. Crawford",
+        "Taylor Ward",
+        "Cole Young",
+        "Michael Arroyo"
       ],
       "awayStarter": "Cody Bradford",
       "homeStarter": "Bryce Miller",
@@ -2764,30 +2566,30 @@
       "top2ScorePct": null,
       "bottom2ScorePct": null,
       "awayI2StartSlotPct": {
-        "1": 0.68,
-        "2": 0.27,
+        "1": 0.78,
+        "2": 0.23,
         "3": 0.11,
-        "4": 37.88,
-        "5": 29.26,
-        "6": 17.38,
-        "7": 8.78,
-        "8": 4.02,
-        "9": 1.62
+        "4": 37.72,
+        "5": 29.48,
+        "6": 17.28,
+        "7": 8.71,
+        "8": 4.01,
+        "9": 1.68
       },
       "homeI2StartSlotPct": {
-        "1": 0.96,
-        "2": 0.37,
+        "1": 0.94,
+        "2": 0.39,
         "3": 0.17,
-        "4": 34.69,
-        "5": 29.89,
-        "6": 17.86,
-        "7": 9.5,
-        "8": 4.48,
-        "9": 2.08
+        "4": 34.85,
+        "5": 29.74,
+        "6": 17.84,
+        "7": 9.3,
+        "8": 4.58,
+        "9": 2.19
       },
-      "awayMeanPitchesEnteringI2": 16.12,
-      "homeMeanPitchesEnteringI2": 16.35,
-      "underRank": 14,
+      "awayMeanPitchesEnteringI2": 16.18,
+      "homeMeanPitchesEnteringI2": 16.34,
+      "underRank": 12,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -2797,43 +2599,43 @@
           "applied": true,
           "id": 674003,
           "name": "Cody Bradford",
-          "source": "ESPN + FantasyPros",
+          "source": "RotoWire Sep 8 expected starter",
           "identitySource": null,
           "role": "probable starter",
-          "note": "Corroborated preliminary fallback; MLB listed the Texas starter as TBD at capture."
+          "note": "MLB.com listed Texas starter TBD at capture."
         },
         "home": {
           "applied": true,
           "id": 682243,
           "name": "Bryce Miller",
-          "source": "ESPN + FantasyPros",
+          "source": "RotoWire Sep 8 expected starter",
           "identitySource": null,
           "role": "probable starter",
-          "note": "Corroborated preliminary fallback; MLB listed the Seattle starter as TBD at capture."
+          "note": "MLB.com listed Seattle starter TBD at capture."
         }
       },
       "baseballOnlyRaw": {
-        "under05": 0.54162,
-        "over05": 0.45838,
-        "under05Pct": 54.16,
-        "over05Pct": 45.84,
-        "fairUnder": -118,
-        "fairOver": 118,
+        "under05": 0.5394,
+        "over05": 0.4606,
+        "under05Pct": 53.94,
+        "over05Pct": 46.06,
+        "fairUnder": -117,
+        "fairOver": 117,
         "fullI2Exact": {
-          "0": 54.16,
-          "1": 20.91,
-          "2": 11.95,
-          "3": 6.46,
-          "4+": 6.52
+          "0": 53.94,
+          "1": 21.43,
+          "2": 11.91,
+          "3": 6.27,
+          "4+": 6.46
         },
         "fullI2Cumulative": {
-          "1+": 45.84,
-          "2+": 24.93,
-          "3+": 12.98,
-          "4+": 6.52
+          "1+": 46.06,
+          "2+": 24.63,
+          "3+": 12.72,
+          "4+": 6.46
         },
-        "top2ScorePct": 25.78,
-        "bottom2ScorePct": 26.82
+        "top2ScorePct": 25.8,
+        "bottom2ScorePct": 26.8
       },
       "runEnvironmentConditioned": false,
       "runEnvironment": {
@@ -2849,25 +2651,25 @@
       "lineupConfirmed": true,
       "awayLineup": [
         "Brett Bateman",
-        "Nathan Lukes",
+        "George Springer",
         "Vladimir Guerrero Jr.",
-        "Jesús Sánchez",
+        "Alejandro Kirk",
+        "Nathan Lukes",
         "Kazuma Okamoto",
-        "Sean Keys",
-        "Josh Smith",
         "Andrés Giménez",
-        "Brandon Valenzuela"
+        "Ernie Clement",
+        "Myles Straw"
       ],
       "homeLineup": [
         "Henry Bolte",
         "Jeff McNeil",
         "Zack Gelof",
         "Lawrence Butler",
+        "Tommy White",
         "Carlos Cortes",
-        "Max Muncy",
+        "Jonah Heim",
         "Donovan Walton",
-        "Alika Williams",
-        "Brian Serven"
+        "Denzel Clarke"
       ],
       "awayStarter": "José Soriano",
       "homeStarter": "Jack Perkins",
@@ -2912,52 +2714,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5067632629358596,
-      "over05": 0.4932367370641404,
-      "under05Pct": 50.68,
-      "over05Pct": 49.32,
-      "fairUnder": -103,
-      "fairOver": 103,
+      "under05": 0.5116569819193479,
+      "over05": 0.48834301808065206,
+      "under05Pct": 51.17,
+      "over05Pct": 48.83,
+      "fairUnder": -105,
+      "fairOver": 105,
       "fullI2Exact": {
-        "0": 50.68,
-        "1": 22.36,
-        "2": 13.09,
-        "3": 6.88,
-        "4+": 6.99
+        "0": 51.17,
+        "1": 22.53,
+        "2": 12.74,
+        "3": 6.92,
+        "4+": 6.65
       },
       "fullI2Cumulative": {
-        "1+": 49.32,
-        "2+": 26.96,
-        "3+": 13.88,
-        "4+": 6.99
+        "1+": 48.83,
+        "2+": 26.31,
+        "3+": 13.57,
+        "4+": 6.65
       },
-      "top2ScorePct": 30.3,
-      "bottom2ScorePct": 27.29,
+      "top2ScorePct": 30.54,
+      "bottom2ScorePct": 26.34,
       "awayI2StartSlotPct": {
-        "1": 0.96,
-        "2": 0.37,
-        "3": 0.18,
-        "4": 34.08,
-        "5": 29.09,
-        "6": 18.34,
-        "7": 10.01,
-        "8": 4.66,
-        "9": 2.31
+        "1": 0.9,
+        "2": 0.4,
+        "3": 0.15,
+        "4": 33.87,
+        "5": 28.92,
+        "6": 18.43,
+        "7": 9.96,
+        "8": 5.08,
+        "9": 2.29
       },
       "homeI2StartSlotPct": {
-        "1": 0.83,
-        "2": 0.32,
-        "3": 0.11,
-        "4": 36.26,
-        "5": 29.41,
-        "6": 17.66,
-        "7": 9.16,
-        "8": 4.2,
-        "9": 2.05
+        "1": 0.84,
+        "2": 0.28,
+        "3": 0.1,
+        "4": 36.34,
+        "5": 29.1,
+        "6": 18.52,
+        "7": 8.83,
+        "8": 4.21,
+        "9": 1.79
       },
-      "awayMeanPitchesEnteringI2": 16.64,
-      "homeMeanPitchesEnteringI2": 16.37,
-      "underRank": 10,
+      "awayMeanPitchesEnteringI2": 16.66,
+      "homeMeanPitchesEnteringI2": 16.3,
+      "underRank": 7,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -2967,27 +2769,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.55076,
-        "over05": 0.44924,
-        "under05Pct": 55.08,
-        "over05Pct": 44.92,
-        "fairUnder": -123,
-        "fairOver": 123,
+        "under05": 0.5556,
+        "over05": 0.4444,
+        "under05Pct": 55.56,
+        "over05Pct": 44.44,
+        "fairUnder": -125,
+        "fairOver": 125,
         "fullI2Exact": {
-          "0": 55.08,
-          "1": 20.37,
-          "2": 11.92,
-          "3": 6.27,
-          "4+": 6.37
+          "0": 55.56,
+          "1": 20.5,
+          "2": 11.59,
+          "3": 6.3,
+          "4+": 6.05
         },
         "fullI2Cumulative": {
-          "1+": 44.92,
-          "2+": 24.56,
-          "3+": 12.64,
-          "4+": 6.37
+          "1+": 44.44,
+          "2+": 23.94,
+          "3+": 12.35,
+          "4+": 6.05
         },
-        "top2ScorePct": 27.11,
-        "bottom2ScorePct": 24.31
+        "top2ScorePct": 27.3,
+        "bottom2ScorePct": 23.4
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -3004,8 +2806,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 9.5,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.057567187729965164,
-        "equalHalfLogitShift": 0.15599021544695918
+        "baseballLogitDelta": 0.037985511096587876,
+        "equalHalfLogitShift": 0.1575744086526069
       }
     },
     {
@@ -3027,14 +2829,14 @@
         "Nathan Church"
       ],
       "homeLineup": [
-        "Drew Gilbert",
+        "Jonah Cox",
         "Rafael Devers",
         "Bryce Eldridge",
-        "Jonah Cox",
         "Jung Hoo Lee",
+        "Shay Whitcomb",
+        "Turner Hill",
+        "Andrew Knizner",
         "Osleivis Basabe",
-        "Grant McCray",
-        "Drew Cavanaugh",
         "Christian Koss"
       ],
       "awayStarter": "Quinn Mathews",
@@ -3080,52 +2882,52 @@
       },
       "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
       "trials": 50000,
-      "under05": 0.5836873118552004,
-      "over05": 0.4163126881447996,
-      "under05Pct": 58.37,
-      "over05Pct": 41.63,
-      "fairUnder": -140,
-      "fairOver": 140,
+      "under05": 0.5816630478816469,
+      "over05": 0.4183369521183531,
+      "under05Pct": 58.17,
+      "over05Pct": 41.83,
+      "fairUnder": -139,
+      "fairOver": 139,
       "fullI2Exact": {
-        "0": 58.37,
-        "1": 19.39,
-        "2": 11,
-        "3": 5.7,
-        "4+": 5.54
+        "0": 58.17,
+        "1": 19.45,
+        "2": 11.09,
+        "3": 5.79,
+        "4+": 5.51
       },
       "fullI2Cumulative": {
-        "1+": 41.63,
-        "2+": 22.24,
-        "3+": 11.24,
-        "4+": 5.54
+        "1+": 41.83,
+        "2+": 22.39,
+        "3+": 11.3,
+        "4+": 5.51
       },
-      "top2ScorePct": 23.71,
-      "bottom2ScorePct": 23.49,
+      "top2ScorePct": 23.74,
+      "bottom2ScorePct": 23.72,
       "awayI2StartSlotPct": {
-        "1": 0.8,
-        "2": 0.28,
-        "3": 0.11,
-        "4": 35.84,
+        "1": 0.88,
+        "2": 0.34,
+        "3": 0.12,
+        "4": 35.8,
         "5": 29.37,
-        "6": 17.49,
-        "7": 9.72,
-        "8": 4.5,
-        "9": 1.89
+        "6": 17.8,
+        "7": 9.45,
+        "8": 4.41,
+        "9": 1.82
       },
       "homeI2StartSlotPct": {
-        "1": 0.93,
-        "2": 0.26,
-        "3": 0.09,
-        "4": 34.38,
-        "5": 29.34,
-        "6": 18.41,
-        "7": 9.97,
-        "8": 4.6,
-        "9": 2.02
+        "1": 0.88,
+        "2": 0.31,
+        "3": 0.13,
+        "4": 34.35,
+        "5": 29.95,
+        "6": 18.75,
+        "7": 9,
+        "8": 4.52,
+        "9": 2.1
       },
       "awayMeanPitchesEnteringI2": 16.39,
-      "homeMeanPitchesEnteringI2": 16.61,
-      "underRank": 4,
+      "homeMeanPitchesEnteringI2": 16.59,
+      "underRank": 3,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
       "lineupFeedConfirmed": false,
@@ -3135,27 +2937,27 @@
         "home": null
       },
       "baseballOnlyRaw": {
-        "under05": 0.57134,
-        "over05": 0.42866000000000004,
-        "under05Pct": 57.13,
-        "over05Pct": 42.87,
-        "fairUnder": -133,
-        "fairOver": 133,
+        "under05": 0.5693,
+        "over05": 0.43069999999999997,
+        "under05Pct": 56.93,
+        "over05Pct": 43.07,
+        "fairUnder": -132,
+        "fairOver": 132,
         "fullI2Exact": {
-          "0": 57.13,
-          "1": 19.97,
-          "2": 11.33,
-          "3": 5.87,
-          "4+": 5.7
+          "0": 56.93,
+          "1": 20.02,
+          "2": 11.42,
+          "3": 5.96,
+          "4+": 5.67
         },
         "fullI2Cumulative": {
-          "1+": 42.87,
-          "2+": 22.89,
-          "3+": 11.57,
-          "4+": 5.7
+          "1+": 43.07,
+          "2+": 23.05,
+          "3+": 11.63,
+          "4+": 5.67
         },
-        "top2ScorePct": 24.49,
-        "bottom2ScorePct": 24.27
+        "top2ScorePct": 24.58,
+        "bottom2ScorePct": 24.56
       },
       "runEnvironmentConditioned": true,
       "runEnvironment": {
@@ -3172,8 +2974,8 @@
         "firstSeenAt": "2026-09-08T00:21:33.488Z",
         "latestObservedTotal": 8,
         "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": -0.026011350912684805,
-        "equalHalfLogitShift": -0.04275125281192793
+        "baseballLogitDelta": -0.017686679685669726,
+        "equalHalfLogitShift": -0.045686020256591964
       }
     },
     {
@@ -3181,185 +2983,50 @@
       "gameDate": "2026-09-09T02:10:00Z",
       "away": "Cincinnati Reds",
       "home": "Los Angeles Dodgers",
-      "venue": "UNIQLO Field at Dodger Stadium",
-      "lineupConfirmed": true,
-      "awayLineup": [
-        "Dane Myers",
-        "Elly De La Cruz",
-        "Sal Stewart",
-        "Tyler Stephenson",
-        "Eugenio Suárez",
-        "JJ Bleday",
-        "Matt McLain",
-        "Juan Brito",
-        "Héctor Rodríguez"
-      ],
-      "homeLineup": [
-        "Tommy Edman",
-        "Mookie Betts",
-        "Will Smith",
-        "Freddie Freeman",
-        "Teoscar Hernández",
-        "Kyle Tucker",
-        "Miguel Rojas",
-        "Max Muncy",
-        "Enrique Hernández"
-      ],
-      "awayStarter": "Nick Lodolo",
-      "homeStarter": "Tarik Skubal",
-      "awayStarterStats": {
-        "wins": 3,
-        "losses": 3,
-        "record": "3-3",
-        "era": "5.08",
-        "whip": "1.52",
-        "inningsPitched": "85.0",
-        "strikeOuts": 69,
-        "walks": 35,
-        "homeRunsAllowed": 16,
-        "battersFaced": 383,
-        "gamesStarted": 17
-      },
-      "homeStarterStats": {
-        "wins": 8,
-        "losses": 7,
-        "record": "8-7",
-        "era": "2.86",
-        "whip": "0.98",
-        "inningsPitched": "132.1",
-        "strikeOuts": 159,
-        "walks": 22,
-        "homeRunsAllowed": 12,
-        "battersFaced": 521,
-        "gamesStarted": 22
-      },
-      "venueProfile": null,
-      "status": "Scheduled",
-      "dataAudit": {
-        "awayStarterBF": 383,
-        "homeStarterBF": 521,
-        "awayStarterGamesStarted": 17,
-        "homeStarterGamesStarted": 22,
-        "awayStarterExtraBaseFallback": false,
-        "homeStarterExtraBaseFallback": false,
-        "awayStarterStatsError": null,
-        "homeStarterStatsError": null,
-        "venueProfileMatched": false
-      },
-      "modelStatus": "PROVISIONAL_RESEARCH_PROJECTION",
-      "trials": 50000,
-      "under05": 0.5466353543337612,
-      "over05": 0.4533646456662388,
-      "under05Pct": 54.66,
-      "over05Pct": 45.34,
-      "fairUnder": -121,
-      "fairOver": 121,
-      "fullI2Exact": {
-        "0": 54.66,
-        "1": 20.51,
-        "2": 11.73,
-        "3": 6.42,
-        "4+": 6.68
-      },
-      "fullI2Cumulative": {
-        "1+": 45.34,
-        "2+": 24.83,
-        "3+": 13.1,
-        "4+": 6.68
-      },
-      "top2ScorePct": 23.51,
-      "bottom2ScorePct": 28.53,
-      "awayI2StartSlotPct": {
-        "1": 0.58,
-        "2": 0.2,
-        "3": 0.09,
-        "4": 37.77,
-        "5": 29.99,
-        "6": 17.47,
-        "7": 8.56,
-        "8": 3.75,
-        "9": 1.58
-      },
-      "homeI2StartSlotPct": {
-        "1": 1.08,
-        "2": 0.43,
-        "3": 0.23,
-        "4": 34.19,
-        "5": 27.99,
-        "6": 18.55,
-        "7": 10.17,
-        "8": 5.08,
-        "9": 2.27
-      },
-      "awayMeanPitchesEnteringI2": 16.17,
-      "homeMeanPitchesEnteringI2": 16.6,
-      "underRank": 11,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override because MLB live feed lacked a complete batting order",
-      "lineupFeedConfirmed": false,
-      "lineupSimulationReady": true,
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      },
-      "baseballOnlyRaw": {
-        "under05": 0.55014,
-        "over05": 0.44986000000000004,
-        "under05Pct": 55.01,
-        "over05Pct": 44.99,
-        "fairUnder": -122,
-        "fairOver": 122,
-        "fullI2Exact": {
-          "0": 55.01,
-          "1": 20.35,
-          "2": 11.64,
-          "3": 6.37,
-          "4+": 6.63
-        },
-        "fullI2Cumulative": {
-          "1+": 44.99,
-          "2+": 24.63,
-          "3+": 12.99,
-          "4+": 6.63
-        },
-        "top2ScorePct": 23.35,
-        "bottom2ScorePct": 28.35
-      },
-      "runEnvironmentConditioned": true,
-      "runEnvironment": {
-        "status": "APPLIED",
-        "fullGameTotal": 8.5,
-        "bucket": "8.5",
-        "totalPriorOverPct": 43.85,
-        "totalPriorUnderPct": 56.15,
-        "totalPriorN": 2871,
-        "broadOverPct": 43.5,
-        "broadUnderPct": 56.5,
-        "totalSource": "THE_ODDS_API",
-        "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
-        "firstSeenAt": "2026-09-08T00:21:33.488Z",
-        "latestObservedTotal": 8.5,
-        "adjustmentMethod": "TOTAL_PRIOR_PLUS_BASEBALL_LOGIT_DELTA",
-        "baseballLogitDelta": 0.060072696169590156,
-        "equalHalfLogitShift": 0.009013867279659027
-      }
+      "modelStatus": "ERROR",
+      "error": "Error: Unable to resolve lineup override player: Edwin Arroyo"
     }
   ],
   "sourcePriorityAudit": {
     "rule": "USER_DATA_FIRST",
     "upstreamBase": "https://lambent-brioche-ca05b1.netlify.app",
-    "upstreamAttempts": 316,
-    "upstreamSuccesses": 316,
-    "officialFallbacks": 0,
-    "fallbackEvents": [],
+    "upstreamAttempts": 280,
+    "upstreamSuccesses": 274,
+    "officialFallbacks": 6,
+    "fallbackEvents": [
+      {
+        "reason": "Error: Unable to resolve lineup override player: Rafael Flores",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824551/feed/live"
+      },
+      {
+        "reason": "Error: Unable to resolve lineup override player: Rafael Flores",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824551/feed/live"
+      },
+      {
+        "reason": "Error: Unable to resolve lineup override player: Rafael Flores",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/824551/feed/live"
+      },
+      {
+        "reason": "Error: Unable to resolve lineup override player: Edwin Arroyo",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823901/feed/live"
+      },
+      {
+        "reason": "Error: Unable to resolve lineup override player: Edwin Arroyo",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823901/feed/live"
+      },
+      {
+        "reason": "Error: Unable to resolve lineup override player: Edwin Arroyo",
+        "url": "https://statsapi.mlb.com/api/v1.1/game/823901/feed/live"
+      }
+    ],
     "unmappedOfficialCalls": 0
   },
   "primaryBaseballSource": "user-owned MLB Live Command Center upstream data layer",
   "fallbackBaseballSource": "official MLB Stats API only when the upstream request fails",
   "lineupOverrideAudit": {
     "overrideFile": "data/runtime/i2/2026-09-08_lineup_overrides.json",
-    "sourceStatus": "PRELIMINARY_BASEBALL_ONLY",
-    "note": "Preliminary lineups are explicitly provisional and must be replaced by confirmed MLB batting orders when available.",
+    "sourceStatus": "PRELIMINARY_EXPECTED_LINEUPS",
+    "note": "PRELIMINARY only. Rerun on MLB-confirmed batting orders before any official production recommendation.",
     "requestedGames": 15,
     "appliedGames": [
       {
@@ -3369,7 +3036,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Cleveland Guardians @ Baltimore Orioles",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 824228,
@@ -3378,7 +3045,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Minnesota Twins @ Detroit Tigers",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823414,
@@ -3387,7 +3054,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Houston Astros @ Philadelphia Phillies",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823821,
@@ -3396,7 +3063,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "New York Mets @ Miami Marlins",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 824714,
@@ -3405,7 +3072,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Los Angeles Angels @ Boston Red Sox",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823500,
@@ -3414,7 +3081,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Colorado Rockies @ New York Yankees",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 824875,
@@ -3423,7 +3090,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Tampa Bay Rays @ Atlanta Braves",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 824063,
@@ -3432,16 +3099,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Arizona Diamondbacks @ Kansas City Royals",
-        "lineupMethod": null
-      },
-      {
-        "gamePk": 824551,
-        "awayApplied": true,
-        "homeApplied": true,
-        "awayStarter": null,
-        "homeStarter": null,
-        "matchup": "Pittsburgh Pirates @ Chicago White Sox",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823738,
@@ -3450,7 +3108,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Chicago Cubs @ Milwaukee Brewers",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823250,
@@ -3459,7 +3117,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Washington Nationals @ San Diego Padres",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823092,
@@ -3469,22 +3127,22 @@
           "applied": true,
           "id": 674003,
           "name": "Cody Bradford",
-          "source": "ESPN + FantasyPros",
+          "source": "RotoWire Sep 8 expected starter",
           "identitySource": null,
           "role": "probable starter",
-          "note": "Corroborated preliminary fallback; MLB listed the Texas starter as TBD at capture."
+          "note": "MLB.com listed Texas starter TBD at capture."
         },
         "homeStarter": {
           "applied": true,
           "id": 682243,
           "name": "Bryce Miller",
-          "source": "ESPN + FantasyPros",
+          "source": "RotoWire Sep 8 expected starter",
           "identitySource": null,
           "role": "probable starter",
-          "note": "Corroborated preliminary fallback; MLB listed the Seattle starter as TBD at capture."
+          "note": "MLB.com listed Seattle starter TBD at capture."
         },
         "matchup": "Texas Rangers @ Seattle Mariners",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 824957,
@@ -3493,7 +3151,7 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "Toronto Blue Jays @ Athletics",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       },
       {
         "gamePk": 823174,
@@ -3502,79 +3160,24 @@
         "awayStarter": null,
         "homeStarter": null,
         "matchup": "St. Louis Cardinals @ San Francisco Giants",
-        "lineupMethod": null
-      },
-      {
-        "gamePk": 823901,
-        "awayApplied": true,
-        "homeApplied": true,
-        "awayStarter": null,
-        "homeStarter": null,
-        "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
-        "lineupMethod": null
+        "lineupMethod": "RotoWire expected lineup Sep 8"
       }
     ],
-    "appliedGameCount": 15,
+    "appliedGameCount": 13,
     "feedConfirmedProjectedGames": 0,
-    "provisionalProjectedGames": 15
+    "provisionalProjectedGames": 13
   },
   "fullSlateProjectionMode": "CONFIRMED_PLUS_PROVISIONAL_LINEUP_AND_SOURCED_PROBABLE_OVERRIDES",
   "baseballOnlyRawRanking": [
     {
       "rank": 1,
-      "gamePk": 823738,
-      "matchup": "Chicago Cubs @ Milwaukee Brewers",
-      "gameDate": "2026-09-08T23:40:00Z",
-      "under05Pct": 58.06,
-      "over05Pct": 41.94,
-      "fairUnder": -138,
-      "fairOver": 138,
-      "awayStarter": "David Peterson",
-      "homeStarter": "Jacob Misiorowski",
-      "awayStarterStats": {
-        "wins": 7,
-        "losses": 8,
-        "record": "7-8",
-        "era": "5.39",
-        "whip": "1.56",
-        "inningsPitched": "127.0",
-        "strikeOuts": 113,
-        "walks": 56,
-        "homeRunsAllowed": 14,
-        "battersFaced": 579,
-        "gamesStarted": 19
-      },
-      "homeStarterStats": {
-        "wins": 14,
-        "losses": 5,
-        "record": "14-5",
-        "era": "1.97",
-        "whip": "0.79",
-        "inningsPitched": "155.0",
-        "strikeOuts": 227,
-        "walks": 39,
-        "homeRunsAllowed": 14,
-        "battersFaced": 592,
-        "gamesStarted": 26
-      },
-      "top2ScorePct": 20.26,
-      "bottom2ScorePct": 27.27,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 2,
       "gamePk": 823500,
       "matchup": "Colorado Rockies @ New York Yankees",
       "gameDate": "2026-09-08T23:05:00Z",
-      "under05Pct": 57.43,
-      "over05Pct": 42.57,
-      "fairUnder": -135,
-      "fairOver": 135,
+      "under05Pct": 57.79,
+      "over05Pct": 42.21,
+      "fairUnder": -137,
+      "fairOver": 137,
       "awayStarter": "Gabriel Hughes",
       "homeStarter": "Cam Schlittler",
       "awayStarterStats": {
@@ -3603,8 +3206,54 @@
         "battersFaced": 677,
         "gamesStarted": 29
       },
-      "top2ScorePct": 23.3,
-      "bottom2ScorePct": 25.09,
+      "top2ScorePct": 22.71,
+      "bottom2ScorePct": 25.08,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      }
+    },
+    {
+      "rank": 2,
+      "gamePk": 823738,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "under05Pct": 57.43,
+      "over05Pct": 42.57,
+      "fairUnder": -135,
+      "fairOver": 135,
+      "awayStarter": "David Peterson",
+      "homeStarter": "Jacob Misiorowski",
+      "awayStarterStats": {
+        "wins": 7,
+        "losses": 8,
+        "record": "7-8",
+        "era": "5.39",
+        "whip": "1.56",
+        "inningsPitched": "127.0",
+        "strikeOuts": 113,
+        "walks": 56,
+        "homeRunsAllowed": 14,
+        "battersFaced": 579,
+        "gamesStarted": 19
+      },
+      "homeStarterStats": {
+        "wins": 14,
+        "losses": 5,
+        "record": "14-5",
+        "era": "1.97",
+        "whip": "0.79",
+        "inningsPitched": "155.0",
+        "strikeOuts": 227,
+        "walks": 39,
+        "homeRunsAllowed": 14,
+        "battersFaced": 592,
+        "gamesStarted": 26
+      },
+      "top2ScorePct": 20.67,
+      "bottom2ScorePct": 27.49,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -3614,59 +3263,13 @@
     },
     {
       "rank": 3,
-      "gamePk": 824714,
-      "matchup": "Los Angeles Angels @ Boston Red Sox",
-      "gameDate": "2026-09-08T22:45:00Z",
-      "under05Pct": 57.37,
-      "over05Pct": 42.63,
-      "fairUnder": -135,
-      "fairOver": 135,
-      "awayStarter": "Reid Detmers",
-      "homeStarter": "Patrick Sandoval",
-      "awayStarterStats": {
-        "wins": 4,
-        "losses": 8,
-        "record": "4-8",
-        "era": "3.44",
-        "whip": "1.06",
-        "inningsPitched": "162.0",
-        "strikeOuts": 182,
-        "walks": 44,
-        "homeRunsAllowed": 17,
-        "battersFaced": 651,
-        "gamesStarted": 28
-      },
-      "homeStarterStats": {
-        "wins": 1,
-        "losses": 4,
-        "record": "1-4",
-        "era": "4.41",
-        "whip": "1.73",
-        "inningsPitched": "49.0",
-        "strikeOuts": 50,
-        "walks": 25,
-        "homeRunsAllowed": 6,
-        "battersFaced": 227,
-        "gamesStarted": 10
-      },
-      "top2ScorePct": 25.35,
-      "bottom2ScorePct": 23.03,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 4,
       "gamePk": 823174,
       "matchup": "St. Louis Cardinals @ San Francisco Giants",
       "gameDate": "2026-09-09T01:45:00Z",
-      "under05Pct": 57.13,
-      "over05Pct": 42.87,
-      "fairUnder": -133,
-      "fairOver": 133,
+      "under05Pct": 56.93,
+      "over05Pct": 43.07,
+      "fairUnder": -132,
+      "fairOver": 132,
       "awayStarter": "Quinn Mathews",
       "homeStarter": "Landen Roupp",
       "awayStarterStats": {
@@ -3695,8 +3298,54 @@
         "battersFaced": 614,
         "gamesStarted": 27
       },
-      "top2ScorePct": 24.49,
-      "bottom2ScorePct": 24.27,
+      "top2ScorePct": 24.58,
+      "bottom2ScorePct": 24.56,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      }
+    },
+    {
+      "rank": 4,
+      "gamePk": 824714,
+      "matchup": "Los Angeles Angels @ Boston Red Sox",
+      "gameDate": "2026-09-08T22:45:00Z",
+      "under05Pct": 56.5,
+      "over05Pct": 43.5,
+      "fairUnder": -130,
+      "fairOver": 130,
+      "awayStarter": "Reid Detmers",
+      "homeStarter": "Patrick Sandoval",
+      "awayStarterStats": {
+        "wins": 4,
+        "losses": 8,
+        "record": "4-8",
+        "era": "3.44",
+        "whip": "1.06",
+        "inningsPitched": "162.0",
+        "strikeOuts": 182,
+        "walks": 44,
+        "homeRunsAllowed": 17,
+        "battersFaced": 651,
+        "gamesStarted": 28
+      },
+      "homeStarterStats": {
+        "wins": 1,
+        "losses": 4,
+        "record": "1-4",
+        "era": "4.41",
+        "whip": "1.73",
+        "inningsPitched": "49.0",
+        "strikeOuts": 50,
+        "walks": 25,
+        "homeRunsAllowed": 6,
+        "battersFaced": 227,
+        "gamesStarted": 10
+      },
+      "top2ScorePct": 26.26,
+      "bottom2ScorePct": 23.23,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -3709,10 +3358,10 @@
       "gamePk": 823414,
       "matchup": "Houston Astros @ Philadelphia Phillies",
       "gameDate": "2026-09-08T22:40:00Z",
-      "under05Pct": 56.1,
-      "over05Pct": 43.9,
-      "fairUnder": -128,
-      "fairOver": 128,
+      "under05Pct": 55.8,
+      "over05Pct": 44.2,
+      "fairUnder": -126,
+      "fairOver": 126,
       "awayStarter": "Hayden Wesneski",
       "homeStarter": "Andrew Painter",
       "awayStarterStats": {
@@ -3741,8 +3390,8 @@
         "battersFaced": 456,
         "gamesStarted": 19
       },
-      "top2ScorePct": 26.38,
-      "bottom2ScorePct": 23.71,
+      "top2ScorePct": 26.71,
+      "bottom2ScorePct": 23.81,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -3752,289 +3401,13 @@
     },
     {
       "rank": 6,
-      "gamePk": 824792,
-      "matchup": "Cleveland Guardians @ Baltimore Orioles",
-      "gameDate": "2026-09-08T22:35:00Z",
-      "under05Pct": 56.04,
-      "over05Pct": 43.96,
-      "fairUnder": -127,
-      "fairOver": 127,
-      "awayStarter": "Tanner Bibee",
-      "homeStarter": "Brandon Young",
-      "awayStarterStats": {
-        "wins": 5,
-        "losses": 15,
-        "record": "5-15",
-        "era": "4.06",
-        "whip": "1.18",
-        "inningsPitched": "166.1",
-        "strikeOuts": 132,
-        "walks": 51,
-        "homeRunsAllowed": 26,
-        "battersFaced": 684,
-        "gamesStarted": 29
-      },
-      "homeStarterStats": {
-        "wins": 9,
-        "losses": 3,
-        "record": "9-3",
-        "era": "3.42",
-        "whip": "1.31",
-        "inningsPitched": "137.0",
-        "strikeOuts": 110,
-        "walks": 48,
-        "homeRunsAllowed": 19,
-        "battersFaced": 583,
-        "gamesStarted": 24
-      },
-      "top2ScorePct": 24.82,
-      "bottom2ScorePct": 25.57,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 7,
-      "gamePk": 824063,
-      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
-      "gameDate": "2026-09-08T23:40:00Z",
-      "under05Pct": 55.93,
-      "over05Pct": 44.07,
-      "fairUnder": -127,
-      "fairOver": 127,
-      "awayStarter": "Corbin Burnes",
-      "homeStarter": "Michael Wacha",
-      "awayStarterStats": {
-        "wins": null,
-        "losses": null,
-        "record": null,
-        "era": null,
-        "whip": null,
-        "inningsPitched": null,
-        "strikeOuts": null,
-        "walks": null,
-        "homeRunsAllowed": null,
-        "battersFaced": 0,
-        "gamesStarted": null
-      },
-      "homeStarterStats": {
-        "wins": 9,
-        "losses": 8,
-        "record": "9-8",
-        "era": "3.36",
-        "whip": "1.10",
-        "inningsPitched": "176.2",
-        "strikeOuts": 143,
-        "walks": 44,
-        "homeRunsAllowed": 24,
-        "battersFaced": 712,
-        "gamesStarted": 28
-      },
-      "top2ScorePct": 24.61,
-      "bottom2ScorePct": 25.67,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 8,
-      "gamePk": 824551,
-      "matchup": "Pittsburgh Pirates @ Chicago White Sox",
-      "gameDate": "2026-09-08T23:40:00Z",
-      "under05Pct": 55.84,
-      "over05Pct": 44.16,
-      "fairUnder": -126,
-      "fairOver": 126,
-      "awayStarter": "Bubba Chandler",
-      "homeStarter": "Sean Burke",
-      "awayStarterStats": {
-        "wins": 6,
-        "losses": 9,
-        "record": "6-9",
-        "era": "4.30",
-        "whip": "1.37",
-        "inningsPitched": "136.0",
-        "strikeOuts": 121,
-        "walks": 71,
-        "homeRunsAllowed": 12,
-        "battersFaced": 592,
-        "gamesStarted": 26
-      },
-      "homeStarterStats": {
-        "wins": 8,
-        "losses": 6,
-        "record": "8-6",
-        "era": "3.20",
-        "whip": "1.14",
-        "inningsPitched": "154.2",
-        "strikeOuts": 167,
-        "walks": 54,
-        "homeRunsAllowed": 18,
-        "battersFaced": 635,
-        "gamesStarted": 24
-      },
-      "top2ScorePct": 25.09,
-      "bottom2ScorePct": 25.52,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 9,
-      "gamePk": 823821,
-      "matchup": "New York Mets @ Miami Marlins",
-      "gameDate": "2026-09-08T22:40:00Z",
-      "under05Pct": 55.6,
-      "over05Pct": 44.4,
-      "fairUnder": -125,
-      "fairOver": 125,
-      "awayStarter": "Sean Manaea",
-      "homeStarter": "Sandy Alcantara",
-      "awayStarterStats": {
-        "wins": 4,
-        "losses": 7,
-        "record": "4-7",
-        "era": "4.70",
-        "whip": "1.36",
-        "inningsPitched": "128.1",
-        "strikeOuts": 122,
-        "walks": 41,
-        "homeRunsAllowed": 21,
-        "battersFaced": 562,
-        "gamesStarted": 15
-      },
-      "homeStarterStats": {
-        "wins": 13,
-        "losses": 9,
-        "record": "13-9",
-        "era": "3.54",
-        "whip": "1.19",
-        "inningsPitched": "195.2",
-        "strikeOuts": 142,
-        "walks": 51,
-        "homeRunsAllowed": 19,
-        "battersFaced": 808,
-        "gamesStarted": 30
-      },
-      "top2ScorePct": 23.81,
-      "bottom2ScorePct": 26.96,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 10,
-      "gamePk": 824957,
-      "matchup": "Toronto Blue Jays @ Athletics",
-      "gameDate": "2026-09-09T01:40:00Z",
-      "under05Pct": 55.08,
-      "over05Pct": 44.92,
-      "fairUnder": -123,
-      "fairOver": 123,
-      "awayStarter": "José Soriano",
-      "homeStarter": "Jack Perkins",
-      "awayStarterStats": {
-        "wins": 11,
-        "losses": 7,
-        "record": "11-7",
-        "era": "3.52",
-        "whip": "1.29",
-        "inningsPitched": "156.0",
-        "strikeOuts": 151,
-        "walks": 70,
-        "homeRunsAllowed": 14,
-        "battersFaced": 654,
-        "gamesStarted": 28
-      },
-      "homeStarterStats": {
-        "wins": 3,
-        "losses": 10,
-        "record": "3-10",
-        "era": "6.50",
-        "whip": "1.54",
-        "inningsPitched": "98.1",
-        "strikeOuts": 116,
-        "walks": 47,
-        "homeRunsAllowed": 18,
-        "battersFaced": 452,
-        "gamesStarted": 13
-      },
-      "top2ScorePct": 27.11,
-      "bottom2ScorePct": 24.31,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 11,
-      "gamePk": 823901,
-      "matchup": "Cincinnati Reds @ Los Angeles Dodgers",
-      "gameDate": "2026-09-09T02:10:00Z",
-      "under05Pct": 55.01,
-      "over05Pct": 44.99,
-      "fairUnder": -122,
-      "fairOver": 122,
-      "awayStarter": "Nick Lodolo",
-      "homeStarter": "Tarik Skubal",
-      "awayStarterStats": {
-        "wins": 3,
-        "losses": 3,
-        "record": "3-3",
-        "era": "5.08",
-        "whip": "1.52",
-        "inningsPitched": "85.0",
-        "strikeOuts": 69,
-        "walks": 35,
-        "homeRunsAllowed": 16,
-        "battersFaced": 383,
-        "gamesStarted": 17
-      },
-      "homeStarterStats": {
-        "wins": 8,
-        "losses": 7,
-        "record": "8-7",
-        "era": "2.86",
-        "whip": "0.98",
-        "inningsPitched": "132.1",
-        "strikeOuts": 159,
-        "walks": 22,
-        "homeRunsAllowed": 12,
-        "battersFaced": 521,
-        "gamesStarted": 22
-      },
-      "top2ScorePct": 23.35,
-      "bottom2ScorePct": 28.35,
-      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
-      "lineupSource": "preliminary weekday/game-series lineup override",
-      "probableStarterFallbacks": {
-        "away": null,
-        "home": null
-      }
-    },
-    {
-      "rank": 12,
       "gamePk": 823250,
       "matchup": "Washington Nationals @ San Diego Padres",
       "gameDate": "2026-09-09T01:40:00Z",
-      "under05Pct": 54.64,
-      "over05Pct": 45.36,
-      "fairUnder": -120,
-      "fairOver": 120,
+      "under05Pct": 55.58,
+      "over05Pct": 44.42,
+      "fairUnder": -125,
+      "fairOver": 125,
       "awayStarter": "Riley Cornelio",
       "homeStarter": "Casey Mize",
       "awayStarterStats": {
@@ -4063,8 +3436,8 @@
         "battersFaced": 464,
         "gamesStarted": 22
       },
-      "top2ScorePct": 25.66,
-      "bottom2ScorePct": 26.41,
+      "top2ScorePct": 24.7,
+      "bottom2ScorePct": 26.22,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -4073,14 +3446,198 @@
       }
     },
     {
-      "rank": 13,
+      "rank": 7,
+      "gamePk": 824957,
+      "matchup": "Toronto Blue Jays @ Athletics",
+      "gameDate": "2026-09-09T01:40:00Z",
+      "under05Pct": 55.56,
+      "over05Pct": 44.44,
+      "fairUnder": -125,
+      "fairOver": 125,
+      "awayStarter": "José Soriano",
+      "homeStarter": "Jack Perkins",
+      "awayStarterStats": {
+        "wins": 11,
+        "losses": 7,
+        "record": "11-7",
+        "era": "3.52",
+        "whip": "1.29",
+        "inningsPitched": "156.0",
+        "strikeOuts": 151,
+        "walks": 70,
+        "homeRunsAllowed": 14,
+        "battersFaced": 654,
+        "gamesStarted": 28
+      },
+      "homeStarterStats": {
+        "wins": 3,
+        "losses": 10,
+        "record": "3-10",
+        "era": "6.50",
+        "whip": "1.54",
+        "inningsPitched": "98.1",
+        "strikeOuts": 116,
+        "walks": 47,
+        "homeRunsAllowed": 18,
+        "battersFaced": 452,
+        "gamesStarted": 13
+      },
+      "top2ScorePct": 27.3,
+      "bottom2ScorePct": 23.4,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      }
+    },
+    {
+      "rank": 8,
+      "gamePk": 824063,
+      "matchup": "Arizona Diamondbacks @ Kansas City Royals",
+      "gameDate": "2026-09-08T23:40:00Z",
+      "under05Pct": 55.18,
+      "over05Pct": 44.82,
+      "fairUnder": -123,
+      "fairOver": 123,
+      "awayStarter": "Corbin Burnes",
+      "homeStarter": "Michael Wacha",
+      "awayStarterStats": {
+        "wins": null,
+        "losses": null,
+        "record": null,
+        "era": null,
+        "whip": null,
+        "inningsPitched": null,
+        "strikeOuts": null,
+        "walks": null,
+        "homeRunsAllowed": null,
+        "battersFaced": 0,
+        "gamesStarted": null
+      },
+      "homeStarterStats": {
+        "wins": 9,
+        "losses": 8,
+        "record": "9-8",
+        "era": "3.36",
+        "whip": "1.10",
+        "inningsPitched": "176.2",
+        "strikeOuts": 143,
+        "walks": 44,
+        "homeRunsAllowed": 24,
+        "battersFaced": 712,
+        "gamesStarted": 28
+      },
+      "top2ScorePct": 25.78,
+      "bottom2ScorePct": 25.57,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      }
+    },
+    {
+      "rank": 9,
+      "gamePk": 824792,
+      "matchup": "Cleveland Guardians @ Baltimore Orioles",
+      "gameDate": "2026-09-08T22:35:00Z",
+      "under05Pct": 55.16,
+      "over05Pct": 44.84,
+      "fairUnder": -123,
+      "fairOver": 123,
+      "awayStarter": "Tanner Bibee",
+      "homeStarter": "Brandon Young",
+      "awayStarterStats": {
+        "wins": 5,
+        "losses": 15,
+        "record": "5-15",
+        "era": "4.06",
+        "whip": "1.18",
+        "inningsPitched": "166.1",
+        "strikeOuts": 132,
+        "walks": 51,
+        "homeRunsAllowed": 26,
+        "battersFaced": 684,
+        "gamesStarted": 29
+      },
+      "homeStarterStats": {
+        "wins": 9,
+        "losses": 3,
+        "record": "9-3",
+        "era": "3.42",
+        "whip": "1.31",
+        "inningsPitched": "137.0",
+        "strikeOuts": 110,
+        "walks": 48,
+        "homeRunsAllowed": 19,
+        "battersFaced": 583,
+        "gamesStarted": 24
+      },
+      "top2ScorePct": 25.19,
+      "bottom2ScorePct": 26.42,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      }
+    },
+    {
+      "rank": 10,
+      "gamePk": 823821,
+      "matchup": "New York Mets @ Miami Marlins",
+      "gameDate": "2026-09-08T22:40:00Z",
+      "under05Pct": 54.92,
+      "over05Pct": 45.08,
+      "fairUnder": -122,
+      "fairOver": 122,
+      "awayStarter": "Sean Manaea",
+      "homeStarter": "Sandy Alcantara",
+      "awayStarterStats": {
+        "wins": 4,
+        "losses": 7,
+        "record": "4-7",
+        "era": "4.70",
+        "whip": "1.36",
+        "inningsPitched": "128.1",
+        "strikeOuts": 122,
+        "walks": 41,
+        "homeRunsAllowed": 21,
+        "battersFaced": 562,
+        "gamesStarted": 15
+      },
+      "homeStarterStats": {
+        "wins": 13,
+        "losses": 9,
+        "record": "13-9",
+        "era": "3.54",
+        "whip": "1.19",
+        "inningsPitched": "195.2",
+        "strikeOuts": 142,
+        "walks": 51,
+        "homeRunsAllowed": 19,
+        "battersFaced": 808,
+        "gamesStarted": 30
+      },
+      "top2ScorePct": 24.13,
+      "bottom2ScorePct": 27.62,
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": "preliminary weekday/game-series lineup override",
+      "probableStarterFallbacks": {
+        "away": null,
+        "home": null
+      }
+    },
+    {
+      "rank": 11,
       "gamePk": 824875,
       "matchup": "Tampa Bay Rays @ Atlanta Braves",
       "gameDate": "2026-09-08T23:15:00Z",
-      "under05Pct": 54.57,
-      "over05Pct": 45.43,
-      "fairUnder": -120,
-      "fairOver": 120,
+      "under05Pct": 54.67,
+      "over05Pct": 45.33,
+      "fairUnder": -121,
+      "fairOver": 121,
       "awayStarter": "Freddy Peralta",
       "homeStarter": "AJ Smith-Shawver",
       "awayStarterStats": {
@@ -4109,8 +3666,8 @@
         "battersFaced": 84,
         "gamesStarted": 4
       },
-      "top2ScorePct": 25.59,
-      "bottom2ScorePct": 26.87,
+      "top2ScorePct": 25.38,
+      "bottom2ScorePct": 26.83,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -4119,14 +3676,14 @@
       }
     },
     {
-      "rank": 14,
+      "rank": 12,
       "gamePk": 823092,
       "matchup": "Texas Rangers @ Seattle Mariners",
       "gameDate": "2026-09-09T01:40:00Z",
-      "under05Pct": 54.16,
-      "over05Pct": 45.84,
-      "fairUnder": -118,
-      "fairOver": 118,
+      "under05Pct": 53.94,
+      "over05Pct": 46.06,
+      "fairUnder": -117,
+      "fairOver": 117,
       "awayStarter": "Cody Bradford",
       "homeStarter": "Bryce Miller",
       "awayStarterStats": {
@@ -4155,8 +3712,8 @@
         "battersFaced": 397,
         "gamesStarted": 17
       },
-      "top2ScorePct": 25.78,
-      "bottom2ScorePct": 26.82,
+      "top2ScorePct": 25.8,
+      "bottom2ScorePct": 26.8,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -4164,31 +3721,31 @@
           "applied": true,
           "id": 674003,
           "name": "Cody Bradford",
-          "source": "ESPN + FantasyPros",
+          "source": "RotoWire Sep 8 expected starter",
           "identitySource": null,
           "role": "probable starter",
-          "note": "Corroborated preliminary fallback; MLB listed the Texas starter as TBD at capture."
+          "note": "MLB.com listed Texas starter TBD at capture."
         },
         "home": {
           "applied": true,
           "id": 682243,
           "name": "Bryce Miller",
-          "source": "ESPN + FantasyPros",
+          "source": "RotoWire Sep 8 expected starter",
           "identitySource": null,
           "role": "probable starter",
-          "note": "Corroborated preliminary fallback; MLB listed the Seattle starter as TBD at capture."
+          "note": "MLB.com listed Seattle starter TBD at capture."
         }
       }
     },
     {
-      "rank": 15,
+      "rank": 13,
       "gamePk": 824228,
       "matchup": "Minnesota Twins @ Detroit Tigers",
       "gameDate": "2026-09-08T22:40:00Z",
-      "under05Pct": 52.76,
-      "over05Pct": 47.24,
-      "fairUnder": -112,
-      "fairOver": 112,
+      "under05Pct": 53.16,
+      "over05Pct": 46.84,
+      "fairUnder": -113,
+      "fairOver": 113,
       "awayStarter": "Dean Kremer",
       "homeStarter": "Drew Anderson",
       "awayStarterStats": {
@@ -4217,8 +3774,8 @@
         "battersFaced": 393,
         "gamesStarted": 8
       },
-      "top2ScorePct": 27.45,
-      "bottom2ScorePct": 27.18,
+      "top2ScorePct": 27,
+      "bottom2ScorePct": 27.23,
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": "preliminary weekday/game-series lineup override",
       "probableStarterFallbacks": {
@@ -4233,8 +3790,8 @@
   "predictionFrozenBeforeDerivativeMarketRetrieval": true,
   "runEnvironmentConditioning": {
     "required": true,
-    "appliedGames": 13,
-    "missingApprovedTotalGames": 2,
+    "appliedGames": 12,
+    "missingApprovedTotalGames": 1,
     "missingPriorBucketGames": 0,
     "totalArtifact": "data/runtime/i2/2026-09-08_run_environment.json",
     "priorArtifact": "data/derived/i2/i2_total_conditioned_prior.json",
