@@ -1,0 +1,96 @@
+name: LAA-BOS detailed empirical I2 Sep 8
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_laa_bos_empirical_2026_09_08.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  compute:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Compute detailed empirical analysis
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          (async()=>{
+            const gamePk=824714;
+            async function j(url){const r=await fetch(url); if(!r.ok) throw new Error(`${r.status} ${url}`); return r.json();}
+            const feed=await j(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`);
+            const away=feed.gameData.teams.away;
+            const home=feed.gameData.teams.home;
+            const probable=feed.gameData.probablePitchers||{};
+            const starters={
+              away:{id:probable.away?.id,name:probable.away?.fullName||'Reid Detmers'},
+              home:{id:probable.home?.id,name:probable.home?.fullName||'Patrick Sandoval'}
+            };
+            async function resolveByName(name){
+              const s=await j(`https://statsapi.mlb.com/api/v1/people/search?names=${encodeURIComponent(name)}`);
+              return s.people?.[0];
+            }
+            for(const side of ['away','home']) if(!starters[side].id){const p=await resolveByName(starters[side].name); starters[side].id=p?.id;}
+            async function pitcherData(p){
+              const stats=await j(`https://statsapi.mlb.com/api/v1/people/${p.id}/stats?stats=season&group=pitching&season=2026`);
+              const season=stats.stats?.[0]?.splits?.[0]?.stat||{};
+              const sched=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&startDate=2026-03-01&endDate=2026-09-07&hydrate=probablePitcher`);
+              const starts=[];
+              for(const d of sched.dates||[]) for(const g of d.games||[]){
+                if(!['Final','Game Over','Completed Early'].includes(g.status?.detailedState)) continue;
+                const isAway=g.teams?.away?.probablePitcher?.id===p.id;
+                const isHome=g.teams?.home?.probablePitcher?.id===p.id;
+                if(!isAway&&!isHome) continue;
+                const f=await j(`https://statsapi.mlb.com/api/v1.1/game/${g.gamePk}/feed/live`);
+                const inns=f.liveData?.linescore?.innings||[];
+                const side=isAway?'home':'away'; // opponent offense side
+                const i1=inns.find(x=>x.num===1)?.[side]?.runs;
+                const i2=inns.find(x=>x.num===2)?.[side]?.runs;
+                if(i2==null) continue;
+                starts.push({gamePk:g.gamePk,date:g.officialDate,opponent:isAway?g.teams.home.team.name:g.teams.away.team.name,homeAway:isAway?'away':'home',i1Runs:Number(i1??0),i2Runs:Number(i2),i1Scoreless:Number(i1??0)===0,i2Scoreless:Number(i2)===0});
+              }
+              starts.sort((a,b)=>a.date.localeCompare(b.date));
+              const rate=(arr,key)=>({n:arr.length,scoreless:arr.filter(x=>x[key]).length,pct:Number((100*arr.filter(x=>x[key]).length/arr.length).toFixed(1)),runs:arr.reduce((s,x)=>s+x[key==='i1Scoreless'?'i1Runs':'i2Runs'],0)});
+              const last=(n)=>starts.slice(-n);
+              return {id:p.id,name:p.name,seasonStats:{record:`${season.wins??0}-${season.losses??0}`,era:season.era,whip:season.whip,inningsPitched:season.inningsPitched,strikeOuts:season.strikeOuts,baseOnBalls:season.baseOnBalls,homeRuns:season.homeRuns,gamesStarted:season.gamesStarted,battersFaced:season.battersFaced},seasonI1:rate(starts,'i1Scoreless'),seasonI2:rate(starts,'i2Scoreless'),last5I2:rate(last(5),'i2Scoreless'),last10I2:rate(last(10),'i2Scoreless'),last15I2:rate(last(15),'i2Scoreless'),starts};
+            }
+            async function offense(team){
+              const sched=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${team.id}&startDate=2026-07-20&endDate=2026-09-07&hydrate=linescore`);
+              const games=[];
+              for(const d of sched.dates||[]) for(const g of d.games||[]){if(['Final','Game Over','Completed Early'].includes(g.status?.detailedState))games.push(g);}
+              games.sort((a,b)=>Date.parse(b.gameDate)-Date.parse(a.gameDate));
+              const rows=[];
+              for(const g of games.slice(0,25).reverse()){
+                const isAway=g.teams.away.team.id===team.id; let r=g.linescore?.innings?.find(x=>x.num===2)?.[isAway?'away':'home']?.runs;
+                if(r==null){const f=await j(`https://statsapi.mlb.com/api/v1.1/game/${g.gamePk}/feed/live`); r=(f.liveData?.linescore?.innings||[]).find(x=>x.num===2)?.[isAway?'away':'home']?.runs;}
+                rows.push({date:g.officialDate,opponent:isAway?g.teams.home.team.name:g.teams.away.team.name,i2Runs:Number(r??0),scoreless:Number(r??0)===0});
+              }
+              const scoreless=rows.filter(x=>x.scoreless).length;
+              return {team:team.name,n:rows.length,scoreless,scorelessPct:Number((100*scoreless/rows.length).toFixed(1)),scored:rows.length-scoreless,totalRuns:rows.reduce((s,x)=>s+x.i2Runs,0),last10ScorelessPct:Number((100*rows.slice(-10).filter(x=>x.scoreless).length/10).toFixed(1)),rows};
+            }
+            const pAway=await pitcherData(starters.away);
+            const pHome=await pitcherData(starters.home);
+            const oAway=await offense(away);
+            const oHome=await offense(home);
+            const top2Scoreless=.65*(pHome.seasonI2.pct/100)+.35*(oAway.scorelessPct/100);
+            const bot2Scoreless=.65*(pAway.seasonI2.pct/100)+.35*(oHome.scorelessPct/100);
+            const out={date:'2026-09-08',gamePk,matchup:`${away.name} @ ${home.name}`,productionUnderPct:57.74,total:8,starters:{away:pAway,home:pHome},offense:{away:oAway,home:oHome},challenger:{method:'65% pitcher season I2 scoreless + 35% opponent offense last25 I2 scoreless',top2ScorelessPct:Number((top2Scoreless*100).toFixed(2)),bottom2ScorelessPct:Number((bot2Scoreless*100).toFixed(2)),underPct:Number((top2Scoreless*bot2Scoreless*100).toFixed(2)),overPct:Number(((1-top2Scoreless*bot2Scoreless)*100).toFixed(2))}};
+            fs.mkdirSync('data/runtime/i2',{recursive:true});
+            fs.writeFileSync('data/runtime/i2/2026-09-08_laa_bos_empirical.json',JSON.stringify(out,null,2)+'\n');
+            console.log(JSON.stringify(out,null,2));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - name: Commit artifact
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add data/runtime/i2/2026-09-08_laa_bos_empirical.json
+          git commit -m 'Add detailed LAA-BOS empirical I2 analysis' || exit 0
+          git push origin HEAD:main
