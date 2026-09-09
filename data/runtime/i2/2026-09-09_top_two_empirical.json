@@ -1,0 +1,1232 @@
+{
+  "date": "2026-09-09",
+  "method": "65% pitcher start I2 scoreless frequency + 35% opponent offense last-25 I2 scoreless frequency; full I2 Under = product of halves",
+  "source": "MLB Stats API linescores/game logs",
+  "games": [
+    {
+      "gamePk": 823739,
+      "matchup": "Chicago Cubs @ Milwaukee Brewers",
+      "productionUnderPct": null,
+      "total": null,
+      "awayStarter": "Kevin Gausman",
+      "homeStarter": "Logan Henderson",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 18,
+        "scorelessPct": 72,
+        "scored": 7,
+        "totalRuns": 14,
+        "rows": [
+          {
+            "gamePk": 823742,
+            "date": "2026-09-07",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823822,
+            "date": "2026-09-06",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823823,
+            "date": "2026-09-05",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823824,
+            "date": "2026-09-04",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 824632,
+            "date": "2026-09-03",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824634,
+            "date": "2026-09-02",
+            "i2Runs": 3
+          },
+          {
+            "gamePk": 824633,
+            "date": "2026-09-01",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824635,
+            "date": "2026-08-31",
+            "i2Runs": 2
+          },
+          {
+            "gamePk": 824636,
+            "date": "2026-08-30",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 824637,
+            "date": "2026-08-29",
+            "i2Runs": 3
+          },
+          {
+            "gamePk": 824638,
+            "date": "2026-08-28",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 825039,
+            "date": "2026-08-26",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 825042,
+            "date": "2026-08-25",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 825041,
+            "date": "2026-08-24",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823099,
+            "date": "2026-08-23",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823100,
+            "date": "2026-08-22",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823101,
+            "date": "2026-08-21",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824640,
+            "date": "2026-08-19",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824639,
+            "date": "2026-08-18",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824641,
+            "date": "2026-08-17",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824642,
+            "date": "2026-08-16",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824644,
+            "date": "2026-08-15",
+            "i2Runs": 3
+          },
+          {
+            "gamePk": 824643,
+            "date": "2026-08-14",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 822696,
+            "date": "2026-08-13",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 822698,
+            "date": "2026-08-12",
+            "i2Runs": 0
+          }
+        ]
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 16,
+        "scorelessPct": 64,
+        "scored": 9,
+        "totalRuns": 16,
+        "rows": [
+          {
+            "gamePk": 823742,
+            "date": "2026-09-07",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824469,
+            "date": "2026-09-06",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824468,
+            "date": "2026-09-05",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824471,
+            "date": "2026-09-04",
+            "i2Runs": 2
+          },
+          {
+            "gamePk": 824632,
+            "date": "2026-09-03",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824634,
+            "date": "2026-09-02",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 824633,
+            "date": "2026-09-01",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824635,
+            "date": "2026-08-31",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823740,
+            "date": "2026-08-30",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823741,
+            "date": "2026-08-29",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823744,
+            "date": "2026-08-28",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823581,
+            "date": "2026-08-27",
+            "i2Runs": 2
+          },
+          {
+            "gamePk": 823584,
+            "date": "2026-08-26",
+            "i2Runs": 4
+          },
+          {
+            "gamePk": 823585,
+            "date": "2026-08-25",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823745,
+            "date": "2026-08-23",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823743,
+            "date": "2026-08-22",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823746,
+            "date": "2026-08-21",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823747,
+            "date": "2026-08-20",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823748,
+            "date": "2026-08-19",
+            "i2Runs": 2
+          },
+          {
+            "gamePk": 823749,
+            "date": "2026-08-18",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823912,
+            "date": "2026-08-16",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823914,
+            "date": "2026-08-15",
+            "i2Runs": 2
+          },
+          {
+            "gamePk": 823913,
+            "date": "2026-08-14",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823915,
+            "date": "2026-08-13",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823263,
+            "date": "2026-08-12",
+            "i2Runs": 1
+          }
+        ]
+      },
+      "awayPitcher": {
+        "starts": 29,
+        "i1Scoreless": 20,
+        "i1ScorelessPct": 68.96551724137932,
+        "i1Runs": 20,
+        "i2Scoreless": 24,
+        "i2ScorelessPct": 82.75862068965517,
+        "i2Runs": 9,
+        "rows": [
+          {
+            "gamePk": 822839,
+            "date": "2026-03-27",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822835,
+            "date": "2026-04-01",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822831,
+            "date": "2026-04-07",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.1"
+          },
+          {
+            "gamePk": 823802,
+            "date": "2026-04-14",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 825100,
+            "date": "2026-04-19",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822826,
+            "date": "2026-04-25",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.2"
+          },
+          {
+            "gamePk": 823714,
+            "date": "2026-04-30",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 822986,
+            "date": "2026-05-05",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822818,
+            "date": "2026-05-11",
+            "i1Runs": 3,
+            "i2Runs": 2,
+            "ip": "4.2"
+          },
+          {
+            "gamePk": 824279,
+            "date": "2026-05-17",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822816,
+            "date": "2026-05-22",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "6.2"
+          },
+          {
+            "gamePk": 822809,
+            "date": "2026-05-27",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 824918,
+            "date": "2026-06-02",
+            "i1Runs": 2,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822807,
+            "date": "2026-06-07",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 822802,
+            "date": "2026-06-13",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 824663,
+            "date": "2026-06-19",
+            "i1Runs": 7,
+            "i2Runs": 0,
+            "ip": "2.0"
+          },
+          {
+            "gamePk": 822797,
+            "date": "2026-06-25",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822793,
+            "date": "2026-06-30",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823205,
+            "date": "2026-07-06",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "5.1"
+          },
+          {
+            "gamePk": 823274,
+            "date": "2026-07-12",
+            "i1Runs": 0,
+            "i2Runs": 3,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822787,
+            "date": "2026-07-21",
+            "i1Runs": 3,
+            "i2Runs": 0,
+            "ip": "3.1"
+          },
+          {
+            "gamePk": 824730,
+            "date": "2026-07-26",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822781,
+            "date": "2026-08-01",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 824081,
+            "date": "2026-08-07",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 822696,
+            "date": "2026-08-13",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "4.2"
+          },
+          {
+            "gamePk": 824639,
+            "date": "2026-08-18",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "4.1"
+          },
+          {
+            "gamePk": 825041,
+            "date": "2026-08-24",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 824637,
+            "date": "2026-08-29",
+            "i1Runs": 0,
+            "i2Runs": 2,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 824632,
+            "date": "2026-09-03",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          }
+        ]
+      },
+      "homePitcher": {
+        "starts": 15,
+        "i1Scoreless": 13,
+        "i1ScorelessPct": 86.66666666666667,
+        "i1Runs": 2,
+        "i2Scoreless": 11,
+        "i2ScorelessPct": 73.33333333333333,
+        "i2Runs": 5,
+        "rows": [
+          {
+            "gamePk": 824134,
+            "date": "2026-04-04",
+            "i1Runs": 0,
+            "i2Runs": 2,
+            "ip": "2.0"
+          },
+          {
+            "gamePk": 822742,
+            "date": "2026-05-03",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823793,
+            "date": "2026-05-10",
+            "i1Runs": 1,
+            "i2Runs": 1,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823706,
+            "date": "2026-05-16",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823788,
+            "date": "2026-05-22",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823034,
+            "date": "2026-07-09",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.1"
+          },
+          {
+            "gamePk": 823766,
+            "date": "2026-07-17",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823761,
+            "date": "2026-07-22",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823193,
+            "date": "2026-07-28",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 823756,
+            "date": "2026-08-04",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823265,
+            "date": "2026-08-10",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "6.1"
+          },
+          {
+            "gamePk": 823912,
+            "date": "2026-08-16",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 823743,
+            "date": "2026-08-22",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823744,
+            "date": "2026-08-28",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 824632,
+            "date": "2026-09-03",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          }
+        ]
+      },
+      "top2ScorelessPct": 72.87,
+      "bottom2ScorelessPct": 76.19,
+      "challengerUnderPct": 55.52
+    },
+    {
+      "gamePk": 823416,
+      "matchup": "Houston Astros @ Philadelphia Phillies",
+      "productionUnderPct": null,
+      "total": null,
+      "awayStarter": "Hunter Brown",
+      "homeStarter": "Cristopher Sánchez",
+      "awayOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 18,
+        "scorelessPct": 72,
+        "scored": 7,
+        "totalRuns": 13,
+        "rows": [
+          {
+            "gamePk": 823414,
+            "date": "2026-09-08",
+            "i2Runs": 4
+          },
+          {
+            "gamePk": 824142,
+            "date": "2026-09-06",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824145,
+            "date": "2026-09-05",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824146,
+            "date": "2026-09-04",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824144,
+            "date": "2026-09-03",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824147,
+            "date": "2026-09-02",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824148,
+            "date": "2026-09-01",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824149,
+            "date": "2026-08-31",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823580,
+            "date": "2026-08-30",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823582,
+            "date": "2026-08-29",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823583,
+            "date": "2026-08-28",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823503,
+            "date": "2026-08-27",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823506,
+            "date": "2026-08-26",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823505,
+            "date": "2026-08-25",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 824150,
+            "date": "2026-08-23",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 824151,
+            "date": "2026-08-22",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824152,
+            "date": "2026-08-21",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824153,
+            "date": "2026-08-20",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824155,
+            "date": "2026-08-19",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824154,
+            "date": "2026-08-18",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824156,
+            "date": "2026-08-16",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 824157,
+            "date": "2026-08-15",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 824159,
+            "date": "2026-08-14",
+            "i2Runs": 4
+          },
+          {
+            "gamePk": 823187,
+            "date": "2026-08-12",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823186,
+            "date": "2026-08-11",
+            "i2Runs": 1
+          }
+        ]
+      },
+      "homeOffenseLast25I2": {
+        "n": 25,
+        "scoreless": 15,
+        "scorelessPct": 60,
+        "scored": 10,
+        "totalRuns": 14,
+        "rows": [
+          {
+            "gamePk": 823414,
+            "date": "2026-09-08",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823415,
+            "date": "2026-09-07",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823417,
+            "date": "2026-09-06",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823419,
+            "date": "2026-09-05",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823418,
+            "date": "2026-09-04",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 825037,
+            "date": "2026-09-02",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 825038,
+            "date": "2026-09-01",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 825040,
+            "date": "2026-08-31",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823987,
+            "date": "2026-08-30",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823986,
+            "date": "2026-08-29",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823985,
+            "date": "2026-08-28",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823096,
+            "date": "2026-08-26",
+            "i2Runs": 4
+          },
+          {
+            "gamePk": 823098,
+            "date": "2026-08-25",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823097,
+            "date": "2026-08-24",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823421,
+            "date": "2026-08-23",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823422,
+            "date": "2026-08-22",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823420,
+            "date": "2026-08-21",
+            "i2Runs": 2
+          },
+          {
+            "gamePk": 823424,
+            "date": "2026-08-19",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823423,
+            "date": "2026-08-18",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823427,
+            "date": "2026-08-17",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823670,
+            "date": "2026-08-16",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823671,
+            "date": "2026-08-15",
+            "i2Runs": 1
+          },
+          {
+            "gamePk": 823669,
+            "date": "2026-08-13",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823017,
+            "date": "2026-08-12",
+            "i2Runs": 0
+          },
+          {
+            "gamePk": 823019,
+            "date": "2026-08-11",
+            "i2Runs": 0
+          }
+        ]
+      },
+      "awayPitcher": {
+        "starts": 16,
+        "i1Scoreless": 13,
+        "i1ScorelessPct": 81.25,
+        "i1Runs": 4,
+        "i2Scoreless": 10,
+        "i2ScorelessPct": 62.5,
+        "i2Runs": 9,
+        "rows": [
+          {
+            "gamePk": 824218,
+            "date": "2026-03-26",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "4.2"
+          },
+          {
+            "gamePk": 824212,
+            "date": "2026-03-31",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 824182,
+            "date": "2026-06-16",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 822800,
+            "date": "2026-06-22",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "3.0"
+          },
+          {
+            "gamePk": 824256,
+            "date": "2026-06-28",
+            "i1Runs": 0,
+            "i2Runs": 2,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 824171,
+            "date": "2026-07-04",
+            "i1Runs": 1,
+            "i2Runs": 2,
+            "ip": "4.0"
+          },
+          {
+            "gamePk": 822878,
+            "date": "2026-07-10",
+            "i1Runs": 2,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 824168,
+            "date": "2026-07-19",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "4.2"
+          },
+          {
+            "gamePk": 824571,
+            "date": "2026-07-25",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 824164,
+            "date": "2026-07-31",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 824158,
+            "date": "2026-08-05",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823186,
+            "date": "2026-08-11",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 824156,
+            "date": "2026-08-16",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 824151,
+            "date": "2026-08-22",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 823583,
+            "date": "2026-08-28",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.2"
+          },
+          {
+            "gamePk": 824144,
+            "date": "2026-09-03",
+            "i1Runs": 0,
+            "i2Runs": 2,
+            "ip": "6.0"
+          }
+        ]
+      },
+      "homePitcher": {
+        "starts": 29,
+        "i1Scoreless": 23,
+        "i1ScorelessPct": 79.3103448275862,
+        "i1Runs": 15,
+        "i2Scoreless": 24,
+        "i2ScorelessPct": 82.75862068965517,
+        "i2Runs": 7,
+        "rows": [
+          {
+            "gamePk": 823486,
+            "date": "2026-03-26",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823483,
+            "date": "2026-04-01",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "5.1"
+          },
+          {
+            "gamePk": 823235,
+            "date": "2026-04-07",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823481,
+            "date": "2026-04-13",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823474,
+            "date": "2026-04-18",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 824689,
+            "date": "2026-04-23",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "5.1"
+          },
+          {
+            "gamePk": 823472,
+            "date": "2026-04-30",
+            "i1Runs": 2,
+            "i2Runs": 0,
+            "ip": "6.2"
+          },
+          {
+            "gamePk": 823469,
+            "date": "2026-05-05",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "8.0"
+          },
+          {
+            "gamePk": 823463,
+            "date": "2026-05-10",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 823382,
+            "date": "2026-05-16",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "9.0"
+          },
+          {
+            "gamePk": 823461,
+            "date": "2026-05-22",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "8.0"
+          },
+          {
+            "gamePk": 823295,
+            "date": "2026-05-27",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 823456,
+            "date": "2026-06-03",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 822806,
+            "date": "2026-06-08",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 823777,
+            "date": "2026-06-14",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "5.2"
+          },
+          {
+            "gamePk": 823447,
+            "date": "2026-06-20",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 822717,
+            "date": "2026-06-25",
+            "i1Runs": 4,
+            "i2Runs": 0,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823445,
+            "date": "2026-06-30",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 824089,
+            "date": "2026-07-06",
+            "i1Runs": 6,
+            "i2Runs": 1,
+            "ip": "3.1"
+          },
+          {
+            "gamePk": 824249,
+            "date": "2026-07-11",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 823436,
+            "date": "2026-07-20",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "5.1"
+          },
+          {
+            "gamePk": 823433,
+            "date": "2026-07-26",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 824808,
+            "date": "2026-08-01",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823430,
+            "date": "2026-08-06",
+            "i1Runs": 0,
+            "i2Runs": 1,
+            "ip": "5.0"
+          },
+          {
+            "gamePk": 823019,
+            "date": "2026-08-11",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823427,
+            "date": "2026-08-17",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "6.0"
+          },
+          {
+            "gamePk": 823421,
+            "date": "2026-08-23",
+            "i1Runs": 1,
+            "i2Runs": 0,
+            "ip": "6.2"
+          },
+          {
+            "gamePk": 823986,
+            "date": "2026-08-29",
+            "i1Runs": 0,
+            "i2Runs": 0,
+            "ip": "7.0"
+          },
+          {
+            "gamePk": 823418,
+            "date": "2026-09-04",
+            "i1Runs": 0,
+            "i2Runs": 3,
+            "ip": "6.0"
+          }
+        ]
+      },
+      "top2ScorelessPct": 78.99,
+      "bottom2ScorelessPct": 61.63,
+      "challengerUnderPct": 48.68
+    }
+  ]
+}
