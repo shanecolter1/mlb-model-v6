@@ -1,0 +1,1034 @@
+{
+  "generatedAt": "2026-09-22T00:38:30.260Z",
+  "cutoff": "2026-09-21",
+  "method": "Primary empirical challenger unchanged: each half = 65% starter 2026 I2 scoreless frequency + 35% opposing offense last-25 I2 scoreless frequency; full I2 Under = product of top/bottom half scoreless probabilities. Over = 1 - Under. Starter last-10 shown only as sensitivity.",
+  "source": "MLB Stats API game logs, live feeds and linescores",
+  "games": [
+    {
+      "rank": 1,
+      "away": "Tampa Bay Rays",
+      "home": "New York Yankees",
+      "awayStarter": "Drew Rasmussen",
+      "homeStarter": "Max Fried",
+      "productionUnderPct": 66.73,
+      "requestedSide": "UNDER",
+      "label": "Rays @ Yankees G2",
+      "productionOverPct": 33.27,
+      "awayPitcher": {
+        "id": 656876,
+        "name": "Drew Rasmussen",
+        "seasonI2": {
+          "n": 29,
+          "scoreless": 26,
+          "scorelessPct": 89.66,
+          "i2Runs": 5
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 10,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 5,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "lastStartDate": "2026-09-17"
+      },
+      "homePitcher": {
+        "id": 608331,
+        "name": "Max Fried",
+        "seasonI2": {
+          "n": 19,
+          "scoreless": 12,
+          "scorelessPct": 63.16,
+          "i2Runs": 10
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 5,
+          "scorelessPct": 50,
+          "i2Runs": 5
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 1,
+          "scorelessPct": 20,
+          "i2Runs": 4
+        },
+        "lastStartDate": "2026-09-15"
+      },
+      "awayOffense": {
+        "id": 139,
+        "team": "Tampa Bay Rays",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 20,
+          "scorelessPct": 80,
+          "i2Runs": 12
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 3
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 147,
+        "team": "New York Yankees",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 21,
+          "scorelessPct": 84,
+          "i2Runs": 10
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 5
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 69.05,
+        "bottomHalfScorelessPct": 87.68,
+        "underPct": 60.55,
+        "overPct": 39.45,
+        "underFairAmerican": -153,
+        "overFairAmerican": 153
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 60.5,
+        "bottomHalfScorelessPct": 94.4,
+        "underPct": 57.11,
+        "overPct": 42.89,
+        "requestedSidePct": 57.11,
+        "requestedSideFairAmerican": -133
+      },
+      "requested": {
+        "side": "UNDER",
+        "empiricalPct": 60.55,
+        "productionPct": 66.73,
+        "deltaVsProductionPP": -6.18,
+        "fairAmerican": -153
+      }
+    },
+    {
+      "rank": 2,
+      "away": "Tampa Bay Rays",
+      "home": "New York Yankees",
+      "awayStarter": "Nick Martinez",
+      "homeStarter": "Carlos Rodón",
+      "productionUnderPct": 65.71,
+      "requestedSide": "UNDER",
+      "label": "Rays @ Yankees G1",
+      "productionOverPct": 34.29,
+      "awayPitcher": {
+        "id": 607259,
+        "name": "Nick Martinez",
+        "seasonI2": {
+          "n": 29,
+          "scoreless": 22,
+          "scorelessPct": 75.86,
+          "i2Runs": 9
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 2
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 1
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "homePitcher": {
+        "id": 607074,
+        "name": "Carlos Rodón",
+        "seasonI2": {
+          "n": 15,
+          "scoreless": 14,
+          "scorelessPct": 93.33,
+          "i2Runs": 1
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 1
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 1
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "awayOffense": {
+        "id": 139,
+        "team": "Tampa Bay Rays",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 20,
+          "scorelessPct": 80,
+          "i2Runs": 12
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 3
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 147,
+        "team": "New York Yankees",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 21,
+          "scorelessPct": 84,
+          "i2Runs": 10
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 5
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 88.66,
+        "bottomHalfScorelessPct": 78.71,
+        "underPct": 69.79,
+        "overPct": 30.21,
+        "underFairAmerican": -231,
+        "overFairAmerican": 231
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 86.5,
+        "bottomHalfScorelessPct": 81.4,
+        "underPct": 70.41,
+        "overPct": 29.59,
+        "requestedSidePct": 70.41,
+        "requestedSideFairAmerican": -238
+      },
+      "requested": {
+        "side": "UNDER",
+        "empiricalPct": 69.79,
+        "productionPct": 65.71,
+        "deltaVsProductionPP": 4.08,
+        "fairAmerican": -231
+      }
+    },
+    {
+      "rank": 3,
+      "away": "Cleveland Guardians",
+      "home": "Boston Red Sox",
+      "awayStarter": "Parker Messick",
+      "homeStarter": "Payton Tolle",
+      "productionUnderPct": 65.69,
+      "requestedSide": "UNDER",
+      "label": "Guardians @ Red Sox",
+      "productionOverPct": 34.31,
+      "awayPitcher": {
+        "id": 800048,
+        "name": "Parker Messick",
+        "seasonI2": {
+          "n": 30,
+          "scoreless": 24,
+          "scorelessPct": 80,
+          "i2Runs": 9
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 2
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 1
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "homePitcher": {
+        "id": 801139,
+        "name": "Payton Tolle",
+        "seasonI2": {
+          "n": 25,
+          "scoreless": 22,
+          "scorelessPct": 88,
+          "i2Runs": 6
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 2
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 5,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "lastStartDate": "2026-09-13"
+      },
+      "awayOffense": {
+        "id": 114,
+        "team": "Cleveland Guardians",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 22,
+          "scorelessPct": 88,
+          "i2Runs": 7
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 1
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 111,
+        "team": "Boston Red Sox",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 19,
+          "scorelessPct": 76,
+          "i2Runs": 13
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 3
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 88,
+        "bottomHalfScorelessPct": 78.6,
+        "underPct": 69.17,
+        "overPct": 30.83,
+        "underFairAmerican": -224,
+        "overFairAmerican": 224
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 89.3,
+        "bottomHalfScorelessPct": 78.6,
+        "underPct": 70.19,
+        "overPct": 29.81,
+        "requestedSidePct": 70.19,
+        "requestedSideFairAmerican": -235
+      },
+      "requested": {
+        "side": "UNDER",
+        "empiricalPct": 69.17,
+        "productionPct": 65.69,
+        "deltaVsProductionPP": 3.48,
+        "fairAmerican": -224
+      }
+    },
+    {
+      "rank": 4,
+      "away": "Milwaukee Brewers",
+      "home": "Philadelphia Phillies",
+      "awayStarter": "Dustin May",
+      "homeStarter": "Zack Wheeler",
+      "productionUnderPct": 64.02,
+      "requestedSide": "UNDER",
+      "label": "Brewers @ Phillies",
+      "productionOverPct": 35.98,
+      "awayPitcher": {
+        "id": 669160,
+        "name": "Dustin May",
+        "seasonI2": {
+          "n": 28,
+          "scoreless": 20,
+          "scorelessPct": 71.43,
+          "i2Runs": 16
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 4
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 1
+        },
+        "lastStartDate": "2026-09-18"
+      },
+      "homePitcher": {
+        "id": 554430,
+        "name": "Zack Wheeler",
+        "seasonI2": {
+          "n": 25,
+          "scoreless": 19,
+          "scorelessPct": 76,
+          "i2Runs": 8
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 5,
+          "scorelessPct": 50,
+          "i2Runs": 7
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 1
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "awayOffense": {
+        "id": 158,
+        "team": "Milwaukee Brewers",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 11,
+          "scorelessPct": 44,
+          "i2Runs": 30
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 1,
+          "scorelessPct": 10,
+          "i2Runs": 20
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 143,
+        "team": "Philadelphia Phillies",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 15,
+          "scorelessPct": 60,
+          "i2Runs": 16
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 7,
+          "scorelessPct": 70,
+          "i2Runs": 6
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 64.8,
+        "bottomHalfScorelessPct": 67.43,
+        "underPct": 43.69,
+        "overPct": 56.31,
+        "underFairAmerican": 129,
+        "overFairAmerican": -129
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 47.9,
+        "bottomHalfScorelessPct": 73,
+        "underPct": 34.97,
+        "overPct": 65.03,
+        "requestedSidePct": 34.97,
+        "requestedSideFairAmerican": 186
+      },
+      "requested": {
+        "side": "UNDER",
+        "empiricalPct": 43.69,
+        "productionPct": 64.02,
+        "deltaVsProductionPP": -20.33,
+        "fairAmerican": 129
+      }
+    },
+    {
+      "rank": 5,
+      "away": "St. Louis Cardinals",
+      "home": "Pittsburgh Pirates",
+      "awayStarter": "Andre Pallante",
+      "homeStarter": "Jared Jones",
+      "productionUnderPct": 63.14,
+      "requestedSide": "UNDER",
+      "label": "Cardinals @ Pirates",
+      "productionOverPct": 36.86,
+      "awayPitcher": {
+        "id": 669467,
+        "name": "Andre Pallante",
+        "seasonI2": {
+          "n": 27,
+          "scoreless": 21,
+          "scorelessPct": 77.78,
+          "i2Runs": 9
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 2
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 5,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "lastStartDate": "2026-09-15"
+      },
+      "homePitcher": {
+        "id": 683003,
+        "name": "Jared Jones",
+        "seasonI2": {
+          "n": 19,
+          "scoreless": 14,
+          "scorelessPct": 73.68,
+          "i2Runs": 9
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 3
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 2
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "awayOffense": {
+        "id": 138,
+        "team": "St. Louis Cardinals",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 16,
+          "scorelessPct": 64,
+          "i2Runs": 15
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 7,
+          "scorelessPct": 70,
+          "i2Runs": 5
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 134,
+        "team": "Pittsburgh Pirates",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 20,
+          "scorelessPct": 80,
+          "i2Runs": 12
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 7
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 70.29,
+        "bottomHalfScorelessPct": 78.56,
+        "underPct": 55.22,
+        "overPct": 44.78,
+        "underFairAmerican": -123,
+        "overFairAmerican": 123
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 74.4,
+        "bottomHalfScorelessPct": 86.5,
+        "underPct": 64.36,
+        "overPct": 35.64,
+        "requestedSidePct": 64.36,
+        "requestedSideFairAmerican": -181
+      },
+      "requested": {
+        "side": "UNDER",
+        "empiricalPct": 55.22,
+        "productionPct": 63.14,
+        "deltaVsProductionPP": -7.92,
+        "fairAmerican": -123
+      }
+    },
+    {
+      "rank": 6,
+      "away": "Minnesota Twins",
+      "home": "San Francisco Giants",
+      "awayStarter": "Taj Bradley",
+      "homeStarter": "Anthony Molina",
+      "productionUnderPct": 59.41,
+      "requestedSide": "UNDER",
+      "label": "Twins @ Giants",
+      "productionOverPct": 40.59,
+      "awayPitcher": {
+        "id": 671737,
+        "name": "Taj Bradley",
+        "seasonI2": {
+          "n": 30,
+          "scoreless": 23,
+          "scorelessPct": 76.67,
+          "i2Runs": 9
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 2
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 2
+        },
+        "lastStartDate": "2026-09-17"
+      },
+      "homePitcher": {
+        "id": 683627,
+        "name": "Anthony Molina",
+        "seasonI2": {
+          "n": 4,
+          "scoreless": 1,
+          "scorelessPct": 25,
+          "i2Runs": 5
+        },
+        "last10I2": {
+          "n": 4,
+          "scoreless": 1,
+          "scorelessPct": 25,
+          "i2Runs": 5
+        },
+        "last5I2": {
+          "n": 4,
+          "scoreless": 1,
+          "scorelessPct": 25,
+          "i2Runs": 5
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "awayOffense": {
+        "id": 142,
+        "team": "Minnesota Twins",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 20,
+          "scorelessPct": 80,
+          "i2Runs": 6
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 2
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 137,
+        "team": "San Francisco Giants",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 18,
+          "scorelessPct": 72,
+          "i2Runs": 13
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 7,
+          "scorelessPct": 70,
+          "i2Runs": 4
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 44.25,
+        "bottomHalfScorelessPct": 75.04,
+        "underPct": 33.2,
+        "overPct": 66.8,
+        "underFairAmerican": 201,
+        "overFairAmerican": -201
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 44.25,
+        "bottomHalfScorelessPct": 83.7,
+        "underPct": 37.04,
+        "overPct": 62.96,
+        "requestedSidePct": 37.04,
+        "requestedSideFairAmerican": 170
+      },
+      "requested": {
+        "side": "UNDER",
+        "empiricalPct": 33.2,
+        "productionPct": 59.41,
+        "deltaVsProductionPP": -26.21,
+        "fairAmerican": 201
+      }
+    },
+    {
+      "rank": 12,
+      "away": "Los Angeles Angels",
+      "home": "Athletics",
+      "awayStarter": "Yusei Kikuchi",
+      "homeStarter": "Brady Basso",
+      "productionUnderPct": 51.06,
+      "requestedSide": "OVER",
+      "label": "Angels @ Athletics",
+      "productionOverPct": 48.94,
+      "awayPitcher": {
+        "id": 579328,
+        "name": "Yusei Kikuchi",
+        "seasonI2": {
+          "n": 12,
+          "scoreless": 9,
+          "scorelessPct": 75,
+          "i2Runs": 6
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 7,
+          "scorelessPct": 70,
+          "i2Runs": 6
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 3
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "homePitcher": {
+        "id": 669620,
+        "name": "Brady Basso",
+        "seasonI2": {
+          "n": 6,
+          "scoreless": 4,
+          "scorelessPct": 66.67,
+          "i2Runs": 3
+        },
+        "last10I2": {
+          "n": 6,
+          "scoreless": 4,
+          "scorelessPct": 66.67,
+          "i2Runs": 3
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 3,
+          "scorelessPct": 60,
+          "i2Runs": 3
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "awayOffense": {
+        "id": 108,
+        "team": "Los Angeles Angels",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 21,
+          "scorelessPct": 84,
+          "i2Runs": 7
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 1
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 133,
+        "team": "Athletics",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 21,
+          "scorelessPct": 84,
+          "i2Runs": 5
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 10,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 72.74,
+        "bottomHalfScorelessPct": 78.15,
+        "underPct": 56.84,
+        "overPct": 43.16,
+        "underFairAmerican": -132,
+        "overFairAmerican": 132
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 72.74,
+        "bottomHalfScorelessPct": 74.9,
+        "underPct": 54.48,
+        "overPct": 45.52,
+        "requestedSidePct": 45.52,
+        "requestedSideFairAmerican": 120
+      },
+      "requested": {
+        "side": "OVER",
+        "empiricalPct": 43.16,
+        "productionPct": 48.94,
+        "deltaVsProductionPP": -5.78,
+        "fairAmerican": 132
+      }
+    },
+    {
+      "rank": 13,
+      "away": "Arizona Diamondbacks",
+      "home": "Colorado Rockies",
+      "awayStarter": "Michael Soroka",
+      "homeStarter": "Kyle Freeland",
+      "productionUnderPct": 50.17,
+      "requestedSide": "OVER",
+      "label": "Diamondbacks @ Rockies",
+      "productionOverPct": 49.83,
+      "awayPitcher": {
+        "id": 647336,
+        "name": "Michael Soroka",
+        "seasonI2": {
+          "n": 19,
+          "scoreless": 15,
+          "scorelessPct": 78.95,
+          "i2Runs": 5
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 7,
+          "scorelessPct": 70,
+          "i2Runs": 4
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 4,
+          "scorelessPct": 80,
+          "i2Runs": 1
+        },
+        "lastStartDate": "2026-09-15"
+      },
+      "homePitcher": {
+        "id": 607536,
+        "name": "Kyle Freeland",
+        "seasonI2": {
+          "n": 24,
+          "scoreless": 16,
+          "scorelessPct": 66.67,
+          "i2Runs": 12
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 7,
+          "scorelessPct": 70,
+          "i2Runs": 3
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 2,
+          "scorelessPct": 40,
+          "i2Runs": 3
+        },
+        "lastStartDate": "2026-09-15"
+      },
+      "awayOffense": {
+        "id": 109,
+        "team": "Arizona Diamondbacks",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 22,
+          "scorelessPct": 88,
+          "i2Runs": 4
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 8,
+          "scorelessPct": 80,
+          "i2Runs": 3
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 115,
+        "team": "Colorado Rockies",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 23,
+          "scorelessPct": 92,
+          "i2Runs": 3
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 10,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 74.14,
+        "bottomHalfScorelessPct": 83.52,
+        "underPct": 61.92,
+        "overPct": 38.08,
+        "underFairAmerican": -163,
+        "overFairAmerican": 163
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 76.3,
+        "bottomHalfScorelessPct": 77.7,
+        "underPct": 59.29,
+        "overPct": 40.71,
+        "requestedSidePct": 40.71,
+        "requestedSideFairAmerican": 146
+      },
+      "requested": {
+        "side": "OVER",
+        "empiricalPct": 38.08,
+        "productionPct": 49.83,
+        "deltaVsProductionPP": -11.75,
+        "fairAmerican": 163
+      }
+    },
+    {
+      "rank": 14,
+      "away": "Cincinnati Reds",
+      "home": "Atlanta Braves",
+      "awayStarter": "Brandon Williamson",
+      "homeStarter": "JR Ritchie",
+      "productionUnderPct": 49.68,
+      "requestedSide": "OVER",
+      "label": "Reds @ Braves",
+      "productionOverPct": 50.32,
+      "awayPitcher": {
+        "id": 682227,
+        "name": "Brandon Williamson",
+        "seasonI2": {
+          "n": 7,
+          "scoreless": 4,
+          "scorelessPct": 57.14,
+          "i2Runs": 9
+        },
+        "last10I2": {
+          "n": 7,
+          "scoreless": 4,
+          "scorelessPct": 57.14,
+          "i2Runs": 9
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 3,
+          "scorelessPct": 60,
+          "i2Runs": 4
+        },
+        "lastStartDate": "2026-09-02"
+      },
+      "homePitcher": {
+        "id": 702275,
+        "name": "JR Ritchie",
+        "seasonI2": {
+          "n": 9,
+          "scoreless": 5,
+          "scorelessPct": 55.56,
+          "i2Runs": 12
+        },
+        "last10I2": {
+          "n": 9,
+          "scoreless": 5,
+          "scorelessPct": 55.56,
+          "i2Runs": 12
+        },
+        "last5I2": {
+          "n": 5,
+          "scoreless": 2,
+          "scorelessPct": 40,
+          "i2Runs": 10
+        },
+        "lastStartDate": "2026-09-16"
+      },
+      "awayOffense": {
+        "id": 113,
+        "team": "Cincinnati Reds",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 19,
+          "scorelessPct": 76,
+          "i2Runs": 12
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 9,
+          "scorelessPct": 90,
+          "i2Runs": 1
+        },
+        "throughDate": "2026-09-20"
+      },
+      "homeOffense": {
+        "id": 144,
+        "team": "Atlanta Braves",
+        "last25I2": {
+          "n": 25,
+          "scoreless": 21,
+          "scorelessPct": 84,
+          "i2Runs": 8
+        },
+        "last10I2": {
+          "n": 10,
+          "scoreless": 10,
+          "scorelessPct": 100,
+          "i2Runs": 0
+        },
+        "throughDate": "2026-09-20"
+      },
+      "empirical": {
+        "topHalfScorelessPct": 62.71,
+        "bottomHalfScorelessPct": 66.54,
+        "underPct": 41.73,
+        "overPct": 58.27,
+        "underFairAmerican": 140,
+        "overFairAmerican": -140
+      },
+      "last10StarterSensitivity": {
+        "topHalfScorelessPct": 62.71,
+        "bottomHalfScorelessPct": 66.54,
+        "underPct": 41.73,
+        "overPct": 58.27,
+        "requestedSidePct": 58.27,
+        "requestedSideFairAmerican": -140
+      },
+      "requested": {
+        "side": "OVER",
+        "empiricalPct": 58.27,
+        "productionPct": 50.32,
+        "deltaVsProductionPP": 7.95,
+        "fairAmerican": -140
+      }
+    }
+  ]
+}
