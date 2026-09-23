@@ -8,6 +8,18 @@ on:
       - 'src/model/i2_total_conditioning.js'
       - 'tests/i2_total_conditioning.test.mjs'
       - 'package.json'
+      - 'src/staking/i2_bankroll.js'
+      - 'src/pipeline/size_i2_bankroll.mjs'
+      - 'tests/i2_bankroll.test.mjs'
+  pull_request:
+    paths:
+      - '.github/workflows/i2_unit_tests.yml'
+      - 'src/model/i2_total_conditioning.js'
+      - 'tests/i2_total_conditioning.test.mjs'
+      - 'package.json'
+      - 'src/staking/i2_bankroll.js'
+      - 'src/pipeline/size_i2_bankroll.mjs'
+      - 'tests/i2_bankroll.test.mjs'
   workflow_dispatch:
 
 permissions:
@@ -21,5 +33,5 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test total-conditioning invariants
-        run: node tests/i2_total_conditioning.test.mjs
+      - name: Test I2 invariants and downstream staking
+        run: npm test
