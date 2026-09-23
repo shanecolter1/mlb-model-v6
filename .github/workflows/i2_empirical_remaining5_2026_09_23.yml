@@ -1,0 +1,121 @@
+name: Sep 23 remaining five empirical
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/i2_empirical_remaining5_2026_09_23.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  empirical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run regular-season-only empirical analysis
+        run: |
+          node <<'NODE'
+          const fs=require('fs');
+          (async()=>{
+            const DATE='2026-09-23', END='2026-09-22';
+            const targets=[
+              {gamePk:823410,productionUnderPct:57.69},
+              {gamePk:823894,productionUnderPct:57.61},
+              {gamePk:823086,productionUnderPct:56.62},
+              {gamePk:824060,productionUnderPct:55.49},
+              {gamePk:823327,productionUnderPct:55.28},
+            ];
+            async function j(url){const r=await fetch(url,{headers:{accept:'application/json','user-agent':'MLB-I2-Empirical/1.0'}});if(!r.ok)throw new Error(`${r.status} ${url}`);return r.json();}
+            function rate(rows,n=null){
+              const a=n?rows.slice(-n):rows;
+              const z=a.filter(x=>x.i2Runs===0).length;
+              return {n:a.length,scoreless:z,scorelessPct:a.length?Number((100*z/a.length).toFixed(1)):null,scored:a.length-z,scorePct:a.length?Number((100*(a.length-z)/a.length).toFixed(1)):null,runs:a.reduce((s,x)=>s+x.i2Runs,0)};
+            }
+            function fair(pct){
+              const p=pct/100;if(!(p>0&&p<1))return null;
+              return p>=.5?Math.round(-100*p/(1-p)):Math.round(100*(1-p)/p);
+            }
+            const feedCache=new Map(), pitcherCache=new Map(), teamCache=new Map();
+            async function feed(pk){if(!feedCache.has(pk))feedCache.set(pk,await j(`https://statsapi.mlb.com/api/v1.1/game/${pk}/feed/live`));return feedCache.get(pk);}
+            async function pitcherData(p){
+              if(!p?.id)return null;
+              if(pitcherCache.has(p.id))return pitcherCache.get(p.id);
+              const gl=await j(`https://statsapi.mlb.com/api/v1/people/${p.id}/stats?stats=gameLog&group=pitching&season=2026`);
+              const starts=(gl.stats?.[0]?.splits||[]).filter(s=>Number(s.stat?.gamesStarted||0)>0&&s.game?.gamePk);
+              const rows=[];
+              for(const s of starts){
+                const f=await feed(s.game.gamePk);
+                if(f.gameData?.game?.type!=='R')continue;
+                if(String(f.gameData?.datetime?.officialDate||s.date)>=DATE)continue;
+                let runs=0,faced=false;
+                for(const play of f.liveData?.plays?.allPlays||[]){
+                  if(play.about?.inning!==2||play.matchup?.pitcher?.id!==p.id)continue;
+                  faced=true;
+                  for(const rr of play.runners||[])if(rr.movement?.end==='score')runs++;
+                }
+                if(faced)rows.push({gamePk:s.game.gamePk,date:f.gameData?.datetime?.officialDate||s.date,i2Runs:runs});
+              }
+              rows.sort((a,b)=>a.date.localeCompare(b.date));
+              const out={id:p.id,name:p.fullName||p.name,season:rate(rows),last15:rate(rows,15),last10:rate(rows,10),last5:rate(rows,5),rows};
+              pitcherCache.set(p.id,out); return out;
+            }
+            async function offenseData(team){
+              if(teamCache.has(team.id))return teamCache.get(team.id);
+              const s=await j(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=${team.id}&startDate=2026-03-25&endDate=${END}&hydrate=linescore`);
+              const games=[];
+              for(const d of s.dates||[])for(const g of d.games||[]){
+                if(!['Final','Game Over','Completed Early'].includes(g.status?.detailedState))continue;
+                if(g.gameType!=='R')continue;
+                games.push(g);
+              }
+              games.sort((a,b)=>Date.parse(a.gameDate)-Date.parse(b.gameDate));
+              const rows=[];
+              for(const g of games){
+                const isAway=g.teams?.away?.team?.id===team.id;
+                let r=g.linescore?.innings?.find(x=>x.num===2)?.[isAway?'away':'home']?.runs;
+                if(r==null){
+                  const f=await feed(g.gamePk);
+                  r=(f.liveData?.linescore?.innings||[]).find(x=>x.num===2)?.[isAway?'away':'home']?.runs;
+                }
+                if(r==null)continue;
+                rows.push({gamePk:g.gamePk,date:g.officialDate||g.gameDate?.slice(0,10),opponent:isAway?g.teams.home.team.name:g.teams.away.team.name,i2Runs:Number(r)});
+              }
+              const out={id:team.id,team:team.name,season:rate(rows),last25:rate(rows,25),last10:rate(rows,10),rows};
+              teamCache.set(team.id,out);return out;
+            }
+            const out={date:DATE,generatedAt:new Date().toISOString(),method:'Regular-season only. Half-inning scoreless = 65% starting pitcher season I2 scoreless rate + 35% opponent offense last-25 I2 scoreless rate. Full I2 Under = top-half scoreless x bottom-half scoreless; Over = 1 - Under. Recent windows are diagnostics, not extra fitted weights.',games:[]};
+            for(const t of targets){
+              const f=await feed(t.gamePk);
+              const away=f.gameData.teams.away, home=f.gameData.teams.home;
+              const ap=f.gameData.probablePitchers?.away, hp=f.gameData.probablePitchers?.home;
+              const meta=f.gameData?.game||{};
+              if(!ap?.id||!hp?.id){out.games.push({...t,matchup:`${away.name} @ ${home.name}`,error:'missing probable pitcher'});continue;}
+              const [aPit,hPit,aOff,hOff]=await Promise.all([pitcherData(ap),pitcherData(hp),offenseData(away),offenseData(home)]);
+              const top=.65*(hPit.season.scorelessPct/100)+.35*(aOff.last25.scorelessPct/100);
+              const bottom=.65*(aPit.season.scorelessPct/100)+.35*(hOff.last25.scorelessPct/100);
+              const under=100*top*bottom, over=100-under;
+              out.games.push({
+                ...t,matchup:`${away.name} @ ${home.name}`,
+                seriesGameNumber:meta.seriesGameNumber??null,gamesInSeries:meta.gamesInSeries??null,
+                awayStarter:aPit,homeStarter:hPit,awayOffense:aOff,homeOffense:hOff,
+                top2ScorelessPct:Number((100*top).toFixed(2)),bottom2ScorelessPct:Number((100*bottom).toFixed(2)),
+                empiricalUnderPct:Number(under.toFixed(2)),empiricalOverPct:Number(over.toFixed(2)),
+                productionOverPct:Number((100-t.productionUnderPct).toFixed(2)),
+                deltaUnderVsProductionPct:Number((under-t.productionUnderPct).toFixed(2)),
+                empiricalFairUnder:fair(under),empiricalFairOver:fair(over)
+              });
+            }
+            fs.mkdirSync('data/runtime/i2',{recursive:true});
+            fs.writeFileSync('data/runtime/i2/2026-09-23_remaining5_empirical.json',JSON.stringify(out,null,2)+'\n');
+            console.log('EMPIRICAL_REPORT='+JSON.stringify(out));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: i2-empirical-remaining5-2026-09-23
+          path: data/runtime/i2/2026-09-23_remaining5_empirical.json
+          retention-days: 90
