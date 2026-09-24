@@ -1,0 +1,163 @@
+name: CLE-BOS confirmed I2 scenario
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/i2_cle_bos_confirmed_2026_09_24.yml']
+permissions:
+  contents: read
+jobs:
+  scenario:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run confirmed-lineup opener-bulk scenario
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { simulateFullSecondInning } from './src/model/i2_inning_model.js';
+          import { createSeededRandom, seedFromGameId } from './src/model/seeded_random.js';
+
+          const DATE='2026-09-24', GAME_PK=824707, CANTILLO_ID=676282, TRIALS=50000;
+          const EVENT_KEYS=['single','double','triple','home_run','walk','hit_by_pitch','strikeout','ball_in_play_out'];
+          const cal=JSON.parse(fs.readFileSync('data/derived/i2/i2_play_calibration.json','utf8'));
+          const prior=JSON.parse(fs.readFileSync('data/derived/i2/i2_total_conditioned_prior.json','utf8'));
+          const totalPrior=prior.buckets['7.5'];
+          const broad=prior.broad;
+          const totalCalPAs=Object.values(cal.event_counts||{}).reduce((a,b)=>a+Number(b||0),0);
+          const league=Object.fromEntries(EVENT_KEYS.map(k=>[k,Number(cal.event_counts?.[k]||0)/totalCalPAs]));
+
+          async function j(url){
+            const r=await fetch(url,{headers:{accept:'application/json','user-agent':'MLB-I2-CLE-BOS/1.0'}});
+            if(!r.ok) throw new Error(r.status+' '+url);
+            return r.json();
+          }
+          function statBlock(x){return x?.stats?.[0]?.splits?.[0]?.stat||{};}
+          function n(s,...keys){for(const k of keys){const v=s?.[k]; if(v!==undefined&&v!==null&&v!==''){const x=Number(v);if(Number.isFinite(x))return x;}}return 0;}
+          function ratesFromCounts(counts,denom,strength){
+            const d=Math.max(0,Number(denom||0)), st=Math.max(0,strength), out={};
+            for(const k of EVENT_KEYS) out[k]=(Math.max(0,Number(counts[k]||0))+league[k]*st)/(d+st||1);
+            const sum=EVENT_KEYS.reduce((s,k)=>s+out[k],0); for(const k of EVENT_KEYS) out[k]/=sum; return out;
+          }
+          function hitterCounts(s){
+            const pa=n(s,'plateAppearances'),h=n(s,'hits'),d2=n(s,'doubles'),d3=n(s,'triples'),hr=n(s,'homeRuns'),
+                  bb=n(s,'baseOnBalls','walks'),hbp=n(s,'hitByPitch'),so=n(s,'strikeOuts');
+            const single=Math.max(0,h-d2-d3-hr), residual=Math.max(0,pa-(single+d2+d3+hr+bb+hbp+so));
+            return {denom:pa,counts:{single,double:d2,triple:d3,home_run:hr,walk:bb,hit_by_pitch:hbp,strikeout:so,ball_in_play_out:residual}};
+          }
+          function pitcherCounts(s){
+            const bf=n(s,'battersFaced'),h=n(s,'hits'),hr=n(s,'homeRuns'),bb=n(s,'baseOnBalls','walks'),
+                  hbp=n(s,'hitBatsmen','hitByPitch'),so=n(s,'strikeOuts');
+            let d2=n(s,'doubles'),d3=n(s,'triples');
+            if(h>0&&d2===0&&d3===0){
+              const nonHr=Math.max(0,h-hr), den=Math.max(league.single+league.double+league.triple,1e-9);
+              d2=nonHr*league.double/den; d3=nonHr*league.triple/den;
+            }
+            const single=Math.max(0,h-d2-d3-hr), residual=Math.max(0,bf-(single+d2+d3+hr+bb+hbp+so));
+            return {denom:bf,counts:{single,double:d2,triple:d3,home_run:hr,walk:bb,hit_by_pitch:hbp,strikeout:so,ball_in_play_out:residual}};
+          }
+          const cache=new Map();
+          async function seasonStats(id,group){
+            const key=id+':'+group;
+            if(!cache.has(key)) cache.set(key,j('https://statsapi.mlb.com/api/v1/people/'+id+'/stats?stats=season&group='+group+'&season=2026').then(statBlock));
+            return cache.get(key);
+          }
+          async function makeBatter(feed,id){
+            const s=await seasonStats(id,'hitting'), hc=hitterCounts(s);
+            return {id,name:feed.gameData.players?.['ID'+id]?.fullName||String(id),side:feed.gameData.players?.['ID'+id]?.batSide?.code||'R',
+              eventRates:ratesFromCounts(hc.counts,hc.denom,100),seasonPA:hc.denom};
+          }
+          async function makePitcher(id,name){
+            const s=await seasonStats(id,'pitching'), pc=pitcherCounts(s);
+            return {id,name,eventRatesAllowed:ratesFromCounts(pc.counts,pc.denom,180),seasonBF:pc.denom,
+              era:s.era??null,whip:s.whip??null,inningsPitched:s.inningsPitched??null,gamesStarted:n(s,'gamesStarted')};
+          }
+          function lineupIds(feed,side){
+            const b=feed.liveData?.boxscore?.teams?.[side]?.battingOrder||[];
+            if(b.length===9)return b;
+            return Object.values(feed.liveData?.boxscore?.teams?.[side]?.players||{})
+              .filter(p=>Number(p.battingOrder)>0).sort((a,b)=>Number(a.battingOrder)-Number(b.battingOrder)).map(p=>p.person.id).slice(0,9);
+          }
+          function logit(p){p=Math.min(1-1e-12,Math.max(1e-12,p));return Math.log(p/(1-p));}
+          function logistic(x){return 1/(1+Math.exp(-x));}
+          function american(p){return p>=.5?Math.round(-100*p/(1-p)):Math.round(100*(1-p)/p);}
+          const EDGES=[0.5238396498423443,0.5491157480364879,0.5505588397195031,0.5722073331366149,0.5765829070767106,0.5802455678499445,0.5868605910212334,0.5886883820373516,0.5947180190516053];
+          const SHR=[200,10,10,10,10,10,10,10,10,10];
+          function productionFromRaw(rawOver){
+            const delta=logit(rawOver)-logit(broad.over05);
+            const over100=(totalPrior.over05*totalPrior.n+100*broad.over05)/(totalPrior.n+100);
+            const under100=1-over100; let b=0; while(b<EDGES.length&&under100>=EDGES[b])b++;
+            const s=SHR[Math.max(0,Math.min(9,b))];
+            const overLocal=(totalPrior.over05*totalPrior.n+s*broad.over05)/(totalPrior.n+s);
+            const over=logistic(logit(overLocal)+delta);
+            return {over,under:1-over,fairOver:american(over),fairUnder:american(1-over),baseballLogitDelta:delta,
+              localCvBin:b+1,localCvShrinkage:s,totalPriorOver:totalPrior.over05};
+          }
+          const feed=await j('https://statsapi.mlb.com/api/v1.1/game/'+GAME_PK+'/feed/live');
+          const awayIds=lineupIds(feed,'away'), homeIds=lineupIds(feed,'home');
+          if(awayIds.length!==9||homeIds.length!==9)throw new Error('Confirmed lineups unavailable');
+          const awayLineup=await Promise.all(awayIds.map(id=>makeBatter(feed,id)));
+          const homeLineup=await Promise.all(homeIds.map(id=>makeBatter(feed,id)));
+          const ap=feed.gameData.probablePitchers.away, hp=feed.gameData.probablePitchers.home;
+          const [espino,suarez,cantillo]=await Promise.all([makePitcher(ap.id,ap.fullName),makePitcher(hp.id,hp.fullName),makePitcher(CANTILLO_ID,'Joey Cantillo')]);
+
+          function sim(label,mix){
+            const random=createSeededRandom(seedFromGameId(String(GAME_PK)+':'+label,Number(DATE.replaceAll('-',''))));
+            const r=simulateFullSecondInning({
+              away:{lineup:awayLineup,starter:espino,i2PitcherMixture:mix},
+              home:{lineup:homeLineup,starter:suarez},
+              league,environmentalContext:null,weights:{batter:.5,pitcher:.5},trials:TRIALS,random,playCalibration:cal
+            });
+            const prod=productionFromRaw(r.over05);
+            return {label,rawBaseballOver:r.over05,rawBaseballUnder:r.under05,rawTop2Over:r.top2.cumulative['1+'],rawBottom2Over:r.bottom2.cumulative['1+'],...prod};
+          }
+          const scenarios=[
+            sim('ESPINO_I2',[{weight:1,pitcher:espino}]),
+            sim('CANTILLO_I2',[{weight:1,pitcher:cantillo}]),
+            sim('ROLE_50_50',[{weight:.5,pitcher:espino},{weight:.5,pitcher:cantillo}])
+          ];
+
+          // Exact 2026 I2 scoreless history for Cantillo (all appearances and starts-only).
+          const gl=await j('https://statsapi.mlb.com/api/v1/people/'+CANTILLO_ID+'/stats?stats=gameLog&group=pitching&season=2026');
+          const splits=gl.stats?.[0]?.splits||[], feedCache=new Map();
+          async function gf(pk){if(!feedCache.has(pk))feedCache.set(pk,j('https://statsapi.mlb.com/api/v1.1/game/'+pk+'/feed/live'));return feedCache.get(pk);}
+          const i2Rows=[];
+          for(const s of splits){
+            if(!s.game?.gamePk||String(s.date)>=DATE)continue;
+            const f=await gf(s.game.gamePk);
+            if(f.gameData?.game?.type!=='R')continue;
+            let runs=0,faced=false;
+            for(const play of f.liveData?.plays?.allPlays||[]){
+              if(play.about?.inning!==2||play.matchup?.pitcher?.id!==CANTILLO_ID)continue;
+              faced=true;
+              for(const rr of play.runners||[]) if(rr.movement?.end==='score')runs++;
+            }
+            if(faced)i2Rows.push({gamePk:s.game.gamePk,date:s.date,runs,gamesStarted:Number(s.stat?.gamesStarted||0)});
+          }
+          i2Rows.sort((a,b)=>a.date.localeCompare(b.date));
+          function rate(rows){return {n:rows.length,scoreless:rows.filter(x=>x.runs===0).length,scorelessPct:rows.length?100*rows.filter(x=>x.runs===0).length/rows.length:null};}
+          const cantAll=rate(i2Rows), cantStarts=rate(i2Rows.filter(x=>x.gamesStarted>0));
+          const topScoreless=.65*.852+.35*.84;
+          function empFromPitcherScoreless(p){
+            const bottom=.65*p+.35*.76, under=topScoreless*bottom, over=1-under;
+            return {topScoreless,bottomScoreless:bottom,under,over,fairOver:american(over),fairUnder:american(under)};
+          }
+          const empCantAll=empFromPitcherScoreless(cantAll.scorelessPct/100);
+          const empCantStarts=empFromPitcherScoreless(cantStarts.scorelessPct/100);
+          const empRole50=empFromPitcherScoreless(.5*1+.5*(cantAll.scorelessPct/100));
+
+          const result={
+            generatedAt:new Date().toISOString(),gamePk:GAME_PK,matchup:'Cleveland Guardians @ Boston Red Sox',
+            fullGameTotalLocked:7.5,totalPriorN:totalPrior.n,
+            lineups:{away:awayLineup.map(x=>x.name),home:homeLineup.map(x=>x.name)},
+            pitchers:{espino,cantillo,suarez},
+            productionScenarios:scenarios,
+            empirical:{cantilloI2Rows:i2Rows,cantilloAllI2:cantAll,cantilloStartsI2:cantStarts,cantilloPrimary:empCantAll,cantilloStartsOnly:empCantStarts,role50WithEspinoTinySample:empRole50,
+              fixedInputs:{suarezSeasonI2ScorelessPct:85.2,cleLast25I2ScorelessPct:84,bosLast25I2ScorelessPct:76,espinoObservedI2ScorelessPct:100,espinoObservedI2N:1}},
+            governance:{derivativeI2PriceUsed:false,roleScenario:'50/50 reflects 1-2 inning opener uncertainty; Cantillo-only also shown',parkContext:'neutral to match prior production run venueProfileMatched=false'}
+          };
+          console.log('CLE_BOS_SCENARIO='+JSON.stringify(result));
+          NODE
