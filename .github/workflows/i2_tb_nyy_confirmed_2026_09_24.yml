@@ -1,0 +1,111 @@
+name: TB-NYY confirmed pregame I2 audit
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/i2_tb_nyy_confirmed_2026_09_24.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run confirmed pregame-only audit
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import { simulateFullSecondInning } from './src/model/i2_inning_model.js';
+          import { createSeededRandom, seedFromGameId } from './src/model/seeded_random.js';
+
+          const DATE='2026-09-24', END='2026-09-23', GAME_PK=823493, TRIALS=100000;
+          const EVENT_KEYS=['single','double','triple','home_run','walk','hit_by_pitch','strikeout','ball_in_play_out'];
+          const cal=JSON.parse(fs.readFileSync('data/derived/i2/i2_play_calibration.json','utf8'));
+          const prior=JSON.parse(fs.readFileSync('data/derived/i2/i2_total_conditioned_prior.json','utf8'));
+          const totalPrior=prior.buckets['6.5'], broad=prior.broad;
+          const totalCalPAs=Object.values(cal.event_counts||{}).reduce((a,b)=>a+Number(b||0),0);
+          const league=Object.fromEntries(EVENT_KEYS.map(k=>[k,Number(cal.event_counts?.[k]||0)/totalCalPAs]));
+
+          async function j(url){const r=await fetch(url,{headers:{accept:'application/json','user-agent':'MLB-I2-TB-NYY/1.0'}});if(!r.ok)throw new Error(r.status+' '+url);return r.json();}
+          function num(v){const x=Number(v);return Number.isFinite(x)?x:0;}
+          function add(a,b,k){a[k]=(a[k]||0)+num(b?.[k]);}
+          async function pregameStats(id,group){
+            const x=await j('https://statsapi.mlb.com/api/v1/people/'+id+'/stats?stats=gameLog&group='+group+'&season=2026');
+            const splits=x.stats?.[0]?.splits||[], out={};
+            const keys=group==='hitting'
+              ? ['plateAppearances','hits','doubles','triples','homeRuns','baseOnBalls','hitByPitch','strikeOuts']
+              : ['battersFaced','hits','doubles','triples','homeRuns','baseOnBalls','hitBatsmen','strikeOuts','gamesStarted','inningsPitched'];
+            let outs=0;
+            for(const s of splits){
+              const d=String(s.date||''); if(!d||d>END) continue;
+              for(const k of keys.filter(k=>k!=='inningsPitched')) add(out,s.stat,k);
+              if(group==='pitching'){
+                const ip=String(s.stat?.inningsPitched||'0');
+                const [w,f='0']=ip.split('.'); outs += num(w)*3 + num(f);
+              }
+            }
+            if(group==='pitching') out.inningsOuts=outs;
+            return out;
+          }
+          function rates(counts,denom,strength){
+            const d=Math.max(0,num(denom)),st=Math.max(0,strength),o={};
+            for(const k of EVENT_KEYS)o[k]=(Math.max(0,num(counts[k]))+league[k]*st)/(d+st||1);
+            const sum=EVENT_KEYS.reduce((s,k)=>s+o[k],0);for(const k of EVENT_KEYS)o[k]/=sum;return o;
+          }
+          function hitterCounts(s){
+            const pa=num(s.plateAppearances),h=num(s.hits),d2=num(s.doubles),d3=num(s.triples),hr=num(s.homeRuns),
+                  bb=num(s.baseOnBalls),hbp=num(s.hitByPitch),so=num(s.strikeOuts);
+            const single=Math.max(0,h-d2-d3-hr),res=Math.max(0,pa-(single+d2+d3+hr+bb+hbp+so));
+            return {denom:pa,counts:{single,double:d2,triple:d3,home_run:hr,walk:bb,hit_by_pitch:hbp,strikeout:so,ball_in_play_out:res}};
+          }
+          function pitcherCounts(s){
+            const bf=num(s.battersFaced),h=num(s.hits),hr=num(s.homeRuns),bb=num(s.baseOnBalls),hbp=num(s.hitBatsmen),so=num(s.strikeOuts);
+            let d2=num(s.doubles),d3=num(s.triples);
+            if(h>0&&d2===0&&d3===0){const nonHr=Math.max(0,h-hr),den=Math.max(league.single+league.double+league.triple,1e-9);d2=nonHr*league.double/den;d3=nonHr*league.triple/den;}
+            const single=Math.max(0,h-d2-d3-hr),res=Math.max(0,bf-(single+d2+d3+hr+bb+hbp+so));
+            return {denom:bf,counts:{single,double:d2,triple:d3,home_run:hr,walk:bb,hit_by_pitch:hbp,strikeout:so,ball_in_play_out:res}};
+          }
+          async function batter(feed,id){const s=await pregameStats(id,'hitting'),hc=hitterCounts(s);return {id,name:feed.gameData.players?.['ID'+id]?.fullName||String(id),side:feed.gameData.players?.['ID'+id]?.batSide?.code||'R',eventRates:rates(hc.counts,hc.denom,100),seasonPA:hc.denom};}
+          async function pitcher(id,name){const s=await pregameStats(id,'pitching'),pc=pitcherCounts(s);return {id,name,eventRatesAllowed:rates(pc.counts,pc.denom,180),seasonBF:pc.denom,gamesStarted:num(s.gamesStarted),inningsOuts:num(s.inningsOuts)};}
+          function lineupIds(feed,side){const a=feed.liveData?.boxscore?.teams?.[side]?.battingOrder||[];if(a.length===9)return a;return Object.values(feed.liveData?.boxscore?.teams?.[side]?.players||{}).filter(p=>Number(p.battingOrder)>0).sort((a,b)=>Number(a.battingOrder)-Number(b.battingOrder)).map(p=>p.person.id).slice(0,9);}
+          function logit(p){p=Math.min(1-1e-12,Math.max(1e-12,p));return Math.log(p/(1-p));}
+          function logistic(x){return 1/(1+Math.exp(-x));}
+          function american(p){return p>=.5?Math.round(-100*p/(1-p)):Math.round(100*(1-p)/p);}
+          const EDGES=[0.5238396498423443,0.5491157480364879,0.5505588397195031,0.5722073331366149,0.5765829070767106,0.5802455678499445,0.5868605910212334,0.5886883820373516,0.5947180190516053], SHR=[200,10,10,10,10,10,10,10,10,10];
+          function production(rawOver,rawTop,rawBottom){
+            const delta=logit(rawOver)-logit(broad.over05);
+            const over100=(totalPrior.over05*totalPrior.n+100*broad.over05)/(totalPrior.n+100),under100=1-over100;
+            let b=0;while(b<EDGES.length&&under100>=EDGES[b])b++;
+            const sh=SHR[Math.max(0,Math.min(9,b))],overLocal=(totalPrior.over05*totalPrior.n+sh*broad.over05)/(totalPrior.n+sh),over=logistic(logit(overLocal)+delta);
+            const fullAt=x=>{const t=logistic(logit(rawTop)+x),bt=logistic(logit(rawBottom)+x);return 1-(1-t)*(1-bt);};
+            let lo=-20,hi=20;for(let k=0;k<100;k++){const mid=(lo+hi)/2;if(fullAt(mid)<over)lo=mid;else hi=mid;}const shift=(lo+hi)/2;
+            return {over,under:1-over,fairOver:american(over),fairUnder:american(1-over),top2Score:logistic(logit(rawTop)+shift),bottom2Score:logistic(logit(rawBottom)+shift),baseballLogitDelta:delta,halfShift:shift};
+          }
+
+          const feed=await j('https://statsapi.mlb.com/api/v1.1/game/'+GAME_PK+'/feed/live');
+          const awayIds=lineupIds(feed,'away'),homeIds=lineupIds(feed,'home');
+          if(awayIds.length!==9||homeIds.length!==9)throw new Error('confirmed lineup missing');
+          const awayLineup=await Promise.all(awayIds.map(id=>batter(feed,id)));
+          const homeLineup=await Promise.all(homeIds.map(id=>batter(feed,id)));
+          const ap=feed.gameData.probablePitchers.away,hp=feed.gameData.probablePitchers.home;
+          const [awayP,homeP]=await Promise.all([pitcher(ap.id,ap.fullName),pitcher(hp.id,hp.fullName)]);
+          const random=createSeededRandom(seedFromGameId(String(GAME_PK)+':pregame-confirmed',Number(DATE.replaceAll('-',''))));
+          const sim=simulateFullSecondInning({away:{lineup:awayLineup,starter:awayP},home:{lineup:homeLineup,starter:homeP},league,environmentalContext:null,weights:{batter:.5,pitcher:.5},trials:TRIALS,random,playCalibration:cal});
+          const prod=production(sim.over05,sim.top2.cumulative['1+'],sim.bottom2.cumulative['1+']);
+          const empiricalBottom2=0.4164;
+          const blendBottom2=(prod.bottom2Score+empiricalBottom2)/2;
+          console.log('TB_NYY_CONFIRMED='+JSON.stringify({
+            generatedAt:new Date().toISOString(),
+            lineups:{away:awayLineup.map(x=>x.name),home:homeLineup.map(x=>x.name)},
+            pitchers:{away:awayP,home:homeP},
+            raw:{over:sim.over05,top2Score:sim.top2.cumulative['1+'],bottom2Score:sim.bottom2.cumulative['1+']},
+            production:prod,
+            empiricalBottom2,
+            blendBottom2,
+            blendFairAmerican:american(blendBottom2),
+            evAtPlus400:blendBottom2*4-(1-blendBottom2)
+          }));
+          NODE
