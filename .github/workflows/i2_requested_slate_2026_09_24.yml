@@ -68,3 +68,4 @@ jobs:
           name: i2-requested-2026-09-24
           path: data/runtime/i2/2026-09-24*.json
           retention-days: 90
+# fresh-data rerun requested 2026-09-24
