@@ -1,0 +1,125 @@
+{
+  "date": "2026-09-24",
+  "capturedAt": "2026-09-24T02:06:28.869Z",
+  "source": "THE_ODDS_API",
+  "sourcePolicyVersion": "1.2.0",
+  "scope": "FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES",
+  "totalDefinition": "FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL",
+  "marketIsolation": {
+    "phase": "PRE_FREEZE",
+    "allowedBookmaker": "draftkings",
+    "allowedMarket": "totals",
+    "pricesExposedToPredictionEngine": false
+  },
+  "note": "The Odds API is the canonical sportsbook-data source. Before prediction freeze, only the DraftKings full-game total point is retained. The first observed total is locked for conditioning; latestObservedTotal is audit-only.",
+  "events": [
+    {
+      "eventId": "081d2b7393bce52150362934ffba996e",
+      "commenceTime": "2026-09-24T02:10:00Z",
+      "awayTeam": "San Diego Padres",
+      "homeTeam": "Los Angeles Dodgers",
+      "fullGameTotal": 8,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 8,
+      "latestBookmakerUpdate": "2026-09-23T16:14:59.601Z"
+    },
+    {
+      "eventId": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+      "commenceTime": "2026-09-24T02:10:00Z",
+      "awayTeam": "Houston Astros",
+      "homeTeam": "Seattle Mariners",
+      "fullGameTotal": 7.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 7.5,
+      "latestBookmakerUpdate": "2026-09-24T02:04:47.711Z"
+    },
+    {
+      "eventId": "8b28676e2bddb6034c1bce2e43a08cf5",
+      "commenceTime": "2026-09-24T16:35:00Z",
+      "awayTeam": "St. Louis Cardinals",
+      "homeTeam": "Pittsburgh Pirates",
+      "fullGameTotal": 7,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 7,
+      "latestBookmakerUpdate": "2026-09-23T20:32:44.326Z"
+    },
+    {
+      "eventId": "f63c228827bc97b1e062adfce3b33b21",
+      "commenceTime": "2026-09-24T18:20:00Z",
+      "awayTeam": "Miami Marlins",
+      "homeTeam": "Chicago Cubs",
+      "fullGameTotal": 7.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 7.5,
+      "latestBookmakerUpdate": "2026-09-23T22:54:04.658Z"
+    },
+    {
+      "eventId": "8c823a63203d5fecdcea4356cc9b091b",
+      "commenceTime": "2026-09-24T19:10:00Z",
+      "awayTeam": "Arizona Diamondbacks",
+      "homeTeam": "Colorado Rockies",
+      "fullGameTotal": 10,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 10,
+      "latestBookmakerUpdate": "2026-09-24T00:19:20Z"
+    },
+    {
+      "eventId": "191da9ed3c6ab55d21bad02fc1ac5d49",
+      "commenceTime": "2026-09-24T23:05:00Z",
+      "awayTeam": "Tampa Bay Rays",
+      "homeTeam": "New York Yankees",
+      "fullGameTotal": 6.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 6.5,
+      "latestBookmakerUpdate": "2026-09-23T20:33:28.308Z"
+    },
+    {
+      "eventId": "30e2f11e08683bdacdff08fec25ae19d",
+      "commenceTime": "2026-09-24T23:15:00Z",
+      "awayTeam": "Cincinnati Reds",
+      "homeTeam": "Atlanta Braves",
+      "fullGameTotal": 7.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 7.5,
+      "latestBookmakerUpdate": "2026-09-23T23:24:16.079Z"
+    },
+    {
+      "eventId": "b14be8ebeaa2f6d6b564aeb9dbf5b626",
+      "commenceTime": "2026-09-25T01:40:00Z",
+      "awayTeam": "Los Angeles Angels",
+      "homeTeam": "Seattle Mariners",
+      "fullGameTotal": 7,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 7,
+      "latestBookmakerUpdate": "2026-09-24T01:25:03.043Z"
+    },
+    {
+      "eventId": "8c948fb226cf491c870b05a2f26f1bcb",
+      "commenceTime": "2026-09-25T02:10:00Z",
+      "awayTeam": "San Diego Padres",
+      "homeTeam": "Los Angeles Dodgers",
+      "fullGameTotal": 7.5,
+      "bookmaker": "draftkings",
+      "firstSeenAt": "2026-09-24T02:06:28.869Z",
+      "lastSeenAt": "2026-09-24T02:06:28.869Z",
+      "latestObservedTotal": 7.5,
+      "latestBookmakerUpdate": "2026-09-23T23:23:50.451Z"
+    }
+  ]
+}

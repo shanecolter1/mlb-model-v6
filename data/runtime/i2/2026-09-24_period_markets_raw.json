@@ -1,0 +1,1898 @@
+{
+  "date": "2026-09-24",
+  "generatedAt": "2026-09-24T02:06:35.558Z",
+  "endpoint": "/period-markets/",
+  "queryMethod": "EVENT_BY_EVENT",
+  "sport_key": "baseball_mlb",
+  "eventCount": 11,
+  "events": [
+    {
+      "event_id": "081d2b7393bce52150362934ffba996e",
+      "home_team": "Los Angeles Dodgers",
+      "away_team": "San Diego Padres",
+      "start_time": "2026-09-24T02:10:00Z"
+    },
+    {
+      "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+      "home_team": "Seattle Mariners",
+      "away_team": "Houston Astros",
+      "start_time": "2026-09-24T02:10:00Z"
+    },
+    {
+      "event_id": "8b28676e2bddb6034c1bce2e43a08cf5",
+      "home_team": "Pittsburgh Pirates",
+      "away_team": "St. Louis Cardinals",
+      "start_time": "2026-09-24T16:35:00Z"
+    },
+    {
+      "event_id": "bfa824b5411f29581323d170aea64d93",
+      "home_team": "Kansas City Royals",
+      "away_team": "Chicago White Sox",
+      "start_time": "2026-09-24T18:10:00Z"
+    },
+    {
+      "event_id": "f63c228827bc97b1e062adfce3b33b21",
+      "home_team": "Chicago Cubs",
+      "away_team": "Miami Marlins",
+      "start_time": "2026-09-24T18:20:00Z"
+    },
+    {
+      "event_id": "6140d1ce245aafefc54165d52ca1e4ea",
+      "home_team": "Texas Rangers",
+      "away_team": "New York Mets",
+      "start_time": "2026-09-24T18:35:00Z"
+    },
+    {
+      "event_id": "8c823a63203d5fecdcea4356cc9b091b",
+      "home_team": "Colorado Rockies",
+      "away_team": "Arizona Diamondbacks",
+      "start_time": "2026-09-24T19:10:00Z"
+    },
+    {
+      "event_id": "6dba36c7532162273db68d929e383289",
+      "home_team": "Philadelphia Phillies",
+      "away_team": "Milwaukee Brewers",
+      "start_time": "2026-09-24T22:05:00Z"
+    },
+    {
+      "event_id": "f9bb8bbb24fce1975ff0a7a381f2b0de",
+      "home_team": "Boston Red Sox",
+      "away_team": "Cleveland Guardians",
+      "start_time": "2026-09-24T22:45:00Z"
+    },
+    {
+      "event_id": "191da9ed3c6ab55d21bad02fc1ac5d49",
+      "home_team": "New York Yankees",
+      "away_team": "Tampa Bay Rays",
+      "start_time": "2026-09-24T23:05:00Z"
+    },
+    {
+      "event_id": "30e2f11e08683bdacdff08fec25ae19d",
+      "home_team": "Atlanta Braves",
+      "away_team": "Cincinnati Reds",
+      "start_time": "2026-09-24T23:15:00Z"
+    }
+  ],
+  "probes": [
+    {
+      "event_id": "081d2b7393bce52150362934ffba996e",
+      "home_team": "Los Angeles Dodgers",
+      "away_team": "San Diego Padres",
+      "start_time": "2026-09-24T02:10:00Z",
+      "response": {
+        "success": true,
+        "source": "odds_blob",
+        "data": {
+          "event_id": "081d2b7393bce52150362934ffba996e",
+          "sport": "baseball",
+          "league": "MLB",
+          "home_team": "Los Angeles Dodgers",
+          "away_team": "San Diego Padres",
+          "start_time": "2026-09-24T02:10:00Z",
+          "markets": [
+            {
+              "market": "h2h_1st_5_innings",
+              "books": [
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-23T23:09:31.74Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -233
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 175
+                    }
+                  ]
+                },
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-23T22:57:50.359Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -235
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 182
+                    }
+                  ]
+                },
+                {
+                  "book": "coolbet",
+                  "updated_at": "2026-09-23T23:50:21.638Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -244
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 177
+                    }
+                  ]
+                },
+                {
+                  "book": "dafabet",
+                  "updated_at": "2026-09-24T01:29:24.3Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -250
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 159
+                    }
+                  ]
+                },
+                {
+                  "book": "bet365",
+                  "updated_at": "2026-09-24T01:55:13.376Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -233
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 175
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "spreads_1st_5_innings",
+              "books": [
+                {
+                  "book": "sbobet",
+                  "updated_at": "2026-09-24T01:48:59.465Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": 123,
+                      "point": -1.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": -154,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -115,
+                      "point": -1
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": -108,
+                      "point": 1
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -154,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 123,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-24T00:10:47.733Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": 114,
+                      "point": -1.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": -147,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -156,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 120,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -303,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 220,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -625,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 390,
+                      "point": -1.5
+                    }
+                  ]
+                },
+                {
+                  "book": "coolbet",
+                  "updated_at": "2026-09-24T01:41:12.703Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": 115,
+                      "point": -1.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": -159,
+                      "point": 1.5
+                    }
+                  ]
+                },
+                {
+                  "book": "dafabet",
+                  "updated_at": "2026-09-24T01:48:52.445Z",
+                  "outcomes": [
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": 118,
+                      "point": -1.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": -159,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -119,
+                      "point": -1
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": -111,
+                      "point": 1
+                    },
+                    {
+                      "name": "Los Angeles Dodgers",
+                      "price": -159,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "San Diego Padres",
+                      "price": 118,
+                      "point": 0.5
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "totals_1st_5_innings",
+              "books": [
+                {
+                  "book": "sbobet",
+                  "updated_at": "2026-09-24T01:53:44.365Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -147,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": 112,
+                      "point": 4
+                    },
+                    {
+                      "name": "Over",
+                      "price": -112,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 117,
+                      "point": 5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -154,
+                      "point": 5
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-23T22:55:56.328Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -196,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 150,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -116,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -116,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 145,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -189,
+                      "point": 5.5
+                    }
+                  ]
+                },
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-23T22:57:50.359Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -114,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -114,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "coolbet",
+                  "updated_at": "2026-09-23T23:50:21.638Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -118,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -118,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "dafabet",
+                  "updated_at": "2026-09-24T01:53:38.595Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -149,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": 111,
+                      "point": 4
+                    },
+                    {
+                      "name": "Over",
+                      "price": -114,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -116,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 115,
+                      "point": 5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -154,
+                      "point": 5
+                    }
+                  ]
+                },
+                {
+                  "book": "bet365",
+                  "updated_at": "2026-09-23T14:15:53.236Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -111,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -120,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "betsson",
+                  "updated_at": "2026-09-24T01:40:19.353Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -114,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -118,
+                      "point": 4.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "active_window": {
+          "start": "2026-09-24T00:36:34.188231Z",
+          "end": "2026-09-24T04:06:34.188231Z",
+          "events_in_window": 1,
+          "next_event_at": "2026-09-24T02:10:00Z"
+        }
+      }
+    },
+    {
+      "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+      "home_team": "Seattle Mariners",
+      "away_team": "Houston Astros",
+      "start_time": "2026-09-24T02:10:00Z",
+      "response": {
+        "success": true,
+        "source": "odds_blob",
+        "data": {
+          "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+          "sport": "baseball",
+          "league": "MLB",
+          "home_team": "Seattle Mariners",
+          "away_team": "Houston Astros",
+          "start_time": "2026-09-24T02:10:00Z",
+          "markets": [
+            {
+              "market": "h2h_1st_5_innings",
+              "books": [
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-24T01:13:13.358Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -167
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 130
+                    }
+                  ]
+                },
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-24T01:12:30.153Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -145
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 116
+                    }
+                  ]
+                },
+                {
+                  "book": "coolbet",
+                  "updated_at": "2026-09-24T01:41:12.703Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -147
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 111
+                    }
+                  ]
+                },
+                {
+                  "book": "dafabet",
+                  "updated_at": "2026-09-24T01:10:57.432Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -159
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 118
+                    }
+                  ]
+                },
+                {
+                  "book": "bet365",
+                  "updated_at": "2026-09-24T01:54:57.677Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -152
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 120
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "spreads_1st_5_innings",
+              "books": [
+                {
+                  "book": "sbobet",
+                  "updated_at": "2026-09-24T01:10:59.706Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": 133,
+                      "point": -1
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -167,
+                      "point": 1
+                    },
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -106,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -116,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -159,
+                      "point": 0
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 121,
+                      "point": 0
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-24T01:25:47.28Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": 160,
+                      "point": -1.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -213,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -116,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -116,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -217,
+                      "point": 0.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 165,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -435,
+                      "point": 1.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": 300,
+                      "point": -1.5
+                    }
+                  ]
+                },
+                {
+                  "book": "coolbet",
+                  "updated_at": "2026-09-23T21:26:51.789Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -106,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -130,
+                      "point": 0.5
+                    }
+                  ]
+                },
+                {
+                  "book": "dafabet",
+                  "updated_at": "2026-09-24T01:10:57.432Z",
+                  "outcomes": [
+                    {
+                      "name": "Seattle Mariners",
+                      "price": 127,
+                      "point": -1
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -172,
+                      "point": 1
+                    },
+                    {
+                      "name": "Seattle Mariners",
+                      "price": -110,
+                      "point": -0.5
+                    },
+                    {
+                      "name": "Houston Astros",
+                      "price": -120,
+                      "point": 0.5
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "market": "totals_1st_5_innings",
+              "books": [
+                {
+                  "book": "sbobet",
+                  "updated_at": "2026-09-24T01:23:24.517Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -152,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 114,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -114,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -114,
+                      "point": 4
+                    },
+                    {
+                      "name": "Over",
+                      "price": 109,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -143,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "draftkings",
+                  "updated_at": "2026-09-24T01:13:13.358Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -161,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 124,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 110,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -141,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": 175,
+                      "point": 5.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -233,
+                      "point": 5.5
+                    }
+                  ]
+                },
+                {
+                  "book": "fanduel",
+                  "updated_at": "2026-09-24T01:43:47.716Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": 106,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -138,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "coolbet",
+                  "updated_at": "2026-09-24T01:20:56.311Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -120,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "dafabet",
+                  "updated_at": "2026-09-24T01:23:20.361Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -154,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": 115,
+                      "point": 3.5
+                    },
+                    {
+                      "name": "Over",
+                      "price": -115,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -115,
+                      "point": 4
+                    },
+                    {
+                      "name": "Over",
+                      "price": 108,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -145,
+                      "point": 4.5
+                    }
+                  ]
+                },
+                {
+                  "book": "bet365",
+                  "updated_at": "2026-09-24T01:53:57.065Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": -116,
+                      "point": 4
+                    },
+                    {
+                      "name": "Under",
+                      "price": -116,
+                      "point": 4
+                    }
+                  ]
+                },
+                {
+                  "book": "betsson",
+                  "updated_at": "2026-09-24T01:26:52.673Z",
+                  "outcomes": [
+                    {
+                      "name": "Over",
+                      "price": 100,
+                      "point": 4.5
+                    },
+                    {
+                      "name": "Under",
+                      "price": -133,
+                      "point": 4.5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "active_window": {
+          "start": "2026-09-24T00:36:34.413742Z",
+          "end": "2026-09-24T04:06:34.413742Z",
+          "events_in_window": 1,
+          "next_event_at": "2026-09-24T02:10:00Z"
+        }
+      }
+    },
+    {
+      "event_id": "8b28676e2bddb6034c1bce2e43a08cf5",
+      "home_team": "Pittsburgh Pirates",
+      "away_team": "St. Louis Cardinals",
+      "start_time": "2026-09-24T16:35:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '8b28676e2bddb6034c1bce2e43a08cf5' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "bfa824b5411f29581323d170aea64d93",
+      "home_team": "Kansas City Royals",
+      "away_team": "Chicago White Sox",
+      "start_time": "2026-09-24T18:10:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event 'bfa824b5411f29581323d170aea64d93' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "f63c228827bc97b1e062adfce3b33b21",
+      "home_team": "Chicago Cubs",
+      "away_team": "Miami Marlins",
+      "start_time": "2026-09-24T18:20:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event 'f63c228827bc97b1e062adfce3b33b21' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "6140d1ce245aafefc54165d52ca1e4ea",
+      "home_team": "Texas Rangers",
+      "away_team": "New York Mets",
+      "start_time": "2026-09-24T18:35:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '6140d1ce245aafefc54165d52ca1e4ea' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "8c823a63203d5fecdcea4356cc9b091b",
+      "home_team": "Colorado Rockies",
+      "away_team": "Arizona Diamondbacks",
+      "start_time": "2026-09-24T19:10:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '8c823a63203d5fecdcea4356cc9b091b' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "6dba36c7532162273db68d929e383289",
+      "home_team": "Philadelphia Phillies",
+      "away_team": "Milwaukee Brewers",
+      "start_time": "2026-09-24T22:05:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '6dba36c7532162273db68d929e383289' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "f9bb8bbb24fce1975ff0a7a381f2b0de",
+      "home_team": "Boston Red Sox",
+      "away_team": "Cleveland Guardians",
+      "start_time": "2026-09-24T22:45:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event 'f9bb8bbb24fce1975ff0a7a381f2b0de' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "191da9ed3c6ab55d21bad02fc1ac5d49",
+      "home_team": "New York Yankees",
+      "away_team": "Tampa Bay Rays",
+      "start_time": "2026-09-24T23:05:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '191da9ed3c6ab55d21bad02fc1ac5d49' not found in baseball_mlb period markets cache."
+      }
+    },
+    {
+      "event_id": "30e2f11e08683bdacdff08fec25ae19d",
+      "home_team": "Atlanta Braves",
+      "away_team": "Cincinnati Reds",
+      "start_time": "2026-09-24T23:15:00Z",
+      "response": {
+        "success": false,
+        "source": "cache",
+        "data": null,
+        "message": "Event '30e2f11e08683bdacdff08fec25ae19d' not found in baseball_mlb period markets cache."
+      }
+    }
+  ],
+  "normalized": {
+    "books": [
+      "bet365",
+      "betsson",
+      "coolbet",
+      "dafabet",
+      "draftkings",
+      "fanduel",
+      "sbobet"
+    ],
+    "markets": [
+      "h2h_1st_5_innings",
+      "spreads_1st_5_innings",
+      "totals_1st_5_innings"
+    ],
+    "rows": [
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-23T23:09:31.74Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -233
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 175
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-23T22:57:50.359Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -235
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 182
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "coolbet",
+        "updated_at": "2026-09-23T23:50:21.638Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -244
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 177
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "dafabet",
+        "updated_at": "2026-09-24T01:29:24.3Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -250
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 159
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "bet365",
+        "updated_at": "2026-09-24T01:55:13.376Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -233
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 175
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "sbobet",
+        "updated_at": "2026-09-24T01:48:59.465Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": 123,
+            "point": -1.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": -154,
+            "point": 1.5
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -115,
+            "point": -1
+          },
+          {
+            "name": "San Diego Padres",
+            "price": -108,
+            "point": 1
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -154,
+            "point": -0.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 123,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-24T00:10:47.733Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": 114,
+            "point": -1.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": -147,
+            "point": 1.5
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -156,
+            "point": -0.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 120,
+            "point": 0.5
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -303,
+            "point": 0.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 220,
+            "point": -0.5
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -625,
+            "point": 1.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 390,
+            "point": -1.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "coolbet",
+        "updated_at": "2026-09-24T01:41:12.703Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": 115,
+            "point": -1.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": -159,
+            "point": 1.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "dafabet",
+        "updated_at": "2026-09-24T01:48:52.445Z",
+        "outcomes": [
+          {
+            "name": "Los Angeles Dodgers",
+            "price": 118,
+            "point": -1.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": -159,
+            "point": 1.5
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -119,
+            "point": -1
+          },
+          {
+            "name": "San Diego Padres",
+            "price": -111,
+            "point": 1
+          },
+          {
+            "name": "Los Angeles Dodgers",
+            "price": -159,
+            "point": -0.5
+          },
+          {
+            "name": "San Diego Padres",
+            "price": 118,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "sbobet",
+        "updated_at": "2026-09-24T01:53:44.365Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -147,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": 112,
+            "point": 4
+          },
+          {
+            "name": "Over",
+            "price": -112,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 117,
+            "point": 5
+          },
+          {
+            "name": "Under",
+            "price": -154,
+            "point": 5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-23T22:55:56.328Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -196,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 150,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -116,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -116,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 145,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": -189,
+            "point": 5.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-23T22:57:50.359Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -114,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -114,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "coolbet",
+        "updated_at": "2026-09-23T23:50:21.638Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -118,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -118,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "dafabet",
+        "updated_at": "2026-09-24T01:53:38.595Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -149,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": 111,
+            "point": 4
+          },
+          {
+            "name": "Over",
+            "price": -114,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -116,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 115,
+            "point": 5
+          },
+          {
+            "name": "Under",
+            "price": -154,
+            "point": 5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "bet365",
+        "updated_at": "2026-09-23T14:15:53.236Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -111,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -120,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "081d2b7393bce52150362934ffba996e",
+        "matchup": "San Diego Padres @ Los Angeles Dodgers",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betsson",
+        "updated_at": "2026-09-24T01:40:19.353Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -114,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -118,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-24T01:13:13.358Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": -167
+          },
+          {
+            "name": "Houston Astros",
+            "price": 130
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-24T01:12:30.153Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": -145
+          },
+          {
+            "name": "Houston Astros",
+            "price": 116
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "coolbet",
+        "updated_at": "2026-09-24T01:41:12.703Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": -147
+          },
+          {
+            "name": "Houston Astros",
+            "price": 111
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "dafabet",
+        "updated_at": "2026-09-24T01:10:57.432Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": -159
+          },
+          {
+            "name": "Houston Astros",
+            "price": 118
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "h2h_1st_5_innings",
+        "sportsbook": "bet365",
+        "updated_at": "2026-09-24T01:54:57.677Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": -152
+          },
+          {
+            "name": "Houston Astros",
+            "price": 120
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "sbobet",
+        "updated_at": "2026-09-24T01:10:59.706Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": 133,
+            "point": -1
+          },
+          {
+            "name": "Houston Astros",
+            "price": -167,
+            "point": 1
+          },
+          {
+            "name": "Seattle Mariners",
+            "price": -106,
+            "point": -0.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": -116,
+            "point": 0.5
+          },
+          {
+            "name": "Seattle Mariners",
+            "price": -159,
+            "point": 0
+          },
+          {
+            "name": "Houston Astros",
+            "price": 121,
+            "point": 0
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-24T01:25:47.28Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": 160,
+            "point": -1.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": -213,
+            "point": 1.5
+          },
+          {
+            "name": "Seattle Mariners",
+            "price": -116,
+            "point": -0.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": -116,
+            "point": 0.5
+          },
+          {
+            "name": "Seattle Mariners",
+            "price": -217,
+            "point": 0.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": 165,
+            "point": -0.5
+          },
+          {
+            "name": "Seattle Mariners",
+            "price": -435,
+            "point": 1.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": 300,
+            "point": -1.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "coolbet",
+        "updated_at": "2026-09-23T21:26:51.789Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": -106,
+            "point": -0.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": -130,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "spreads_1st_5_innings",
+        "sportsbook": "dafabet",
+        "updated_at": "2026-09-24T01:10:57.432Z",
+        "outcomes": [
+          {
+            "name": "Seattle Mariners",
+            "price": 127,
+            "point": -1
+          },
+          {
+            "name": "Houston Astros",
+            "price": -172,
+            "point": 1
+          },
+          {
+            "name": "Seattle Mariners",
+            "price": -110,
+            "point": -0.5
+          },
+          {
+            "name": "Houston Astros",
+            "price": -120,
+            "point": 0.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "sbobet",
+        "updated_at": "2026-09-24T01:23:24.517Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -152,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 114,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -114,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -114,
+            "point": 4
+          },
+          {
+            "name": "Over",
+            "price": 109,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -143,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "draftkings",
+        "updated_at": "2026-09-24T01:13:13.358Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -161,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 124,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": 110,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -141,
+            "point": 4.5
+          },
+          {
+            "name": "Over",
+            "price": 175,
+            "point": 5.5
+          },
+          {
+            "name": "Under",
+            "price": -233,
+            "point": 5.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "fanduel",
+        "updated_at": "2026-09-24T01:43:47.716Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": 106,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -138,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "coolbet",
+        "updated_at": "2026-09-24T01:20:56.311Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -120,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "dafabet",
+        "updated_at": "2026-09-24T01:23:20.361Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -154,
+            "point": 3.5
+          },
+          {
+            "name": "Under",
+            "price": 115,
+            "point": 3.5
+          },
+          {
+            "name": "Over",
+            "price": -115,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -115,
+            "point": 4
+          },
+          {
+            "name": "Over",
+            "price": 108,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -145,
+            "point": 4.5
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "bet365",
+        "updated_at": "2026-09-24T01:53:57.065Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": -116,
+            "point": 4
+          },
+          {
+            "name": "Under",
+            "price": -116,
+            "point": 4
+          }
+        ]
+      },
+      {
+        "event_id": "61bbe3e9d1ed95cb4a30fd7d04fe8da4",
+        "matchup": "Houston Astros @ Seattle Mariners",
+        "start_time": "2026-09-24T02:10:00Z",
+        "market": "totals_1st_5_innings",
+        "sportsbook": "betsson",
+        "updated_at": "2026-09-24T01:26:52.673Z",
+        "outcomes": [
+          {
+            "name": "Over",
+            "price": 100,
+            "point": 4.5
+          },
+          {
+            "name": "Under",
+            "price": -133,
+            "point": 4.5
+          }
+        ]
+      }
+    ]
+  }
+}
