@@ -15,6 +15,7 @@ const outputPath = String(process.env.SGO_OUTPUT || `data/runtime/i2/${date}_spo
 const csvPath = String(process.env.SGO_CSV || `docs/inning_markets/${date}_sportsgameodds_inning_markets.csv`);
 const supportPath = String(process.env.SGO_SUPPORT_OUTPUT || `data/runtime/i2/${date}_sportsgameodds_market_support.json`);
 const includeOpenCloseOdds = /^true$/i.test(String(process.env.SGO_INCLUDE_OPEN_CLOSE || 'false'));
+const includeAltLines = !/^false$/i.test(String(process.env.SGO_INCLUDE_ALT_LINES || 'true'));
 const bookmakerIDs = String(process.env.SGO_BOOKMAKERS || ROOKIE_TARGET_BOOKMAKERS.join(','))
   .split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
 
@@ -41,7 +42,7 @@ const freezeContext = {
 const oddIDs = buildMlbInningOddIds();
 const [support, feed] = await Promise.all([
   fetchMlbMarketSupport({ bookmakerIDs, oddIDs }),
-  fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds }),
+  fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds, includeAltLines }),
 ]);
 
 const events = filterEventsByLocalDate(feed.events, date, timeZone);
@@ -66,6 +67,7 @@ for (const event of events) {
         oddID: market.oddID,
         bookmakerID: price.bookmakerID,
         line: price.line ?? market.providerConsensusLine ?? market.providerFairLine ?? '',
+        isAlternateLine: price.isAlternateLine === true,
         americanOdds: price.americanOdds,
         lastUpdatedAt: price.lastUpdatedAt || '',
         deeplink: price.deeplink || '',
@@ -98,7 +100,7 @@ const output = {
     frozenProjection: freezeContext,
     oddsNotAvailableToPredictionEngine: true,
   },
-  requested: { bookmakerIDs, oddIDs, includeOpenCloseOdds },
+  requested: { bookmakerIDs, oddIDs, includeOpenCloseOdds, includeAltLines },
   coverage,
   events,
   rows,
@@ -106,7 +108,7 @@ const output = {
 
 const csvColumns = [
   'provider','eventID','startTime','matchup','awayTeam','homeTeam','inning','segment','marketType','side','teamSide','oddID',
-  'bookmakerID','line','americanOdds','lastUpdatedAt','providerFairOdds','providerConsensusOdds','deeplink',
+  'bookmakerID','line','isAlternateLine','americanOdds','lastUpdatedAt','providerFairOdds','providerConsensusOdds','deeplink',
 ];
 const quote = value => `"${String(value ?? '').replaceAll('"','""')}"`;
 const csv = [csvColumns.join(','), ...rows.map(row => csvColumns.map(c => quote(row[c])).join(','))].join('\n') + '\n';
