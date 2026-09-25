@@ -38,7 +38,7 @@ const event = {
       oddID:'points-all-2i-ou-over', statID:'points', statEntityID:'all', periodID:'2i', betTypeID:'ou', sideID:'over',
       fairOdds:'+125', bookOdds:'+118', fairOverUnder:'0.5', bookOverUnder:'0.5',
       byBookmaker: {
-        draftkings:{ odds:'+150', overUnder:'0.5', available:true, lastUpdatedAt:'2026-09-25T14:05:00Z' },
+        draftkings:{ odds:'-115', overUnder:'1.5', available:true, lastUpdatedAt:'2026-09-25T14:05:00Z', altLines:[{ odds:'+150', overUnder:'0.5', available:true, lastUpdatedAt:'2026-09-25T14:04:00Z' }] },
         pinnacle:{ odds:'+145', overUnder:'0.5', available:true },
       },
     },
@@ -47,8 +47,10 @@ const event = {
 const normalized = normalizeSgoEvent(event, { bookmakerIDs:['draftkings'] });
 assert.equal(normalized.markets.length, 1);
 assert.equal(normalized.markets[0].marketType, 'FULL_INNING_TOTAL');
-assert.equal(normalized.markets[0].prices.length, 1);
-assert.equal(normalized.markets[0].prices[0].americanOdds, 150);
+assert.equal(normalized.markets[0].prices.length, 2);
+const dkHalf = normalized.markets[0].prices.find(x => x.line === 0.5);
+assert.equal(dkHalf.americanOdds, 150);
+assert.equal(dkHalf.isAlternateLine, true);
 assert.equal(normalized.markets[0].providerFairOdds, 125);
 assert.equal(normalized.markets[0].providerFairLine, 0.5);
 
