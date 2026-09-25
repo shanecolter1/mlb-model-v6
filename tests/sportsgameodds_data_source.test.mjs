@@ -1,6 +1,8 @@
 import { strict as assert } from 'node:assert';
 import {
   assertPostFreezeContext,
+  assertPreFreezeIsolation,
+  extractMlbDraftKingsFullGameTotalPoints,
   buildMlbInningOddIds,
   buildMlbNinthInningCandidateOddIds,
   classifyMlbOdd,
@@ -62,3 +64,42 @@ const dated = filterEventsByLocalDate([normalized], '2026-09-25', 'America/Chica
 assert.equal(dated.length, 1);
 
 console.log('SportsGameOdds data source tests passed.');
+
+
+const preFreezePayload = {
+  data: [{
+    eventID:'mlb-evt-1',
+    status:{ startsAt:'2026-09-25T23:10:00Z' },
+    teams:{
+      away:{ names:{ long:'Chicago Cubs' } },
+      home:{ names:{ long:'Boston Red Sox' } },
+    },
+    odds:{
+      'points-all-game-ou-over':{
+        byBookmaker:{
+          draftkings:{
+            available:true,
+            overUnder:'8.5',
+            odds:'-108',
+            lastUpdatedAt:'2026-09-25T15:00:00Z',
+            deeplink:'https://example.invalid/price'
+          }
+        }
+      }
+    }
+  }]
+};
+const preFreeze = extractMlbDraftKingsFullGameTotalPoints(preFreezePayload);
+assert.equal(preFreeze.length, 1);
+assert.deepEqual(preFreeze[0], {
+  eventId:'mlb-evt-1',
+  commenceTime:'2026-09-25T23:10:00Z',
+  awayTeam:'Chicago Cubs',
+  homeTeam:'Boston Red Sox',
+  fullGameTotal:8.5,
+  bookmaker:'draftkings',
+  lastUpdate:'2026-09-25T15:00:00Z',
+});
+assert.equal(assertPreFreezeIsolation(preFreeze[0]), true);
+assert(!('odds' in preFreeze[0]));
+assert(!('deeplink' in preFreeze[0]));
