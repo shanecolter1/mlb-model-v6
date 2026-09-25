@@ -97,10 +97,11 @@ export function assertPostFreezeContext(context = {}) {
   return true;
 }
 
-export async function fetchMlbMarketSupport({ bookmakerIDs, oddIDs, apiKey, signal } = {}) {
+export async function fetchMlbMarketSupport({ oddIDs, apiKey, signal } = {}) {
+  // SportsGameOdds currently rejects combining leagueID and bookmakerID on /markets.
+  // Query MLB + oddID here; bookmaker-specific availability is verified on /events.
   return fetchSgoJson('/markets', {
     leagueID: 'MLB',
-    bookmakerID: bookmakerIDs,
     oddID: oddIDs,
   }, { apiKey, signal });
 }
