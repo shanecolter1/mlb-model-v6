@@ -32,7 +32,7 @@ assert.deepEqual(
 );
 
 const event = {
-  eventID: 'evt1', leagueID: 'MLB', startTime: '2026-09-25T23:10:00Z',
+  eventID: 'evt1', leagueID: 'MLB', status: { started:false, startsAt:'2026-09-25T23:10:00Z' },
   teams: {
     away: { teamID:'CHC_MLB', names:{ long:'Chicago Cubs', short:'CHC' } },
     home: { teamID:'BOS_MLB', names:{ long:'Boston Red Sox', short:'BOS' } },
