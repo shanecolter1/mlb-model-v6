@@ -98,12 +98,18 @@ jobs:
           console.log(JSON.stringify(summary,null,2));
           NODE
 
-      - name: Probe derivative markets only after predictions are frozen
+      - name: Fetch SportsGameOdds markets only after preliminary predictions are frozen
         env:
           I2_DATE: ${{ steps.params.outputs.date }}
-          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_predictions.json
-          I2_MARKET_CATALOG: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_event_market_catalog.json
-        run: node src/pipeline/probe_i2_event_markets.mjs
+          I2_TIME_ZONE: America/Chicago
+          FROZEN_PROJECTION_PATH: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_predictions.json
+          SGO_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_sportsgameodds_inning_markets.json
+          SGO_SUPPORT_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_preliminary_sportsgameodds_market_support.json
+          SGO_CSV: docs/inning_markets/${{ steps.params.outputs.date }}_preliminary_sportsgameodds_inning_markets.csv
+          SGO_BOOKMAKERS: draftkings,fanduel,betmgm,caesars
+          SGO_INCLUDE_OPEN_CLOSE: 'false'
+          SGO_INCLUDE_ALT_LINES: 'true'
+        run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
 
       - name: Commit preliminary artifacts
         shell: bash
@@ -117,7 +123,9 @@ jobs:
             data/runtime/i2/${DATE}_run_environment.json \
             data/runtime/i2/${DATE}_preliminary_predictions.json \
             data/runtime/i2/${DATE}_preliminary_summary.json \
-            data/runtime/i2/${DATE}_preliminary_event_market_catalog.json
+            data/runtime/i2/${DATE}_preliminary_sportsgameodds_inning_markets.json \
+            data/runtime/i2/${DATE}_preliminary_sportsgameodds_market_support.json \
+            docs/inning_markets/${DATE}_preliminary_sportsgameodds_inning_markets.csv
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "Update preliminary I2 slate ${DATE}"
           git push origin HEAD:main
