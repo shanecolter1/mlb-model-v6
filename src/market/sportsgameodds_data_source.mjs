@@ -5,7 +5,7 @@ export const SPORTSGAMEODDS_DATA_SOURCE = Object.freeze({
   providerHost: 'sportsgameodds.com',
   baseUrl: DEFAULT_BASE_URL,
   apiKeyEnv: 'SPORTSGAMEODDS_API_KEY',
-  policyVersion: '1.0.0',
+  policyVersion: '2.0.0',
 });
 
 export const ROOKIE_TARGET_BOOKMAKERS = Object.freeze([
