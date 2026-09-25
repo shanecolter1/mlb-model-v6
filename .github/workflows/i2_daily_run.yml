@@ -5,14 +5,12 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/i2_daily_run.yml'
-      - 'src/market/sportsbook_data_source.mjs'
+      - 'src/market/sportsgameodds_data_source.mjs'
       - 'src/pipeline/run_i2_today.mjs'
       - 'src/pipeline/run_i2_today_upstream_wrapper.mjs'
       - 'src/pipeline/run_i2_full_slate_override.mjs'
       - 'src/pipeline/run_i2_total_conditioned.mjs'
       - 'src/pipeline/fetch_i2_run_environment.mjs'
-      - 'src/pipeline/probe_i2_event_markets.mjs'
-      - 'src/pipeline/build_period_markets_reference.mjs'
       - 'src/model/i2_total_conditioning.js'
       - 'data/derived/i2/i2_total_conditioned_prior.json'
       - 'netlify/functions/i2-run-environment.js'
@@ -40,8 +38,8 @@ jobs:
   run-i2-slate:
     runs-on: ubuntu-latest
     env:
-      SPORTSBOOK_DATA_SOURCE: THE_ODDS_API
-      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      SPORTSBOOK_DATA_SOURCE: SPORTSGAMEODDS
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
 
@@ -103,69 +101,32 @@ jobs:
           set -euo pipefail
           node src/pipeline/run_i2_total_conditioned.mjs
 
-      - name: Probe post-freeze event-level sportsbook markets
-        env:
-          I2_DATE: ${{ steps.params.outputs.date }}
-          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
-          I2_MARKET_CATALOG: data/runtime/i2/${{ steps.params.outputs.date }}_event_market_catalog.json
-        shell: bash
-        run: |
-          set -euo pipefail
-          node src/pipeline/probe_i2_event_markets.mjs
-
-      - name: Query Business period markets event-by-event and build reference
-        env:
-          I2_DATE: ${{ steps.params.outputs.date }}
-          PERIOD_RAW: data/runtime/i2/${{ steps.params.outputs.date }}_period_markets_raw.json
-          PERIOD_MD: docs/period_markets/${{ steps.params.outputs.date }}_mlb_period_markets.md
-          PERIOD_CSV: docs/period_markets/${{ steps.params.outputs.date }}_mlb_period_markets.csv
-        shell: bash
-        run: |
-          set -euo pipefail
-          node src/pipeline/build_period_markets_reference.mjs
-
-      - name: Commit prediction and post-freeze market reference artifacts safely
+      - name: Commit frozen prediction and run-environment artifacts safely
         shell: bash
         run: |
           set -euo pipefail
           DATE="${{ steps.params.outputs.date }}"
           ART="data/runtime/i2/${DATE}_frozen_predictions.json"
           ENV_ART="data/runtime/i2/${DATE}_run_environment.json"
-          MARKET_ART="data/runtime/i2/${DATE}_event_market_catalog.json"
-          PERIOD_RAW="data/runtime/i2/${DATE}_period_markets_raw.json"
-          PERIOD_MD="docs/period_markets/${DATE}_mlb_period_markets.md"
-          PERIOD_CSV="docs/period_markets/${DATE}_mlb_period_markets.csv"
           TMP="/tmp/i2_frozen_predictions.json"
           ENV_TMP="/tmp/i2_run_environment.json"
-          MARKET_TMP="/tmp/i2_event_market_catalog.json"
-          PERIOD_RAW_TMP="/tmp/i2_period_markets_raw.json"
-          PERIOD_MD_TMP="/tmp/i2_period_markets.md"
-          PERIOD_CSV_TMP="/tmp/i2_period_markets.csv"
           cp "$ART" "$TMP"
           cp "$ENV_ART" "$ENV_TMP"
-          cp "$MARKET_ART" "$MARKET_TMP"
-          cp "$PERIOD_RAW" "$PERIOD_RAW_TMP"
-          cp "$PERIOD_MD" "$PERIOD_MD_TMP"
-          cp "$PERIOD_CSV" "$PERIOD_CSV_TMP"
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
 
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            mkdir -p "$(dirname "$ART")" "$(dirname "$PERIOD_MD")"
+            mkdir -p "$(dirname "$ART")"
             cp "$TMP" "$ART"
             cp "$ENV_TMP" "$ENV_ART"
-            cp "$MARKET_TMP" "$MARKET_ART"
-            cp "$PERIOD_RAW_TMP" "$PERIOD_RAW"
-            cp "$PERIOD_MD_TMP" "$PERIOD_MD"
-            cp "$PERIOD_CSV_TMP" "$PERIOD_CSV"
-            git add "$ART" "$ENV_ART" "$MARKET_ART" "$PERIOD_RAW" "$PERIOD_MD" "$PERIOD_CSV"
+            git add "$ART" "$ENV_ART"
             if git diff --cached --quiet; then
-              echo 'No prediction or market-reference changes.'
+              echo 'No prediction or run-environment changes.'
               exit 0
             fi
-            git commit -m "Update I2 projections and period markets reference ${DATE}"
+            git commit -m "Update I2 projection and SportsGameOdds run environment ${DATE}"
             if git push origin HEAD:main; then
               exit 0
             fi
@@ -179,7 +140,7 @@ jobs:
 # single-game ATL-MIL retrigger 2026-08-21T17:50Z
 # requested daily run trigger 2026-08-29T18:55Z
 # merged PR trigger 2026-08-29
-# sportsbook data source centralized on The Odds API 2026-08-30
+# retired The Odds API sportsbook source 2026-09-25; SportsGameOdds is canonical
 # event-level derivative market probe 2026-08-30
 # Business period-markets reference 2026-08-30
 # requested daily run trigger 2026-09-06

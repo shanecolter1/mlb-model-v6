@@ -5,7 +5,7 @@ export const SPORTSGAMEODDS_DATA_SOURCE = Object.freeze({
   providerHost: 'sportsgameodds.com',
   baseUrl: DEFAULT_BASE_URL,
   apiKeyEnv: 'SPORTSGAMEODDS_API_KEY',
-  policyVersion: '1.0.0',
+  policyVersion: '2.0.0',
 });
 
 export const ROOKIE_TARGET_BOOKMAKERS = Object.freeze([
@@ -14,6 +14,20 @@ export const ROOKIE_TARGET_BOOKMAKERS = Object.freeze([
   'betmgm',
   'caesars',
 ]);
+
+
+export const MARKET_ISOLATION = Object.freeze({
+  preFreeze: Object.freeze({
+    allowedBookmaker: 'draftkings',
+    allowedMarket: 'points-all-game-ou-over',
+    allowedFields: Object.freeze(['eventId', 'commenceTime', 'awayTeam', 'homeTeam', 'fullGameTotal', 'bookmaker', 'lastUpdate']),
+    scope: 'FULL_GAME_TOTAL_POINT_ONLY_NO_PRICES',
+  }),
+  postFreeze: Object.freeze({
+    allowed: true,
+    purpose: 'MARKET_ENUMERATION_PRICE_EV_ONLY',
+  }),
+});
 
 function requireApiKey(apiKey = process.env[SPORTSGAMEODDS_DATA_SOURCE.apiKeyEnv]) {
   const value = String(apiKey || '').trim();
@@ -88,6 +102,52 @@ async function fetchSgoJson(pathname, params = {}, options = {}) {
     throw new Error(`SportsGameOdds ${response.status} ${response.statusText}${detail ? `: ${detail}` : ''}`);
   }
   return body;
+}
+
+export function extractMlbDraftKingsFullGameTotalPoints(payload) {
+  const events = Array.isArray(payload?.data) ? payload.data : [];
+  const oddID = 'points-all-game-ou-over';
+  return events.flatMap(event => {
+    const odd = event?.odds?.[oddID];
+    const book = odd?.byBookmaker?.draftkings;
+    const point = parseLine(book?.overUnder);
+    if (!book || book.available !== true || !Number.isFinite(point)) return [];
+    return [{
+      eventId: String(event?.eventID || ''),
+      commenceTime: event?.startTime || event?.status?.startsAt || null,
+      awayTeam: event?.teams?.away?.names?.long || event?.teams?.away?.name || null,
+      homeTeam: event?.teams?.home?.names?.long || event?.teams?.home?.name || null,
+      fullGameTotal: point,
+      bookmaker: 'draftkings',
+      lastUpdate: book?.lastUpdatedAt || null,
+    }];
+  }).filter(row => row.eventId && row.commenceTime && row.awayTeam && row.homeTeam);
+}
+
+export async function fetchMlbDraftKingsFullGameTotalPoints({ apiKey, signal, limit = 100 } = {}) {
+  const payload = await fetchSgoJson('/events', {
+    leagueID: 'MLB',
+    oddsAvailable: true,
+    started: false,
+    oddID: MARKET_ISOLATION.preFreeze.allowedMarket,
+    bookmakerID: MARKET_ISOLATION.preFreeze.allowedBookmaker,
+    includeAltLines: false,
+    includeOpenCloseOdds: false,
+    limit,
+  }, { apiKey, signal });
+  return extractMlbDraftKingsFullGameTotalPoints(payload);
+}
+
+export function assertPreFreezeIsolation(record) {
+  const keys = Object.keys(record || {});
+  const allowed = new Set(MARKET_ISOLATION.preFreeze.allowedFields);
+  const forbidden = keys.filter(key => !allowed.has(key));
+  if (forbidden.length) throw new Error(`Pre-freeze SportsGameOdds payload contains forbidden fields: ${forbidden.join(', ')}`);
+  if (record.bookmaker !== MARKET_ISOLATION.preFreeze.allowedBookmaker) {
+    throw new Error(`Pre-freeze bookmaker must be ${MARKET_ISOLATION.preFreeze.allowedBookmaker}`);
+  }
+  if (!Number.isFinite(Number(record.fullGameTotal))) throw new Error('Pre-freeze fullGameTotal must be numeric');
+  return true;
 }
 
 export function assertPostFreezeContext(context = {}) {
