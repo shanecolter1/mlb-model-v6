@@ -8,6 +8,8 @@ on:
       - 'src/model/i2_total_conditioning.js'
       - 'tests/i2_total_conditioning.test.mjs'
       - 'package.json'
+      - 'src/market/sportsgameodds_data_source.mjs'
+      - 'tests/sportsgameodds_data_source.test.mjs'
   workflow_dispatch:
 
 permissions:
@@ -23,3 +25,5 @@ jobs:
           node-version: '22'
       - name: Test total-conditioning invariants
         run: node tests/i2_total_conditioning.test.mjs
+      - name: Test SportsGameOdds post-freeze adapter
+        run: node tests/sportsgameodds_data_source.test.mjs
