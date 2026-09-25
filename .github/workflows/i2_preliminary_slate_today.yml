@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/i2_preliminary_slate_today.yml'
       - 'src/pipeline/build_preliminary_lineups_from_last_game.mjs'
+      - 'src/pipeline/fetch_i2_run_environment.mjs'
+      - 'src/market/sportsgameodds_data_source.mjs'
   workflow_dispatch:
     inputs:
       date:
@@ -27,8 +29,8 @@ jobs:
   run-preliminary-slate:
     runs-on: ubuntu-latest
     env:
-      SPORTSBOOK_DATA_SOURCE: THE_ODDS_API
-      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      SPORTSBOOK_DATA_SOURCE: SPORTSGAMEODDS
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
