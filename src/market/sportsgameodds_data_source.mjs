@@ -49,6 +49,16 @@ export function buildMlbInningOddIds({ innings = [1,2,3,4,5,6,7,8,9] } = {}) {
   return ids;
 }
 
+export function buildMlbNinthInningCandidateOddIds() {
+  return [
+    'points-all-9i-ou-over',
+    'points-all-9i-ou-under',
+    'points-away-9i-ml3way-away',
+    'points-all-9i-ml3way-draw',
+    'points-home-9i-ml3way-home',
+  ];
+}
+
 function buildUrl(pathname, params = {}) {
   const url = new URL(`${SPORTSGAMEODDS_DATA_SOURCE.baseUrl}${pathname}`);
   for (const [key, value] of Object.entries(params)) {
@@ -202,12 +212,12 @@ export async function fetchMlbInningEvents({
   bookmakerIDs = ROOKIE_TARGET_BOOKMAKERS,
   includeOpenCloseOdds = false,
   includeAltLines = true,
+  oddIDs = buildMlbInningOddIds(),
   apiKey,
   signal,
   limit = 100,
 } = {}) {
   assertPostFreezeContext(freezeContext);
-  const oddIDs = buildMlbInningOddIds();
   const payload = await fetchSgoJson('/events', {
     leagueID: 'MLB',
     oddsAvailable: true,
