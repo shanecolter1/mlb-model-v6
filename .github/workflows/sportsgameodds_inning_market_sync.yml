@@ -1,6 +1,10 @@
 name: Sync SportsGameOdds MLB inning markets
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sportsgameodds_inning_market_sync.yml'
   workflow_run:
     workflows: ['Run I2 daily slate']
     types: [completed]
@@ -23,7 +27,7 @@ concurrency:
 
 jobs:
   sync:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
@@ -62,6 +66,27 @@ jobs:
           else
             echo "configured=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Validate SportsGameOdds authentication
+        if: steps.config.outputs.configured == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { fetchMlbMarketSupport } from './src/market/sportsgameodds_data_source.mjs';
+          const response = await fetchMlbMarketSupport({
+            bookmakerIDs: ['draftkings'],
+            oddIDs: ['points-all-2i-ou-over'],
+          });
+          const data = Array.isArray(response?.data) ? response.data : [];
+          console.log(JSON.stringify({
+            authenticated: true,
+            league: 'MLB',
+            bookmaker: 'draftkings',
+            requestedOddID: 'points-all-2i-ou-over',
+            returnedMarketRecords: data.length,
+          }, null, 2));
+          NODE
 
       - name: Check for existing frozen projection
         if: steps.config.outputs.configured == 'true'
