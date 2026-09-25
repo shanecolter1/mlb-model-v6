@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {
-  SPORTSBOOK_DATA_SOURCE,
+  SPORTSGAMEODDS_DATA_SOURCE,
   MARKET_ISOLATION,
-  fetchMlbDraftKingsFullGameTotals,
+  fetchMlbDraftKingsFullGameTotalPoints,
   assertPreFreezeIsolation,
-} from '../market/sportsbook_data_source.mjs';
+} from '../market/sportsgameodds_data_source.mjs';
 
 const DATE = process.env.I2_DATE || new Date().toISOString().slice(0, 10);
 const OUTPUT = process.env.I2_RUN_ENVIRONMENT || `data/runtime/i2/${DATE}_run_environment.json`;
@@ -16,6 +16,7 @@ function loadExisting() {
   if (!fs.existsSync(OUTPUT)) return null;
   try {
     const parsed = JSON.parse(fs.readFileSync(OUTPUT, 'utf8'));
+    if (parsed?.source !== SPORTSGAMEODDS_DATA_SOURCE.provider) return null;
     if (parsed?.scope !== MARKET_ISOLATION.preFreeze.scope) return null;
     if (!Array.isArray(parsed?.events) || parsed.events.length === 0) return null;
     return parsed;
@@ -30,16 +31,16 @@ let lastError = null;
 
 for (let attempt = 1; attempt <= ATTEMPTS; attempt += 1) {
   try {
-    events = await fetchMlbDraftKingsFullGameTotals();
+    events = await fetchMlbDraftKingsFullGameTotalPoints();
     if (!Array.isArray(events) || events.length === 0) {
-      throw new Error('The Odds API returned no DraftKings MLB full-game totals');
+      throw new Error('SportsGameOdds returned no DraftKings MLB full-game totals');
     }
     for (const event of events) assertPreFreezeIsolation(event);
     break;
   } catch (error) {
     lastError = error;
     if (attempt < ATTEMPTS) {
-      console.warn(`[I2 run environment] The Odds API attempt ${attempt}/${ATTEMPTS} failed: ${String(error?.message || error)}; retrying in ${RETRY_MS}ms`);
+      console.warn(`[I2 run environment] SportsGameOdds attempt ${attempt}/${ATTEMPTS} failed: ${String(error?.message || error)}; retrying in ${RETRY_MS}ms`);
       await sleep(RETRY_MS);
     }
   }
@@ -48,17 +49,17 @@ for (let attempt = 1; attempt <= ATTEMPTS; attempt += 1) {
 const existing = loadExisting();
 if (!events) {
   if (existing) {
-    console.warn(`[I2 run environment] The Odds API unavailable; using validated locked existing artifact ${OUTPUT}`);
+    console.warn(`[I2 run environment] SportsGameOdds unavailable; using validated locked existing artifact ${OUTPUT}`);
     console.log(JSON.stringify({
       output: OUTPUT,
       events: existing.events.length,
       scope: existing.scope,
-      source: SPORTSBOOK_DATA_SOURCE.provider,
+      source: SPORTSGAMEODDS_DATA_SOURCE.provider,
       fallback: 'VALIDATED_EXISTING_LOCKED_ARTIFACT',
     }, null, 2));
     process.exit(0);
   }
-  throw lastError || new Error('Unable to retrieve I2 run environment from The Odds API');
+  throw lastError || new Error('Unable to retrieve I2 run environment from SportsGameOdds');
 }
 
 const priorById = new Map((existing?.events || []).filter(x => x.eventId).map(x => [String(x.eventId), x]));
@@ -99,8 +100,8 @@ merged.sort((a, b) => Date.parse(a.commenceTime || 0) - Date.parse(b.commenceTim
 const out = {
   date: DATE,
   capturedAt: now,
-  source: SPORTSBOOK_DATA_SOURCE.provider,
-  sourcePolicyVersion: SPORTSBOOK_DATA_SOURCE.policyVersion,
+  source: SPORTSGAMEODDS_DATA_SOURCE.provider,
+  sourcePolicyVersion: SPORTSGAMEODDS_DATA_SOURCE.policyVersion,
   scope: MARKET_ISOLATION.preFreeze.scope,
   totalDefinition: 'FIRST_OBSERVED_DRAFTKINGS_PREGAME_TOTAL',
   marketIsolation: {
@@ -109,7 +110,7 @@ const out = {
     allowedMarket: MARKET_ISOLATION.preFreeze.allowedMarket,
     pricesExposedToPredictionEngine: false,
   },
-  note: 'The Odds API is the canonical sportsbook-data source. Before prediction freeze, only the DraftKings full-game total point is retained. The first observed total is locked for conditioning; latestObservedTotal is audit-only.',
+  note: 'SportsGameOdds is the canonical sportsbook-data source. Before prediction freeze, only the DraftKings full-game total point is retained. No sportsbook prices are exposed to the prediction engine. The first observed total is locked for conditioning; latestObservedTotal is audit-only.',
   events: merged,
 };
 
