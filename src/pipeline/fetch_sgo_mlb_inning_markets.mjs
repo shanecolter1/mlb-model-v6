@@ -42,7 +42,7 @@ const freezeContext = {
 
 const guaranteedOddIDs = buildMlbInningOddIds();
 const ninthInningCandidates = buildMlbNinthInningCandidateOddIds();
-const support = await fetchMlbMarketSupport({ bookmakerIDs, oddIDs: [...guaranteedOddIDs, ...ninthInningCandidates] });
+const support = await fetchMlbMarketSupport({ oddIDs: [...guaranteedOddIDs, ...ninthInningCandidates] });
 const supportedOddIDs = new Set((Array.isArray(support?.data) ? support.data : []).filter(x => x?.isSupported !== false).map(x => x?.oddID).filter(Boolean));
 const activeOddIDs = [...new Set([...guaranteedOddIDs, ...ninthInningCandidates.filter(id => supportedOddIDs.has(id))])];
 const feed = await fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds, includeAltLines, oddIDs: activeOddIDs });
