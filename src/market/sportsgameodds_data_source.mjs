@@ -192,7 +192,7 @@ export function normalizeSgoEvent(event, { bookmakerIDs = ROOKIE_TARGET_BOOKMAKE
     provider: SPORTSGAMEODDS_DATA_SOURCE.provider,
     eventID: String(event?.eventID || ''),
     leagueID: event?.leagueID || null,
-    startTime: event?.startTime || null,
+    startTime: event?.startTime || event?.status?.startsAt || null,
     status: event?.status || null,
     away: {
       teamID: event?.teams?.away?.teamID || null,

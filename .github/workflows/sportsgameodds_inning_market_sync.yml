@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/sportsgameodds_inning_market_sync.yml'
+      - 'src/market/sportsgameodds_data_source.mjs'
+      - 'src/pipeline/fetch_sgo_mlb_inning_markets.mjs'
+      - 'tests/sportsgameodds_data_source.test.mjs'
   workflow_run:
     workflows: ['Run I2 daily slate']
     types: [completed]
