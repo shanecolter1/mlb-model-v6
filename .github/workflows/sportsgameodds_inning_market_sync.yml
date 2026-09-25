@@ -82,6 +82,7 @@ jobs:
           FROZEN_PROJECTION_PATH: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
           SGO_BOOKMAKERS: ${{ inputs.bookmakers || 'draftkings,fanduel,betmgm,caesars' }}
           SGO_INCLUDE_OPEN_CLOSE: 'false'
+          SGO_INCLUDE_ALT_LINES: 'true'
         run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
 
       - name: Upload normalized price board
