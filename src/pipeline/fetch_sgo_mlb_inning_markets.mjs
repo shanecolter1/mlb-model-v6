@@ -73,8 +73,10 @@ for (const event of events) {
         americanOdds: price.americanOdds,
         lastUpdatedAt: price.lastUpdatedAt || '',
         deeplink: price.deeplink || '',
-        providerFairOdds: market.providerFairOdds ?? '',
-        providerConsensusOdds: market.providerConsensusOdds ?? '',
+        providerFairLine: market.providerFairLine ?? '',
+        providerConsensusLine: market.providerConsensusLine ?? '',
+        providerFairOdds: price.line !== null && price.line === market.providerFairLine ? (market.providerFairOdds ?? '') : '',
+        providerConsensusOdds: price.line !== null && price.line === market.providerConsensusLine ? (market.providerConsensusOdds ?? '') : '',
       });
     }
   }
@@ -111,7 +113,7 @@ const output = {
 
 const csvColumns = [
   'provider','eventID','startTime','matchup','awayTeam','homeTeam','inning','segment','marketType','side','teamSide','oddID',
-  'bookmakerID','line','isAlternateLine','americanOdds','lastUpdatedAt','providerFairOdds','providerConsensusOdds','deeplink',
+  'bookmakerID','line','isAlternateLine','americanOdds','lastUpdatedAt','providerFairLine','providerConsensusLine','providerFairOdds','providerConsensusOdds','deeplink',
 ];
 const quote = value => `"${String(value ?? '').replaceAll('"','""')}"`;
 const csv = [csvColumns.join(','), ...rows.map(row => csvColumns.map(c => quote(row[c])).join(','))].join('\n') + '\n';
