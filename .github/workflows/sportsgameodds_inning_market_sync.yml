@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -62,6 +63,58 @@ jobs:
             echo "configured=true" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Check for existing frozen projection
+        if: steps.config.outputs.configured == 'true'
+        id: frozen
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json"
+          if [ -f "$FILE" ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "Frozen projection already present: $FILE" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            echo "Frozen projection is not committed; manual sync will build it before any SportsGameOdds request." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Capture approved pre-freeze run environment
+        if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true'
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_RUN_ENVIRONMENT: data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Build preliminary lineup fallback
+        if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true'
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_LINEUP_OVERRIDES: data/runtime/i2/${{ steps.params.outputs.date }}_lineup_overrides.json
+          I2_PRELIM_LOOKBACK_DAYS: '7'
+        run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
+
+      - name: Generate unchanged parent projection before market access
+        if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true'
+        env:
+          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_CUTOFF: '1970-01-01T00:00:00Z'
+          I2_TRIALS: '50000'
+          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_sgo_parent_predictions.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+          I2_LINEUP_OVERRIDES: data/runtime/i2/${{ steps.params.outputs.date }}_lineup_overrides.json
+          I2_RUN_ENVIRONMENT: data/runtime/i2/${{ steps.params.outputs.date }}_run_environment.json
+          I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Freeze production-calibrated projection
+        if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true'
+        env:
+          I2_INPUT: data/runtime/i2/${{ steps.params.outputs.date }}_sgo_parent_predictions.json
+          I2_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
+        run: node src/pipeline/apply_i2_v04_local_cv.mjs
+
       - name: Verify frozen projection exists
         if: steps.config.outputs.configured == 'true'
         shell: bash
@@ -69,7 +122,7 @@ jobs:
           set -euo pipefail
           FILE="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json"
           test -f "$FILE"
-          echo "Frozen projection: $FILE" >> "$GITHUB_STEP_SUMMARY"
+          echo "Frozen production projection verified before SportsGameOdds access: $FILE" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Run adapter unit test
         run: node tests/sportsgameodds_data_source.test.mjs
