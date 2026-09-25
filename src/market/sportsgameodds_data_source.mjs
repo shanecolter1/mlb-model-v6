@@ -137,18 +137,31 @@ export function normalizeSgoEvent(event, { bookmakerIDs = ROOKIE_TARGET_BOOKMAKE
     for (const [bookmakerID, book] of Object.entries(odd?.byBookmaker || {})) {
       const key = String(bookmakerID).toLowerCase();
       if (requestedBooks && !requestedBooks.has(key)) continue;
-      prices.push({
-        bookmakerID: key,
-        available: book?.available === true,
-        americanOdds: parseAmericanOdds(book?.odds),
-        line: parseLine(book?.overUnder),
-        lastUpdatedAt: book?.lastUpdatedAt || null,
-        deeplink: book?.deeplink || null,
-        openAmericanOdds: parseAmericanOdds(book?.openOdds),
-        closeAmericanOdds: parseAmericanOdds(book?.closeOdds),
-        openLine: parseLine(book?.openOverUnder),
-        closeLine: parseLine(book?.closeOverUnder),
-      });
+      const entries = [
+        { source: book, isAlternateLine: false },
+        ...(Array.isArray(book?.altLines) ? book.altLines.map(source => ({ source, isAlternateLine: true })) : []),
+      ];
+      const seen = new Set();
+      for (const { source, isAlternateLine } of entries) {
+        const americanOdds = parseAmericanOdds(source?.odds);
+        const line = parseLine(source?.overUnder);
+        const dedupeKey = `${americanOdds}|${line}|${source?.available === true}`;
+        if (seen.has(dedupeKey)) continue;
+        seen.add(dedupeKey);
+        prices.push({
+          bookmakerID: key,
+          available: source?.available === true,
+          americanOdds,
+          line,
+          isAlternateLine,
+          lastUpdatedAt: source?.lastUpdatedAt || book?.lastUpdatedAt || null,
+          deeplink: source?.deeplink || book?.deeplink || null,
+          openAmericanOdds: isAlternateLine ? null : parseAmericanOdds(book?.openOdds),
+          closeAmericanOdds: isAlternateLine ? null : parseAmericanOdds(book?.closeOdds),
+          openLine: isAlternateLine ? null : parseLine(book?.openOverUnder),
+          closeLine: isAlternateLine ? null : parseLine(book?.closeOverUnder),
+        });
+      }
     }
     markets.push({
       oddID,
@@ -188,6 +201,7 @@ export async function fetchMlbInningEvents({
   freezeContext,
   bookmakerIDs = ROOKIE_TARGET_BOOKMAKERS,
   includeOpenCloseOdds = false,
+  includeAltLines = true,
   apiKey,
   signal,
   limit = 100,
@@ -198,9 +212,10 @@ export async function fetchMlbInningEvents({
     leagueID: 'MLB',
     oddsAvailable: true,
     started: false,
-    oddIDs,
+    oddID: oddIDs,
     bookmakerID: bookmakerIDs,
     includeOpenCloseOdds,
+    includeAltLines,
     limit,
   }, { apiKey, signal });
   const events = Array.isArray(payload?.data) ? payload.data : [];
