@@ -100,11 +100,11 @@ jobs:
             echo "Frozen projection already present: $FILE" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
-            echo "Frozen projection is not committed; manual sync will build it before any SportsGameOdds request." >> "$GITHUB_STEP_SUMMARY"
+            echo "Frozen projection is not committed; sync will restore a prior frozen production artifact if available, otherwise rebuild before any SportsGameOdds price request." >> "$GITHUB_STEP_SUMMARY"
           fi
 
       - name: Restore prior frozen production artifact when available
-        if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true' && steps.restore.outputs.restored != 'true'
+        if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true'
         id: restore
         shell: bash
         env:
