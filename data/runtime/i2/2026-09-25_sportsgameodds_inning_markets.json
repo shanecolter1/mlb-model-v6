@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "generatedAt": "2026-09-25T17:46:45.467Z",
+  "generatedAt": "2026-09-25T17:47:17.179Z",
   "date": "2026-09-25",
   "timeZone": "America/Chicago",
   "provider": "SPORTSGAMEODDS",
@@ -8,7 +8,7 @@
     "phase": "POST_FREEZE_ONLY",
     "frozenProjection": {
       "projectionFrozen": true,
-      "frozenAt": "2026-09-25T17:32:27.854Z",
+      "frozenAt": "2026-09-25T17:47:00.544Z",
       "artifact": "data/runtime/i2/2026-09-25_frozen_predictions.json",
       "model": "MLB I2 Under/Over v0.3 Total-Conditioned Research Build",
       "date": "2026-09-25"
