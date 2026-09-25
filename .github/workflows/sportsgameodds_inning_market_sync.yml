@@ -1,0 +1,135 @@
+name: Sync SportsGameOdds MLB inning markets
+
+on:
+  workflow_run:
+    workflows: ['Run I2 daily slate']
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'MLB slate date (YYYY-MM-DD); defaults to America/Chicago today'
+        required: false
+      bookmakers:
+        description: 'Comma-separated SportsGameOdds bookmaker IDs'
+        required: false
+        default: 'draftkings,fanduel,betmgm,caesars'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sportsgameodds-inning-sync-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    env:
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Resolve slate date
+        id: params
+        shell: bash
+        env:
+          DATE_INPUT: ${{ inputs.date }}
+        run: |
+          set -euo pipefail
+          DATE="${DATE_INPUT:-}"
+          if [ -z "$DATE" ]; then
+            DATE="$(TZ=America/Chicago date +%F)"
+          fi
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+          echo "Using MLB slate date $DATE"
+
+      - name: Check SportsGameOdds configuration
+        id: config
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${SPORTSGAMEODDS_API_KEY:-}" ]; then
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+            echo "SPORTSGAMEODDS_API_KEY is not configured; live post-freeze sync skipped." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Verify frozen projection exists
+        if: steps.config.outputs.configured == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json"
+          test -f "$FILE"
+          echo "Frozen projection: $FILE" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Run adapter unit test
+        run: node tests/sportsgameodds_data_source.test.mjs
+
+      - name: Fetch post-freeze inning and half-inning prices
+        if: steps.config.outputs.configured == 'true'
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_TIME_ZONE: America/Chicago
+          FROZEN_PROJECTION_PATH: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
+          SGO_BOOKMAKERS: ${{ inputs.bookmakers || 'draftkings,fanduel,betmgm,caesars' }}
+          SGO_INCLUDE_OPEN_CLOSE: 'false'
+          SGO_INCLUDE_ALT_LINES: 'true'
+        run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
+
+      - name: Upload normalized price board
+        if: steps.config.outputs.configured == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: sportsgameodds-inning-markets-${{ steps.params.outputs.date }}
+          path: |
+            data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_inning_markets.json
+            data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_market_support.json
+            docs/inning_markets/${{ steps.params.outputs.date }}_sportsgameodds_inning_markets.csv
+          retention-days: 90
+
+      - name: Commit post-freeze market artifacts
+        if: steps.config.outputs.configured == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATE="${{ steps.params.outputs.date }}"
+          JSON="data/runtime/i2/${DATE}_sportsgameodds_inning_markets.json"
+          SUPPORT="data/runtime/i2/${DATE}_sportsgameodds_market_support.json"
+          CSV="docs/inning_markets/${DATE}_sportsgameodds_inning_markets.csv"
+          cp "$JSON" /tmp/sgo-markets.json
+          cp "$SUPPORT" /tmp/sgo-support.json
+          cp "$CSV" /tmp/sgo-markets.csv
+
+          git config user.name "github-actions[bot]"
+          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
+
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p "data/runtime/i2" "docs/inning_markets"
+            cp /tmp/sgo-markets.json "$JSON"
+            cp /tmp/sgo-support.json "$SUPPORT"
+            cp /tmp/sgo-markets.csv "$CSV"
+            git add "$JSON" "$SUPPORT" "$CSV"
+            if git diff --cached --quiet; then
+              echo "No SportsGameOdds artifact changes."
+              exit 0
+            fi
+            git commit -m "Update SportsGameOdds inning markets ${DATE}"
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "Push race on attempt $attempt; retrying."
+          done
+
+          echo "Unable to push SportsGameOdds artifacts after 3 attempts."
+          exit 1
