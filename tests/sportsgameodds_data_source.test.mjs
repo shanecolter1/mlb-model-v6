@@ -2,6 +2,7 @@ import { strict as assert } from 'node:assert';
 import {
   assertPostFreezeContext,
   buildMlbInningOddIds,
+  buildMlbNinthInningCandidateOddIds,
   classifyMlbOdd,
   filterEventsByLocalDate,
   normalizeSgoEvent,
@@ -18,6 +19,9 @@ assert(ids.includes('points-away-9i-ou-over'));
 assert(ids.includes('points-home-9i-ou-under'));
 assert(!ids.includes('points-all-9i-ou-over'));
 assert(!ids.includes('points-away-9i-ml3way-away'));
+const ninthCandidates = buildMlbNinthInningCandidateOddIds();
+assert(ninthCandidates.includes('points-all-9i-ou-over'));
+assert(ninthCandidates.includes('points-away-9i-ml3way-away'));
 
 assert.throws(() => assertPostFreezeContext({ projectionFrozen: false }));
 assert.equal(assertPostFreezeContext({ projectionFrozen: true, frozenAt: '2026-09-25T14:00:00Z' }), true);
