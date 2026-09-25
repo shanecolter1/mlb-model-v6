@@ -284,7 +284,7 @@ export async function fetchMlbInningEvents({
     oddsAvailable: true,
     started: false,
     oddID: oddIDs,
-    bookmakerID: bookmakerIDs,
+    bookmakerID: bookmakerIDs?.length ? bookmakerIDs : undefined,
     includeOpenCloseOdds,
     includeAltLines,
     limit,

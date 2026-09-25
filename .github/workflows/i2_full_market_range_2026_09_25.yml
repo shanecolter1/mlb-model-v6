@@ -1,0 +1,116 @@
+name: Sep 25 scratch I2 full market range
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/i2_full_market_range_2026_09_25.yml'
+      - 'src/pipeline/run_i2_empirical_snapshot.mjs'
+      - 'src/pipeline/build_i2_market_range_report.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scratch-range:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      I2_DATE: '2026-09-25'
+      I2_TRIALS: '50000'
+      I2_CUTOFF: '1970-01-01T00:00:00Z'
+      MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+      I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-25_scratch_run_environment.json
+      I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-25_scratch_lineup_overrides.json
+      I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+      I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+      I2_OUTPUT: data/runtime/i2/2026-09-25_scratch_parent.json
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify clean scratch paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f             data/runtime/i2/2026-09-25_scratch_run_environment.json             data/runtime/i2/2026-09-25_scratch_lineup_overrides.json             data/runtime/i2/2026-09-25_scratch_parent.json             data/runtime/i2/2026-09-25_scratch_v04.json             data/runtime/i2/2026-09-25_scratch_empirical.json             data/runtime/i2/2026-09-25_scratch_markets.json             data/runtime/i2/2026-09-25_scratch_market_support.json             data/runtime/i2/2026-09-25_i2_market_range.json             docs/inning_markets/2026-09-25_scratch_markets.csv             docs/inning_markets/2026-09-25_i2_market_range.csv
+
+      - name: Capture fresh SportsGameOdds pre-freeze total points
+        env:
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Build fresh provisional lineups
+        env:
+          I2_PRELIM_LOOKBACK_DAYS: '7'
+        run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
+
+      - name: Run fresh total-conditioned parent model
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Apply production v0.4 calibration
+        env:
+          I2_INPUT: data/runtime/i2/2026-09-25_scratch_parent.json
+          I2_OUTPUT: data/runtime/i2/2026-09-25_scratch_v04.json
+        run: node src/pipeline/apply_i2_v04_local_cv.mjs
+
+      - name: Run fresh empirical model
+        env:
+          I2_EMPIRICAL_OUTPUT: data/runtime/i2/2026-09-25_scratch_empirical.json
+          I2_EMPIRICAL_CONCURRENCY: '10'
+        run: node src/pipeline/run_i2_empirical_snapshot.mjs
+
+      - name: Pull all available SportsGameOdds I2 run-total markets after freeze
+        env:
+          FROZEN_PROJECTION_PATH: data/runtime/i2/2026-09-25_scratch_v04.json
+          SGO_OUTPUT: data/runtime/i2/2026-09-25_scratch_markets.json
+          SGO_SUPPORT_OUTPUT: data/runtime/i2/2026-09-25_scratch_market_support.json
+          SGO_CSV: docs/inning_markets/2026-09-25_scratch_markets.csv
+          SGO_BOOKMAKERS: '*'
+          SGO_INCLUDE_OPEN_CLOSE: 'false'
+          SGO_INCLUDE_ALT_LINES: 'true'
+          I2_TIME_ZONE: America/Chicago
+        run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
+
+      - name: Build production-combined-empirical market range
+        env:
+          I2_PARENT_INPUT: data/runtime/i2/2026-09-25_scratch_parent.json
+          I2_PRODUCTION_INPUT: data/runtime/i2/2026-09-25_scratch_v04.json
+          I2_EMPIRICAL_INPUT: data/runtime/i2/2026-09-25_scratch_empirical.json
+          I2_MARKETS_INPUT: data/runtime/i2/2026-09-25_scratch_markets.json
+          I2_RANGE_OUTPUT: data/runtime/i2/2026-09-25_i2_market_range.json
+          I2_RANGE_CSV: docs/inning_markets/2026-09-25_i2_market_range.csv
+        run: node src/pipeline/build_i2_market_range_report.mjs
+
+      - name: Print compact report
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const r=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-25_i2_market_range.json','utf8'));
+          console.log('AVAILABILITY='+JSON.stringify(r.availability));
+          console.log('GAME_SUMMARY='+JSON.stringify(r.gameSummary));
+          const robust=r.marketComparisons.filter(x=>x.robustPositiveEV).sort((a,b)=>(b.rangeMinEVPct??-999)-(a.rangeMinEVPct??-999));
+          console.log('ROBUST_POSITIVE_EV='+JSON.stringify(robust.slice(0,100)));
+          NODE
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: i2-full-market-range-2026-09-25
+          path: |
+            data/runtime/i2/2026-09-25_scratch_run_environment.json
+            data/runtime/i2/2026-09-25_scratch_lineup_overrides.json
+            data/runtime/i2/2026-09-25_scratch_parent.json
+            data/runtime/i2/2026-09-25_scratch_v04.json
+            data/runtime/i2/2026-09-25_scratch_empirical.json
+            data/runtime/i2/2026-09-25_scratch_markets.json
+            data/runtime/i2/2026-09-25_scratch_market_support.json
+            data/runtime/i2/2026-09-25_i2_market_range.json
+            docs/inning_markets/2026-09-25_scratch_markets.csv
+            docs/inning_markets/2026-09-25_i2_market_range.csv
+          retention-days: 90
