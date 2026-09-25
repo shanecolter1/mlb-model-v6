@@ -10,12 +10,14 @@ The prediction artifact must exist first. Price retrieval then runs in a separat
 
 The adapter requests the SportsGameOdds documented MLB inning identifiers:
 
-- Full-inning Over/Under: innings 1-8.
-- Full-inning 3-way moneyline (away / draw / home): innings 1-8.
+- Full-inning Over/Under: innings 1-8 are documented and requested; 9th-inning full markets are enabled automatically if `/markets` reports support for the configured books.
+- Full-inning 3-way moneyline (away / draw / home): innings 1-8 are documented and requested; 9th-inning 3-way is enabled automatically if supported.
 - Away-team inning Over/Under: innings 1-9. In MLB this maps to the top half-inning.
 - Home-team inning Over/Under: innings 1-9. In MLB this maps to the bottom half-inning.
 
-The provider's `/markets` endpoint is queried on every run for the requested market IDs and bookmakers so actual support can be audited rather than assumed.
+The provider's `/markets` endpoint is queried on every run for the requested market IDs and bookmakers so actual support can be audited rather than assumed. Ninth-inning full-total/3-way IDs are treated as candidates and are sent to `/events` only when `/markets` confirms support.
+
+`includeAltLines=true` is enabled by default. Main and alternate bookmaker lines are flattened into the normalized price board, so a modeled 0.5 line is retained even when a sportsbook's displayed main inning total is 1.5 or another number.
 
 ## Secret
 
