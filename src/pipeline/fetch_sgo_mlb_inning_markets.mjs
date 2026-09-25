@@ -3,6 +3,7 @@ import path from 'node:path';
 import {
   ROOKIE_TARGET_BOOKMAKERS,
   buildMlbInningOddIds,
+  buildMlbNinthInningCandidateOddIds,
   fetchMlbInningEvents,
   fetchMlbMarketSupport,
   filterEventsByLocalDate,
@@ -39,11 +40,12 @@ const freezeContext = {
   date: frozen.date || date,
 };
 
-const oddIDs = buildMlbInningOddIds();
-const [support, feed] = await Promise.all([
-  fetchMlbMarketSupport({ bookmakerIDs, oddIDs }),
-  fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds, includeAltLines }),
-]);
+const guaranteedOddIDs = buildMlbInningOddIds();
+const ninthInningCandidates = buildMlbNinthInningCandidateOddIds();
+const support = await fetchMlbMarketSupport({ bookmakerIDs, oddIDs: [...guaranteedOddIDs, ...ninthInningCandidates] });
+const supportedOddIDs = new Set((Array.isArray(support?.data) ? support.data : []).filter(x => x?.isSupported !== false).map(x => x?.oddID).filter(Boolean));
+const activeOddIDs = [...new Set([...guaranteedOddIDs, ...ninthInningCandidates.filter(id => supportedOddIDs.has(id))])];
+const feed = await fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds, includeAltLines, oddIDs: activeOddIDs });
 
 const events = filterEventsByLocalDate(feed.events, date, timeZone);
 const rows = [];
@@ -87,6 +89,7 @@ const coverage = {
   fullInningTotalRows: rows.filter(x => x.marketType === 'FULL_INNING_TOTAL').length,
   halfInningTotalRows: rows.filter(x => x.marketType === 'TEAM_HALF_INNING_TOTAL').length,
   threeWayRows: rows.filter(x => x.marketType === 'FULL_INNING_3WAY').length,
+  ninthFullInningEnabled: activeOddIDs.some(id => id.includes('-9i-') && (id.includes('-ml3way-') || id.startsWith('points-all-9i-ou-'))),
 };
 
 const output = {
@@ -100,7 +103,7 @@ const output = {
     frozenProjection: freezeContext,
     oddsNotAvailableToPredictionEngine: true,
   },
-  requested: { bookmakerIDs, oddIDs, includeOpenCloseOdds, includeAltLines },
+  requested: { bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, includeOpenCloseOdds, includeAltLines },
   coverage,
   events,
   rows,
@@ -118,6 +121,6 @@ await fs.mkdir(path.dirname(csvPath), { recursive: true });
 await fs.mkdir(path.dirname(supportPath), { recursive: true });
 await fs.writeFile(outputPath, JSON.stringify(output, null, 2) + '\n');
 await fs.writeFile(csvPath, csv);
-await fs.writeFile(supportPath, JSON.stringify({ generatedAt: new Date().toISOString(), date, bookmakerIDs, oddIDs, response: support }, null, 2) + '\n');
+await fs.writeFile(supportPath, JSON.stringify({ generatedAt: new Date().toISOString(), date, bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, response: support }, null, 2) + '\n');
 
 console.log(JSON.stringify({ date, frozenAt, outputPath, csvPath, supportPath, coverage }, null, 2));
