@@ -17,8 +17,10 @@ const csvPath = String(process.env.SGO_CSV || `docs/inning_markets/${date}_sport
 const supportPath = String(process.env.SGO_SUPPORT_OUTPUT || `data/runtime/i2/${date}_sportsgameodds_market_support.json`);
 const includeOpenCloseOdds = /^true$/i.test(String(process.env.SGO_INCLUDE_OPEN_CLOSE || 'false'));
 const includeAltLines = !/^false$/i.test(String(process.env.SGO_INCLUDE_ALT_LINES || 'true'));
-const bookmakerIDs = String(process.env.SGO_BOOKMAKERS || ROOKIE_TARGET_BOOKMAKERS.join(','))
-  .split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+const bookmakerSpec = String(process.env.SGO_BOOKMAKERS ?? ROOKIE_TARGET_BOOKMAKERS.join(',')).trim();
+const bookmakerIDs = ['*','all'].includes(bookmakerSpec.toLowerCase())
+  ? []
+  : bookmakerSpec.split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
 
 let frozen;
 try {
