@@ -2,6 +2,15 @@
 
 ## Purpose
 
+## Canonical sportsbook source
+
+SportsGameOdds is the canonical sportsbook-data provider for the active MLB I2 workflow.
+
+- **Pre-freeze:** only the DraftKings full-game total point from `points-all-game-ou-over` is retained. Prices, vig, derivative markets, and bookmaker comparisons are discarded before the prediction engine sees the run-environment artifact.
+- **Post-freeze:** SportsGameOdds supplies inning totals, 3-way markets, alternate lines, and bookmaker prices for EV/staking analysis.
+- The retired `ODDS_API_KEY` / The Odds API integration is no longer required by the active daily or preliminary workflows.
+
+
 This integration is a read-only sportsbook market adapter. It does **not** change I2 or all-inning prediction methodology, calibration, upstream data retrieval, or model inputs.
 
 The prediction artifact must exist first. Price retrieval then runs in a separate post-freeze phase for market enumeration, fair-price comparison, EV, and staking only.
@@ -27,7 +36,7 @@ Create one GitHub Actions repository secret:
 
 Do not commit the key to source control. The adapter authenticates with the `x-api-key` request header.
 
-The existing `ODDS_API_KEY` remains untouched and continues to belong to The Odds API. This separation prevents accidental provider/key crossover.
+The active workflow no longer requires `ODDS_API_KEY`. Historical files and dated workflows may still reference the retired provider for audit reproducibility, but they are not part of the current production path.
 
 ## Default Rookie-plan books
 
