@@ -62,13 +62,24 @@ function pct(value) {
 }
 
 export function enrichPriceDependentRecommendation(row, { projectionFrozen } = {}) {
-  const exactMarketMatch = Boolean(
+  const side = String(row?.side || '');
+  const marketType = String(row?.marketType || '');
+  const standardTotalMatch = Boolean(
     row &&
     row.gamePk != null &&
     ['full','top','bottom'].includes(String(row.segment)) &&
-    ['over','under'].includes(String(row.side)) &&
+    ['over','under'].includes(side) &&
     Number.isFinite(Number(row.line))
   );
+  const modeledThreeWayDrawMatch = Boolean(
+    row &&
+    row.gamePk != null &&
+    String(row.segment) === 'full' &&
+    marketType === 'FULL_INNING_3WAY' &&
+    side === 'draw' &&
+    row.fallbackMarket === true
+  );
+  const exactMarketMatch = standardTotalMatch || modeledThreeWayDrawMatch;
 
   const gate = recommendationGate({
     projectionFrozen,
@@ -108,6 +119,8 @@ export function rankPriceDependentRecommendations(rows = []) {
     .sort((a, b) => {
       const robust = Number(Boolean(b.robustPositiveEV)) - Number(Boolean(a.robustPositiveEV));
       if (robust) return robust;
+      const structure = Number(a.marketStructurePriority ?? 99) - Number(b.marketStructurePriority ?? 99);
+      if (structure) return structure;
       const ev = Number(b.combinedEVPct ?? -Infinity) - Number(a.combinedEVPct ?? -Infinity);
       if (ev) return ev;
       const minEv = Number(b.rangeMinEVPct ?? -Infinity) - Number(a.rangeMinEVPct ?? -Infinity);
