@@ -173,6 +173,74 @@ export async function fetchMlbMarketSupport({ oddIDs, apiKey, signal } = {}) {
   }, { apiKey, signal });
 }
 
+export async function fetchMlbSecondInningMarketCatalog({ apiKey, signal, limit = 10000 } = {}) {
+  const rows = [];
+  let cursor = null;
+  do {
+    const payload = await fetchSgoJson('/markets', {
+      leagueID: 'MLB',
+      periodID: '2i',
+      isSupported: true,
+      limit,
+      cursor: cursor || undefined,
+    }, { apiKey, signal });
+    if (Array.isArray(payload?.data)) rows.push(...payload.data);
+    cursor = payload?.nextCursor || null;
+  } while (cursor);
+  return {
+    fetchedAt: new Date().toISOString(),
+    leagueID: 'MLB',
+    periodID: '2i',
+    markets: rows,
+  };
+}
+
+export async function fetchMlbRawEventsForOddIds({
+  freezeContext,
+  oddIDs = [],
+  bookmakerIDs = [],
+  includeOpenCloseOdds = false,
+  includeAltLines = true,
+  apiKey,
+  signal,
+  limit = 100,
+  chunkSize = 75,
+} = {}) {
+  assertPostFreezeContext(freezeContext);
+  const ids = [...new Set((oddIDs || []).map(String).filter(Boolean))];
+  const merged = new Map();
+  for (let i = 0; i < ids.length; i += chunkSize) {
+    const chunk = ids.slice(i, i + chunkSize);
+    const payload = await fetchSgoJson('/events', {
+      leagueID: 'MLB',
+      oddsAvailable: true,
+      started: false,
+      oddID: chunk,
+      bookmakerID: bookmakerIDs?.length ? bookmakerIDs : undefined,
+      includeOpenCloseOdds,
+      includeAltLines,
+      limit,
+    }, { apiKey, signal });
+    for (const event of Array.isArray(payload?.data) ? payload.data : []) {
+      const eventID = String(event?.eventID || '');
+      if (!eventID) continue;
+      if (!merged.has(eventID)) {
+        merged.set(eventID, { ...event, odds: { ...(event?.odds || {}) } });
+      } else {
+        const current = merged.get(eventID);
+        current.odds = { ...(current.odds || {}), ...(event?.odds || {}) };
+      }
+    }
+  }
+  return {
+    fetchedAt: new Date().toISOString(),
+    provider: SPORTSGAMEODDS_DATA_SOURCE.provider,
+    freezeContext,
+    requestedOddIDs: ids,
+    events: [...merged.values()],
+  };
+}
+
 function parseAmericanOdds(value) {
   if (value === undefined || value === null || value === '') return null;
   const n = Number(String(value).replace('+', ''));
