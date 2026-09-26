@@ -1,10 +1,11 @@
 {
   "date": "2026-09-26",
-  "generatedAt": "2026-09-26T13:33:24.141Z",
+  "generatedAt": "2026-09-26T13:37:00.018Z",
   "method": {
     "locked05": "Half-inning scoreless = 65% starting-pitcher season I2 scoreless rate + 35% opponent offense last-25 I2 scoreless rate. Full I2 Under 0.5 = top scoreless x bottom scoreless.",
     "distributionExtension": "For alternate run totals only, the same 65/35 weights are applied bucket-by-bucket to observed I2 run distributions (0,1,2,3,4+); full-inning distribution is the convolution of top and bottom distributions. This extension does not alter the locked 0.5 formula.",
-    "recentWindows": "Pitcher last15/10/5 and offense last10 are diagnostics only and are not model inputs."
+    "recentWindows": "Pitcher last15/10/5 and offense last10 are diagnostics only and are not model inputs.",
+    "starterIdentity": "Uses the already-frozen production starter MLB identity when available; MLB probable-pitcher is fallback only. This aligns inputs without changing the empirical formula."
   },
   "games": [
     {
@@ -1899,13 +1900,537 @@
       "gamePk": 823407,
       "gameDate": "2026-09-26T23:15:00Z",
       "matchup": "Tampa Bay Rays @ Philadelphia Phillies",
-      "error": "MISSING_PROBABLE_STARTER"
+      "awayTeam": "Tampa Bay Rays",
+      "homeTeam": "Philadelphia Phillies",
+      "awayStarter": "Griffin Jax",
+      "homeStarter": "José Urquidy",
+      "top2": {
+        "exact": {
+          "0": 28,
+          "1": 67.8,
+          "2": 1.4,
+          "3": 1.4,
+          "4+": 1.4
+        },
+        "pitcherN": 1,
+        "offenseN": 25,
+        "cumulative": {
+          "1+": 72,
+          "2+": 4.2,
+          "3+": 2.8,
+          "4+": 1.4
+        }
+      },
+      "bottom2": {
+        "exact": {
+          "0": 69.67,
+          "1": 17.26,
+          "2": 5.75,
+          "3": 7.31,
+          "4+": 0
+        },
+        "pitcherN": 22,
+        "offenseN": 25,
+        "cumulative": {
+          "1+": 30.33,
+          "2+": 13.06,
+          "3+": 7.31,
+          "4+": 0
+        }
+      },
+      "fullI2": {
+        "exact": {
+          "0": 19.51,
+          "1": 52.07,
+          "2": 14.29,
+          "3": 7.17,
+          "4+": 6.96
+        },
+        "cumulative": {
+          "1+": 80.49,
+          "2+": 28.42,
+          "3+": 14.13,
+          "4+": 6.96
+        }
+      },
+      "top2ScorelessPct": 28,
+      "bottom2ScorelessPct": 69.67,
+      "top2ScorePct": 72,
+      "bottom2ScorePct": 30.33,
+      "empiricalUnder05Pct": 19.51,
+      "empiricalOver05Pct": 80.49,
+      "empiricalFairUnder": 413,
+      "empiricalFairOver": -413,
+      "diagnostics": {
+        "awayStarter": {
+          "season": {
+            "n": 22,
+            "exact": {
+              "0": 72.73,
+              "1": 13.64,
+              "2": 4.55,
+              "3": 9.09,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 27.27,
+              "2+": 13.64,
+              "3+": 9.09,
+              "4+": 0
+            }
+          },
+          "last15": {
+            "n": 15,
+            "exact": {
+              "0": 73.33,
+              "1": 20,
+              "2": 6.67,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 26.67,
+              "2+": 6.67,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 70,
+              "1": 20,
+              "2": 10,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 30,
+              "2+": 10,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last5": {
+            "n": 5,
+            "exact": {
+              "0": 100,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 0,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        },
+        "homeStarter": {
+          "season": {
+            "n": 1,
+            "exact": {
+              "0": 0,
+              "1": 100,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 100,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last15": {
+            "n": 1,
+            "exact": {
+              "0": 0,
+              "1": 100,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 100,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last10": {
+            "n": 1,
+            "exact": {
+              "0": 0,
+              "1": 100,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 100,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last5": {
+            "n": 1,
+            "exact": {
+              "0": 0,
+              "1": 100,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 100,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        },
+        "awayOffense": {
+          "last25": {
+            "n": 25,
+            "exact": {
+              "0": 80,
+              "1": 8,
+              "2": 4,
+              "3": 4,
+              "4+": 4
+            },
+            "cumulative": {
+              "1+": 20,
+              "2+": 12,
+              "3+": 8,
+              "4+": 4
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 80,
+              "1": 10,
+              "2": 10,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 20,
+              "2+": 10,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        },
+        "homeOffense": {
+          "last25": {
+            "n": 25,
+            "exact": {
+              "0": 64,
+              "1": 24,
+              "2": 8,
+              "3": 4,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 36,
+              "2+": 12,
+              "3+": 4,
+              "4+": 0
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 70,
+              "1": 20,
+              "2": 10,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 30,
+              "2+": 10,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        }
+      }
     },
     {
       "gamePk": 823245,
       "gameDate": "2026-09-27T00:40:00Z",
       "matchup": "Arizona Diamondbacks @ San Diego Padres",
-      "error": "MISSING_PROBABLE_STARTER"
+      "awayTeam": "Arizona Diamondbacks",
+      "homeTeam": "San Diego Padres",
+      "awayStarter": "Ryne Nelson",
+      "homeStarter": "Walker Buehler",
+      "top2": {
+        "exact": {
+          "0": 76.23,
+          "1": 8.39,
+          "2": 11.19,
+          "3": 0,
+          "4+": 4.19
+        },
+        "pitcherN": 31,
+        "offenseN": 25,
+        "cumulative": {
+          "1+": 23.77,
+          "2+": 15.38,
+          "3+": 4.19,
+          "4+": 4.19
+        }
+      },
+      "bottom2": {
+        "exact": {
+          "0": 59.99,
+          "1": 20.93,
+          "2": 10.24,
+          "3": 6.04,
+          "4+": 2.8
+        },
+        "pitcherN": 14,
+        "offenseN": 25,
+        "cumulative": {
+          "1+": 40.01,
+          "2+": 19.09,
+          "3+": 8.84,
+          "4+": 2.8
+        }
+      },
+      "fullI2": {
+        "exact": {
+          "0": 45.72,
+          "1": 20.99,
+          "2": 16.28,
+          "3": 7.81,
+          "4+": 9.21
+        },
+        "cumulative": {
+          "1+": 54.28,
+          "2+": 33.29,
+          "3+": 17.01,
+          "4+": 9.21
+        }
+      },
+      "top2ScorelessPct": 76.23,
+      "bottom2ScorelessPct": 59.99,
+      "top2ScorePct": 23.77,
+      "bottom2ScorePct": 40.01,
+      "empiricalUnder05Pct": 45.72,
+      "empiricalOver05Pct": 54.28,
+      "empiricalFairUnder": 119,
+      "empiricalFairOver": -119,
+      "diagnostics": {
+        "awayStarter": {
+          "season": {
+            "n": 14,
+            "exact": {
+              "0": 64.29,
+              "1": 21.43,
+              "2": 7.14,
+              "3": 7.14,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 35.71,
+              "2+": 14.29,
+              "3+": 7.14,
+              "4+": 0
+            }
+          },
+          "last15": {
+            "n": 14,
+            "exact": {
+              "0": 64.29,
+              "1": 21.43,
+              "2": 7.14,
+              "3": 7.14,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 35.71,
+              "2+": 14.29,
+              "3+": 7.14,
+              "4+": 0
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 50,
+              "1": 30,
+              "2": 10,
+              "3": 10,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 50,
+              "2+": 20,
+              "3+": 10,
+              "4+": 0
+            }
+          },
+          "last5": {
+            "n": 5,
+            "exact": {
+              "0": 80,
+              "1": 0,
+              "2": 20,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 20,
+              "2+": 20,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        },
+        "homeStarter": {
+          "season": {
+            "n": 31,
+            "exact": {
+              "0": 74.19,
+              "1": 6.45,
+              "2": 12.9,
+              "3": 0,
+              "4+": 6.45
+            },
+            "cumulative": {
+              "1+": 25.81,
+              "2+": 19.35,
+              "3+": 6.45,
+              "4+": 6.45
+            }
+          },
+          "last15": {
+            "n": 15,
+            "exact": {
+              "0": 73.33,
+              "1": 6.67,
+              "2": 13.33,
+              "3": 0,
+              "4+": 6.67
+            },
+            "cumulative": {
+              "1+": 26.67,
+              "2+": 20,
+              "3+": 6.67,
+              "4+": 6.67
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 100,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 0,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last5": {
+            "n": 5,
+            "exact": {
+              "0": 100,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 0,
+              "2+": 0,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        },
+        "awayOffense": {
+          "last25": {
+            "n": 25,
+            "exact": {
+              "0": 80,
+              "1": 12,
+              "2": 8,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 20,
+              "2+": 8,
+              "3+": 0,
+              "4+": 0
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 60,
+              "1": 20,
+              "2": 20,
+              "3": 0,
+              "4+": 0
+            },
+            "cumulative": {
+              "1+": 40,
+              "2+": 20,
+              "3+": 0,
+              "4+": 0
+            }
+          }
+        },
+        "homeOffense": {
+          "last25": {
+            "n": 25,
+            "exact": {
+              "0": 52,
+              "1": 20,
+              "2": 16,
+              "3": 4,
+              "4+": 8
+            },
+            "cumulative": {
+              "1+": 48,
+              "2+": 28,
+              "3+": 12,
+              "4+": 8
+            }
+          },
+          "last10": {
+            "n": 10,
+            "exact": {
+              "0": 40,
+              "1": 30,
+              "2": 20,
+              "3": 0,
+              "4+": 10
+            },
+            "cumulative": {
+              "1+": 60,
+              "2+": 30,
+              "3+": 10,
+              "4+": 10
+            }
+          }
+        }
+      }
     },
     {
       "gamePk": 823083,
