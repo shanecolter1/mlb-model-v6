@@ -1,0 +1,2733 @@
+{
+  "generatedAt": "2026-09-26T12:32:35.259Z",
+  "date": "2026-09-26",
+  "bookmakerIDs": [
+    "draftkings",
+    "fanduel",
+    "betmgm",
+    "caesars"
+  ],
+  "guaranteedOddIDs": [
+    "points-away-1i-ou-over",
+    "points-away-1i-ou-under",
+    "points-home-1i-ou-over",
+    "points-home-1i-ou-under",
+    "points-all-1i-ou-over",
+    "points-all-1i-ou-under",
+    "points-away-1i-ml3way-away",
+    "points-all-1i-ml3way-draw",
+    "points-home-1i-ml3way-home",
+    "points-away-2i-ou-over",
+    "points-away-2i-ou-under",
+    "points-home-2i-ou-over",
+    "points-home-2i-ou-under",
+    "points-all-2i-ou-over",
+    "points-all-2i-ou-under",
+    "points-away-2i-ml3way-away",
+    "points-all-2i-ml3way-draw",
+    "points-home-2i-ml3way-home",
+    "points-away-3i-ou-over",
+    "points-away-3i-ou-under",
+    "points-home-3i-ou-over",
+    "points-home-3i-ou-under",
+    "points-all-3i-ou-over",
+    "points-all-3i-ou-under",
+    "points-away-3i-ml3way-away",
+    "points-all-3i-ml3way-draw",
+    "points-home-3i-ml3way-home",
+    "points-away-4i-ou-over",
+    "points-away-4i-ou-under",
+    "points-home-4i-ou-over",
+    "points-home-4i-ou-under",
+    "points-all-4i-ou-over",
+    "points-all-4i-ou-under",
+    "points-away-4i-ml3way-away",
+    "points-all-4i-ml3way-draw",
+    "points-home-4i-ml3way-home",
+    "points-away-5i-ou-over",
+    "points-away-5i-ou-under",
+    "points-home-5i-ou-over",
+    "points-home-5i-ou-under",
+    "points-all-5i-ou-over",
+    "points-all-5i-ou-under",
+    "points-away-5i-ml3way-away",
+    "points-all-5i-ml3way-draw",
+    "points-home-5i-ml3way-home",
+    "points-away-6i-ou-over",
+    "points-away-6i-ou-under",
+    "points-home-6i-ou-over",
+    "points-home-6i-ou-under",
+    "points-all-6i-ou-over",
+    "points-all-6i-ou-under",
+    "points-away-6i-ml3way-away",
+    "points-all-6i-ml3way-draw",
+    "points-home-6i-ml3way-home",
+    "points-away-7i-ou-over",
+    "points-away-7i-ou-under",
+    "points-home-7i-ou-over",
+    "points-home-7i-ou-under",
+    "points-all-7i-ou-over",
+    "points-all-7i-ou-under",
+    "points-away-7i-ml3way-away",
+    "points-all-7i-ml3way-draw",
+    "points-home-7i-ml3way-home",
+    "points-away-8i-ou-over",
+    "points-away-8i-ou-under",
+    "points-home-8i-ou-over",
+    "points-home-8i-ou-under",
+    "points-all-8i-ou-over",
+    "points-all-8i-ou-under",
+    "points-away-8i-ml3way-away",
+    "points-all-8i-ml3way-draw",
+    "points-home-8i-ml3way-home",
+    "points-away-9i-ou-over",
+    "points-away-9i-ou-under",
+    "points-home-9i-ou-over",
+    "points-home-9i-ou-under"
+  ],
+  "ninthInningCandidates": [
+    "points-all-9i-ou-over",
+    "points-all-9i-ou-under",
+    "points-away-9i-ml3way-away",
+    "points-all-9i-ml3way-draw",
+    "points-home-9i-ml3way-home"
+  ],
+  "activeOddIDs": [
+    "points-away-1i-ou-over",
+    "points-away-1i-ou-under",
+    "points-home-1i-ou-over",
+    "points-home-1i-ou-under",
+    "points-all-1i-ou-over",
+    "points-all-1i-ou-under",
+    "points-away-1i-ml3way-away",
+    "points-all-1i-ml3way-draw",
+    "points-home-1i-ml3way-home",
+    "points-away-2i-ou-over",
+    "points-away-2i-ou-under",
+    "points-home-2i-ou-over",
+    "points-home-2i-ou-under",
+    "points-all-2i-ou-over",
+    "points-all-2i-ou-under",
+    "points-away-2i-ml3way-away",
+    "points-all-2i-ml3way-draw",
+    "points-home-2i-ml3way-home",
+    "points-away-3i-ou-over",
+    "points-away-3i-ou-under",
+    "points-home-3i-ou-over",
+    "points-home-3i-ou-under",
+    "points-all-3i-ou-over",
+    "points-all-3i-ou-under",
+    "points-away-3i-ml3way-away",
+    "points-all-3i-ml3way-draw",
+    "points-home-3i-ml3way-home",
+    "points-away-4i-ou-over",
+    "points-away-4i-ou-under",
+    "points-home-4i-ou-over",
+    "points-home-4i-ou-under",
+    "points-all-4i-ou-over",
+    "points-all-4i-ou-under",
+    "points-away-4i-ml3way-away",
+    "points-all-4i-ml3way-draw",
+    "points-home-4i-ml3way-home",
+    "points-away-5i-ou-over",
+    "points-away-5i-ou-under",
+    "points-home-5i-ou-over",
+    "points-home-5i-ou-under",
+    "points-all-5i-ou-over",
+    "points-all-5i-ou-under",
+    "points-away-5i-ml3way-away",
+    "points-all-5i-ml3way-draw",
+    "points-home-5i-ml3way-home",
+    "points-away-6i-ou-over",
+    "points-away-6i-ou-under",
+    "points-home-6i-ou-over",
+    "points-home-6i-ou-under",
+    "points-all-6i-ou-over",
+    "points-all-6i-ou-under",
+    "points-away-6i-ml3way-away",
+    "points-all-6i-ml3way-draw",
+    "points-home-6i-ml3way-home",
+    "points-away-7i-ou-over",
+    "points-away-7i-ou-under",
+    "points-home-7i-ou-over",
+    "points-home-7i-ou-under",
+    "points-all-7i-ou-over",
+    "points-all-7i-ou-under",
+    "points-away-7i-ml3way-away",
+    "points-all-7i-ml3way-draw",
+    "points-home-7i-ml3way-home",
+    "points-away-8i-ou-over",
+    "points-away-8i-ou-under",
+    "points-home-8i-ou-over",
+    "points-home-8i-ou-under",
+    "points-all-8i-ou-over",
+    "points-all-8i-ou-under",
+    "points-away-8i-ml3way-away",
+    "points-all-8i-ml3way-draw",
+    "points-home-8i-ml3way-home",
+    "points-away-9i-ou-over",
+    "points-away-9i-ou-under",
+    "points-home-9i-ou-over",
+    "points-home-9i-ou-under",
+    "points-all-9i-ou-over",
+    "points-all-9i-ou-under",
+    "points-away-9i-ml3way-away",
+    "points-all-9i-ml3way-draw",
+    "points-home-9i-ml3way-home"
+  ],
+  "response": {
+    "success": true,
+    "data": [
+      {
+        "oddID": "points-all-1i-ml3way-draw",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-1i-ml3way",
+        "marketGroupName": "1st Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "espnbet": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "sugarhouse": {
+              "supported": true
+            },
+            "bet365": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-1i-ou-over",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-1i-ou",
+        "marketGroupName": "1st Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "betonline": {
+              "supported": true
+            },
+            "hardrockbet": {
+              "supported": true
+            },
+            "espnbet": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            },
+            "sugarhouse": {
+              "supported": true
+            },
+            "bet365": {
+              "supported": true
+            },
+            "prophetexchange": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            },
+            "novig": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-1i-ou-under",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-1i-ou",
+        "marketGroupName": "1st Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "betonline": {
+              "supported": true
+            },
+            "hardrockbet": {
+              "supported": true
+            },
+            "espnbet": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            },
+            "sugarhouse": {
+              "supported": true
+            },
+            "bet365": {
+              "supported": true
+            },
+            "prophetexchange": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            },
+            "novig": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-2i-ml3way-draw",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-2i-ml3way",
+        "marketGroupName": "2nd Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-2i-ou-over",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-2i-ou",
+        "marketGroupName": "2nd Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-2i-ou-under",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-2i-ou",
+        "marketGroupName": "2nd Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-3i-ml3way-draw",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-ml3way",
+        "marketGroupName": "3rd Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-3i-ou-over",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-ou",
+        "marketGroupName": "3rd Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-3i-ou-under",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-ou",
+        "marketGroupName": "3rd Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-4i-ml3way-draw",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-4i-ml3way",
+        "marketGroupName": "4th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-4i-ou-over",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-4i-ou",
+        "marketGroupName": "4th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-4i-ou-under",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-4i-ou",
+        "marketGroupName": "4th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-5i-ml3way-draw",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 17,
+        "marketGroupID": "points-main-5i-ml3way",
+        "marketGroupName": "5th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-5i-ou-over",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-5i-ou",
+        "marketGroupName": "5th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-5i-ou-under",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-5i-ou",
+        "marketGroupName": "5th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-6i-ml3way-draw",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 17,
+        "marketGroupID": "points-main-6i-ml3way",
+        "marketGroupName": "6th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-6i-ou-over",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-6i-ou",
+        "marketGroupName": "6th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-6i-ou-under",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-6i-ou",
+        "marketGroupName": "6th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-7i-ml3way-draw",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-ml3way",
+        "marketGroupName": "7th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-7i-ou-over",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-ou",
+        "marketGroupName": "7th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-7i-ou-under",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-ou",
+        "marketGroupName": "7th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-8i-ml3way-draw",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-ml3way",
+        "marketGroupName": "8th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-8i-ou-over",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-ou",
+        "marketGroupName": "8th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-8i-ou-under",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-ou",
+        "marketGroupName": "8th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-9i-ml3way-draw",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ml3way",
+        "sideID": "draw",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-9i-ml3way",
+        "marketGroupName": "9th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-9i-ou-over",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-9i-ou",
+        "marketGroupName": "9th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-all-9i-ou-under",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "all",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-9i-ou",
+        "marketGroupName": "9th Inning Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-1i-ml3way-away",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-1i-ml3way",
+        "marketGroupName": "1st Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "espnbet": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "sugarhouse": {
+              "supported": true
+            },
+            "bet365": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-1i-ou-over",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-1i-ou",
+        "marketGroupName": "Team 1st Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-1i-ou-under",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-1i-ou",
+        "marketGroupName": "Team 1st Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-2i-ml3way-away",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-2i-ml3way",
+        "marketGroupName": "2nd Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-2i-ou-over",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 1,
+        "marketGroupID": "points-away-2i-ou",
+        "marketGroupName": "Team 2nd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-2i-ou-under",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 1,
+        "marketGroupID": "points-away-2i-ou",
+        "marketGroupName": "Team 2nd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-3i-ml3way-away",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-ml3way",
+        "marketGroupName": "3rd Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-3i-ou-over",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 1,
+        "marketGroupID": "points-away-3i-ou",
+        "marketGroupName": "Team 3rd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-3i-ou-under",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 1,
+        "marketGroupID": "points-away-3i-ou",
+        "marketGroupName": "Team 3rd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-4i-ml3way-away",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-4i-ml3way",
+        "marketGroupName": "4th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-4i-ou-over",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-4i-ou",
+        "marketGroupName": "Team 4th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-4i-ou-under",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-4i-ou",
+        "marketGroupName": "Team 4th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-5i-ml3way-away",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 17,
+        "marketGroupID": "points-main-5i-ml3way",
+        "marketGroupName": "5th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-5i-ou-over",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-5i-ou",
+        "marketGroupName": "Team 5th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-5i-ou-under",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-5i-ou",
+        "marketGroupName": "Team 5th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-6i-ml3way-away",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 17,
+        "marketGroupID": "points-main-6i-ml3way",
+        "marketGroupName": "6th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-6i-ou-over",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-6i-ou",
+        "marketGroupName": "Team 6th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-6i-ou-under",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-6i-ou",
+        "marketGroupName": "Team 6th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-7i-ml3way-away",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-ml3way",
+        "marketGroupName": "7th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-7i-ou-over",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-7i-ou",
+        "marketGroupName": "Team 7th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-7i-ou-under",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-7i-ou",
+        "marketGroupName": "Team 7th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-8i-ml3way-away",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-ml3way",
+        "marketGroupName": "8th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-8i-ou-over",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-8i-ou",
+        "marketGroupName": "Team 8th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-8i-ou-under",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-8i-ou",
+        "marketGroupName": "Team 8th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-9i-ml3way-away",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ml3way",
+        "sideID": "away",
+        "statEntityID": "away",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-9i-ml3way",
+        "marketGroupName": "9th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-away-9i-ou-over",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-9i-ou",
+        "marketGroupName": "Team 9th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-away-9i-ou-under",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "away",
+        "activeEvents": 0,
+        "marketGroupID": "points-away-9i-ou",
+        "marketGroupName": "Team 9th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-1i-ml3way-home",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-1i-ml3way",
+        "marketGroupName": "1st Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "espnbet": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "sugarhouse": {
+              "supported": true
+            },
+            "bet365": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-1i-ou-over",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-1i-ou",
+        "marketGroupName": "Team 1st Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-1i-ou-under",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-1i-ou",
+        "marketGroupName": "Team 1st Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-2i-ml3way-home",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-2i-ml3way",
+        "marketGroupName": "2nd Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-2i-ou-over",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 1,
+        "marketGroupID": "points-home-2i-ou",
+        "marketGroupName": "Team 2nd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-2i-ou-under",
+        "statID": "points",
+        "periodID": "2i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 1,
+        "marketGroupID": "points-home-2i-ou",
+        "marketGroupName": "Team 2nd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-3i-ml3way-home",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-ml3way",
+        "marketGroupName": "3rd Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-3i-ou-over",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 1,
+        "marketGroupID": "points-home-3i-ou",
+        "marketGroupName": "Team 3rd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-3i-ou-under",
+        "statID": "points",
+        "periodID": "3i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 1,
+        "marketGroupID": "points-home-3i-ou",
+        "marketGroupName": "Team 3rd Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-4i-ml3way-home",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-4i-ml3way",
+        "marketGroupName": "4th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-4i-ou-over",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-4i-ou",
+        "marketGroupName": "Team 4th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-4i-ou-under",
+        "statID": "points",
+        "periodID": "4i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-4i-ou",
+        "marketGroupName": "Team 4th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-5i-ml3way-home",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 17,
+        "marketGroupID": "points-main-5i-ml3way",
+        "marketGroupName": "5th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-5i-ou-over",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-5i-ou",
+        "marketGroupName": "Team 5th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-5i-ou-under",
+        "statID": "points",
+        "periodID": "5i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-5i-ou",
+        "marketGroupName": "Team 5th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-6i-ml3way-home",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 17,
+        "marketGroupID": "points-main-6i-ml3way",
+        "marketGroupName": "6th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-6i-ou-over",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-6i-ou",
+        "marketGroupName": "Team 6th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-6i-ou-under",
+        "statID": "points",
+        "periodID": "6i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-6i-ou",
+        "marketGroupName": "Team 6th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-7i-ml3way-home",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-ml3way",
+        "marketGroupName": "7th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-7i-ou-over",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-7i-ou",
+        "marketGroupName": "Team 7th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-7i-ou-under",
+        "statID": "points",
+        "periodID": "7i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-7i-ou",
+        "marketGroupName": "Team 7th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-8i-ml3way-home",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-ml3way",
+        "marketGroupName": "8th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-8i-ou-over",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-8i-ou",
+        "marketGroupName": "Team 8th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-8i-ou-under",
+        "statID": "points",
+        "periodID": "8i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-8i-ou",
+        "marketGroupName": "Team 8th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-9i-ml3way-home",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ml3way",
+        "sideID": "home",
+        "statEntityID": "home",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-9i-ml3way",
+        "marketGroupName": "9th Inning 3-Way Moneyline",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": true,
+        "isSubPeriod": true,
+        "isProp": false
+      },
+      {
+        "oddID": "points-home-9i-ou-over",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ou",
+        "sideID": "over",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-9i-ou",
+        "marketGroupName": "Team 9th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      },
+      {
+        "oddID": "points-home-9i-ou-under",
+        "statID": "points",
+        "periodID": "9i",
+        "betTypeID": "ou",
+        "sideID": "under",
+        "statEntityID": "home",
+        "activeEvents": 0,
+        "marketGroupID": "points-home-9i-ou",
+        "marketGroupName": "Team 9th Inning Runs Over/Under",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "unknown": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "team_prop"
+      }
+    ]
+  }
+}
