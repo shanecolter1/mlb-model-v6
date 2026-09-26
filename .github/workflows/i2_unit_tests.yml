@@ -10,6 +10,7 @@ on:
       - 'package.json'
       - 'src/inputs/**'
       - 'tests/i2_source*'
+      - 'tests/i2_self_contained_pipeline.test.mjs'
       - 'tests/i2_rotowire_public.test.mjs'
       - 'tests/fixtures/i2_*'
       - 'src/pipeline/run_i2_today.mjs'
@@ -28,8 +29,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Test source governance and production parity
-        run: node --test tests/i2_source_governance.test.mjs tests/i2_source_integration.test.mjs
+      - name: Test source governance, production parity, and self-contained pipeline
+        run: node --test tests/i2_source_governance.test.mjs tests/i2_source_integration.test.mjs tests/i2_self_contained_pipeline.test.mjs
       - name: Test public RotoWire parser
         run: node --test tests/i2_rotowire_public.test.mjs
       - name: Check live public RotoWire access without API credentials
