@@ -364,7 +364,9 @@ def main() -> None:
         "raw_pa_estimation_years": sorted(int(x) for x in fit_df["season"].unique()),
         "hyperparameter_selection_year": 2024,
         "full_i2_calibration_year": 2025,
-        "full_i2_validation_year": 2026,
+        "full_i2_calibration_fit_segment": "first chronological half",
+        "full_i2_calibration_validation_segment": "second chronological half",
+        "prospective_validation_start": "2026-09-26",
         "fit_uses_2025": False,
         "fit_uses_2026": False,
     }
