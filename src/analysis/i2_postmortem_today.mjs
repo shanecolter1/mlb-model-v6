@@ -5,29 +5,18 @@ import { lineupDelta, sameMlbIdentityName, validOrder } from '../inputs/i2_sourc
 const DATE = process.env.I2_DATE || new Date().toISOString().slice(0,10);
 const PREDICTIONS = process.env.I2_PREDICTIONS || `data/runtime/i2/${DATE}_frozen_predictions.json`;
 const OUTPUT = process.env.I2_POSTMORTEM_OUTPUT || `data/runtime/i2/${DATE}_postmortem.json`;
-const UPSTREAM = String(process.env.MLB_OTHER_MODEL_BASE_URL || '').replace(/\/$/,'');
 const HIST_BASELINE_UNDER = Number(process.env.I2_HIST_BASELINE_UNDER || 0.564958);
 
 if (!fs.existsSync(PREDICTIONS)) throw new Error(`Missing prediction artifact: ${PREDICTIONS}`);
 const pred = JSON.parse(fs.readFileSync(PREDICTIONS,'utf8'));
 
-const audit={upstreamAttempts:0,upstreamSuccesses:0,officialFallbacks:0};
+const audit={mlbStatsApiAttempts:0,mlbStatsApiSuccesses:0};
 async function getFeed(gamePk){
-  if (UPSTREAM){
-    try{
-      audit.upstreamAttempts++;
-      const u=new URL(`${UPSTREAM}/.netlify/functions/mlb`);
-      u.searchParams.set('type','feed'); u.searchParams.set('gamePk',String(gamePk));
-      const r=await fetch(u,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.3'}});
-      if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
-      audit.upstreamSuccesses++;
-      return {feed:await r.json(),source:'USER_UPSTREAM'};
-    }catch(e){ /* governed fallback below */ }
-  }
-  audit.officialFallbacks++;
-  const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.3'}});
+  audit.mlbStatsApiAttempts++;
+  const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`,{headers:{accept:'application/json','user-agent':'MLB-I2-Postmortem/0.4'}});
   if(!r.ok) throw new Error(`MLB feed ${r.status} ${r.statusText}`);
-  return {feed:await r.json(),source:'MLB_STATS_API_FALLBACK'};
+  audit.mlbStatsApiSuccesses++;
+  return {feed:await r.json(),source:'MLB_STATS_API_PRIMARY'};
 }
 
 // MLB boxscore battingOrder uses 100/200/.../900 for the original starters;
