@@ -1,0 +1,206 @@
+name: I2 vNext Phase 6 - live shadow candidate
+
+on:
+  workflow_run:
+    workflows:
+      - I2 vNext Phase 5 - precision verification
+    types:
+      - completed
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase6-live-shadow
+  cancel-in-progress: true
+
+jobs:
+  live-shadow:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'research/i2-vnext-direct-talent'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/i2-vnext-direct-talent
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Restore high-precision calibration verification
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase5-precision
+          path: data/derived/i2_vnext/precision
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify precision decision and stage canonical shadow calibration
+        run: |
+          python - <<'PY'
+          import json, shutil
+          from pathlib import Path
+
+          root=Path('data/derived/i2_vnext/precision')
+          p=json.loads((root/'phase5_precision_manifest.json').read_text())
+          assert p['market_inputs_used'] is False
+          assert p['same_frozen_specification'] is True
+          assert p['same_2025_game_set'] is True
+          assert p['selection_stable'] is True, p
+          chosen=p['precision_10000']['chosen']
+          assert chosen in ('identity','sigmoid'), chosen
+
+          src=root/'i2_vnext_full_calibration_precision_10000.json'
+          cal=json.loads(src.read_text())
+          assert cal['market_inputs_used'] is False
+          assert cal['calibration_selection']['chosen'] == chosen
+          assert cal['replay_games'] == 2430
+          assert cal['final_curve']['type'] in ('none','sigmoid')
+          shutil.copyfile(src,'data/derived/i2_vnext/i2_vnext_full_calibration.json')
+          print(json.dumps({
+            'selection_stable':p['selection_stable'],
+            'chosen':chosen,
+            'precision_final_curve':cal['final_curve'],
+            'precision_raw':cal['raw_all_2025'],
+          },indent=2))
+          PY
+
+      - name: Install bounded park-profile dependencies
+        run: python -m pip install --upgrade pip pandas requests lxml html5lib beautifulsoup4
+
+      - name: Build current Savant venue profiles
+        run: |
+          mkdir -p data/runtime/i2
+          python src/build_savant_venue_profiles.py             --year 2026             --rolling 3             --output-dir data/runtime/i2
+
+      - name: Verify live runner syntax and market isolation
+        run: |
+          node --check src/pipeline/run_i2_vnext_today.mjs
+          node --check src/inputs/i2_baseball_sources.mjs
+          node --check src/inputs/i2_source_governance.mjs
+          python - <<'PY'
+          from pathlib import Path
+          for path in [
+              Path('src/pipeline/run_i2_vnext_today.mjs'),
+              Path('src/inputs/i2_baseball_sources.mjs'),
+          ]:
+              t=path.read_text().lower()
+              for forbidden in ('sportsgameodds','sportsbook api','full-game total conditioning'):
+                  assert forbidden not in t, (path,forbidden)
+          PY
+
+      - name: Run 2026-09-26 baseball-only live shadow candidate
+        env:
+          I2_DATE: '2026-09-26'
+          I2_TRIALS: '50000'
+          I2_OUTPUT: data/runtime/i2/2026-09-26_vnext_phase6.json
+          I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+          I2_VNEXT_MODEL: data/derived/i2_vnext/i2_vnext_event_model_live.json
+          I2_VNEXT_ARSENAL: data/derived/i2_vnext/live_arsenal_profile.json
+          I2_VNEXT_CALIBRATION: data/derived/i2_vnext/i2_vnext_full_calibration.json
+        run: node src/pipeline/run_i2_vnext_today.mjs
+
+      - name: Verify Phase 6 shadow governance and checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          live=Path('data/runtime/i2/2026-09-26_vnext_phase6.json')
+          m=json.loads(live.read_text())
+          precision=json.loads(Path('data/derived/i2_vnext/precision/phase5_precision_manifest.json').read_text())
+          cal=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
+
+          assert m['marketDataUsed'] is False
+          assert m['netlifyMlbProxyUsed'] is False
+          assert m['paidRotowireApiUsed'] is False
+          assert m['promotionStatus'] == 'SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED'
+          assert m['prospectiveValidationStart'] == '2026-09-26'
+          assert m['finalCalibration'] == cal['final_curve']
+          assert precision['selection_stable'] is True
+
+          model_status=Counter(g.get('modelStatus','MISSING') for g in m.get('games',[]))
+          venue_status=Counter(g.get('venueStatus','MISSING') for g in m.get('games',[]))
+          prediction_class=Counter(g.get('predictionClass','MISSING') for g in m.get('games',[]))
+          source_projection=Counter((g.get('sourceEligibility') or {}).get('projection','MISSING') for g in m.get('games',[]))
+
+          frozen=[g for g in m.get('games',[]) if g.get('modelStatus')=='FROZEN_VNEXT_SHADOW_PROJECTION']
+          for g in frozen:
+              assert (g.get('bettingEligibility') or {}).get('eligible') is False
+              if not (g.get('dataAudit') or {}).get('venueProfileMatched'):
+                  assert 'SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK' in (g.get('bettingEligibility') or {}).get('reasons',[])
+
+          checkpoint={
+            'version':'i2-vnext-phase6-live-shadow-v1',
+            'date':m['date'],
+            'cutoff':m['cutoff'],
+            'generatedAt':m['generatedAt'],
+            'marketDataUsed':False,
+            'promotionStatus':m['promotionStatus'],
+            'prospectiveValidationStart':m['prospectiveValidationStart'],
+            'precision_selection_stable':precision['selection_stable'],
+            'precision_choice':precision['precision_10000']['chosen'],
+            'finalCalibration':m['finalCalibration'],
+            'trialsPerGame':m['trialsPerGame'],
+            'remainingGamesAtCutoff':m['remainingGamesAtCutoff'],
+            'projectedGames':m['projectedGames'],
+            'pendingOrErroredGames':m['pendingOrErroredGames'],
+            'modelStatusCounts':dict(model_status),
+            'venueStatusCounts':dict(venue_status),
+            'predictionClassCounts':dict(prediction_class),
+            'sourceProjectionCounts':dict(source_projection),
+            'frozenCandidates':[
+              {
+                'gamePk':g['gamePk'],
+                'matchup':f"{g['away']} @ {g['home']}",
+                'gameDate':g['gameDate'],
+                'predictionClass':g.get('predictionClass'),
+                'sourceProjection':(g.get('sourceEligibility') or {}).get('projection'),
+                'venueStatus':g.get('venueStatus'),
+                'rawUnder05':g.get('rawUnder05'),
+                'under05':g.get('under05'),
+                'over05':g.get('over05'),
+                'fairUnder':g.get('fairUnder'),
+                'fairOver':g.get('fairOver'),
+                'awayStarter':g.get('awayStarter'),
+                'homeStarter':g.get('homeStarter'),
+                'bettingEligible':(g.get('bettingEligibility') or {}).get('eligible'),
+              }
+              for g in frozen
+            ],
+          }
+          out=Path('data/derived/i2_vnext/phase6_live_shadow_manifest.json')
+          out.write_text(json.dumps(checkpoint,indent=2))
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload Phase 6 live shadow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase6-live-shadow
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/runtime/i2/2026-09-26_vnext_phase6.json
+            data/runtime/i2/savant_venue_profiles_2026_3yr.json
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+            data/derived/i2_vnext/phase6_live_shadow_manifest.json
+
+      - name: Commit high-precision calibration and Phase 6 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add             data/derived/i2_vnext/i2_vnext_full_calibration.json             data/derived/i2_vnext/phase6_live_shadow_manifest.json
+          if git diff --cached --quiet; then
+            echo "No Phase 6 checkpoint change"
+          else
+            git commit -m "research: checkpoint I2 vNext Phase 6 live shadow"
+            git stash --include-untracked
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
