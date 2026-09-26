@@ -1,11 +1,8 @@
 name: Sep 8 I2 official full-slate model v2
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_official_full_slate_2026_09_08_v2.yml'
   workflow_dispatch:
+
 
 permissions:
   contents: write
