@@ -1,0 +1,47 @@
+{
+  "version": "i2-vnext-statcast-v1",
+  "generated_at": "2026-09-26T21:39:20.594529+00:00",
+  "start": "2023-03-01",
+  "end": "2026-09-25",
+  "rows": 81096,
+  "games": 9691,
+  "batters": 983,
+  "pitchers": 775,
+  "event_counts": {
+    "ball_in_play_out": 36753,
+    "strikeout": 19137,
+    "single": 11967,
+    "walk": 6340,
+    "double": 3363,
+    "home_run": 2416,
+    "hit_by_pitch": 824,
+    "triple": 296
+  },
+  "market_inputs_used": false,
+  "statcast_scope": "regular-season inning 2 terminal plate appearances only",
+  "arsenal_historical_rule": "season Y PA uses season Y-1 arsenal profile during model fitting",
+  "arsenal_live_rule": "use current-season YTD profile available at prediction cutoff",
+  "proxy_event_mapping": {
+    "field_error": "single",
+    "catcher_interference": "walk"
+  },
+  "arsenal_files": [
+    "data/derived/i2_vnext/arsenal/batter_2022.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_2022.csv",
+    "data/derived/i2_vnext/arsenal/batter_2023.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_2023.csv",
+    "data/derived/i2_vnext/arsenal/batter_2024.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_2024.csv",
+    "data/derived/i2_vnext/arsenal/batter_2025.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_2025.csv",
+    "data/derived/i2_vnext/arsenal/batter_2026.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_2026.csv"
+  ],
+  "pitcher_side_usage_files": [
+    "data/derived/i2_vnext/arsenal/pitcher_usage_side_2023.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_usage_side_2024.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_usage_side_2025.csv",
+    "data/derived/i2_vnext/arsenal/pitcher_usage_side_2026.csv"
+  ],
+  "arsenal_matchup_rule": "use prior-season/current-YTD I2 pitcher pitch mix by actual batter side when available; otherwise overall Savant pitcher arsenal"
+}

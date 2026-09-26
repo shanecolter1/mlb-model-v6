@@ -1,0 +1,26 @@
+{
+  "rows": 81096,
+  "games": 9691,
+  "batters": 983,
+  "pitchers": 775,
+  "season_rows": {
+    "2023": 20463,
+    "2024": 20349,
+    "2025": 20188,
+    "2026": 20096
+  },
+  "event_counts": {
+    "ball_in_play_out": 36753,
+    "strikeout": 19137,
+    "single": 11967,
+    "walk": 6340,
+    "double": 3363,
+    "home_run": 2416,
+    "hit_by_pitch": 824,
+    "triple": 296
+  },
+  "missing_stand": 0,
+  "missing_p_throws": 0,
+  "duplicate_pa": 0,
+  "market_inputs_used": false
+}
