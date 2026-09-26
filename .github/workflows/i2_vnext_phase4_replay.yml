@@ -6,6 +6,9 @@ on:
       - research/i2-vnext-direct-talent
     paths:
       - '.github/workflows/i2_vnext_phase4_replay.yml'
+      - 'src/research/attach_i1_player_asof_rates.py'
+      - 'src/research/build_i2_vnext_walkforward_models.py'
+      - 'src/research/run_i2_vnext_replay.mjs'
 
 permissions:
   contents: write
