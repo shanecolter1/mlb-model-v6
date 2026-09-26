@@ -119,6 +119,89 @@ def league_event_rates(zip_path: Path, season: int) -> dict[str, float]:
     return {k: counts[k] / total for k in keys}
 
 
+
+def shrunk_event_rates(
+    counts: Counter,
+    denom: int,
+    league: dict[str, float],
+    strength: float,
+) -> dict[str, float]:
+    d = max(0, int(denom))
+    raw = {
+        k: (counts[k] + league[k] * strength) / (d + strength)
+        for k in league
+    }
+    total = sum(raw.values())
+    if total <= 0:
+        raise RuntimeError("Invalid shrunk I1 event-rate vector")
+    return {k: raw[k] / total for k in league}
+
+
+def game_sort_key(item):
+    gid, rows = item
+    first = rows[0]
+    date = str(first.get("date") or "")
+    game_num = as_int(
+        first.get("number")
+        or first.get("game_num")
+        or first.get("dh")
+        or 0
+    )
+    return (date, game_num, gid)
+
+
+def attach_i1_asof_rates(
+    game: dict,
+    hitter_counts: dict[str, Counter],
+    hitter_pa: Counter,
+    pitcher_counts: dict[str, Counter],
+    pitcher_bf: Counter,
+    league: dict[str, float],
+) -> None:
+    for side in ("away_lineup", "home_lineup"):
+        for player in game[side]:
+            retro = player["retro"]
+            player["i1_event_rates_asof"] = shrunk_event_rates(
+                hitter_counts[retro],
+                hitter_pa[retro],
+                league,
+                100.0,
+            )
+            player["i1_season_pa_before_game"] = int(hitter_pa[retro])
+
+    for side in ("away_starter", "home_starter"):
+        pitcher = game[side]
+        retro = pitcher["retro"]
+        pitcher["i1_event_rates_asof"] = shrunk_event_rates(
+            pitcher_counts[retro],
+            pitcher_bf[retro],
+            league,
+            180.0,
+        )
+        pitcher["i1_season_bf_before_game"] = int(pitcher_bf[retro])
+
+
+def update_i1_asof_counts(
+    rows: list[dict],
+    hitter_counts: dict[str, Counter],
+    hitter_pa: Counter,
+    pitcher_counts: dict[str, Counter],
+    pitcher_bf: Counter,
+) -> None:
+    for row in rows:
+        event = event_class(row)
+        if not event:
+            continue
+        batter = str(row.get("batter") or "").strip()
+        pitcher = str(row.get("pitcher") or "").strip()
+        if batter:
+            hitter_counts[batter][event] += 1
+            hitter_pa[batter] += 1
+        if pitcher:
+            pitcher_counts[pitcher][event] += 1
+            pitcher_bf[pitcher] += 1
+
+
 def load_plays(zip_path: Path, season: int):
     if not zip_path.exists():
         raise RuntimeError(f"Missing Retrosheet ZIP: {zip_path}")
@@ -248,22 +331,49 @@ def main() -> None:
     output = []
     exclusions = Counter()
     continuation = []
-    for gid in sorted(games):
-        game, reason = build_game(gid, games[gid], id_map, bat_hands, pitch_hands)
+
+    hitter_counts: dict[str, Counter] = defaultdict(Counter)
+    pitcher_counts: dict[str, Counter] = defaultdict(Counter)
+    hitter_pa: Counter = Counter()
+    pitcher_bf: Counter = Counter()
+
+    for gid, rows in sorted(games.items(), key=game_sort_key):
+        game, reason = build_game(gid, rows, id_map, bat_hands, pitch_hands)
         if game is None:
             exclusions[reason or "UNKNOWN"] += 1
-            continue
-        output.append(game)
-        continuation.extend([
-            game["audit"]["away_starter_began_i2"],
-            game["audit"]["home_starter_began_i2"],
-        ])
+        else:
+            # Snapshot only statistics available before this game, using the
+            # exact I1 rule selected on the untouched 2024 A/B experiment.
+            attach_i1_asof_rates(
+                game,
+                hitter_counts,
+                hitter_pa,
+                pitcher_counts,
+                pitcher_bf,
+                i1_rates,
+            )
+            output.append(game)
+            continuation.extend([
+                game["audit"]["away_starter_began_i2"],
+                game["audit"]["home_starter_began_i2"],
+            ])
+
+        # Update current-season totals after the pregame snapshot. Even games
+        # excluded from the full-I2 replay still contribute to subsequent
+        # season-to-date statistics, matching live season-stat semantics.
+        update_i1_asof_counts(
+            rows,
+            hitter_counts,
+            hitter_pa,
+            pitcher_counts,
+            pitcher_bf,
+        )
 
     if not output:
         raise RuntimeError("Replay builder produced zero eligible games")
 
     payload = {
-        "version": "i2-vnext-replay-inputs-v1",
+        "version": "i2-vnext-replay-inputs-v2-player-asof-i1",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "season": args.season,
         "market_inputs_used": False,
@@ -271,10 +381,22 @@ def main() -> None:
         "target_only_fields": "observed full-I2 runs/under result",
         "identity_crosswalk": "Chadwick public register key_retro -> key_mlbam",
         "i1_state_model": {
-            "method": "existing batting-order simulator with prior-season league-average PA event vector",
+            "method": (
+                "existing batting-order simulator with leakage-safe current-season "
+                "player event rates shrunk to prior-season league PA event vector"
+            ),
             "source_season": prior_year,
             "event_rates": i1_rates,
-            "player_specific_i1_talent_used": False,
+            "player_specific_i1_talent_used": True,
+            "selection_evidence": "2024 I1 start-slot A/B selected player_asof",
+        },
+        "i1_player_asof_model": {
+            "hitter_prior_strength_pa": 100,
+            "pitcher_prior_strength_bf": 180,
+            "prior_mean_source_season": prior_year,
+            "current_season_stats": "strictly before each game",
+            "same_day_ordering": "date + Retrosheet game number/gid",
+            "fallback_to_league_if_missing": False,
         },
         "games_total": len(games),
         "games_eligible": len(output),
