@@ -197,14 +197,14 @@ def score(prep, model, test: pd.DataFrame) -> dict:
 def validation_folds(df: pd.DataFrame):
     folds = []
     for test_year in sorted(int(x) for x in df["season"].unique()):
-        if test_year not in (2024, 2025):
+        if test_year != 2024:
             continue
         train = df[df["season"] < test_year]
         test = df[df["season"] == test_year]
         if len(train) and len(test):
             folds.append((test_year, train, test))
     if not folds:
-        raise RuntimeError("No chronological 2024/2025 validation folds available")
+        raise RuntimeError("No chronological 2024 hyperparameter-selection fold available")
     return folds
 
 
@@ -225,7 +225,7 @@ def serialize_model(prep, model, mean: float, sd: float, selected: dict, trials:
             "mean": mean,
             "sd": sd,
         },
-        "selected": selected,
+        "selected": {**selected, "selection_year": 2024},
         "chronological_validation": trials,
         "final_calibration": {
             "status": "PENDING_FULL_I2_OOS_CURVE",
