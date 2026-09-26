@@ -70,6 +70,18 @@ const caesarsPropSweep = await fetchMlbEventsExhaustive({
   includeAltLines,
   sourceLabel: 'CAESARS_PROP_EVENTS',
 });
+// A no-type /events query can return only match Events. Run the prop namespace
+// explicitly across all bookmakers as a separate exhaustive superset search.
+const allBookPropSweep = await fetchMlbEventsExhaustive({
+  freezeContext,
+  type: 'prop',
+  bookmakerIDs: [],
+  oddsPresent: true,
+  started: false,
+  includeOpenCloseOdds,
+  includeAltLines,
+  sourceLabel: 'ALL_BOOK_PROP_EVENTS',
+});
 const unrestrictedEventSweep = await fetchMlbEventsExhaustive({
   freezeContext,
   bookmakerIDs: [],
@@ -80,9 +92,11 @@ const unrestrictedEventSweep = await fetchMlbEventsExhaustive({
   sourceLabel: 'UNRESTRICTED_MLB_EVENTS',
 });
 const caesarsPropRows = discoverMlbI2EventLevelMarkets(caesarsPropSweep.events, { sourceLabel: caesarsPropSweep.sourceLabel });
+const allBookPropRows = discoverMlbI2EventLevelMarkets(allBookPropSweep.events, { sourceLabel: allBookPropSweep.sourceLabel });
 const unrestrictedDiscoveryRows = discoverMlbI2EventLevelMarkets(unrestrictedEventSweep.events, { sourceLabel: unrestrictedEventSweep.sourceLabel });
 const eventLevelDiscoveryRows = mergeI2DiscoveryRows([
   { sourceLabel: caesarsPropSweep.sourceLabel, rows: caesarsPropRows },
+  { sourceLabel: allBookPropSweep.sourceLabel, rows: allBookPropRows },
   { sourceLabel: unrestrictedEventSweep.sourceLabel, rows: unrestrictedDiscoveryRows },
 ]);
 const supportedOddIDs = new Set((Array.isArray(support?.data) ? support.data : []).filter(x => x?.isSupported !== false).map(x => x?.oddID).filter(Boolean));
@@ -276,9 +290,11 @@ const output = {
     eventLevel: {
       caesarsPropPages: caesarsPropSweep.pageCount,
       caesarsPropEvents: caesarsPropSweep.eventCount,
+      allBookPropPages: allBookPropSweep.pageCount,
+      allBookPropEvents: allBookPropSweep.eventCount,
       unrestrictedPages: unrestrictedEventSweep.pageCount,
       unrestrictedEvents: unrestrictedEventSweep.eventCount,
-      cursorExhausted: caesarsPropSweep.cursorExhausted && unrestrictedEventSweep.cursorExhausted,
+      cursorExhausted: caesarsPropSweep.cursorExhausted && allBookPropSweep.cursorExhausted && unrestrictedEventSweep.cursorExhausted,
       candidateRows: eventLevelDiscoveryToday.length,
       bookmakerAudit: eventLevelBookmakerAudit,
       rows: eventLevelDiscoveryToday,
@@ -328,6 +344,10 @@ await fs.writeFile(supportPath, JSON.stringify({
       caesarsPropPages: caesarsPropSweep.pageCount,
       caesarsPropEvents: caesarsPropSweep.eventCount,
       caesarsPropCursorExhausted: caesarsPropSweep.cursorExhausted,
+      allBookPropQuery: allBookPropSweep.query,
+      allBookPropPages: allBookPropSweep.pageCount,
+      allBookPropEvents: allBookPropSweep.eventCount,
+      allBookPropCursorExhausted: allBookPropSweep.cursorExhausted,
       unrestrictedQuery: unrestrictedEventSweep.query,
       unrestrictedPages: unrestrictedEventSweep.pageCount,
       unrestrictedEvents: unrestrictedEventSweep.eventCount,
@@ -343,7 +363,7 @@ await fs.writeFile(exhaustiveCatalogPath, JSON.stringify({
   ...exhaustiveCatalog,
   supportByBookmaker: exhaustiveSupportByBook,
 }, null, 2) + '\n');
-await fs.writeFile(exhaustiveRawPath, JSON.stringify({ unrestrictedEventSweep, caesarsPropSweep }, null, 2) + '\n');
+await fs.writeFile(exhaustiveRawPath, JSON.stringify({ unrestrictedEventSweep, caesarsPropSweep, allBookPropSweep }, null, 2) + '\n');
 
 console.log(JSON.stringify({
   date,
@@ -364,6 +384,7 @@ console.log(JSON.stringify({
     supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
     eventLevelCandidateRows: eventLevelDiscoveryToday.length,
     caesarsPropPages: caesarsPropSweep.pageCount,
+    allBookPropPages: allBookPropSweep.pageCount,
     unrestrictedPages: unrestrictedEventSweep.pageCount,
     eventLevelBookmakerAudit,
   },
