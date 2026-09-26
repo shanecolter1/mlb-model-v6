@@ -1,17 +1,28 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const read = file => fs.readFileSync(file, 'utf8');
 
-test('production I2 pipeline has no retired Netlify MLB upstream dependency', () => {
+function filesUnder(root, extensions) {
+  const out = [];
+  const walk = dir => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(full);
+      else if (extensions.some(ext => entry.name.endsWith(ext))) out.push(full);
+    }
+  };
+  walk(root);
+  return out;
+}
+
+test('production I2 source tree has no retired Netlify MLB upstream dependency', () => {
   const files = [
-    'src/pipeline/run_i2_total_conditioned.mjs',
-    'src/pipeline/run_i2_full_slate_override.mjs',
-    'src/pipeline/run_i2_today_upstream_wrapper.mjs',
-    '.github/workflows/i2_daily_run.yml',
-    '.github/workflows/i2_v04_today.yml',
-    '.github/workflows/sportsgameodds_inning_market_sync.yml',
+    ...filesUnder('src/pipeline', ['.mjs', '.js']),
+    ...filesUnder('src/inputs', ['.mjs', '.js']),
+    ...filesUnder('.github/workflows', ['.yml', '.yaml']),
   ];
   for (const file of files) {
     const source = read(file);
@@ -28,23 +39,31 @@ test('total-conditioned production imports the direct repository runner', () => 
 });
 
 test('provisional RotoWire retrieval is public-page only', () => {
-  const source = read('src/inputs/i2_baseball_sources.mjs');
-  assert.doesNotMatch(source, /api\.rotowire\.com/i);
-  assert.doesNotMatch(source, /ROTOWIRE_API_KEY/);
-  assert.match(source, /fetchRotowirePublic/);
+  const files = filesUnder('src/inputs', ['.mjs', '.js']);
+  for (const file of files) {
+    const source = read(file);
+    assert.doesNotMatch(source, /api\.rotowire\.com/i, `${file} must not call the paid RotoWire API`);
+    assert.doesNotMatch(source, /ROTOWIRE_API_KEY/, `${file} must not depend on a RotoWire API key`);
+  }
+  assert.match(read('src/inputs/rotowire_public.mjs'), /fetchRotowirePublic/);
 });
 
-test('paid sportsbook workflows cannot run from code pushes', () => {
-  for (const file of [
-    '.github/workflows/i2_daily_run.yml',
-    '.github/workflows/i2_v04_today.yml',
-    '.github/workflows/sportsgameodds_inning_market_sync.yml',
-  ]) {
+test('any workflow with a paid SportsGameOdds call is manual-only', () => {
+  const workflows = filesUnder('.github/workflows', ['.yml', '.yaml']);
+  for (const file of workflows) {
     const source = read(file);
-    assert.doesNotMatch(source, /^\s*push:/m, `${file} must not auto-run on push`);
+    const canCallPaidSportsbook =
+      /SPORTSGAMEODDS_API_KEY/.test(source) ||
+      /fetch_i2_run_environment\.mjs/.test(source) ||
+      /fetch_sgo_mlb_inning_markets\.mjs/.test(source);
+    if (!canCallPaidSportsbook) continue;
+
+    assert.doesNotMatch(source, /^\s{2}push:/m, `${file} must not auto-run paid sportsbook access on push`);
+    assert.doesNotMatch(source, /^\s{2}schedule:/m, `${file} must not auto-run paid sportsbook access on schedule`);
+    assert.doesNotMatch(source, /^\s{2}workflow_run:/m, `${file} must not auto-run paid sportsbook access after another workflow`);
+    assert.doesNotMatch(source, /^\s{2}pull_request:/m, `${file} must not auto-run paid sportsbook access on pull requests`);
+    assert.match(source, /^\s{2}workflow_dispatch:/m, `${file} paid sportsbook access must require explicit dispatch`);
   }
-  const marketSync = read('.github/workflows/sportsgameodds_inning_market_sync.yml');
-  assert.doesNotMatch(marketSync, /^\s*workflow_run:/m, 'SportsGameOdds sync must require explicit dispatch');
 });
 
 test('locked run environment is reused before any paid refresh', () => {
