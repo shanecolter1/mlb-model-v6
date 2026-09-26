@@ -1,13 +1,8 @@
 name: Sep 25 scratch I2 full market range
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_full_market_range_2026_09_25.yml'
-      - 'src/pipeline/run_i2_empirical_snapshot.mjs'
-      - 'src/pipeline/build_i2_market_range_report.mjs'
   workflow_dispatch:
+
 
 permissions:
   contents: read
