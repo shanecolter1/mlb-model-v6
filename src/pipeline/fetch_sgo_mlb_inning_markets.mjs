@@ -6,6 +6,8 @@ import {
   buildMlbNinthInningCandidateOddIds,
   fetchMlbInningEvents,
   fetchMlbMarketSupport,
+  fetchMlbSecondInningMarketCatalog,
+  fetchMlbRawEventsForOddIds,
   filterEventsByLocalDate,
 } from '../market/sportsgameodds_data_source.mjs';
 
@@ -15,6 +17,8 @@ const frozenPath = String(process.env.FROZEN_PROJECTION_PATH || `data/runtime/i2
 const outputPath = String(process.env.SGO_OUTPUT || `data/runtime/i2/${date}_sportsgameodds_inning_markets.json`);
 const csvPath = String(process.env.SGO_CSV || `docs/inning_markets/${date}_sportsgameodds_inning_markets.csv`);
 const supportPath = String(process.env.SGO_SUPPORT_OUTPUT || `data/runtime/i2/${date}_sportsgameodds_market_support.json`);
+const exhaustiveCatalogPath = String(process.env.SGO_I2_CATALOG_OUTPUT || `data/runtime/i2/${date}_sportsgameodds_i2_market_catalog.json`);
+const exhaustiveRawPath = String(process.env.SGO_I2_RAW_OUTPUT || `data/runtime/i2/${date}_sportsgameodds_i2_raw_events.json`);
 const includeOpenCloseOdds = /^true$/i.test(String(process.env.SGO_INCLUDE_OPEN_CLOSE || 'false'));
 const includeAltLines = !/^false$/i.test(String(process.env.SGO_INCLUDE_ALT_LINES || 'true'));
 const bookmakerSpec = String(process.env.SGO_BOOKMAKERS ?? ROOKIE_TARGET_BOOKMAKERS.join(',')).trim();
@@ -45,6 +49,15 @@ const freezeContext = {
 const guaranteedOddIDs = buildMlbInningOddIds();
 const ninthInningCandidates = buildMlbNinthInningCandidateOddIds();
 const support = await fetchMlbMarketSupport({ oddIDs: [...guaranteedOddIDs, ...ninthInningCandidates] });
+const exhaustiveCatalog = await fetchMlbSecondInningMarketCatalog();
+const exhaustiveOddIDs = [...new Set((exhaustiveCatalog.markets || []).map(x => x?.oddID).filter(Boolean))];
+const exhaustiveRaw = await fetchMlbRawEventsForOddIds({
+  freezeContext,
+  oddIDs: exhaustiveOddIDs,
+  bookmakerIDs: [],
+  includeOpenCloseOdds,
+  includeAltLines,
+});
 const supportedOddIDs = new Set((Array.isArray(support?.data) ? support.data : []).filter(x => x?.isSupported !== false).map(x => x?.oddID).filter(Boolean));
 const activeOddIDs = [...new Set([...guaranteedOddIDs, ...ninthInningCandidates.filter(id => supportedOddIDs.has(id))])];
 const i2TargetBookmakers = [
@@ -126,6 +139,32 @@ const coverage = {
   ninthFullInningEnabled: activeOddIDs.some(id => id.includes('-9i-') && (id.includes('-ml3way-') || id.startsWith('points-all-9i-ou-'))),
 };
 
+const exhaustiveSupportByBook = {};
+for (const market of exhaustiveCatalog.markets || []) {
+  const leagueSupport = market?.support?.MLB || {};
+  for (const [bookmakerID, supportEntry] of Object.entries(leagueSupport)) {
+    if (supportEntry?.supported !== true) continue;
+    if (!exhaustiveSupportByBook[bookmakerID]) exhaustiveSupportByBook[bookmakerID] = [];
+    exhaustiveSupportByBook[bookmakerID].push({
+      oddID: market.oddID,
+      statID: market.statID ?? null,
+      statEntityID: market.statEntityID ?? null,
+      periodID: market.periodID ?? null,
+      betTypeID: market.betTypeID ?? null,
+      sideID: market.sideID ?? null,
+      marketGroupID: market.marketGroupID ?? null,
+      marketGroupName: market.marketGroupName ?? null,
+      isMainMarket: market.isMainMarket === true,
+      isMainDerivative: market.isMainDerivative === true,
+      isProp: market.isProp === true,
+      isSubPeriod: market.isSubPeriod === true,
+    });
+  }
+}
+for (const rows of Object.values(exhaustiveSupportByBook)) {
+  rows.sort((a,b)=>String(a.oddID).localeCompare(String(b.oddID)));
+}
+
 const output = {
   schemaVersion: '1.0.0',
   generatedAt: new Date().toISOString(),
@@ -138,6 +177,12 @@ const output = {
     oddsNotAvailableToPredictionEngine: true,
   },
   requested: { bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, includeOpenCloseOdds, includeAltLines },
+  exhaustiveDiscovery: {
+    catalogMarketCount: exhaustiveCatalog.markets.length,
+    oddIDCount: exhaustiveOddIDs.length,
+    rawEventCount: exhaustiveRaw.events.length,
+    supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
+  },
   i2BookmakerSupport,
   coverage,
   events,
@@ -154,8 +199,46 @@ const csv = [csvColumns.join(','), ...rows.map(row => csvColumns.map(c => quote(
 await fs.mkdir(path.dirname(outputPath), { recursive: true });
 await fs.mkdir(path.dirname(csvPath), { recursive: true });
 await fs.mkdir(path.dirname(supportPath), { recursive: true });
+await fs.mkdir(path.dirname(exhaustiveCatalogPath), { recursive: true });
+await fs.mkdir(path.dirname(exhaustiveRawPath), { recursive: true });
 await fs.writeFile(outputPath, JSON.stringify(output, null, 2) + '\n');
 await fs.writeFile(csvPath, csv);
-await fs.writeFile(supportPath, JSON.stringify({ generatedAt: new Date().toISOString(), date, bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, i2BookmakerSupport, response: support }, null, 2) + '\n');
+await fs.writeFile(supportPath, JSON.stringify({
+  generatedAt: new Date().toISOString(),
+  date,
+  bookmakerIDs,
+  guaranteedOddIDs,
+  ninthInningCandidates,
+  activeOddIDs,
+  i2BookmakerSupport,
+  exhaustiveDiscovery: {
+    catalogMarketCount: exhaustiveCatalog.markets.length,
+    oddIDCount: exhaustiveOddIDs.length,
+    rawEventCount: exhaustiveRaw.events.length,
+    supportByBookmaker: exhaustiveSupportByBook,
+  },
+  response: support,
+}, null, 2) + '\n');
+await fs.writeFile(exhaustiveCatalogPath, JSON.stringify({
+  ...exhaustiveCatalog,
+  supportByBookmaker: exhaustiveSupportByBook,
+}, null, 2) + '\n');
+await fs.writeFile(exhaustiveRawPath, JSON.stringify(exhaustiveRaw, null, 2) + '\n');
 
-console.log(JSON.stringify({ date, frozenAt, outputPath, csvPath, supportPath, coverage, i2BookmakerSupport }, null, 2));
+console.log(JSON.stringify({
+  date,
+  frozenAt,
+  outputPath,
+  csvPath,
+  supportPath,
+  exhaustiveCatalogPath,
+  exhaustiveRawPath,
+  coverage,
+  exhaustiveDiscovery: {
+    catalogMarketCount: exhaustiveCatalog.markets.length,
+    oddIDCount: exhaustiveOddIDs.length,
+    rawEventCount: exhaustiveRaw.events.length,
+    supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
+  },
+  i2BookmakerSupport,
+}, null, 2));
