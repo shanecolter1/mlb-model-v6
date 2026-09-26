@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { lineupDelta, sameMlbIdentityName, validOrder } from '../inputs/i2_source_governance.mjs';
 
 const DATE = process.env.I2_DATE || new Date().toISOString().slice(0,10);
 const PREDICTIONS = process.env.I2_PREDICTIONS || `data/runtime/i2/${DATE}_frozen_predictions.json`;
@@ -71,7 +72,27 @@ function startSlotFromPlays(lineup,plays){
   const idx=lineup.indexOf(first);
   return idx>=0?idx+1:null;
 }
-function sameLineup(a,b){return Array.isArray(a)&&Array.isArray(b)&&a.length===9&&b.length===9&&a.every((x,i)=>x===b[i]);}
+function sameLineup(a,b){return validOrder(a)&&validOrder(b)&&a.every((x,i)=>sameMlbIdentityName(x,b[i]));}
+function rotowireCandidate(game,side){
+  return game?.inputAudit?.[side]?.lineup?.audit?.candidates?.find(c=>c.provider==='ROTOWIRE') || null;
+}
+function lineupAccuracy(projected,actual){
+  if(!validOrder(projected)||!validOrder(actual)) return null;
+  const delta=lineupDelta(projected,actual);
+  const playersMatched=projected.filter(p=>actual.some(a=>sameMlbIdentityName(p,a))).length;
+  const top4Exact=projected.slice(0,4).filter((p,i)=>sameMlbIdentityName(p,actual[i])).length;
+  return {
+    playersMatched,
+    playerSetAccuracy:playersMatched/9,
+    exactPlayerSet:playersMatched===9,
+    exactSlots:delta.exactSlots,
+    slotAccuracy:delta.exactSlots/9,
+    top4ExactSlots:top4Exact,
+    top4SlotAccuracy:top4Exact/4,
+    exactLineup:delta.exactSlots===9,
+    delta
+  };
+}
 function clamp(p){return Math.min(1-1e-12,Math.max(1e-12,p));}
 
 const rows=[];
@@ -86,6 +107,14 @@ for(const g of pred.games||[]){
     const top2Plays=i2HalfPlays(feed,'top'), bottom2Plays=i2HalfPlays(feed,'bottom');
     const actualAwayI2StartSlot=startSlotFromPlays(actualAwayLineup,top2Plays);
     const actualHomeI2StartSlot=startSlotFromPlays(actualHomeLineup,bottom2Plays);
+    const rwAway=rotowireCandidate(g,'away'), rwHome=rotowireCandidate(g,'home');
+    const rwAwayAccuracy=lineupAccuracy(rwAway?.players,actualAwayLineup);
+    const rwHomeAccuracy=lineupAccuracy(rwHome?.players,actualHomeLineup);
+    const observationLeadHours = candidate => {
+      const t=Date.parse(candidate?.retrievedAt || candidate?.timestamp);
+      const game=Date.parse(g.gameDate);
+      return Number.isFinite(t)&&Number.isFinite(game)?(game-t)/3600000:null;
+    };
     const p=Number(g.under05);
     const y=i2?.complete ? (i2.total===0?1:0) : null;
     rows.push({
@@ -104,6 +133,28 @@ for(const g of pred.games||[]){
       predictedHomeLineup:g.homeLineup||[], actualHomeLineup,
       awayLineupExactMatch:actualAwayLineup.length===9?sameLineup(g.awayLineup,actualAwayLineup):null,
       homeLineupExactMatch:actualHomeLineup.length===9?sameLineup(g.homeLineup,actualHomeLineup):null,
+      rotowireProvisionalAudit:{
+        away:rwAway?{
+          source:rwAway.source||null,
+          retrievedAt:rwAway.retrievedAt||null,
+          timestamp:rwAway.timestamp||null,
+          confirmed:Boolean(rwAway.confirmed),
+          observationLeadHours:observationLeadHours(rwAway),
+          projectedLineup:rwAway.players||[],
+          actualLineup:actualAwayLineup,
+          accuracy:rwAwayAccuracy
+        }:null,
+        home:rwHome?{
+          source:rwHome.source||null,
+          retrievedAt:rwHome.retrievedAt||null,
+          timestamp:rwHome.timestamp||null,
+          confirmed:Boolean(rwHome.confirmed),
+          observationLeadHours:observationLeadHours(rwHome),
+          projectedLineup:rwHome.players||[],
+          actualLineup:actualHomeLineup,
+          accuracy:rwHomeAccuracy
+        }:null
+      },
       actualAwayI2StartSlot,
       actualHomeI2StartSlot,
       modelProbabilityOfActualAwayStartSlot:actualAwayI2StartSlot?Number(g.awayI2StartSlotPct?.[String(actualAwayI2StartSlot)]??0)/100:null,
@@ -119,6 +170,19 @@ const mean=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:null;
 const actualUnders=graded.filter(r=>r.actualUnder===1).length;
 const expectedUnders=graded.reduce((s,r)=>s+Number(r.modelUnderPct||0)/100,0);
 const startSlotProbs=graded.flatMap(r=>[r.modelProbabilityOfActualAwayStartSlot,r.modelProbabilityOfActualHomeStartSlot]).filter(x=>Number.isFinite(x));
+const rwSides=rows.flatMap(r=>['away','home'].map(side=>r.rotowireProvisionalAudit?.[side])).filter(x=>x&&!x.confirmed&&x.accuracy);
+const rotowireProvisionalAccuracy={
+  sidesGraded:rwSides.length,
+  exactLineups:rwSides.filter(x=>x.accuracy.exactLineup).length,
+  exactPlayerSets:rwSides.filter(x=>x.accuracy.exactPlayerSet).length,
+  meanPlayerSetAccuracy:mean(rwSides.map(x=>x.accuracy.playerSetAccuracy)),
+  meanSlotAccuracy:mean(rwSides.map(x=>x.accuracy.slotAccuracy)),
+  meanTop4SlotAccuracy:mean(rwSides.map(x=>x.accuracy.top4SlotAccuracy)),
+  meanObservationLeadHours:mean(rwSides.map(x=>x.observationLeadHours).filter(Number.isFinite)),
+  sourceRole:'AUDIT_ONLY',
+  affectsPrediction:false,
+  affectsEligibility:false
+};
 const summary={
   date:DATE, generatedAt:new Date().toISOString(), historicalBaselineUnder:HIST_BASELINE_UNDER,
   gradedGames:graded.length, actualUnders, actualOvers:graded.length-actualUnders,
@@ -128,6 +192,7 @@ const summary={
   modelBrier:mean(graded.map(r=>r.brier)), baselineBrier:mean(graded.map(r=>r.baselineBrier)),
   modelLogLoss:mean(graded.map(r=>r.logLoss)),
   meanProbabilityAssignedToActualI2StartSlot:mean(startSlotProbs),
+  rotowireProvisionalAccuracy,
   starterMismatches:graded.filter(r=>r.awayStarterMatch===false||r.homeStarterMatch===false).map(r=>({gamePk:r.gamePk,matchup:r.matchup,predictedAwayStarter:r.predictedAwayStarter,actualAwayStarter:r.actualAwayStarter,predictedHomeStarter:r.predictedHomeStarter,actualHomeStarter:r.actualHomeStarter})),
   lineupMismatches:graded.filter(r=>r.awayLineupExactMatch===false||r.homeLineupExactMatch===false).map(r=>({gamePk:r.gamePk,matchup:r.matchup,predictionClass:r.predictionClass,awayMatch:r.awayLineupExactMatch,homeMatch:r.homeLineupExactMatch})),
   sourcePriorityAudit:audit,
