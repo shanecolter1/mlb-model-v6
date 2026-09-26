@@ -1,5 +1,5 @@
 {
-  "version": "i2-vnext-final-holdout-audit-v1",
+  "version": "i2-vnext-final-holdout-audit-v2",
   "market_inputs_used": false,
   "replay_version": "i2-vnext-full-replay-v4-player-asof-i1-sharded",
   "replay_games": 2430,
@@ -66,6 +66,230 @@
         "logloss": 0.6929743715134274
       }
     }
+  },
+  "uncertainty": {
+    "all_2025": {
+      "method": "paired_calendar_date_cluster_percentile_bootstrap",
+      "draws": 5000,
+      "seed": 20260926,
+      "dates": 184,
+      "games": 2430,
+      "confidence_level": 0.95,
+      "conditional_on_frozen_predictions_and_baseline": true,
+      "includes_training_or_selection_uncertainty": false,
+      "accounts_for_multiday_dependence": false,
+      "brier_delta": {
+        "estimate": -0.0003436081032068082,
+        "ci95": [
+          -0.0017482613537682895,
+          0.0010824436375515968
+        ]
+      },
+      "logloss_delta": {
+        "estimate": -0.0006778150188945238,
+        "ci95": [
+          -0.003548504508151826,
+          0.0022477308902594762
+        ]
+      },
+      "under_overprediction": {
+        "estimate": 0.01997333333333334,
+        "ci95": [
+          0.00037329079342166867,
+          0.0395674693276262
+        ]
+      },
+      "interpretation": "Negative loss deltas favor vNext; positive bias overpredicts Under. Descriptive after calibration selection, not an independent promotion test."
+    },
+    "later_2025_validation": {
+      "method": "paired_calendar_date_cluster_percentile_bootstrap",
+      "draws": 5000,
+      "seed": 20260926,
+      "dates": 92,
+      "games": 1241,
+      "confidence_level": 0.95,
+      "conditional_on_frozen_predictions_and_baseline": true,
+      "includes_training_or_selection_uncertainty": false,
+      "accounts_for_multiday_dependence": false,
+      "brier_delta": {
+        "estimate": 0.0009587071279222674,
+        "ci95": [
+          -0.000966225939880649,
+          0.002892673016609273
+        ]
+      },
+      "logloss_delta": {
+        "estimate": 0.0020077163159451894,
+        "ci95": [
+          -0.0019414159904322416,
+          0.005966530468314647
+        ]
+      },
+      "under_overprediction": {
+        "estimate": 0.034305076551168406,
+        "ci95": [
+          0.008863299432936048,
+          0.058850922726108555
+        ]
+      },
+      "interpretation": "Negative loss deltas favor vNext; positive bias overpredicts Under. Descriptive after calibration selection, not an independent promotion test."
+    }
+  },
+  "monthly_diagnostics": [
+    {
+      "month": "202503",
+      "n": 67,
+      "vnext": {
+        "n": 67,
+        "realized_under_rate": 0.43283582089552236,
+        "predicted_under_mean": 0.5727238805970148,
+        "brier": 0.2648610685074627,
+        "logloss": 0.7231423645434861
+      },
+      "prior_season_constant": {
+        "n": 67,
+        "realized_under_rate": 0.43283582089552236,
+        "predicted_under_mean": 0.5582544256895842,
+        "brier": 0.2612187994737107,
+        "logloss": 0.7157026632338678
+      },
+      "brier_delta": 0.0036422690337520325,
+      "logloss_delta": 0.007439701309618352,
+      "under_overprediction": 0.13988805970149248
+    },
+    {
+      "month": "202504",
+      "n": 391,
+      "vnext": {
+        "n": 391,
+        "realized_under_rate": 0.5396419437340153,
+        "predicted_under_mean": 0.5672020460358057,
+        "brier": 0.2482677801534527,
+        "logloss": 0.6897433251169622
+      },
+      "prior_season_constant": {
+        "n": 391,
+        "realized_under_rate": 0.5396419437340153,
+        "predicted_under_mean": 0.558254425689584,
+        "brier": 0.24877494078153556,
+        "logloss": 0.690701408472511
+      },
+      "brier_delta": -0.00050716062808287,
+      "logloss_delta": -0.0009580833555488111,
+      "under_overprediction": 0.0275601023017904
+    },
+    {
+      "month": "202505",
+      "n": 411,
+      "vnext": {
+        "n": 411,
+        "realized_under_rate": 0.6155717761557178,
+        "predicted_under_mean": 0.5664627737226277,
+        "brier": 0.23762889698296835,
+        "logloss": 0.6681307345307768
+      },
+      "prior_season_constant": {
+        "n": 411,
+        "realized_under_rate": 0.6155717761557178,
+        "predicted_under_mean": 0.558254425689584,
+        "brier": 0.23992844322067022,
+        "logloss": 0.6729276981840787
+      },
+      "brier_delta": -0.0022995462377018716,
+      "logloss_delta": -0.0047969636533019555,
+      "under_overprediction": -0.04910900243309013
+    },
+    {
+      "month": "202506",
+      "n": 397,
+      "vnext": {
+        "n": 397,
+        "realized_under_rate": 0.5541561712846348,
+        "predicted_under_mean": 0.5719931989924433,
+        "brier": 0.243375527581864,
+        "logloss": 0.6797514809789331
+      },
+      "prior_season_constant": {
+        "n": 397,
+        "realized_under_rate": 0.5541561712846348,
+        "predicted_under_mean": 0.5582544256895839,
+        "brier": 0.247083904800957,
+        "logloss": 0.6873039075520249
+      },
+      "brier_delta": -0.0037083772190929787,
+      "logloss_delta": -0.007552426573091742,
+      "under_overprediction": 0.017837027707808484
+    },
+    {
+      "month": "202507",
+      "n": 369,
+      "vnext": {
+        "n": 369,
+        "realized_under_rate": 0.5501355013550135,
+        "predicted_under_mean": 0.5747626016260162,
+        "brier": 0.24865696953929542,
+        "logloss": 0.6904603920592594
+      },
+      "prior_season_constant": {
+        "n": 369,
+        "realized_under_rate": 0.5501355013550135,
+        "predicted_under_mean": 0.558254425689584,
+        "brier": 0.24755234843623194,
+        "logloss": 0.6882450688876329
+      },
+      "brier_delta": 0.0011046211030634745,
+      "logloss_delta": 0.0022153231716264266,
+      "under_overprediction": 0.024627100271002678
+    },
+    {
+      "month": "202508",
+      "n": 421,
+      "vnext": {
+        "n": 421,
+        "realized_under_rate": 0.5486935866983373,
+        "predicted_under_mean": 0.5740197149643705,
+        "brier": 0.2498072711401425,
+        "logloss": 0.6929382015464098
+      },
+      "prior_season_constant": {
+        "n": 421,
+        "realized_under_rate": 0.5486935866983373,
+        "predicted_under_mean": 0.558254425689584,
+        "brier": 0.24772034425666806,
+        "logloss": 0.6885825933171097
+      },
+      "brier_delta": 0.002086926883474449,
+      "logloss_delta": 0.004355608229300145,
+      "under_overprediction": 0.0253261282660332
+    },
+    {
+      "month": "202509",
+      "n": 374,
+      "vnext": {
+        "n": 374,
+        "realized_under_rate": 0.516042780748663,
+        "predicted_under_mean": 0.5741697860962566,
+        "brier": 0.2521940723262032,
+        "logloss": 0.6976901171513654
+      },
+      "prior_season_constant": {
+        "n": 374,
+        "realized_under_rate": 0.516042780748663,
+        "predicted_under_mean": 0.558254425689584,
+        "brier": 0.2515244521544687,
+        "logloss": 0.6962255176740384
+      },
+      "brier_delta": 0.0006696201717344974,
+      "logloss_delta": 0.0014645994773270221,
+      "under_overprediction": 0.05812700534759352
+    }
+  ],
+  "promotion_assessment": {
+    "status": "SHADOW_ONLY",
+    "later_validation_beats_prior_on_both": false,
+    "independent_post_selection_test": false,
+    "current_production_comparison": "NOT_PERFORMED",
+    "reason": "Calibration-selection data are reused here; prospective validation and current-model benchmark remain required."
   },
   "discrimination": {
     "auc": 0.5315117075174586,
