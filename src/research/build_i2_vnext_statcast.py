@@ -139,9 +139,39 @@ def terminal_pa_rows(df: pd.DataFrame) -> pd.DataFrame:
     return x[keep].drop_duplicates(["game_pk", "at_bat_number"], keep="last")
 
 
-def build_pa_dataset(start: date, end: date, cache_dir: Path, sleep: float) -> pd.DataFrame:
+def pitch_usage_by_side_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """Aggregate raw I2 pitch usage by pitcher and actual batter side."""
+    required = ["game_date", "pitcher", "stand", "pitch_type"]
+    if df.empty or any(c not in df.columns for c in required):
+        return pd.DataFrame(columns=["season", "pitcher", "stand", "pitch_type", "pitches"])
+    x = df[required].copy()
+    x["game_date"] = pd.to_datetime(x["game_date"], errors="coerce")
+    x["pitcher"] = pd.to_numeric(x["pitcher"], errors="coerce").astype("Int64")
+    x["stand"] = x["stand"].astype(str)
+    x["pitch_type"] = x["pitch_type"].astype(str)
+    x = x[
+        x["game_date"].notna()
+        & x["pitcher"].notna()
+        & x["stand"].isin(["L", "R"])
+        & x["pitch_type"].notna()
+        & (x["pitch_type"] != "nan")
+    ].copy()
+    if x.empty:
+        return pd.DataFrame(columns=["season", "pitcher", "stand", "pitch_type", "pitches"])
+    x["season"] = x["game_date"].dt.year.astype(int)
+    x["pitcher"] = x["pitcher"].astype(int)
+    return (
+        x.groupby(["season", "pitcher", "stand", "pitch_type"], observed=True)
+        .size()
+        .rename("pitches")
+        .reset_index()
+    )
+
+
+def build_pa_dataset(start: date, end: date, cache_dir: Path, sleep: float):
     cache_dir.mkdir(parents=True, exist_ok=True)
     parts: list[pd.DataFrame] = []
+    usage_parts: list[pd.DataFrame] = []
     for lo, hi in month_chunks(start, end):
         cache = cache_dir / f"i2_{lo.isoformat()}_{hi.isoformat()}.csv"
         if cache.exists():
@@ -153,10 +183,23 @@ def build_pa_dataset(start: date, end: date, cache_dir: Path, sleep: float) -> p
         part = terminal_pa_rows(raw)
         if not part.empty:
             parts.append(part)
+        usage = pitch_usage_by_side_rows(raw)
+        if not usage.empty:
+            usage_parts.append(usage)
     if not parts:
         raise RuntimeError("No I2 Statcast PA rows were built")
     out = pd.concat(parts, ignore_index=True)
-    return out.sort_values(["game_date", "game_pk", "at_bat_number"]).reset_index(drop=True)
+    out = out.sort_values(["game_date", "game_pk", "at_bat_number"]).reset_index(drop=True)
+    if usage_parts:
+        usage = pd.concat(usage_parts, ignore_index=True)
+        usage = (
+            usage.groupby(["season", "pitcher", "stand", "pitch_type"], observed=True)["pitches"]
+            .sum()
+            .reset_index()
+        )
+    else:
+        usage = pd.DataFrame(columns=["season", "pitcher", "stand", "pitch_type", "pitches"])
+    return out, usage
 
 
 def build_arsenal(year: int, role: str, out_dir: Path, sleep: float) -> Path:
@@ -187,9 +230,16 @@ def main() -> None:
     if end < start:
         raise SystemExit("--end must be on/after --start")
 
-    pa = build_pa_dataset(start, end, args.cache_dir, args.sleep)
+    pa, side_usage = build_pa_dataset(start, end, args.cache_dir, args.sleep)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     pa.to_csv(args.output, index=False)
+
+    args.arsenal_dir.mkdir(parents=True, exist_ok=True)
+    side_usage_files = []
+    for year, rows in side_usage.groupby("season", observed=True):
+        path = args.arsenal_dir / f"pitcher_usage_side_{int(year)}.csv"
+        rows.drop(columns=["season"]).to_csv(path, index=False)
+        side_usage_files.append(str(path))
 
     years = range(max(2022, start.year - 1), end.year + 1)
     arsenal_files = []
@@ -213,6 +263,8 @@ def main() -> None:
         "arsenal_live_rule": "use current-season YTD profile available at prediction cutoff",
         "proxy_event_mapping": {"field_error": "single", "catcher_interference": "walk"},
         "arsenal_files": arsenal_files,
+        "pitcher_side_usage_files": side_usage_files,
+        "arsenal_matchup_rule": "use prior-season/current-YTD I2 pitcher pitch mix by actual batter side when available; otherwise overall Savant pitcher arsenal",
     }
     args.output.with_name("dataset_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     print(json.dumps(manifest, indent=2))
