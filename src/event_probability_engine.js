@@ -135,14 +135,18 @@ function sideFactor(context, batterSide, eventName) {
     null;
   if (!splitName) return null;
   const value = context?.handedness?.[side]?.[splitName];
-  return Number.isFinite(Number(value)) ? Number(value) : null;
+  if (value === null || value === undefined || value === '') return null;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
 }
 
 function absoluteParkFactor(context, batterSide, eventName, overallKey) {
   const split = sideFactor(context, batterSide, eventName);
   if (split !== null) return split;
   const overall = context?.multipliers?.[overallKey];
-  return Number.isFinite(Number(overall)) ? Number(overall) : 1;
+  if (overall === null || overall === undefined || overall === '') return 1;
+  const numeric = Number(overall);
+  return Number.isFinite(numeric) ? numeric : 1;
 }
 
 /**
