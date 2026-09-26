@@ -1,9 +1,7 @@
 name: Requested Sep 22 I2 slate
 on:
-  push:
-    branches: [main]
-    paths: ['.github/workflows/i2_requested_slate_2026_09_22.yml']
   workflow_dispatch:
+
 permissions:
   contents: read
 jobs:
