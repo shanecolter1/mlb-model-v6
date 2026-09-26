@@ -285,7 +285,13 @@ def validation_folds(df: pd.DataFrame):
     return [("2024H2", train, test)]
 
 
-def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
+def serialize_model(
+    prep,
+    model,
+    selected: dict,
+    trials: list[dict],
+    training_df: pd.DataFrame,
+) -> dict:
     names = [str(x) for x in prep.get_feature_names_out()]
     artifact = {
         "version": "i2-vnext-direct-talent-v1",
@@ -294,6 +300,12 @@ def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
         "target": "I2 terminal PA event class",
         "classes": [str(x) for x in model.classes_],
         "categorical_features": CAT,
+        "category_levels": {
+            feature: [str(v) for v in values]
+            for feature, values in zip(
+                CAT, prep.named_transformers_["cat"].categories_
+            )
+        },
         "numeric_features": NUM,
         "nuisance_controls": {
             "home_team": "fit-only park confounder control; coefficient intentionally omitted at neutral live inference before Savant park is applied once"
@@ -319,6 +331,16 @@ def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
                 "No PA-level probability calibration; calibrate full I2 Under probability "
                 "once after historical full-model replay."
             ),
+        },
+        "training_support": {
+            "batter_i2_pa": {
+                str(k): int(v)
+                for k, v in training_df["batter"].value_counts().to_dict().items()
+            },
+            "pitcher_i2_pa": {
+                str(k): int(v)
+                for k, v in training_df["pitcher"].value_counts().to_dict().items()
+            },
         },
         "intercepts": {
             str(cls): float(model.intercept_[i])
@@ -469,7 +491,7 @@ def main() -> None:
         raise RuntimeError("Frozen PA fit requires 2023-2024 data with 2024 present")
 
     prep, model = fit_one(fit_df, best[2], best[1])
-    artifact = serialize_model(prep, model, selected, trials)
+    artifact = serialize_model(prep, model, selected, trials, fit_df)
     artifact["holdout_policy"] = {
         "raw_pa_estimation_years": sorted(int(x) for x in fit_df["season"].unique()),
         "hyperparameter_selection_period": "2024H2",
@@ -499,7 +521,7 @@ def main() -> None:
     # Live production uses the identical frozen specification and hyperparameters,
     # refit on all baseball observations available through the dataset cutoff.
     live_prep, live_model = fit_one(df, best[2], best[1])
-    live_artifact = serialize_model(live_prep, live_model, selected, trials)
+    live_artifact = serialize_model(live_prep, live_model, selected, trials, df)
     live_artifact["artifact_role"] = "LIVE_REFIT_FIXED_SPECIFICATION"
     live_artifact["holdout_policy"] = artifact["holdout_policy"]
     live_artifact["training"] = {
