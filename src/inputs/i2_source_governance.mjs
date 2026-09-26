@@ -111,6 +111,9 @@ export function projectionGate({ away, home, previous = null }) {
     if (current.starter.status === 'CONFLICTING') reasons.push('STARTER_CONFLICT');
     if (!current.starter.name || current.starter.status === 'TBD') reasons.push('STARTER_MISSING');
     if (!validOrder(current.lineup.players) || current.lineup.unresolved) reasons.push('LINEUP_UNRESOLVED');
+    if (current.pitchingPlan?.role && current.pitchingPlan.role !== 'NORMAL_STARTER' && current.pitchingPlan.i2RoleResolved !== true) {
+      reasons.push('I2_PITCHING_PLAN_UNRESOLVED');
+    }
     if (current.news?.some(n => ['STARTER_UPDATE_REQUIRED','PROJECTION_INVALIDATED'].includes(n.recommendedAction))) reasons.push('NEWS_REVIEW_REQUIRED');
     const prior = previous?.[side];
     if (prior?.starter?.name && !starterIdentitySame(prior.starter,current.starter)) changes.push('PROJECTION_INVALIDATED_STARTER_CHANGE');
