@@ -1,11 +1,8 @@
 name: I2 preliminary probabilistic 2026-09-05
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_preliminary_probabilistic_2026_09_05.yml'
   workflow_dispatch:
+
 
 permissions:
   contents: write
