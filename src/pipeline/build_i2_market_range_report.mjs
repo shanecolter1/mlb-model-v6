@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { reweightExactDistribution } from '../model/i2_total_conditioning.js';
+import { enrichPriceDependentRecommendation, rankPriceDependentRecommendations } from '../model/i2_price_dependent_recommendations.mjs';
 
 const DATE=String(process.env.I2_DATE||new Date().toISOString().slice(0,10));
 const PARENT=String(process.env.I2_PARENT_INPUT||`data/runtime/i2/${DATE}_scratch_parent.json`);
@@ -12,6 +13,7 @@ const CSV=String(process.env.I2_RANGE_CSV||`docs/inning_markets/${DATE}_i2_marke
 
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const parent=read(PARENT), prod=read(PROD), emp=read(EMP), markets=read(MARKETS);
+const projectionFrozen=markets?.marketIsolation?.frozenProjection?.projectionFrozen===true;
 
 const KEYS=['0','1','2','3','4+'];
 const vals={'0':0,'1':1,'2':2,'3':3,'4+':4};
@@ -128,7 +130,7 @@ for(const r of marketRows){
   const cands=[prodOut?.conditionalWin,combOut?.conditionalWin,empOut?.conditionalWin].filter(Number.isFinite);
   const prodEv=ev(prodOut,r.americanOdds), combEv=ev(combOut,r.americanOdds), empEv=ev(empOut,r.americanOdds);
   const evs=[prodEv,combEv,empEv].filter(Number.isFinite);
-  rows.push({
+  const comparison={
     gamePk:gamePk?Number(gamePk):null,matchup:r.matchup,startTime:r.startTime,
     marketType:r.marketType,segment,line,side,bookmaker:r.bookmakerID,
     americanOdds:Number(r.americanOdds),isAlternateLine:Boolean(r.isAlternateLine),lastUpdatedAt:r.lastUpdatedAt||null,
@@ -140,9 +142,33 @@ for(const r of marketRows){
     rangeMinEVPct:evs.length?pct(Math.min(...evs)):null,rangeMaxEVPct:evs.length?pct(Math.max(...evs)):null,
     robustPositiveEV:evs.length===3&&Math.min(...evs)>0,
     modelAvailable:Boolean(m&&prodOut&&empOut&&combOut),
-  });
+  };
+  rows.push(enrichPriceDependentRecommendation(comparison,{projectionFrozen}));
 }
 rows.sort((a,b)=>String(a.startTime).localeCompare(String(b.startTime))||String(a.matchup).localeCompare(String(b.matchup))||String(a.segment).localeCompare(String(b.segment))||a.line-b.line||String(a.side).localeCompare(String(b.side))||String(a.bookmaker).localeCompare(String(b.bookmaker)));
+
+const actionableRecommendations=rankPriceDependentRecommendations(rows);
+const modeledMarketInventory=[];
+for(const m of modelByGame.values()){
+  for(const segment of ['full','top','bottom']){
+    for(const line of [0.5,1.5]){
+      for(const side of ['over','under']){
+        const quotes=rows.filter(r=>r.gamePk===m.gamePk&&r.segment===segment&&r.line===line&&r.side===side);
+        const actionable=quotes.filter(r=>r.recommendationEligible);
+        modeledMarketInventory.push({
+          gamePk:m.gamePk,matchup:m.matchup,
+          marketType:segment==='full'?'FULL_INNING_TOTAL':'TEAM_HALF_INNING_TOTAL',
+          segment,line,side,
+          quoteCount:quotes.length,
+          actionableQuoteCount:actionable.length,
+          priceStatus:quotes.length===0?'UNPRICED':(actionable.length?'PRICED_ACTIONABLE':'PRICED_BLOCKED'),
+          bestActionableBook:actionable.slice().sort((a,b)=>Number(b.combinedEVPct??-Infinity)-Number(a.combinedEVPct??-Infinity))[0]?.bookmaker||null,
+          bestActionableOdds:actionable.slice().sort((a,b)=>Number(b.combinedEVPct??-Infinity)-Number(a.combinedEVPct??-Infinity))[0]?.americanOdds??null,
+        });
+      }
+    }
+  }
+}
 
 const summaries=[...modelByGame.values()].map(m=>{
   const vals=[m.productionUnder05Pct,m.combinedUnder05Pct,m.empiricalUnder05Pct];
@@ -177,20 +203,27 @@ const availability={
 
 const output={
   date:DATE,generatedAt:new Date().toISOString(),
-  definition:'Production / 50-50 combined / empirical are treated as an uncertainty range. Range low/high are the min/max resolved-market probabilities among the three models.',
+  definition:'Production / 50-50 combined / empirical are treated as an uncertainty range. Range low/high are the min/max resolved-market probabilities among the three models. Betting recommendations are post-freeze and price-mandatory.',
   productionModel:prod.model,empiricalMethod:emp.method,
   governance:{
     noManualAdjustments:true,
     freshScratchArtifacts:true,
     priceRetrievalPostFreeze:true,
     alternateTailDisclosure:'Production and empirical alternate-line tails are explicit distribution extensions described in each game model basis; the locked 0.5 probabilities are unchanged.',
+    recommendationPolicy:{
+      priceMandatory:true,
+      probabilityOnlyRankingForbidden:true,
+      requiredFields:['projectionFrozen','sportsbook','americanOdds','priceTimestamp','exactMarketMatch'],
+      unpricedMarkets:'NO_RECOMMENDATION',
+      rankingBasis:'Robust-positive-EV first, then combined EV, then range-min EV, then combined full Kelly',
+    },
   },
-  availability,gameSummary:summaries,marketComparisons:rows,
+  availability,gameSummary:summaries,modeledMarketInventory,actionableRecommendations,marketComparisons:rows,
 };
 fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});fs.mkdirSync(path.dirname(CSV),{recursive:true});
 fs.writeFileSync(OUTPUT,JSON.stringify(output,null,2)+'\n');
 
-const cols=['gamePk','matchup','startTime','marketType','segment','line','side','bookmaker','americanOdds','isAlternateLine','lastUpdatedAt','breakEvenPct','productionWinPct','productionPushPct','productionConditionalPct','productionFairOdds','productionEVPct','combinedWinPct','combinedPushPct','combinedConditionalPct','combinedFairOdds','combinedEVPct','empiricalWinPct','empiricalPushPct','empiricalConditionalPct','empiricalFairOdds','empiricalEVPct','rangeLowPct','rangeHighPct','rangeMinEVPct','rangeMaxEVPct','robustPositiveEV','modelAvailable'];
+const cols=['gamePk','matchup','startTime','marketType','segment','line','side','bookmaker','americanOdds','isAlternateLine','lastUpdatedAt','breakEvenPct','productionWinPct','productionPushPct','productionConditionalPct','productionFairOdds','productionEVPct','combinedWinPct','combinedPushPct','combinedConditionalPct','combinedFairOdds','combinedEVPct','empiricalWinPct','empiricalPushPct','empiricalConditionalPct','empiricalFairOdds','empiricalEVPct','rangeLowPct','rangeHighPct','rangeMinEVPct','rangeMaxEVPct','robustPositiveEV','modelAvailable','exactMarketMatch','recommendationEligible','recommendationStatus','recommendationBlockReasons','productionKellyPct','combinedKellyPct','empiricalKellyPct','priceDependentRankingMetric'];
 const q=v=>`"${String(v??'').replaceAll('"','""')}"`;
 fs.writeFileSync(CSV,[cols.join(','),...rows.map(r=>cols.map(c=>q(r[c])).join(','))].join('\n')+'\n');
 console.log(JSON.stringify({output:OUTPUT,csv:CSV,availability,summary:summaries},null,2));
