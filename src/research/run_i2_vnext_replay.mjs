@@ -18,6 +18,8 @@ const PARKS=arg('--parks','data/derived/i2_vnext/park/savant_venue_profiles_2024
 const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/replay_2025_predictions.json');
 const TRIALS=Number(arg('--trials','10000'));
+const I1_MODE=arg('--i1-mode','league');
+if (!['league','player_asof'].includes(I1_MODE)) throw new Error('--i1-mode must be league or player_asof');
 
 if (!Number.isInteger(TRIALS) || TRIALS < 1000) throw new Error('--trials must be an integer >= 1000');
 
@@ -137,14 +139,18 @@ function makeLineup(rows, leagueRates){
     id:Number(x.mlbam),
     bats:x.bats,
     side:x.bats,
-    eventRates:leagueRates,
+    eventRates:I1_MODE === 'player_asof'
+      ? (x.i1_event_rates_asof || leagueRates)
+      : leagueRates,
   }));
 }
 function makePitcher(x, leagueRates){
   return {
     id:Number(x.mlbam),
     throws:x.throws,
-    eventRatesAllowed:leagueRates,
+    eventRatesAllowed:I1_MODE === 'player_asof'
+      ? (x.i1_event_rates_asof || leagueRates)
+      : leagueRates,
   };
 }
 function loglossTerm(y,p){
@@ -238,7 +244,9 @@ const payload={
   market_inputs_used:false,
   observed_i2_state_used_as_predictor:false,
   point_in_time_player_refits:Boolean(walkforward),
+  i1_state_mode:I1_MODE,
   i1_state_model:replay.i1_state_model,
+  i1_player_asof_model:I1_MODE === 'player_asof' ? (replay.i1_player_asof_model || null) : null,
   park_rule:'prior-season Savant 3yr profile; explicit neutral for new/temporary or unmatched venue',
   park_match_rate:n ? parkMatched/n : null,
   transition_model:playCalibration.version,
@@ -254,4 +262,5 @@ console.log(JSON.stringify({
   n:payload.n,raw_brier:payload.raw_brier,raw_logloss:payload.raw_logloss,
   park_match_rate:payload.park_match_rate,trials_per_game:TRIALS,
   point_in_time_player_refits:payload.point_in_time_player_refits,
+  i1_state_mode:payload.i1_state_mode,
 },null,2));
