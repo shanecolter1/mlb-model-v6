@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { fetchRotowirePublic } from './rotowire_public.mjs';
 import { assertBaseballOnly, norm, fresh, selectLineup, selectStarter, projectionGate, srmReview } from './i2_source_governance.mjs';
 
 const MLB = 'https://statsapi.mlb.com';
@@ -55,14 +56,22 @@ export async function collectSources(date, env = process.env) {
     u.searchParams.set('key',env.ROTOWIRE_API_KEY);u.searchParams.set('date',date);u.searchParams.set('format','json');
     return normalizeRotowire(await request(u),date,stamp());
   };
+  const publicPage=safeSource('ROTOWIRE_PUBLIC',()=>fetchRotowirePublic(date));
+  const rotowire=async(endpoint,kind)=>{
+    const page=await publicPage;
+    if(page.value?.some(g=>g.teams.some(t=>t[kind]))) return page.value;
+    return rw(endpoint);
+  };
   const [lineups,starters,rr,reports,news] = await Promise.all([
-    safeSource('ROTOWIRE',()=>rw('ProjectedLineups')),safeSource('ROTOWIRE_STARTERS',()=>rw('ProjectedStarters')),
+    safeSource('ROTOWIRE',()=>rotowire('ProjectedLineups','lineup')),safeSource('ROTOWIRE_STARTERS',()=>rotowire('ProjectedStarters','starter')),
     // FanGraphs has no verified public JSON contract. Reviewed same-day export is explicit,
     // never reinterpret a depth chart as a game-confirmed lineup.
     safeSource('ROSTERRESOURCE',()=>readSnapshot(env.I2_ROSTERRESOURCE_SNAPSHOT,date)),
     safeSource('TEAM_BEAT_REPORTS',()=>readSnapshot(env.I2_BASEBALL_REPORTS || 'config/i2_baseball_reports.json',date)),
     safeSource('MLB_NEWS',async()=>parseNews(await request('https://www.mlb.com/feeds/news/rss.xml',false)))
   ]);
+  const {value,...publicAudit}=await publicPage;
+  lineups.publicPage=publicAudit;starters.publicPage=publicAudit;
   return {date,lineups,starters,rr,reports,news};
 }
 export function feedOrder(feed, side) {
@@ -104,6 +113,9 @@ export async function resolveGameInputs(game, feed, sources, previous = null) {
     const team=game.teams[side].team;
     const players=Object.values(feed.gameData?.players || {}).map(p=>norm(p.fullName));
     const news=[...reportNews,...(sources.news.value || []).filter(n=>norm(n.reason).includes(norm(team.teamName || team.name)) || players.some(p=>p.length>7 && norm(n.reason).includes(p)))];
+    const bulk=sp?.primaryPitcher || rw?.primaryPitcher;
+    if(bulk) news.push({source:'RotoWire public lineups',timestamp:now,action:'PRIMARY_BULK_PITCHER',reason:`${bulk} is labeled PRIM, not the starting pitcher`,recommendedAction:'SRM_REVIEW_RECOMMENDED'});
+    if(bulk && !sp?.starter) news.push({source:'RotoWire public lineups',timestamp:now,action:'STARTER_UNRESOLVED',reason:'Public page identifies a bulk pitcher without identifying the actual opener',recommendedAction:'STARTER_UPDATE_REQUIRED'});
     if (sp?.opener) news.push({source:'RotoWire Projected Starters',timestamp:now,action:'OPENER',reason:`Reported opener: ${sp.opener}`,recommendedAction:'SRM_REVIEW_RECOMMENDED'});
     const opponent=feed.gameData?.probablePitchers?.[side==='away'?'home':'away'];
     const opposingHand=feed.gameData?.players?.[`ID${opponent?.id}`]?.pitchHand?.code;

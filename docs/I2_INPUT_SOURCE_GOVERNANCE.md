@@ -54,7 +54,19 @@ recommendations and Kelly output. Invalidated probabilities remain for audit onl
 
 ### RotoWire
 
-Set GitHub Actions secret `ROTOWIRE_API_KEY`. The reusable daily, preliminary, and
+The default transport is the public daily lineup page, fetched once per collection
+pass for both lineups and starters, without login or API credentials. Only game date,
+ET start time, team codes, full names, batting order/handedness, explicit confirmation
+status and starter/bulk roles enter normalized input objects. The full HTML, scripts,
+prices and market blocks are discarded. Page date must equal the requested date;
+unknown markup or gated pages fall through safely. Source publication timestamp is
+null when the page provides none; retrieval time is recorded separately. PRIM means
+bulk pitcher and is never promoted to actual starter. An unidentified opener is flagged
+for starter review and blocks recommendations. Public access can change or fail.
+
+`ROTOWIRE_API_KEY` is optional: the API is attempted only when public retrieval or
+usable data for that feed is unavailable. Do not purchase API access merely to use the
+public-page path. If API fallback is desired, set GitHub Actions secret `ROTOWIRE_API_KEY`. The reusable daily, preliminary, and
 v0.4 workflows pass it to the baseball adapter. No key is stored or logged.
 
 Verified official documentation:
@@ -163,3 +175,5 @@ The deterministic parity fixture was captured from main `a7b6271` with identical
 players, statistics, seed, calibration and 1,000 trials. It is an integration regression,
 not a newly fitted model. Live paid RotoWire and live RosterResource feeds remain
 unverified as noted above.
+
+Public transport validation: parser fixtures cover confirmation, full names, date/ET DST, doubleheaders, bulk roles, market-field isolation, credential-free retrieval and optional API fallback. The existing I2 unit workflow also runs a live public-access check without API credentials (non-blocking when the third party is unavailable).

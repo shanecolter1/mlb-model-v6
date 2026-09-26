@@ -10,6 +10,7 @@ on:
       - 'package.json'
       - 'src/inputs/**'
       - 'tests/i2_source*'
+      - 'tests/i2_rotowire_public.test.mjs'
       - 'tests/fixtures/i2_*'
       - 'src/pipeline/run_i2_today.mjs'
       - 'src/market/sportsgameodds_data_source.mjs'
@@ -29,6 +30,13 @@ jobs:
           node-version: '22'
       - name: Test source governance and production parity
         run: node --test tests/i2_source_governance.test.mjs tests/i2_source_integration.test.mjs
+      - name: Test public RotoWire parser
+        run: node --test tests/i2_rotowire_public.test.mjs
+      - name: Check live public RotoWire access without API credentials
+        continue-on-error: true
+        env:
+          I2_TEST_LIVE_ROTOWIRE: '1'
+        run: node --test tests/i2_rotowire_public.test.mjs
       - name: Test total-conditioning invariants
         run: node tests/i2_total_conditioning.test.mjs
       - name: Test SportsGameOdds post-freeze adapter
