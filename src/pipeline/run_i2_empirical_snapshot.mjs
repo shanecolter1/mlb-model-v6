@@ -7,7 +7,10 @@ const END = new Date(`${DATE}T12:00:00Z`);
 END.setUTCDate(END.getUTCDate()-1);
 const END_DATE = END.toISOString().slice(0,10);
 const OUTPUT = String(process.env.I2_EMPIRICAL_OUTPUT || `data/runtime/i2/${DATE}_empirical_snapshot.json`);
+const PRODUCTION_INPUT = String(process.env.I2_PRODUCTION_INPUT || `data/runtime/i2/${DATE}_frozen_predictions.json`);
 const CONCURRENCY = Number(process.env.I2_EMPIRICAL_CONCURRENCY || 8);
+const production = fs.existsSync(PRODUCTION_INPUT) ? JSON.parse(fs.readFileSync(PRODUCTION_INPUT,'utf8')) : null;
+const productionByGame = new Map((production?.games || []).map(g=>[String(g.gamePk),g]));
 
 async function getJson(url){
   const r=await fetch(url,{headers:{accept:'application/json','user-agent':'MLB-I2-Empirical-Snapshot/2.0'}});
@@ -134,13 +137,19 @@ const schedule=await getJson(`https://statsapi.mlb.com/api/v1/schedule?sportId=1
 const scheduled=(schedule.dates||[]).flatMap(d=>d.games||[]).filter(g=>g.gameType==='R');
 const metas=await mapLimit(scheduled,CONCURRENCY,async g=>{
   const f=await feed(g.gamePk);
+  const pg=productionByGame.get(String(g.gamePk));
+  const starter=(side)=>{
+    const resolved=pg?.inputAudit?.[side]?.starter;
+    if(resolved?.resolvedMlbId) return {id:resolved.resolvedMlbId,fullName:resolved.resolvedMlbName||resolved.name,source:'FROZEN_PRODUCTION_INPUT'};
+    return f.gameData?.probablePitchers?.[side]||g.teams?.[side]?.probablePitcher||null;
+  };
   return {
     gamePk:g.gamePk,
     gameDate:g.gameDate,
     away:f.gameData?.teams?.away||g.teams?.away?.team,
     home:f.gameData?.teams?.home||g.teams?.home?.team,
-    awayStarter:f.gameData?.probablePitchers?.away||g.teams?.away?.probablePitcher||null,
-    homeStarter:f.gameData?.probablePitchers?.home||g.teams?.home?.probablePitcher||null,
+    awayStarter:starter('away'),
+    homeStarter:starter('home'),
   };
 });
 
@@ -150,7 +159,8 @@ const out={
   method:{
     locked05:'Half-inning scoreless = 65% starting-pitcher season I2 scoreless rate + 35% opponent offense last-25 I2 scoreless rate. Full I2 Under 0.5 = top scoreless x bottom scoreless.',
     distributionExtension:'For alternate run totals only, the same 65/35 weights are applied bucket-by-bucket to observed I2 run distributions (0,1,2,3,4+); full-inning distribution is the convolution of top and bottom distributions. This extension does not alter the locked 0.5 formula.',
-    recentWindows:'Pitcher last15/10/5 and offense last10 are diagnostics only and are not model inputs.'
+    recentWindows:'Pitcher last15/10/5 and offense last10 are diagnostics only and are not model inputs.',
+    starterIdentity:'Uses the already-frozen production starter MLB identity when available; MLB probable-pitcher is fallback only. This aligns inputs without changing the empirical formula.'
   },
   games:[]
 };
