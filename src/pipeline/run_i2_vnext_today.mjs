@@ -458,7 +458,12 @@ async function runGame(game) {
     lineupConfirmed:['away','home'].every(side => inputAudit[side].lineup.status.startsWith('CONFIRMED')),
     inputAudit,
     predictionClass:['away','home'].every(side=>inputAudit[side].lineup.status.startsWith('CONFIRMED')) ? 'CONFIRMED_INPUTS' : 'PROVISIONAL_EXPECTED_INPUTS',
-    bettingEligibility:inputAudit.gate,
+    sourceEligibility:inputAudit.gate,
+    bettingEligibility:{
+      eligible:false,
+      status:'SHADOW_ONLY_NOT_PROMOTED',
+      reasons:['VNEXT_PROSPECTIVE_VALIDATION_REQUIRED'],
+    },
     awayLineup:awayBuilt.names,
     homeLineup:homeBuilt.names,
     awayStarter:awayStarter?.name || null,
@@ -549,7 +554,23 @@ async function runGame(game) {
   // A fresh simulation of the resolved identities satisfies a prior invalidation.
   inputAudit.previousProjectionInvalidations = inputAudit.gate.invalidations;
   inputAudit.gate = projectionGate(inputAudit);
-  if (venueProfile) base.bettingEligibility = inputAudit.gate;
+  base.sourceEligibility = inputAudit.gate;
+  if (!venueProfile) {
+    base.bettingEligibility = {
+      eligible:false,
+      status:'SHADOW_INPUT_INCOMPLETE',
+      reasons:[
+        'VNEXT_PROSPECTIVE_VALIDATION_REQUIRED',
+        'SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK',
+      ],
+    };
+  } else {
+    base.bettingEligibility = {
+      eligible:false,
+      status:'SHADOW_ONLY_NOT_PROMOTED',
+      reasons:['VNEXT_PROSPECTIVE_VALIDATION_REQUIRED'],
+    };
+  }
   return {...base,modelStatus:'FROZEN_VNEXT_SHADOW_PROJECTION',trials:TRIALS,rawUnder05,rawOver05:1-rawUnder05,under05:finalUnder05,over05:finalOver05,under05Pct:pct(finalUnder05),over05Pct:pct(finalOver05),rawUnder05Pct:pct(rawUnder05),fairUnder:odds(finalFairUnder),fairOver:odds(finalFairOver),rawFullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),rawFullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),rawTop2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),rawTop2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),rawBottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),rawBottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),top2ScorePct:pct(result.top2.cumulative['1+']),bottom2ScorePct:pct(result.bottom2.cumulative['1+']),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
 }
 
@@ -577,10 +598,11 @@ async function main(){
       await applyResolvedInputs(freshFeed, checked);
       checked.gate = projectionGate({...checked,previous:projected.inputAudit});
       projected.inputAudit.freezeCheck = {checkedAt:new Date().toISOString(), gate:checked.gate};
+      projected.sourceEligibility = checked.gate;
       projected.bettingEligibility = projected.modelStatus === 'FROZEN_VNEXT_SHADOW_PROJECTION'
         ? (projected.dataAudit?.venueProfileMatched
-            ? checked.gate
-            : {eligible:false,status:'SHADOW_INPUT_INCOMPLETE',reasons:['SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK']})
+            ? {eligible:false,status:'SHADOW_ONLY_NOT_PROMOTED',reasons:['VNEXT_PROSPECTIVE_VALIDATION_REQUIRED']}
+            : {eligible:false,status:'SHADOW_INPUT_INCOMPLETE',reasons:['VNEXT_PROSPECTIVE_VALIDATION_REQUIRED','SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK']})
         : {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['MODEL_UNAVAILABLE']};
       if (checked.gate.requiresCleanRerun) projected.modelStatus = 'PROJECTION_INVALIDATED';
       projected.inputAudit.confirmationAudit = {away:checked.away.lineup.audit,home:checked.home.lineup.audit};
@@ -590,6 +612,8 @@ async function main(){
   ranked.forEach((g,i)=>g.underRank=i+1);
   const payload={
     model:'MLB I2 vNext Direct Talent Shadow',
+    promotionStatus:'SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED',
+    prospectiveValidationStart:vnextFullCalibration?.holdout_policy?.prospective_validation_start || null,
     baseballDataArchitecture:'SELF_CONTAINED_REPOSITORY_PIPELINE',
     primaryBaseballSource:'MLB Stats API direct',
     provisionalLineupSource:'RotoWire public daily-lineups HTML',
