@@ -17,6 +17,9 @@ on:
       - 'src/pipeline/run_i2_today.mjs'
       - 'src/market/sportsgameodds_data_source.mjs'
       - 'tests/sportsgameodds_data_source.test.mjs'
+      - 'src/model/i2_price_dependent_recommendations.mjs'
+      - 'src/pipeline/build_i2_market_range_report.mjs'
+      - 'src/pipeline/fetch_sgo_mlb_inning_markets.mjs'
   workflow_dispatch:
 
 permissions:
@@ -43,3 +46,8 @@ jobs:
         run: node tests/i2_total_conditioning.test.mjs
       - name: Test SportsGameOdds post-freeze adapter
         run: node tests/sportsgameodds_data_source.test.mjs
+      - name: Check I2 market reporting syntax
+        run: |
+          node --check src/pipeline/fetch_sgo_mlb_inning_markets.mjs
+          node --check src/pipeline/build_i2_market_range_report.mjs
+          node --check src/model/i2_price_dependent_recommendations.mjs
