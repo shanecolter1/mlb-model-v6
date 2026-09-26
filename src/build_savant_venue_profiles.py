@@ -16,6 +16,7 @@ import argparse
 import io
 import json
 import math
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -70,15 +71,54 @@ def read_leaderboard(url: str) -> pd.DataFrame:
         },
     )
     response.raise_for_status()
-    tables = pd.read_html(io.StringIO(response.text))
+    text = response.text
+
+    # Savant renders this leaderboard from an embedded JSON payload. Parse the
+    # payload directly because CI clients can receive an HTML shell without a
+    # materialized table.
+    match = re.search(r"\\bdata\\s*=\\s*(\\[.*?\\]);", text, re.S)
+    if match:
+        raw = pd.DataFrame(json.loads(match.group(1)))
+        aliases = {
+            "Team": ["Team", "team", "team_name", "team_short", "name_display_club"],
+            "Venue": ["Venue", "venue", "venue_name"],
+            "Year": ["Year", "year", "year_range"],
+            "Park Factor": ["Park Factor", "index_woba", "index_wOBA"],
+            "wOBAcon": ["wOBAcon", "index_wobacon", "index_woba_con"],
+            "xwOBAcon": ["xwOBAcon", "index_xwobacon", "index_xwoba_con"],
+            "BACON": ["BACON", "index_bacon"],
+            "xBACON": ["xBACON", "index_xbacon"],
+            "HardHit": ["HardHit", "index_hard_hit", "index_hardhit"],
+            "R": ["R", "index_run", "index_runs", "index_r"],
+            "OBP": ["OBP", "index_obp"],
+            "H": ["H", "index_hit", "index_hits", "index_h"],
+            "1B": ["1B", "index_1b", "index_single"],
+            "2B": ["2B", "index_2b", "index_double"],
+            "3B": ["3B", "index_3b", "index_triple"],
+            "HR": ["HR", "index_hr"],
+            "BB": ["BB", "index_bb"],
+            "SO": ["SO", "index_so", "index_k"],
+            "PA": ["PA", "pa", "plate_appearances"],
+        }
+        normalized = pd.DataFrame(index=raw.index)
+        for target, options in aliases.items():
+            source = next((name for name in options if name in raw.columns), None)
+            normalized[target] = raw[source] if source is not None else None
+        if normalized["Venue"].notna().any():
+            return normalized
+
+    # Fallback if Savant serves a fully materialized table.
+    tables = pd.read_html(io.StringIO(text))
     candidates = [
         t for t in tables
         if {"Venue", "R", "HR", "PA"}.issubset(set(map(str, t.columns)))
     ]
     if not candidates:
-        raise RuntimeError(f"Could not locate park-factor table at {url}")
+        columns = list(raw.columns) if "raw" in locals() else []
+        raise RuntimeError(
+            f"Could not locate park-factor data at {url}; embedded columns={columns}"
+        )
     return candidates[0].copy()
-
 def number(value: Any) -> float | None:
     if value is None or (isinstance(value, float) and math.isnan(value)):
         return None
