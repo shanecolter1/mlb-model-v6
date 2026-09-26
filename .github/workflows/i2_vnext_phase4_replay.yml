@@ -19,9 +19,9 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  replay-2025:
+  prepare-replay:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install bounded replay dependencies
+      - name: Install bounded preparation dependencies
         run: python -m pip install --upgrade pip pandas numpy scikit-learn
 
       - name: Restore frozen baseball data
@@ -70,11 +70,12 @@ jobs:
         run: |
           python src/research/build_i2_vnext_walkforward_models.py             --input data/derived/i2_vnext/i2_pa_statcast.csv             --frozen-model data/derived/i2_vnext/i2_vnext_event_model.json             --arsenal-dir data/derived/i2_vnext/arsenal             --output-dir data/derived/i2_vnext/walkforward_2025
 
-      - name: Verify point-in-time isolation before replay
+      - name: Verify and checkpoint phase 4A
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
+
           root=Path('data/derived/i2_vnext/walkforward_2025')
           m=json.loads((root/'manifest.json').read_text())
           assert m['market_inputs_used'] is False
@@ -87,16 +88,67 @@ jobs:
               assert artifact['market_inputs_used'] is False
               end=artifact.get('training',{}).get('end')
               assert end and end < e['training_cutoff_exclusive'], (e,end)
+
           r=json.loads(Path('data/derived/i2_vnext/replay_2025_inputs_player_asof.json').read_text())
           a=r['i1_player_asof_model']
+          assert a['status']=='SELECTED_BY_2024_OOS_AB'
           assert a['market_inputs_used'] is False
           assert a['games']==r['games_eligible']
-          print(json.dumps({
-              'walkforward_entries':m['entries'],
-              'i1_player_asof':a,
-          },indent=2))
+
+          checkpoint={
+              'version':'i2-vnext-phase4a-prepared-v1',
+              'season':2025,
+              'market_inputs_used':False,
+              'games':r['games_eligible'],
+              'i1_player_asof_model':a,
+              'walkforward_manifest':m,
+          }
+          Path('data/derived/i2_vnext/phase4a_prepare_checkpoint.json').write_text(
+              json.dumps(checkpoint,indent=2)
+          )
+          print(json.dumps(checkpoint,indent=2))
           PY
           node --check src/research/run_i2_vnext_replay.mjs
+
+      - name: Upload durable phase 4A prepared state
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase4a-prepared
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2025_inputs_player_asof.json
+            data/derived/i2_vnext/i2_vnext_event_model.json
+            data/derived/i2_vnext/arsenal_profile_2024.json
+            data/derived/i2_vnext/park/
+            data/derived/i2_vnext/walkforward_2025/
+            data/derived/i2_vnext/phase4a_prepare_checkpoint.json
+
+      - name: Commit compact phase 4A checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/phase4a_prepare_checkpoint.json
+          if git diff --cached --quiet; then
+            echo "No phase 4A checkpoint change"
+          else
+            git commit -m "research: checkpoint I2 vNext phase 4A replay inputs"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
+
+  replay-2025:
+    needs: prepare-replay
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore exact phase 4A prepared state
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase4a-prepared
+          path: data/derived/i2_vnext
 
       - name: Run untouched 2025 full-I2 replay
         run: |
@@ -116,34 +168,6 @@ jobs:
           assert m['i1_state_mode']=='player_asof'
           assert m['i1_player_asof_model']['market_inputs_used'] is False
           assert m['n']>=2000
-          print(json.dumps({
-              'n':m['n'],
-              'raw_brier':m['raw_brier'],
-              'raw_logloss':m['raw_logloss'],
-              'park_match_rate':m['park_match_rate'],
-              'trials_per_game':m['trials_per_game'],
-              'i1_state_mode':m['i1_state_mode'],
-              'walkforward_cadence':m['walkforward_policy']['cadence'],
-          },indent=2))
-          PY
-
-      - name: Upload durable phase 4 replay
-        uses: actions/upload-artifact@v4
-        with:
-          name: i2-vnext-phase4-replay-2025
-          if-no-files-found: error
-          retention-days: 14
-          path: |
-            data/derived/i2_vnext/replay_2025_predictions.json
-            data/derived/i2_vnext/replay_2025_inputs_player_asof.json
-            data/derived/i2_vnext/walkforward_2025/
-
-      - name: Commit compact phase 4 checkpoint
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          m=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
           checkpoint={
               'version':'i2-vnext-phase4-replay-checkpoint-v1',
               'season':2025,
@@ -156,13 +180,29 @@ jobs:
               'i1_state_mode':m['i1_state_mode'],
               'walkforward_policy':m['walkforward_policy'],
           }
-          Path('data/derived/i2_vnext/phase4_replay_checkpoint.json').write_text(json.dumps(checkpoint,indent=2))
+          Path('data/derived/i2_vnext/phase4_replay_checkpoint.json').write_text(
+              json.dumps(checkpoint,indent=2)
+          )
+          print(json.dumps(checkpoint,indent=2))
           PY
+
+      - name: Upload durable phase 4B replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase4b-replay-2025
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2025_predictions.json
+            data/derived/i2_vnext/phase4_replay_checkpoint.json
+
+      - name: Commit compact phase 4B checkpoint
+        run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add data/derived/i2_vnext/phase4_replay_checkpoint.json
           if git diff --cached --quiet; then
-            echo "No phase 4 checkpoint change"
+            echo "No phase 4B checkpoint change"
           else
             git commit -m "research: checkpoint I2 vNext 2025 full replay"
             git pull --rebase origin research/i2-vnext-direct-talent
