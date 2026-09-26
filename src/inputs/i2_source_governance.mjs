@@ -119,7 +119,9 @@ export function projectionGate({ away, home, previous = null }) {
     if (prior?.starter?.name && !starterIdentitySame(prior.starter,current.starter)) changes.push('PROJECTION_INVALIDATED_STARTER_CHANGE');
     if (prior?.lineup?.players && !lineupIdentitySame(prior.lineup,current.lineup)) changes.push('PROJECTION_INVALIDATED_LINEUP_CHANGE');
   }
-  return { projection: changes.length ? 'INVALIDATED' : reasons.length ? 'PRELIMINARY' : [away,home].every(c => c.lineup.status.startsWith('CONFIRMED')) ? 'VALID' : 'PRELIMINARY',
+  const confirmedLineups = [away,home].every(c => c.lineup.status.startsWith('CONFIRMED'));
+  if (!confirmedLineups) reasons.push('LINEUP_NOT_CONFIRMED');
+  return { projection: changes.length ? 'INVALIDATED' : reasons.length ? 'PRELIMINARY' : 'VALID',
     requiresCleanRerun: changes.length > 0, invalidations: [...new Set(changes)],
     eligible: reasons.length === 0 && changes.length === 0, status: reasons.length || changes.length ? 'NO_ACTIONABLE_RECOMMENDATION' : 'ELIGIBLE', reasons: [...new Set([...reasons,...changes])] };
 }
