@@ -160,6 +160,8 @@ payload.ranking = eligible
     return {
       ...priorRow,
       gamePk: game.gamePk,
+      bettingEligibility: game.bettingEligibility,
+      inputAudit: game.inputAudit,
       matchup: `${game.away} @ ${game.home}`,
       gameDate: game.gameDate,
       under05Pct: game.under05Pct,

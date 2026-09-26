@@ -29,6 +29,9 @@ jobs:
   run-preliminary-slate:
     runs-on: ubuntu-latest
     env:
+      ROTOWIRE_API_KEY: ${{ secrets.ROTOWIRE_API_KEY }}
+      I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
+      I2_BASEBALL_REPORTS: config/i2_baseball_reports.json
       SPORTSBOOK_DATA_SOURCE: SPORTSGAMEODDS
       SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
     steps:

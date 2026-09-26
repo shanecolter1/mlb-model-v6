@@ -1,5 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { collectSources, resolveGameInputs, applyResolvedInputs } from '../inputs/i2_baseball_sources.mjs';
+import { projectionGate, compactAudit, lineupDelta } from '../inputs/i2_source_governance.mjs';
 import { simulateFullSecondInning } from '../model/i2_inning_model.js';
 import { createSeededRandom, seedFromGameId } from '../model/seeded_random.js';
 
@@ -10,6 +12,9 @@ const TRIALS = Number(process.env.I2_TRIALS || 50000);
 const OUTPUT = process.env.I2_OUTPUT || `data/runtime/i2/${DATE}_frozen_predictions.json`;
 const CALIBRATION_PATH = process.env.I2_PLAY_CALIBRATION || 'data/derived/i2/i2_play_calibration.json';
 const VENUE_PATH = process.env.I2_VENUE_PROFILES || `data/runtime/i2/savant_venue_profiles_${SEASON}_3yr.json`;
+
+let baseballSources;
+const priorFrozen = fs.existsSync(OUTPUT) ? JSON.parse(fs.readFileSync(OUTPUT, 'utf8')) : null;
 
 const EVENT_KEYS = ['single','double','triple','home_run','walk','hit_by_pitch','strikeout','ball_in_play_out'];
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -244,7 +249,13 @@ function odds(x){ return x == null ? null : Math.round(x); }
 
 async function runGame(game) {
   const gamePk = game.gamePk;
-  const feed = await fetchJson(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`);
+  const originalFeed = await fetchJson(`https://statsapi.mlb.com/api/v1.1/game/${gamePk}/feed/live`);
+  const previous = priorFrozen?.games?.find(g => String(g.gamePk) === String(gamePk))?.inputAudit;
+  const inputAudit = await resolveGameInputs(game, originalFeed, baseballSources, previous);
+  inputAudit.previousProjectedVsCurrent = previous ? Object.fromEntries(['away','home'].map(side => [side,{previousStatus:previous[side].lineup.status,previousTimestamp:previous[side].lineup.timestamp,currentStatus:inputAudit[side].lineup.status,...lineupDelta(previous[side].lineup.players,inputAudit[side].lineup.players)}])) : null;
+  let feed;
+  try { feed = await applyResolvedInputs(originalFeed, inputAudit); }
+  catch (error) { return {gamePk, gameDate:game.gameDate, away:game.teams?.away?.team?.name, home:game.teams?.home?.team?.name, inputAudit, modelStatus:'PENDING_INPUT_IDENTITY', bettingEligibility:{eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['UNRESOLVED_MLB_IDENTITY']}, error:String(error)}; }
   const awayBuilt = await buildLineup(feed,'away');
   const homeBuilt = await buildLineup(feed,'home');
   const awayStarter = await buildStarter(feed,'away');
@@ -257,7 +268,10 @@ async function runGame(game) {
     away:game.teams?.away?.team?.name,
     home:game.teams?.home?.team?.name,
     venue:game.venue?.name,
-    lineupConfirmed:awayBuilt.confirmed && homeBuilt.confirmed,
+    lineupConfirmed:['away','home'].every(side => inputAudit[side].lineup.status.startsWith('CONFIRMED')),
+    inputAudit,
+    predictionClass:['away','home'].every(side=>inputAudit[side].lineup.status.startsWith('CONFIRMED')) ? 'CONFIRMED_INPUTS' : 'PROVISIONAL_EXPECTED_INPUTS',
+    bettingEligibility:inputAudit.gate,
     awayLineup:awayBuilt.names,
     homeLineup:homeBuilt.names,
     awayStarter:awayStarter?.name || null,
@@ -283,10 +297,15 @@ async function runGame(game) {
 
   const random = createSeededRandom(seedFromGameId(String(gamePk), Number(DATE.replaceAll('-',''))));
   const result = simulateFullSecondInning({away:{lineup:awayBuilt.lineup, starter:awayStarter},home:{lineup:homeBuilt.lineup, starter:homeStarter},league,environmentalContext,weights:{batter:0.5,pitcher:0.5},trials:TRIALS,random,playCalibration});
+  // A fresh simulation of the resolved identities satisfies a prior invalidation.
+  inputAudit.previousProjectionInvalidations = inputAudit.gate.invalidations;
+  inputAudit.gate = projectionGate(inputAudit);
+  base.bettingEligibility = inputAudit.gate;
   return {...base,modelStatus:'FROZEN_RESEARCH_PROJECTION',trials:TRIALS,under05:result.under05,over05:result.over05,under05Pct:pct(result.under05),over05Pct:pct(result.over05),fairUnder:odds(result.fairOdds.under05),fairOver:odds(result.fairOdds.over05),fullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),fullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),top2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),top2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),bottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),bottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),top2ScorePct:pct(result.top2.cumulative['1+']),bottom2ScorePct:pct(result.bottom2.cumulative['1+']),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
 }
 
 async function main(){
+  baseballSources = await collectSources(DATE);
   const schedule = await fetchJson(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${DATE}&hydrate=probablePitcher,team,venue`);
   const allGames = schedule?.dates?.flatMap(d=>d.games || []) || [];
   const cutoffMs = Date.parse(CUTOFF);
@@ -295,6 +314,20 @@ async function main(){
   for (const game of remaining) {
     try { games.push(await runGame(game)); }
     catch(e) { games.push({gamePk:game.gamePk,gameDate:game.gameDate,away:game.teams?.away?.team?.name,home:game.teams?.home?.team?.name,modelStatus:'ERROR',error:String(e)}); }
+  }
+  // Recheck immediately before freeze; changed inputs must get a clean subsequent rerun.
+  const finalSources = await collectSources(DATE);
+  for (const projected of games) {
+    if (!projected.inputAudit) continue;
+    try {
+      const scheduled = remaining.find(g => g.gamePk === projected.gamePk);
+      const freshFeed = await fetchJson(`https://statsapi.mlb.com/api/v1.1/game/${projected.gamePk}/feed/live`);
+      const checked = await resolveGameInputs(scheduled, freshFeed, finalSources, projected.inputAudit);
+      projected.inputAudit.freezeCheck = {checkedAt:new Date().toISOString(), gate:checked.gate};
+      projected.bettingEligibility = projected.modelStatus === 'FROZEN_RESEARCH_PROJECTION' ? checked.gate : {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['MODEL_UNAVAILABLE']};
+      if (checked.gate.requiresCleanRerun) projected.modelStatus = 'PROJECTION_INVALIDATED';
+      projected.inputAudit.confirmationAudit = {away:checked.away.lineup.audit,home:checked.home.lineup.audit};
+    } catch { projected.bettingEligibility = {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['PREFREEZE_RECHECK_FAILED']}; }
   }
   const ranked = games.filter(g=>g.modelStatus==='FROZEN_RESEARCH_PROJECTION').sort((a,b)=>b.under05-a.under05);
   ranked.forEach((g,i)=>g.underRank=i+1);
@@ -322,6 +355,8 @@ async function main(){
     pendingOrErroredGames:games.length-ranked.length,
     ranking:ranked.map(g=>({
       rank:g.underRank,
+      bettingEligibility:g.bettingEligibility,
+      inputAudit:g.inputAudit,
       gamePk:g.gamePk,
       matchup:`${g.away} @ ${g.home}`,
       gameDate:g.gameDate,
@@ -336,6 +371,7 @@ async function main(){
       top2ScorePct:g.top2ScorePct,
       bottom2ScorePct:g.bottom2ScorePct
     })),
+    inputSourceAudit:games.map(compactAudit),
     games
   };
   fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});

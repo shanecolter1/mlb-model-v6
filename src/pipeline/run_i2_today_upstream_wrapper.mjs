@@ -44,7 +44,7 @@ globalThis.fetch = async function upstreamFirstFetch(input, init = {}) {
   if (u.hostname !== 'statsapi.mlb.com') return originalFetch(input, init);
 
   try {
-    if (u.pathname === '/api/v1/schedule') {
+    if (u.pathname === '/api/v1/schedule' && !u.searchParams.has('startDate')) {
       const date = u.searchParams.get('date') || process.env.I2_DATE || new Date().toISOString().slice(0, 10);
       return await upstreamFetch('schedule', { date });
     }

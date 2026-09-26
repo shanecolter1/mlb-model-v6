@@ -11,26 +11,31 @@ assert.equal(Number(americanBreakEven(128).toFixed(6)), Number((100/228).toFixed
 assert(fullKellyFraction(0.4899, 128) > 0);
 
 assert.equal(recommendationGate({
+  baseballEligibility:{eligible:true},
   projectionFrozen:true, bookmaker:'fanduel', americanOdds:128,
   priceTimestamp:'2026-09-25T19:39:59.797Z', modelAvailable:true, exactMarketMatch:true,
 }).eligible, true);
 
 assert.deepEqual(recommendationGate({
+  baseballEligibility:{eligible:true},
   projectionFrozen:true, bookmaker:'', americanOdds:null,
   priceTimestamp:null, modelAvailable:true, exactMarketMatch:true,
 }).reasons, ['SPORTSBOOK_MISSING','PRICE_MISSING','PRICE_TIMESTAMP_MISSING']);
 
 assert(recommendationGate({
+  baseballEligibility:{eligible:true},
   projectionFrozen:false, bookmaker:'fanduel', americanOdds:128,
   priceTimestamp:'2026-09-25T19:39:59.797Z', modelAvailable:true, exactMarketMatch:true,
 }).reasons.includes('PROJECTION_NOT_FROZEN'));
 
 assert(recommendationGate({
+  baseballEligibility:{eligible:true},
   projectionFrozen:true, bookmaker:'fanduel', americanOdds:128,
   priceTimestamp:'2026-09-25T19:39:59.797Z', modelAvailable:true, exactMarketMatch:false,
 }).reasons.includes('EXACT_MARKET_MATCH_FAILED'));
 
 const base = {
+  baseballEligibility:{eligible:true},
   gamePk:1, matchup:'A @ B', marketType:'TEAM_HALF_INNING_TOTAL',
   segment:'bottom', line:0.5, side:'over', modelAvailable:true,
   lastUpdatedAt:'2026-09-25T19:39:59.797Z',

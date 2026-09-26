@@ -36,8 +36,10 @@ export function recommendationGate({
   priceTimestamp,
   modelAvailable,
   exactMarketMatch,
+  baseballEligibility,
 } = {}) {
   const reasons = [];
+  if (baseballEligibility?.eligible !== true) reasons.push(...(baseballEligibility?.reasons?.length ? baseballEligibility.reasons : ['BASEBALL_INPUT_GOVERNANCE_MISSING']));
   if (projectionFrozen !== true) reasons.push('PROJECTION_NOT_FROZEN');
   if (!String(bookmaker || '').trim()) reasons.push('SPORTSBOOK_MISSING');
   const odds = Number(americanOdds);
@@ -75,6 +77,7 @@ export function enrichPriceDependentRecommendation(row, { projectionFrozen } = {
     priceTimestamp: row?.lastUpdatedAt,
     modelAvailable: row?.modelAvailable,
     exactMarketMatch,
+    baseballEligibility:row?.baseballEligibility,
   });
 
   const pProd = Number(row?.productionConditionalPct) / 100;

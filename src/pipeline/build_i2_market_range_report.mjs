@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { revalidateFrozen } from '../inputs/i2_revalidate_frozen.mjs';
 import { reweightExactDistribution } from '../model/i2_total_conditioning.js';
 import { enrichPriceDependentRecommendation, rankPriceDependentRecommendations } from '../model/i2_price_dependent_recommendations.mjs';
 
@@ -12,7 +13,8 @@ const OUTPUT=String(process.env.I2_RANGE_OUTPUT||`data/runtime/i2/${DATE}_i2_mar
 const CSV=String(process.env.I2_RANGE_CSV||`docs/inning_markets/${DATE}_i2_market_range.csv`);
 
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
-const parent=read(PARENT), prod=read(PROD), emp=read(EMP), markets=read(MARKETS);
+const parent=await revalidateFrozen(read(PARENT));
+const prod=read(PROD), emp=read(EMP), markets=read(MARKETS);
 const projectionFrozen=markets?.marketIsolation?.frozenProjection?.projectionFrozen===true;
 
 const KEYS=['0','1','2','3','4+'];
@@ -142,6 +144,7 @@ for(const r of marketRows){
     rangeMinEVPct:evs.length?pct(Math.min(...evs)):null,rangeMaxEVPct:evs.length?pct(Math.max(...evs)):null,
     robustPositiveEV:evs.length===3&&Math.min(...evs)>0,
     modelAvailable:Boolean(m&&prodOut&&empOut&&combOut),
+    baseballEligibility:parentBy.get(String(gamePk))?.bettingEligibility,
   };
   rows.push(enrichPriceDependentRecommendation(comparison,{projectionFrozen}));
 }

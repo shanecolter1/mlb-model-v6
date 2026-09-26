@@ -8,6 +8,10 @@ on:
       - 'src/model/i2_total_conditioning.js'
       - 'tests/i2_total_conditioning.test.mjs'
       - 'package.json'
+      - 'src/inputs/**'
+      - 'tests/i2_source*'
+      - 'tests/fixtures/i2_*'
+      - 'src/pipeline/run_i2_today.mjs'
       - 'src/market/sportsgameodds_data_source.mjs'
       - 'tests/sportsgameodds_data_source.test.mjs'
   workflow_dispatch:
@@ -23,6 +27,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Test source governance and production parity
+        run: node --test tests/i2_source_governance.test.mjs tests/i2_source_integration.test.mjs
       - name: Test total-conditioning invariants
         run: node tests/i2_total_conditioning.test.mjs
       - name: Test SportsGameOdds post-freeze adapter

@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/i2_daily_run.yml'
+      - 'src/inputs/**'
+      - 'config/i2_baseball_reports.json'
+      - 'config/i2_rosterresource_snapshot.json'
       - 'src/market/sportsgameodds_data_source.mjs'
       - 'src/pipeline/run_i2_today.mjs'
       - 'src/pipeline/run_i2_today_upstream_wrapper.mjs'
@@ -38,6 +41,9 @@ jobs:
   run-i2-slate:
     runs-on: ubuntu-latest
     env:
+      ROTOWIRE_API_KEY: ${{ secrets.ROTOWIRE_API_KEY }}
+      I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
+      I2_BASEBALL_REPORTS: config/i2_baseball_reports.json
       SPORTSBOOK_DATA_SOURCE: SPORTSGAMEODDS
       SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
     steps:
@@ -61,6 +67,9 @@ jobs:
           echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
           echo "cutoff=$CUTOFF_INPUT" >> "$GITHUB_OUTPUT"
           echo "trials=$TRIALS_INPUT" >> "$GITHUB_OUTPUT"
+
+      - name: Test baseball source governance
+        run: node --test tests/i2_source_governance.test.mjs
 
       - name: Audit internal venue artifact
         shell: bash
