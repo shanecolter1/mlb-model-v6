@@ -29,7 +29,7 @@ EVENTS = [
     "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
     "strikeout", "ball_in_play_out",
 ]
-CAT = ["batter", "pitcher", "platoon"]
+CAT = ["batter", "pitcher", "platoon", "home_team"]
 PLATOONS = ["LvL", "LvR", "RvL", "RvR"]
 NUM = [f"arsenal_x_{p}" for p in PLATOONS]
 
@@ -270,17 +270,19 @@ def score(prep, model, test: pd.DataFrame) -> dict:
 
 
 def validation_folds(df: pd.DataFrame):
-    folds = []
-    for test_year in sorted(int(x) for x in df["season"].unique()):
-        if test_year != 2024:
-            continue
-        train = df[df["season"] < test_year]
-        test = df[df["season"] == test_year]
-        if len(train) and len(test):
-            folds.append((test_year, train, test))
-    if not folds:
-        raise RuntimeError("No chronological 2024 hyperparameter-selection fold available")
-    return folds
+    # One bounded chronological fold that actually contains both prior-season
+    # and current-season evidence in training. This makes the fitted recency
+    # half-life answer the April-vs-late-season weighting question rather than
+    # merely reweighting a single prior season.
+    cutoff = pd.Timestamp("2024-06-30")
+    train = df[df["game_date"] <= cutoff]
+    test = df[
+        (df["game_date"] > cutoff)
+        & (df["game_date"] < pd.Timestamp("2025-01-01"))
+    ]
+    if train.empty or test.empty:
+        raise RuntimeError("No chronological 2024H2 hyperparameter-selection fold available")
+    return [("2024H2", train, test)]
 
 
 def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
@@ -293,6 +295,9 @@ def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
         "classes": [str(x) for x in model.classes_],
         "categorical_features": CAT,
         "numeric_features": NUM,
+        "nuisance_controls": {
+            "home_team": "fit-only park confounder control; coefficient intentionally omitted at neutral live inference before Savant park is applied once"
+        },
         "arsenal_feature": {
             "name": "pitcher_arsenal_x_batter_pitch_response_x_platoon",
             "historical_source_rule": "prior-season Savant pitch-arsenal stats",
@@ -303,7 +308,10 @@ def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
                 for feature, scale in zip(NUM, prep.named_transformers_["num"].scale_)
             },
         },
-        "selected": {**selected, "selection_year": 2024},
+        "selected": {
+            **selected,
+            "selection_period": "train through 2024-06-30; test 2024-07-01 through season end",
+        },
         "chronological_validation": trials,
         "final_calibration": {
             "status": "PENDING_FULL_I2_OOS_CURVE",
@@ -404,6 +412,7 @@ def main() -> None:
     df["batter"] = pd.to_numeric(df["batter"], errors="raise").astype(int).astype(str)
     df["pitcher"] = pd.to_numeric(df["pitcher"], errors="raise").astype(int).astype(str)
     df["platoon"] = df["platoon"].fillna("?v?").astype(str)
+    df["home_team"] = df["home_team"].fillna("UNKNOWN").astype(str)
     for platoon in PLATOONS:
         df[f"arsenal_x_{platoon}"] = np.where(
             df["platoon"] == platoon,
@@ -463,7 +472,7 @@ def main() -> None:
     artifact = serialize_model(prep, model, selected, trials)
     artifact["holdout_policy"] = {
         "raw_pa_estimation_years": sorted(int(x) for x in fit_df["season"].unique()),
-        "hyperparameter_selection_year": 2024,
+        "hyperparameter_selection_period": "2024H2",
         "full_i2_calibration_year": 2025,
         "full_i2_calibration_fit_segment": "first chronological half",
         "full_i2_calibration_validation_segment": "second chronological half",
