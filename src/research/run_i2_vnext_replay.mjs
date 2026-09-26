@@ -134,13 +134,26 @@ function stand(bats, throws){
   return b==='L' ? 'L' : 'R';
 }
 
+function requireAsOfRates(x, label){
+  const rates=x?.i1_event_rates_asof;
+  if (!rates || typeof rates !== 'object') {
+    throw new Error(`Missing leakage-safe player-asof I1 rates for ${label}`);
+  }
+  for (const key of ['single','double','triple','home_run','walk','hit_by_pitch','strikeout','ball_in_play_out']) {
+    const value=Number(rates[key]);
+    if (!Number.isFinite(value) || value < 0) {
+      throw new Error(`Invalid player-asof I1 rate ${key} for ${label}`);
+    }
+  }
+  return rates;
+}
 function makeLineup(rows, leagueRates){
-  return rows.map(x=>({
+  return rows.map((x,i)=>({
     id:Number(x.mlbam),
     bats:x.bats,
     side:x.bats,
     eventRates:I1_MODE === 'player_asof'
-      ? (x.i1_event_rates_asof || leagueRates)
+      ? requireAsOfRates(x,`hitter ${x.mlbam || i}`)
       : leagueRates,
   }));
 }
@@ -149,7 +162,7 @@ function makePitcher(x, leagueRates){
     id:Number(x.mlbam),
     throws:x.throws,
     eventRatesAllowed:I1_MODE === 'player_asof'
-      ? (x.i1_event_rates_asof || leagueRates)
+      ? requireAsOfRates(x,`pitcher ${x.mlbam}`)
       : leagueRates,
   };
 }
@@ -160,6 +173,14 @@ function loglossTerm(y,p){
 
 const leagueRates=replay?.i1_state_model?.event_rates;
 if (!leagueRates) throw new Error('Replay input missing i1_state_model.event_rates');
+if (I1_MODE === 'player_asof') {
+  if (replay?.i1_state_model?.player_specific_i1_talent_used !== true) {
+    throw new Error('Replay input is not governed for player-specific I1 talent');
+  }
+  if (!replay?.i1_player_asof_model) {
+    throw new Error('Replay input missing i1_player_asof_model governance');
+  }
+}
 
 const predictions=[];
 let brier=0, ll=0, parkMatched=0;
@@ -222,7 +243,7 @@ for (const game of replay.games) {
 
 const n=predictions.length;
 const payload={
-  version:'i2-vnext-full-replay-v2',
+  version:'i2-vnext-full-replay-v3-player-asof-i1',
   generated_at:new Date().toISOString(),
   season:2025,
   model_version:walkforward?.version || model.version,
