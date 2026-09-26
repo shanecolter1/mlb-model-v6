@@ -1,0 +1,22 @@
+{
+  "year": "2026",
+  "generatedAt": "2026-09-26T13:20:10.667Z",
+  "source": "RotoWire provisional lineups vs eventual MLB starting lineups",
+  "sourceRole": "AUDIT_ONLY",
+  "affectsPrediction": false,
+  "affectsEligibility": false,
+  "methodology": "Identity-aware comparison using MLB-equivalent names/IDs where available; no score is fed back into production.",
+  "datesIncluded": [],
+  "sidesGraded": 0,
+  "gamesRepresented": 0,
+  "exactLineups": 0,
+  "exactLineupRate": null,
+  "exactPlayerSets": 0,
+  "exactPlayerSetRate": null,
+  "meanPlayerSetAccuracy": null,
+  "meanSlotAccuracy": null,
+  "meanTop4SlotAccuracy": null,
+  "meanObservationLeadHours": null,
+  "monthly": {},
+  "rows": []
+}
