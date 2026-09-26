@@ -1,0 +1,59 @@
+{
+  "version": "i2-vnext-phase4a-prep-v1",
+  "market_inputs_used": false,
+  "i1_state_selected": "player_asof",
+  "i1_selection_year": 2024,
+  "replay_season": 2025,
+  "replay_games": 2430,
+  "walkforward_cadence": "monthly",
+  "walkforward_entries": [
+    {
+      "effective_from": "2025-01-01",
+      "training_cutoff_exclusive": "2025-01-01",
+      "model_file": "model_end_2024_frozen.json",
+      "source": "end-2024 frozen model",
+      "training_end": "2024-09-30"
+    },
+    {
+      "effective_from": "2025-05-01",
+      "training_cutoff_exclusive": "2025-05-01",
+      "model_file": "model_before_2025-05-01.json",
+      "source": "monthly expanding point-in-time refit",
+      "training_end": "2025-04-30",
+      "training_n": 44671
+    },
+    {
+      "effective_from": "2025-06-01",
+      "training_cutoff_exclusive": "2025-06-01",
+      "model_file": "model_before_2025-06-01.json",
+      "source": "monthly expanding point-in-time refit",
+      "training_end": "2025-05-31",
+      "training_n": 48001
+    },
+    {
+      "effective_from": "2025-07-01",
+      "training_cutoff_exclusive": "2025-07-01",
+      "model_file": "model_before_2025-07-01.json",
+      "source": "monthly expanding point-in-time refit",
+      "training_end": "2025-06-30",
+      "training_n": 51267
+    },
+    {
+      "effective_from": "2025-08-01",
+      "training_cutoff_exclusive": "2025-08-01",
+      "model_file": "model_before_2025-08-01.json",
+      "source": "monthly expanding point-in-time refit",
+      "training_end": "2025-07-31",
+      "training_n": 54331
+    },
+    {
+      "effective_from": "2025-09-01",
+      "training_cutoff_exclusive": "2025-09-01",
+      "model_file": "model_before_2025-09-01.json",
+      "source": "monthly expanding point-in-time refit",
+      "training_end": "2025-08-31",
+      "training_n": 57824
+    }
+  ],
+  "2025_outcomes_used_for_model_selection": false
+}
