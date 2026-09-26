@@ -10,7 +10,7 @@ const fixture=JSON.parse(fs.readFileSync('tests/fixtures/i2_source_parity.json',
 function run(mode) {
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'i2-sourcing-')),output=path.join(dir,'predictions.json');
  try {
-  execFileSync(process.execPath,['--import','./tests/fixtures/i2_baseball_fetch.mjs','src/pipeline/run_i2_today.mjs'],{env:{...process.env,I2_DATE:fixture.date,I2_CUTOFF:fixture.date+'T00:00:00Z',I2_TRIALS:String(fixture.trials),I2_OUTPUT:output,ROTOWIRE_API_KEY:mode==='provisional'?'fixture-only':'',I2_TEST_SOURCE_MODE:mode,I2_ROSTERRESOURCE_SNAPSHOT:'',I2_BASEBALL_REPORTS:''},stdio:'pipe'});
+  execFileSync(process.execPath,['--import','./tests/fixtures/i2_baseball_fetch.mjs','src/pipeline/run_i2_today.mjs'],{env:{...process.env,I2_DATE:fixture.date,I2_CUTOFF:fixture.date+'T00:00:00Z',I2_TRIALS:String(fixture.trials),I2_OUTPUT:output,I2_TEST_SOURCE_MODE:mode,I2_ROSTERRESOURCE_SNAPSHOT:'',I2_BASEBALL_REPORTS:''},stdio:'pipe'});
   return JSON.parse(fs.readFileSync(output,'utf8'));
  } finally {fs.rmSync(dir,{recursive:true,force:true});}
 }
