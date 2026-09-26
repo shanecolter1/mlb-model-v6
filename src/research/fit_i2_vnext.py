@@ -38,6 +38,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--dataset", type=Path, default=Path("data/derived/i2_vnext/i2_pa_statcast.csv"))
     p.add_argument("--arsenal-dir", type=Path, default=Path("data/derived/i2_vnext/arsenal"))
     p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_event_model.json"))
+    p.add_argument("--live-output", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_event_model_live.json"))
     p.add_argument("--live-arsenal-output", type=Path, default=Path("data/derived/i2_vnext/live_arsenal_profile.json"))
     p.add_argument("--replay-arsenal-output", type=Path, default=Path("data/derived/i2_vnext/arsenal_profile_2024.json"))
     p.add_argument("--half-lives", default="180,365,730,1460")
@@ -369,8 +370,31 @@ def main() -> None:
         "pitchers": int(fit_df["pitcher"].nunique()),
     }
 
+    artifact["artifact_role"] = "FROZEN_HOLDOUT_EVALUATION"
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(artifact, separators=(",", ":")), encoding="utf-8")
+
+    # Live production uses the identical frozen specification and hyperparameters,
+    # refit on all baseball observations available through the dataset cutoff.
+    live_prep, live_model = fit_one(df, best[2], best[1])
+    live_artifact = serialize_model(live_prep, live_model, selected, trials)
+    live_artifact["artifact_role"] = "LIVE_REFIT_FIXED_SPECIFICATION"
+    live_artifact["holdout_policy"] = artifact["holdout_policy"]
+    live_artifact["training"] = {
+        "start": df["game_date"].min().date().isoformat(),
+        "end": df["game_date"].max().date().isoformat(),
+        "n": int(len(df)),
+        "seasons": sorted(int(x) for x in df["season"].unique()),
+        "event_counts": {
+            str(k): int(v) for k, v in df["event_class"].value_counts().to_dict().items()
+        },
+        "batters": int(df["batter"].nunique()),
+        "pitchers": int(df["pitcher"].nunique()),
+    }
+    args.live_output.parent.mkdir(parents=True, exist_ok=True)
+    args.live_output.write_text(
+        json.dumps(live_artifact, separators=(",", ":")), encoding="utf-8"
+    )
 
     # 2024 prior-season arsenal is the leakage-safe feature snapshot for 2025
     # full-I2 calibration replay. The live profile remains current-season YTD.
@@ -388,7 +412,8 @@ def main() -> None:
     )
 
     print(json.dumps({
-        "training": artifact["training"],
+        "frozen_training": artifact["training"],
+        "live_training": live_artifact["training"],
         "selected": selected,
         "best_validation_logloss": best[0][0],
         "best_validation_brier": best[0][1],
