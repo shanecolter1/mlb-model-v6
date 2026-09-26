@@ -7,15 +7,22 @@ on:
       - research/i2-vnext-direct-talent
     paths:
       - '.github/workflows/i2_vnext_build.yml'
+      - 'src/research/build_i2_vnext_statcast.py'
+      - 'src/research/fit_i2_vnext.py'
+      - 'src/research/calibrate_i2_vnext_full.py'
+
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
-    permissions:
-      contents: read
+    timeout-minutes: 60
+
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: research/i2-vnext-direct-talent
 
       - uses: actions/setup-python@v5
         with:
@@ -37,19 +44,58 @@ jobs:
             --half-lives 180,365,730,1460 \
             --c-grid 0.05,0.2,1.0
 
+      - name: Fit one final full-I2 calibration curve
+        run: |
+          python src/research/calibrate_i2_vnext_full.py
+
       - name: Syntax check JS inference and simulator
         run: |
           node --check src/model/i2_vnext_event_model.js
           node --check src/model/i2_inning_model.js
+          node --check src/event_probability_engine.js
 
-      - name: Upload research artifacts
+      - name: Summarize selected model
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          manifest=json.loads(Path('data/derived/i2_vnext/dataset_manifest.json').read_text())
+          model=json.loads(Path('data/derived/i2_vnext/i2_vnext_event_model.json').read_text())
+          cal=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
+          print(json.dumps({
+              'dataset_rows': manifest['rows'],
+              'training': model['training'],
+              'selected_event_model': model['selected'],
+              'selected_full_calibration': cal['selected'],
+              'calibration_validation': cal['validation'],
+          }, indent=2))
+          PY
+
+      - name: Commit compact fitted artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/derived/i2_vnext/dataset_manifest.json \
+            data/derived/i2_vnext/i2_vnext_event_model.json \
+            data/derived/i2_vnext/live_arsenal_profile.json \
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+          if git diff --cached --quiet; then
+            echo "No fitted artifact changes"
+          else
+            git commit -m "research: fit bounded I2 vNext artifacts"
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
+
+      - name: Upload bounded research artifacts
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: i2-vnext-bounded-build
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
           path: |
             data/derived/i2_vnext/dataset_manifest.json
-            data/derived/i2_vnext/i2_pa_statcast.csv
             data/derived/i2_vnext/i2_vnext_event_model.json
             data/derived/i2_vnext/live_arsenal_profile.json
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
