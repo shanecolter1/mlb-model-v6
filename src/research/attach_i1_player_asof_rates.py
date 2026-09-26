@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Attach leakage-safe season-to-date player I1 event rates to 2025 replay inputs.
+"""Attach leakage-safe season-to-date player I1 event rates to replay inputs.
 
-This reconstructs the old live I1 state-generator inputs using Retrosheet PAs
-strictly before each game date. Hitter rates use a 100-PA league prior and
-pitcher rates a 180-BF league prior, matching run_i2_vnext_today.mjs.
+This reconstructs the selected live I1 state-generator inputs using Retrosheet
+PAs strictly before each game. Hitter rates use a 100-PA league prior and
+pitcher rates a 180-BF league prior, matching the 2024 A/B selection test and
+run_i2_vnext_today.mjs.
 
-For same-day doubleheaders, both games deliberately use the start-of-day
-snapshot. This is conservative and prevents first-game outcomes from leaking
-into a second-game prediction when exact pregame timing is unavailable.
+Same-day doubleheaders are ordered by Retrosheet game identity/order, so Game 1
+outcomes are available to Game 2 exactly as they would be pregame.
 """
 from __future__ import annotations
 
@@ -57,7 +57,18 @@ def date_key(value: object) -> str:
     return digits[:8]
 
 
-def smooth(counts: Counter, league: dict[str, float], strength: float) -> tuple[dict[str, float], int]:
+def game_order(gid: str, rows: list[dict]) -> tuple[str, int, str]:
+    first = rows[0]
+    date = date_key(first.get("date"))
+    game_num = as_int(first.get("number") or first.get("game_num") or first.get("dh") or 0)
+    return (date, game_num, gid)
+
+
+def smooth(
+    counts: Counter,
+    league: dict[str, float],
+    strength: float,
+) -> tuple[dict[str, float], int]:
     n = int(sum(counts.values()))
     denom = n + float(strength)
     rates = {
@@ -82,33 +93,41 @@ def main() -> None:
     if not league or any(k not in league for k in EVENTS):
         raise RuntimeError("Replay input missing league I1 event rates")
 
-    games_by_date: dict[str, list[dict]] = defaultdict(list)
-    for game in replay.get("games", []):
-        games_by_date[date_key(game.get("date"))].append(game)
+    replay_by_gid = {str(g.get("gid") or ""): g for g in replay.get("games", [])}
+    if len(replay_by_gid) != len(replay.get("games", [])):
+        raise RuntimeError("Replay contains duplicate or blank Retrosheet game IDs")
 
     season = int(replay["season"])
-    rows_by_date: dict[str, list[dict]] = defaultdict(list)
+    source_games: dict[str, list[dict]] = defaultdict(list)
     with zipfile.ZipFile(args.retrosheet_zip) as zf:
         member = f"{season}plays.csv"
+        if member not in zf.namelist():
+            raise RuntimeError(f"{args.retrosheet_zip} does not contain {member}")
         with zf.open(member) as raw:
             for row in csv.DictReader(io.TextIOWrapper(raw, encoding="utf-8-sig", newline="")):
                 if row.get("gametype") != "regular":
                     continue
-                ev = event_class(row)
-                if ev is None:
-                    continue
-                rows_by_date[date_key(row.get("date"))].append(row)
+                gid = str(row.get("gid") or "").strip()
+                if gid:
+                    source_games[gid].append(row)
 
     batter_hist: dict[str, Counter] = defaultdict(Counter)
     pitcher_hist: dict[str, Counter] = defaultdict(Counter)
     attached_games = 0
     zero_batter_support = 0
     zero_pitcher_support = 0
+    same_day_later_games = 0
+    seen_dates: Counter = Counter()
 
-    all_dates = sorted(set(rows_by_date) | set(games_by_date))
-    for d in all_dates:
-        # Snapshot before ingesting any outcomes from this date.
-        for game in games_by_date.get(d, []):
+    for gid, rows in sorted(source_games.items(), key=lambda kv: game_order(kv[0], kv[1])):
+        date = date_key(rows[0].get("date"))
+        game = replay_by_gid.get(gid)
+
+        if game is not None:
+            seen_dates[date] += 1
+            if seen_dates[date] > 1:
+                same_day_later_games += 1
+
             for side in ("away_lineup", "home_lineup"):
                 for hitter in game.get(side, []):
                     retro = str(hitter.get("retro") or "")
@@ -117,6 +136,7 @@ def main() -> None:
                     hitter["i1_asof_pa"] = n
                     if n == 0:
                         zero_batter_support += 1
+
             for side in ("away_starter", "home_starter"):
                 pitcher = game.get(side) or {}
                 retro = str(pitcher.get("retro") or "")
@@ -125,9 +145,12 @@ def main() -> None:
                 pitcher["i1_asof_bf"] = n
                 if n == 0:
                     zero_pitcher_support += 1
+
             attached_games += 1
 
-        for row in rows_by_date.get(d, []):
+        # Ingest this game's PAs only after snapshotting its pregame inputs.
+        # Excluded replay games still contribute to future as-of statistics.
+        for row in rows:
             ev = event_class(row)
             if ev is None:
                 continue
@@ -139,19 +162,25 @@ def main() -> None:
                 pitcher_hist[pitcher][ev] += 1
 
     if attached_games != len(replay.get("games", [])):
-        raise RuntimeError(f"Attached {attached_games} games; expected {len(replay.get('games', []))}")
+        missing = sorted(set(replay_by_gid) - set(source_games))
+        raise RuntimeError(
+            f"Attached {attached_games} games; expected {len(replay.get('games', []))}; "
+            f"missing source gids={missing[:10]}"
+        )
 
     replay["i1_player_asof_model"] = {
-        "status": "AVAILABLE_FOR_AB_TEST",
-        "source": "Retrosheet regular-season PAs strictly before game date",
+        "status": "SELECTED_BY_2024_OOS_AB",
+        "source": "Retrosheet regular-season PAs strictly before each game",
         "hitter_prior_pa": 100,
         "pitcher_prior_bf": 180,
         "prior_distribution": "same prior-season league event vector used by league-average arm",
-        "same_day_doubleheader_policy": "start-of-day snapshot for both games",
+        "same_day_doubleheader_policy": "game-by-game chronological snapshot; earlier game contributes to later game",
+        "same_day_later_games": same_day_later_games,
         "market_inputs_used": False,
         "games": attached_games,
         "zero_support_lineup_slots": zero_batter_support,
         "zero_support_starters": zero_pitcher_support,
+        "selection_evidence": "2024 I1 starting-slot A/B selected player_asof",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(replay, separators=(",", ":")))
