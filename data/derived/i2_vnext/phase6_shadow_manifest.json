@@ -1,0 +1,37 @@
+{
+  "version": "i2-vnext-phase6-shadow-v1",
+  "date": "2026-09-27",
+  "cutoff": "2026-09-27T00:00:00-05:00",
+  "market_inputs_used": false,
+  "promotion_status": "SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED",
+  "trials_per_game": 10000,
+  "remaining_games": 15,
+  "projected_games": 9,
+  "pending_or_errored_games": 6,
+  "model_status_counts": {
+    "FROZEN_VNEXT_SHADOW_PROJECTION": 9,
+    "PENDING_PROBABLE_STARTER": 6
+  },
+  "source_eligibility_counts": {
+    "NO_ACTIONABLE_RECOMMENDATION": 15
+  },
+  "betting_status_counts": {
+    "SHADOW_ONLY_NOT_PROMOTED": 9,
+    "NO_ACTIONABLE_RECOMMENDATION": 6
+  },
+  "prediction_class_counts": {
+    "PROVISIONAL_EXPECTED_INPUTS": 15
+  },
+  "venue_status_counts": {
+    "SAVANT_PROFILE_MATCHED": 14,
+    "SAVANT_PROFILE_UNMATCHED_NEUTRAL_FALLBACK": 1
+  },
+  "actionable_outputs": 0,
+  "final_calibration": {
+    "type": "none",
+    "intercept": 0,
+    "slope": 1
+  },
+  "i1_state_rule": "player season-to-date with 100 PA hitter / 180 BF pitcher league-prior shrinkage",
+  "prospective_validation_required": true
+}
