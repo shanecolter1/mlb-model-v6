@@ -30,7 +30,8 @@ EVENTS = [
     "strikeout", "ball_in_play_out",
 ]
 CAT = ["batter", "pitcher", "platoon"]
-NUM = ["arsenal_matchup_xwoba"]
+PLATOONS = ["LvL", "LvR", "RvL", "RvR"]
+NUM = [f"arsenal_x_{p}" for p in PLATOONS]
 
 
 def parse_args() -> argparse.Namespace:
@@ -165,7 +166,7 @@ def fit_one(train: pd.DataFrame, c: float, half_life: float):
     prep = ColumnTransformer(
         [
             ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=True, dtype=np.float64), CAT),
-            ("num", StandardScaler(), NUM),
+            ("num", StandardScaler(with_mean=False), NUM),
         ],
         sparse_threshold=1.0,
     )
@@ -221,11 +222,14 @@ def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
         "categorical_features": CAT,
         "numeric_features": NUM,
         "arsenal_feature": {
-            "name": "arsenal_matchup_xwoba",
+            "name": "pitcher_arsenal_x_batter_pitch_response_x_platoon",
             "historical_source_rule": "prior-season Savant pitch-arsenal stats",
             "live_source_rule": "current YTD Savant pitch-arsenal snapshot at cutoff",
-            "mean": float(prep.named_transformers_["num"].mean_[0]),
-            "sd": float(prep.named_transformers_["num"].scale_[0]),
+            "platoon_interaction_features": NUM,
+            "scales": {
+                feature: float(scale)
+                for feature, scale in zip(NUM, prep.named_transformers_["num"].scale_)
+            },
         },
         "selected": {**selected, "selection_year": 2024},
         "chronological_validation": trials,
@@ -299,6 +303,12 @@ def main() -> None:
     df["batter"] = pd.to_numeric(df["batter"], errors="raise").astype(int).astype(str)
     df["pitcher"] = pd.to_numeric(df["pitcher"], errors="raise").astype(int).astype(str)
     df["platoon"] = df["platoon"].fillna("?v?").astype(str)
+    for platoon in PLATOONS:
+        df[f"arsenal_x_{platoon}"] = np.where(
+            df["platoon"] == platoon,
+            df["arsenal_matchup_xwoba"],
+            0.0,
+        )
 
     half_lives = [float(x) for x in args.half_lives.split(",") if x]
     c_grid = [float(x) for x in args.c_grid.split(",") if x]
