@@ -139,6 +139,43 @@ const coverage = {
   ninthFullInningEnabled: activeOddIDs.some(id => id.includes('-9i-') && (id.includes('-ml3way-') || id.startsWith('points-all-9i-ou-'))),
 };
 
+const exhaustiveCatalogByOddID = new Map((exhaustiveCatalog.markets || []).map(x => [x?.oddID, x]));
+const exhaustiveTodayRawEvents = filterEventsByLocalDate(exhaustiveRaw.events || [], date, timeZone);
+const exhaustivePriceRows = [];
+for (const event of exhaustiveTodayRawEvents) {
+  const matchup = `${event?.teams?.away?.names?.long || event?.teams?.away?.name || 'Away'} @ ${event?.teams?.home?.names?.long || event?.teams?.home?.name || 'Home'}`;
+  for (const [oddID, odd] of Object.entries(event?.odds || {})) {
+    const def = exhaustiveCatalogByOddID.get(oddID) || odd || {};
+    for (const [bookmakerID, book] of Object.entries(odd?.byBookmaker || {})) {
+      exhaustivePriceRows.push({
+        eventID: String(event?.eventID || ''),
+        startTime: event?.startTime || event?.status?.startsAt || null,
+        matchup,
+        oddID,
+        statID: def?.statID ?? odd?.statID ?? null,
+        statEntityID: def?.statEntityID ?? odd?.statEntityID ?? null,
+        periodID: def?.periodID ?? odd?.periodID ?? null,
+        betTypeID: def?.betTypeID ?? odd?.betTypeID ?? null,
+        sideID: def?.sideID ?? odd?.sideID ?? null,
+        marketGroupID: def?.marketGroupID ?? odd?.marketGroupID ?? null,
+        marketGroupName: def?.marketGroupName ?? odd?.marketGroupName ?? null,
+        bookmakerID: String(bookmakerID).toLowerCase(),
+        available: book?.available === true,
+        americanOdds: book?.odds ?? null,
+        line: book?.overUnder ?? null,
+        lastUpdatedAt: book?.lastUpdatedAt ?? null,
+        deeplink: book?.deeplink ?? null,
+        altLines: Array.isArray(book?.altLines) ? book.altLines : [],
+      });
+    }
+  }
+}
+exhaustivePriceRows.sort((a,b)=>
+  String(a.matchup).localeCompare(String(b.matchup)) ||
+  String(a.bookmakerID).localeCompare(String(b.bookmakerID)) ||
+  String(a.oddID).localeCompare(String(b.oddID))
+);
+
 const exhaustiveSupportByBook = {};
 for (const market of exhaustiveCatalog.markets || []) {
   const leagueSupport = market?.support?.MLB || {};
@@ -181,6 +218,8 @@ const output = {
     catalogMarketCount: exhaustiveCatalog.markets.length,
     oddIDCount: exhaustiveOddIDs.length,
     rawEventCount: exhaustiveRaw.events.length,
+    todayRawEventCount: exhaustiveTodayRawEvents.length,
+    exhaustivePriceRowCount: exhaustivePriceRows.length,
     supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
   },
   i2BookmakerSupport,
@@ -215,7 +254,10 @@ await fs.writeFile(supportPath, JSON.stringify({
     catalogMarketCount: exhaustiveCatalog.markets.length,
     oddIDCount: exhaustiveOddIDs.length,
     rawEventCount: exhaustiveRaw.events.length,
+    todayRawEventCount: exhaustiveTodayRawEvents.length,
+    exhaustivePriceRowCount: exhaustivePriceRows.length,
     supportByBookmaker: exhaustiveSupportByBook,
+    priceRows: exhaustivePriceRows,
   },
   response: support,
 }, null, 2) + '\n');
