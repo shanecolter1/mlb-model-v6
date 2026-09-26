@@ -12,7 +12,8 @@ const CUTOFF = process.env.I2_CUTOFF || new Date().toISOString();
 const SEASON = Number(DATE.slice(0, 4));
 const TRIALS = Number(process.env.I2_TRIALS || 50000);
 const OUTPUT = process.env.I2_OUTPUT || `data/runtime/i2/${DATE}_vnext_predictions.json`;
-const CALIBRATION_PATH = process.env.I2_PLAY_CALIBRATION || 'data/derived/i2/i2_play_calibration.json';
+const I1_PRIOR_PATH = process.env.I2_I1_PRIOR || 'data/derived/i2/i2_play_calibration.json';
+const TRANSITION_PATH = process.env.I2_TRANSITIONS || 'data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json';
 const VENUE_PATH = process.env.I2_VENUE_PROFILES || `data/runtime/i2/savant_venue_profiles_${SEASON}_3yr.json`;
 const VNEXT_MODEL_PATH = process.env.I2_VNEXT_MODEL || 'data/derived/i2_vnext/i2_vnext_event_model_live.json';
 const VNEXT_ARSENAL_PATH = process.env.I2_VNEXT_ARSENAL || 'data/derived/i2_vnext/live_arsenal_profile.json';
@@ -43,7 +44,44 @@ function loadJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-const playCalibration = loadJson(CALIBRATION_PATH);
+const i1PriorCalibration = loadJson(I1_PRIOR_PATH);
+const rawTransitionArtifact = loadJson(TRANSITION_PATH);
+function adaptPlayCalibration(payload, pitchCountPmf = {}) {
+  if (payload?.base_transitions) return payload;
+  if (!payload?.states) throw new Error('Unsupported I2 transition artifact');
+  const eventMap = {
+    strikeout:'out',
+    ball_in_play_out:'out',
+    walk:'bb',
+    hit_by_pitch:'bb',
+    single:'single',
+    double:'double',
+    triple:'triple',
+    home_run:'hr',
+  };
+  const base_transitions = {};
+  for (const [event, source] of Object.entries(eventMap)) {
+    for (let outs=0; outs<3; outs+=1) {
+      for (let mask=0; mask<8; mask+=1) {
+        base_transitions[`${event}|${outs}|${mask}`] = payload.states[`${source}|${outs}|${mask}`] || [];
+      }
+    }
+  }
+  return {
+    version:`adapted-${payload.version || 'validated-transitions'}`,
+    base_transitions,
+    pitch_count_pmf:pitchCountPmf || {},
+    governance:{
+      sourceTrainingYears:payload.training_years || null,
+      selectionYear:payload.selection_year || null,
+      lockedValidationYear:payload.locked_validation_year || null,
+    },
+  };
+}
+const playCalibration = adaptPlayCalibration(
+  rawTransitionArtifact,
+  i1PriorCalibration.pitch_count_pmf || {}
+);
 const vnextEventModel = loadJson(VNEXT_MODEL_PATH);
 const vnextArsenal = loadJson(VNEXT_ARSENAL_PATH);
 const vnextFullCalibration = loadJson(VNEXT_CALIBRATION_PATH);
@@ -75,8 +113,8 @@ function applyFinalCalibration(rawProbability) {
   }
   throw new Error(`Unsupported vNext calibration type ${type}`);
 }
-const totalCalPAs = Object.values(playCalibration.event_counts || {}).reduce((a,b)=>a+Number(b||0),0);
-const league = Object.fromEntries(EVENT_KEYS.map(k => [k, Number(playCalibration.event_counts?.[k] || 0) / totalCalPAs]));
+const totalCalPAs = Object.values(i1PriorCalibration.event_counts || {}).reduce((a,b)=>a+Number(b||0),0);
+const league = Object.fromEntries(EVENT_KEYS.map(k => [k, Number(i1PriorCalibration.event_counts?.[k] || 0) / totalCalPAs]));
 
 let venueProfiles = [];
 if (fs.existsSync(VENUE_PATH)) {
@@ -542,6 +580,8 @@ async function main(){
     generatedAt:new Date().toISOString(),
     trialsPerGame:TRIALS,
     marketDataUsed:false,
+    transitionModel:playCalibration.version,
+    transitionGovernance:playCalibration.governance || null,
     i1StateEngine:'existing V6 season-rate engine used only to simulate I1 lineup progression',
     i2TalentEngine:'direct I2 Statcast PA model; jointly regularized batter/pitcher/platoon/arsenal',
     finalCalibration:vnextFullCalibration?.final_curve || vnextFullCalibration?.selected || null,
