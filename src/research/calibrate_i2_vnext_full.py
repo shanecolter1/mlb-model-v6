@@ -148,6 +148,88 @@ def batter_side(batter: int, throws: str, bats: dict[int, str]) -> str:
     return side
 
 
+def attach_home_teams(games: list[dict], statcast: pd.DataFrame) -> float:
+    x = statcast[statcast["season"] == 2025].copy()
+    x["game_date"] = pd.to_datetime(x["game_date"], errors="coerce").dt.strftime("%Y-%m-%d")
+    game_meta = []
+    for game_pk, g in x.groupby("game_pk"):
+        pitchers = {
+            int(v) for v in pd.to_numeric(g["pitcher"], errors="coerce").dropna().astype(int)
+        }
+        game_meta.append({
+            "game_pk": int(game_pk),
+            "date": str(g.iloc[0]["game_date"]),
+            "home_team": str(g.iloc[0].get("home_team", "")),
+            "pitchers": pitchers,
+        })
+
+    matched = 0
+    for game in games:
+        need = {int(game["top"]["pitcher"]), int(game["bottom"]["pitcher"])}
+        candidates = [
+            m for m in game_meta
+            if m["date"] == str(game["date"]) and need.issubset(m["pitchers"])
+        ]
+        if len(candidates) == 1:
+            game["home_team"] = candidates[0]["home_team"]
+            game["game_pk"] = candidates[0]["game_pk"]
+            matched += 1
+        else:
+            game["home_team"] = None
+            game["game_pk"] = None
+    return matched / len(games) if games else 0.0
+
+
+def norm_team(value: object) -> str:
+    raw = "".join(ch for ch in str(value or "").upper() if ch.isalnum())
+    aliases = {
+        "AZ": "ARI", "ARI": "ARI",
+        "CHW": "CWS", "CWS": "CWS",
+        "KC": "KC", "KCR": "KC",
+        "WSN": "WSH", "WSH": "WSH",
+        "SD": "SD", "SDP": "SD",
+        "SF": "SF", "SFG": "SF",
+        "TB": "TB", "TBR": "TB",
+    }
+    return aliases.get(raw, raw)
+
+
+def load_venue_profiles(path: Path) -> dict[str, dict]:
+    rows = json.loads(path.read_text())
+    out = {}
+    for row in rows:
+        key = norm_team(row.get("team"))
+        if key:
+            out[key] = row
+    return out
+
+
+def apply_park(vec: dict[str, float], batter_side_code: str, profile: dict | None):
+    if not profile:
+        return vec
+    side = "L" if batter_side_code == "L" else "R"
+    event_key = {
+        "single": "single",
+        "double": "double",
+        "triple": "triple",
+        "home_run": "hr",
+    }
+    adjusted = {}
+    for event, p in vec.items():
+        key = event_key.get(event)
+        factor = 1.0
+        if key:
+            split = profile.get("handedness", {}).get(side, {}).get(key)
+            overall = profile.get("multipliers", {}).get(key)
+            try:
+                factor = float(split) if split is not None else float(overall)
+            except (TypeError, ValueError):
+                factor = 1.0
+        adjusted[event] = max(0.0, float(p) * factor)
+    total = sum(adjusted.values())
+    return {k: v / total for k, v in adjusted.items()} if total > 0 else vec
+
+
 def prepare_train(df: pd.DataFrame, arsenal_dir: Path):
     train = df[df["season"].isin([2023, 2024])].copy()
     train["batter"] = pd.to_numeric(train["batter"], errors="raise").astype(int)
@@ -269,9 +351,14 @@ def main():
         args.arsenal_dir / "pitcher_2024.csv",
     )
     transitions = load_transitions(args.play_calibration)
+    venue_profiles = load_venue_profiles(args.venue_profile)
     games = retrosheet_cases(download_bytes(RETRO_URL), chadwick_map())
+    home_team_match_rate = attach_home_teams(games, df)
+    if home_team_match_rate < 0.90:
+        raise RuntimeError(f"Historical game-to-Statcast home-team match rate too low: {home_team_match_rate:.3f}")
 
     rows = []
+    park_matched = 0
     for game in games:
         top_p0 = p_scoreless_half(
             game["top"], prep, model, arsenal_2024,
@@ -328,7 +415,7 @@ def main():
     payload = {
         "version": "i2-vnext-full-model-calibration-v3",
         "market_inputs_used": False,
-        "scope": "2025 normal-starter games; Retrosheet pregame lineups; observed pre-I2 start slot; exact scoreless recursion",
+        "scope": "2025 normal-starter games; Retrosheet pregame lineups; observed pre-I2 start slot; prior-year Savant park profile; exact scoreless recursion",
         "event_model_training": "2023-2024 only",
         "frozen_event_model": {
             "training_years": [2023, 2024],
@@ -345,6 +432,13 @@ def main():
             "chosen": chosen,
         },
         "raw_all_2025": metrics(replay["realized_under"], replay["raw_under"]),
+        "park_audit": {
+            "profile_year": 2024,
+            "rolling_years": 3,
+            "game_to_statcast_home_team_match_rate": home_team_match_rate,
+            "venue_profile_match_rate": park_matched / len(games) if games else 0.0,
+            "missing_venues_use_neutral_only_for_calibration_replay": True,
+        },
         "final_curve": final,
         "replay_games": int(len(replay)),
         "notes": [
@@ -352,6 +446,8 @@ def main():
             "No market data is used.",
             "Replay excludes I1-to-I2 pitcher changes; opener/bulk handling remains a separate workflow path.",
             "Observed I2 start slot is fixed before I2 and does not use the I2 scoring outcome.",
+            "2025 replay uses the 2024 three-year Savant park profile so park is represented without future leakage.",
+            "New/temporary 2025 venues absent from the 2024 profile are explicit neutral fallbacks in the calibration audit.",
             "Live inference continues to use the existing I1 start-slot engine.",
         ],
     }
