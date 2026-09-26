@@ -1,0 +1,43 @@
+{
+  "version": "i2-vnext-phase5-precision-v1",
+  "market_inputs_used": false,
+  "same_frozen_specification": true,
+  "same_2025_game_set": true,
+  "same_per_game_seed_stream_prefix": true,
+  "baseline_2500": {
+    "trials_per_game": 2500,
+    "raw_brier": 0.2473611880164609,
+    "raw_logloss": 0.6878910550617064,
+    "identity_validation_brier": 0.25006779964544723,
+    "identity_validation_logloss": 0.693414060131608,
+    "sigmoid_validation_brier": 0.24997690833846412,
+    "sigmoid_validation_logloss": 0.6932335472896648,
+    "chosen": "sigmoid",
+    "final_curve": {
+      "type": "sigmoid",
+      "intercept": 0.01734074338291061,
+      "slope": 0.6568473204438623
+    }
+  },
+  "precision_10000": {
+    "trials_per_game": 10000,
+    "raw_brier": 0.24705671633744858,
+    "raw_logloss": 0.6872618188154105,
+    "identity_validation_brier": 0.24970507481063658,
+    "identity_validation_logloss": 0.692651717890755,
+    "sigmoid_validation_brier": 0.2498500148422421,
+    "sigmoid_validation_logloss": 0.6929743715134274,
+    "chosen": "identity",
+    "final_curve": {
+      "type": "none",
+      "intercept": 0.0,
+      "slope": 1.0
+    }
+  },
+  "selection_stable": false,
+  "high_precision_sigmoid_delta_vs_identity": {
+    "brier": 0.00014494003160550606,
+    "logloss": 0.0003226536226724752
+  },
+  "promotion_rule": "Do not overwrite governed final calibration here; use this artifact to confirm numerical stability before promotion."
+}
