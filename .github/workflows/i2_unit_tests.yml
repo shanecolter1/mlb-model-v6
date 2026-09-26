@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/**'
       - '.github/workflows/i2_unit_tests.yml'
       - 'src/model/i2_total_conditioning.js'
       - 'tests/i2_total_conditioning.test.mjs'
