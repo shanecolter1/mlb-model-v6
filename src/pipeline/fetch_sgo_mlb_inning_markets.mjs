@@ -343,7 +343,7 @@ await fs.writeFile(exhaustiveCatalogPath, JSON.stringify({
   ...exhaustiveCatalog,
   supportByBookmaker: exhaustiveSupportByBook,
 }, null, 2) + '\n');
-await fs.writeFile(exhaustiveRawPath, JSON.stringify(exhaustiveRaw, null, 2) + '\n');
+await fs.writeFile(exhaustiveRawPath, JSON.stringify({ unrestrictedEventSweep, caesarsPropSweep }, null, 2) + '\n');
 
 console.log(JSON.stringify({
   date,
