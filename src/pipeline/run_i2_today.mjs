@@ -337,6 +337,11 @@ async function main(){
   ranked.forEach((g,i)=>g.underRank=i+1);
   const payload={
     model:'MLB I2 Under/Over v0.2 Research Build',
+    baseballDataArchitecture:'SELF_CONTAINED_REPOSITORY_PIPELINE',
+    primaryBaseballSource:'MLB Stats API direct',
+    provisionalLineupSource:'RotoWire public daily-lineups HTML',
+    netlifyMlbProxyUsed:false,
+    paidRotowireApiUsed:false,
     date:DATE,
     cutoff:CUTOFF,
     generatedAt:new Date().toISOString(),
