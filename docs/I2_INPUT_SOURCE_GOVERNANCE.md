@@ -22,9 +22,15 @@ matches win first; if no exact match exists, a second pass removes accents/punct
 and only recognized generational suffixes (Jr., Sr., II, III, IV). That fallback is
 accepted only when exactly one player on the game's MLB team roster/boxscore matches.
 There is no fuzzy, surname-only, or cross-team matching. RotoWire IDs are never
-interpreted as MLB IDs. Zero or multiple matches block that game without crashing the
-slate. Doubleheaders require both-team and start-time matching within 30 minutes;
-ambiguous matches are rejected.
+interpreted as MLB IDs. Resolved MLB IDs and official MLB names are persisted in the
+lineup/starter input audit. Subsequent source comparisons, freeze checks, and
+recommendation revalidation prefer those MLB IDs; when an ID is not yet available,
+the same accent/punctuation/generational-suffix identity rule is used. A cosmetic
+provider difference such as `Fernando Tatis` versus `Fernando Tatis Jr.` therefore
+does not invalidate a projection, while a different MLB ID or batting-order position
+still does. Zero or multiple matches block that game without crashing the slate.
+Doubleheaders require both-team and start-time matching within 30 minutes; ambiguous
+matches are rejected.
 
 Lineups: posted TEAM / BEAT / confirmed RotoWire; MLB final-system confirmation;
 otherwise expected RotoWire, RosterResource, previous completed MLB game. Explicit
@@ -49,10 +55,13 @@ is MEDIUM; top-four disagreement, multiple substitutions, missing validation, an
 unresolved news are LOW. LOW alone does not change probabilities or block a bet.
 
 A fresh simulation satisfies invalidation of the previous run. A change detected after
-that simulation invalidates this freeze and requires a clean rerun. No old probability
-is adjusted to approximate a new starter or order. The market range report revalidates
-baseball inputs before recommendations; a failed check or missing input audit blocks
-recommendations and Kelly output. Invalidated probabilities remain for audit only.
+that simulation invalidates this freeze and requires a clean rerun. Before both the
+pre-freeze check and post-freeze recommendation revalidation, current source names are
+re-resolved to team-scoped MLB IDs; an ambiguous or unresolved identity fails closed.
+No old probability is adjusted to approximate a new starter or order. The market range
+report revalidates baseball inputs before recommendations; a failed check or missing
+input audit blocks recommendations and Kelly output. Invalidated probabilities remain
+for audit only.
 
 ## Source access and configuration
 
