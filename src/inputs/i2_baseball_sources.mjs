@@ -132,7 +132,18 @@ export async function resolveGameInputs(game, feed, sources, previous = null) {
     const mlb=feed.gameData?.probablePitchers?.[side];
     const starter=selectStarter([...validateReports(reports.starters,'starter'),...(sp?.starter?[sp.starter]:[]),...(rr.starter?[{...rr.starter,provider:'ROSTERRESOURCE',confirmed:false}]:[]),
       ...(mlb?.id?[{provider:'MLB',source:'MLB Stats API probable pitcher',timestamp:now,retrievedAt:now,id:mlb.id,name:mlb.fullName,confirmed:false}]:[])]);
-    result[side]={lineup,starter,news,srmReviews:srmReview(news,starter.name)};
+    result[side]={
+      lineup,
+      starter,
+      news,
+      srmReviews:srmReview(news,starter.name),
+      pitchingPlan:{
+        role:(sp?.opener || (bulk && sp?.starter)) ? 'OPENER_BULK' : 'NORMAL_STARTER',
+        opener:sp?.opener || ((bulk && sp?.starter) ? sp.starter.name : null),
+        primaryBulkPitcher:bulk || null,
+        source:(sp?.opener || bulk) ? 'RotoWire public lineups' : null,
+      },
+    };
   }
   result.gate=projectionGate({...result,previous});
   assertBaseballOnly(result);
@@ -178,6 +189,27 @@ export async function applyResolvedInputs(feed, audit) {
       starter.resolvedMlbName=null;
       delete output.gameData.probablePitchers[side];
     }
+
+    const plan=audit[side].pitchingPlan || {};
+    if (plan.primaryBulkPitcher) {
+      const p=resolve(plan.primaryBulkPitcher);
+      plan.resolvedBulkMlbId=p.id;
+      plan.resolvedBulkMlbName=p.fullName;
+      output.gameData.players[`ID${p.id}`] ||= p;
+    } else {
+      plan.resolvedBulkMlbId=null;
+      plan.resolvedBulkMlbName=null;
+    }
+    if (plan.opener) {
+      const p=resolve(plan.opener);
+      plan.resolvedOpenerMlbId=p.id;
+      plan.resolvedOpenerMlbName=p.fullName;
+      output.gameData.players[`ID${p.id}`] ||= p;
+    } else {
+      plan.resolvedOpenerMlbId=starter.resolvedMlbId || null;
+      plan.resolvedOpenerMlbName=starter.resolvedMlbName || null;
+    }
+    audit[side].pitchingPlan=plan;
   }
   return output;
 }
