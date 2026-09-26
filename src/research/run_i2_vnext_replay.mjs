@@ -19,9 +19,15 @@ const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/pro
 const OUTPUT=arg('--output','data/derived/i2_vnext/replay_2025_predictions.json');
 const TRIALS=Number(arg('--trials','10000'));
 const I1_MODE=arg('--i1-mode','league');
+const SHARD_COUNT=Number(arg('--shard-count','1'));
+const SHARD_INDEX=Number(arg('--shard-index','0'));
 if (!['league','player_asof'].includes(I1_MODE)) throw new Error('--i1-mode must be league or player_asof');
 
 if (!Number.isInteger(TRIALS) || TRIALS < 1000) throw new Error('--trials must be an integer >= 1000');
+if (!Number.isInteger(SHARD_COUNT) || SHARD_COUNT < 1) throw new Error('--shard-count must be an integer >= 1');
+if (!Number.isInteger(SHARD_INDEX) || SHARD_INDEX < 0 || SHARD_INDEX >= SHARD_COUNT) {
+  throw new Error('--shard-index must be an integer in [0, shard-count)');
+}
 
 const replay=JSON.parse(fs.readFileSync(INPUT,'utf8'));
 const model=JSON.parse(fs.readFileSync(MODEL,'utf8'));
@@ -182,9 +188,10 @@ if (I1_MODE === 'player_asof') {
   }
 }
 
+const replayGames=(replay.games || []).filter((_,index)=>index % SHARD_COUNT === SHARD_INDEX);
 const predictions=[];
 let brier=0, ll=0, parkMatched=0;
-for (const game of replay.games) {
+for (const game of replayGames) {
   const {artifact:activeModel,entry:modelEntry}=modelForGame(game);
   const venue=venueFor(game);
   if (venue.profile) parkMatched += 1;
@@ -262,6 +269,10 @@ const payload={
     policy:'single static model',
   },
   trials_per_game:TRIALS,
+  replay_games_total:Array.isArray(replay.games) ? replay.games.length : 0,
+  shard_count:SHARD_COUNT,
+  shard_index:SHARD_INDEX,
+  shard_games:replayGames.length,
   market_inputs_used:false,
   observed_i2_state_used_as_predictor:false,
   point_in_time_player_refits:Boolean(walkforward),
@@ -282,6 +293,7 @@ fs.writeFileSync(OUTPUT,JSON.stringify(payload));
 console.log(JSON.stringify({
   n:payload.n,raw_brier:payload.raw_brier,raw_logloss:payload.raw_logloss,
   park_match_rate:payload.park_match_rate,trials_per_game:TRIALS,
+  replay_games_total:payload.replay_games_total,shard_count:SHARD_COUNT,shard_index:SHARD_INDEX,
   point_in_time_player_refits:payload.point_in_time_player_refits,
   i1_state_mode:payload.i1_state_mode,
 },null,2));
