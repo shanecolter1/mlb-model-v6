@@ -4,7 +4,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
-import {canonicalMlbIdentityName, resolveMlbIdentity} from '../src/inputs/i2_baseball_sources.mjs';
+import {canonicalMlbIdentityName} from '../src/inputs/i2_source_governance.mjs';
+import {resolveMlbIdentity} from '../src/inputs/i2_baseball_sources.mjs';
 const fixture=JSON.parse(fs.readFileSync('tests/fixtures/i2_source_parity.json','utf8'));
 function run(mode) {
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'i2-sourcing-')),output=path.join(dir,'predictions.json');
