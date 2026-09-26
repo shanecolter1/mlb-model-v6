@@ -19,7 +19,7 @@ on:
       - 'docs/I2_VNEXT_DIRECT_TALENT_SPEC.md'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: i2-vnext-direct-talent-build
@@ -100,8 +100,8 @@ jobs:
           mkdir -p data/raw/i2_vnext/retrosheet data/raw/i2_vnext/chadwick
           for year in 2024 2025; do
             curl --fail --location --retry 3 \
-              "https://www.retrosheet.org/downloads/${year}/${year}csvs.zip" \
-              --output "data/raw/i2_vnext/retrosheet/${year}csvs.zip"
+              "https://www.retrosheet.org/downloads/plays/${year}plays.zip" \
+              --output "data/raw/i2_vnext/retrosheet/${year}plays.zip"
           done
           for suffix in 0 1 2 3 4 5 6 7 8 9 a b c d e f; do
             curl --fail --location --retry 3 \
@@ -113,8 +113,8 @@ jobs:
         run: |
           python src/research/build_i2_vnext_replay_inputs.py \
             --season 2025 \
-            --retrosheet-zip data/raw/i2_vnext/retrosheet/2025csvs.zip \
-            --prior-retrosheet-zip data/raw/i2_vnext/retrosheet/2024csvs.zip \
+            --retrosheet-zip data/raw/i2_vnext/retrosheet/2025plays.zip \
+            --prior-retrosheet-zip data/raw/i2_vnext/retrosheet/2024plays.zip \
             --chadwick-dir data/raw/i2_vnext/chadwick \
             --output data/derived/i2_vnext/replay_2025_inputs.json
 
@@ -289,6 +289,18 @@ jobs:
           name: i2-vnext-replay-2025
           path: data/derived/i2_vnext
 
+      - name: Restore fitted model artifacts for compact commit
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-frozen-pa-model
+          path: data/derived/i2_vnext
+
+      - name: Restore dataset manifest for compact commit
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-data-phase
+          path: data/derived/i2_vnext
+
       - name: Fit the single final full-I2 calibration curve
         run: |
           python src/research/calibrate_i2_vnext_full.py \
@@ -315,6 +327,25 @@ jobs:
             'final_curve':m['final_curve']
           }, indent=2))
           PY
+
+      - name: Commit compact production-candidate artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/derived/i2_vnext/dataset_manifest.json \
+            data/derived/i2_vnext/i2_vnext_event_model.json \
+            data/derived/i2_vnext/i2_vnext_event_model_live.json \
+            data/derived/i2_vnext/live_arsenal_profile.json \
+            data/derived/i2_vnext/arsenal_profile_2024.json \
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+          if git diff --cached --quiet; then
+            echo "No compact artifact changes"
+          else
+            git commit -m "research: fit I2 vNext compact shadow artifacts"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
 
       - name: Upload final shadow artifacts
         uses: actions/upload-artifact@v4
