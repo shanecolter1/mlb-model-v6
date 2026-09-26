@@ -33,10 +33,14 @@ Doubleheaders require both-team and start-time matching within 30 minutes; ambig
 matches are rejected.
 
 Lineups: posted TEAM / BEAT / confirmed RotoWire; MLB final-system confirmation;
-otherwise expected RotoWire, RosterResource, previous completed MLB game. Explicit
-newer verified scratch/rest news can replace a named player at a specified position.
-Without an explicit replacement, the lineup is unresolved: no invented substitute.
-A partial news substitution is not called a fully confirmed lineup.
+otherwise expected RotoWire is the single active provisional lineup source. If
+RotoWire is unavailable, stale, malformed, or missing the game, production falls back
+to the previous completed MLB lineup rather than substituting a second projected
+lineup. RosterResource and other projected-lineup sources are audit-only and can never
+become the production batting order. Explicit newer verified scratch/rest news can
+replace a named player at a specified position. Without an explicit replacement, the
+lineup is unresolved: no invented substitute. A partial news substitution is not
+called a fully confirmed lineup.
 
 Starters: confirmed TEAM / BEAT, RotoWire Projected Starters, RosterResource,
 other verified reporting, MLB probable pitcher, explicitly labeled fallback.
@@ -49,10 +53,12 @@ Correct or refresh the source records to resolve a conflict.
 changes, added/removed players, top-four differences, projected-to-confirmed accuracy,
 news and SRM review requests. `inputSourceAudit` is the compact per-game output.
 Weighted slot accuracy gives slots 1–4 twice the audit weight of other slots; it does
-not change production batting-order weights. RotoWire/RosterResource exact agreement
-in at least 8 slots with the same top four is HIGH; smaller lower-order disagreement
-is MEDIUM; top-four disagreement, multiple substitutions, missing validation, and
-unresolved news are LOW. LOW alone does not change probabilities or block a bet.
+not change production batting-order weights. RotoWire/RosterResource agreement may
+still be recorded as an audit confidence signal, but RosterResource never supplies or
+alters the production lineup. The audit explicitly records
+`provisionalSourcePolicy: ROTOWIRE_ONLY` and
+`rosterResourceRole: AUDIT_ONLY`. LOW audit confidence alone does not change
+probabilities or block a bet.
 
 A fresh simulation satisfies invalidation of the previous run. A change detected after
 that simulation invalidates this freeze and requires a clean rerun. Before both the
@@ -96,15 +102,16 @@ or unknown status stays projected. API failure, no credential, wrong date, unsup
 schema or unknown identity fails safely. Live authenticated responses have not been
 validated in this implementation environment. Provider errors are redacted.
 
-### RosterResource — access dependency still outstanding
+### RosterResource — audit-only
 
 Public FanGraphs retrieval returned HTTP 403 in implementation testing; no supported
-public JSON API contract was verified. **There is no automatic live RosterResource
-scraper in this change.** The resolver accepts a reviewed, timestamped, same-date
-snapshot via `I2_ROSTERRESOURCE_SNAPSHOT` (workflows use
-`config/i2_rosterresource_snapshot.json`). Without it, the run explicitly reports
-`ROSTERRESOURCE_UNAVAILABLE` and reduces validation confidence. A permitted feed or
-export integration is needed to make this source fully automatic.
+public JSON API contract was verified. There is no automatic live RosterResource
+scraper. The resolver may accept a reviewed, timestamped, same-date snapshot via
+`I2_ROSTERRESOURCE_SNAPSHOT` solely for audit comparison with RotoWire. It is not a
+production fallback and cannot alter the selected lineup, invalidate a projection by
+itself, or affect model probabilities/eligibility. If no reviewed snapshot is present,
+the run reports `ROSTERRESOURCE_UNAVAILABLE`; this does not prevent RotoWire from
+serving as the production provisional lineup source.
 
 Snapshot contract (all player names must be exact MLB names):
 
@@ -190,3 +197,15 @@ not a newly fitted model. Live paid RotoWire and live RosterResource feeds remai
 unverified as noted above.
 
 Public transport validation: parser fixtures cover confirmation, full names, date/ET DST, doubleheaders, bulk roles, market-field isolation, credential-free retrieval and optional API fallback. The existing I2 unit workflow also runs a live public-access check without API credentials (non-blocking when the third party is unavailable).
+
+## RotoWire provisional accuracy tracking
+
+The postmortem workflow records the RotoWire provisional lineup snapshot and compares
+it with the eventual MLB starting lineup using the same identity-aware rules used in
+production. Audit metrics include player-set accuracy, exact batting slots, top-four
+slot accuracy, exact-lineup rate, and observation lead time before first pitch. A
+seasonal artifact at `data/derived/i2/rotowire_provisional_accuracy_YEAR.json`
+aggregates those metrics overall and by month. These measurements are explicitly
+`AUDIT_ONLY`: they do not feed model probabilities, calibration, betting eligibility,
+market isolation, EV, Kelly, or source selection. The postmortem workflow runs daily
+after the prior UTC date is complete and can also be dispatched manually for a date.
