@@ -28,10 +28,22 @@ globalThis.fetch=async input=>{
  }
  if(u.pathname.includes('/roster'))return Response.json({roster:Object.values(players).map(person=>({person}))});
  if(u.pathname.includes('/stats'))return Response.json({stats:[{splits:[{stat:{plateAppearances:400,atBats:350,hits:100,doubles:20,triples:2,homeRuns:15,baseOnBalls:40,hitByPitch:5,strikeOuts:90,battersFaced:400,inningsPitched:'90.0',gamesStarted:20,era:'3.80',whip:'1.20'}}]}]});
- if(u.hostname==='api.rotowire.com') {
-  const Games=[{DateTime:game.gameDate,Teams:['away','home'].map(side=>({Name:`${side} Team`,Code:side==='away'?'AWY':'HME',IsHome:Number(side==='home'),LineupStatus:'Expected',
-    Players:Array.from({length:9},(_,i)=>({FirstName:side,LastName:`Player ${i+1}`,BattingSpot:i+1})),StartingPitcher:{FirstName:side,LastName:'Player 10'}}))}];
-  return Response.json({Date:date,Games});
+ if(u.hostname==='www.rotowire.com') {
+  const list=(side,klass)=>`
+    <ul class="lineup__list ${klass}">
+      <li class="lineup__status is-expected">Expected Lineup</li>
+      ${Array.from({length:9},(_,i)=>`<li class="lineup__player"><a href="/baseball/player/${side}-${i+1}" title="${side} Player ${i+1}">${side} Player ${i+1}</a><span class="lineup__bats">${i%2?'L':'R'}</span></li>`).join('')}
+      <li class="lineup__player-highlight"><a href="/baseball/player/${side}-10" title="${side} Player 10">${side} Player 10</a></li>
+    </ul>`;
+  const html=`<main data-sportfull="baseball" data-gamedate="${date}">
+    <div class="lineup is-mlb">
+      <div class="lineup__time">7:59 PM ET</div>
+      <div class="lineup__abbr">AWY</div><div class="lineup__abbr">HME</div>
+      ${list('away','is-visit')}
+      ${list('home','is-home')}
+    </div>
+  </main>`;
+  return new Response(html,{status:200,headers:{'content-type':'text/html'}});
  }
  throw new Error(`UNEXPECTED_FIXTURE_REQUEST:${u.pathname}`);
 };
