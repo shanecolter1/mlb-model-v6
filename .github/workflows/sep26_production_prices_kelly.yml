@@ -1,0 +1,190 @@
+name: Sep 26 production prices Kelly
+
+on:
+  push:
+    branches:
+      - analysis/sep26-production-prices
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      I2_DATE: '2026-09-26'
+      I2_TRIALS: '50000'
+      I2_CUTOFF: '1970-01-01T00:00:00Z'
+      MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+      I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-26_prod_run_environment.json
+      I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-26_prod_lineup_overrides.json
+      I2_VENUE_PROFILES: data/runtime/i2/savant_venue_profiles_2026_3yr.json
+      I2_TOTAL_PRIOR: data/derived/i2/i2_total_conditioned_prior.json
+      I2_OUTPUT: data/runtime/i2/2026-09-26_prod_parent.json
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Capture pre-freeze run environment
+        env:
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
+      - name: Build provisional lineups
+        env:
+          I2_PRELIM_LOOKBACK_DAYS: '7'
+        run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
+
+      - name: Run production parent
+        run: node src/pipeline/run_i2_total_conditioned.mjs
+
+      - name: Apply v0.4 calibration
+        env:
+          I2_INPUT: data/runtime/i2/2026-09-26_prod_parent.json
+          I2_OUTPUT: data/runtime/i2/2026-09-26_prod_v04.json
+        run: node src/pipeline/apply_i2_v04_local_cv.mjs
+
+      - name: Run empirical challenger
+        env:
+          I2_EMPIRICAL_OUTPUT: data/runtime/i2/2026-09-26_prod_empirical.json
+          I2_EMPIRICAL_CONCURRENCY: '10'
+        run: node src/pipeline/run_i2_empirical_snapshot.mjs
+
+      - name: Pull all-book SportsGameOdds I2 prices post-freeze
+        env:
+          FROZEN_PROJECTION_PATH: data/runtime/i2/2026-09-26_prod_v04.json
+          SGO_OUTPUT: data/runtime/i2/2026-09-26_prod_markets.json
+          SGO_SUPPORT_OUTPUT: data/runtime/i2/2026-09-26_prod_market_support.json
+          SGO_CSV: docs/inning_markets/2026-09-26_prod_markets.csv
+          SGO_BOOKMAKERS: '*'
+          SGO_INCLUDE_OPEN_CLOSE: 'false'
+          SGO_INCLUDE_ALT_LINES: 'true'
+          I2_TIME_ZONE: America/Chicago
+        run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
+
+      - name: Build price-dependent range report
+        env:
+          I2_PARENT_INPUT: data/runtime/i2/2026-09-26_prod_parent.json
+          I2_PRODUCTION_INPUT: data/runtime/i2/2026-09-26_prod_v04.json
+          I2_EMPIRICAL_INPUT: data/runtime/i2/2026-09-26_prod_empirical.json
+          I2_MARKETS_INPUT: data/runtime/i2/2026-09-26_prod_markets.json
+          I2_RANGE_OUTPUT: data/runtime/i2/2026-09-26_prod_market_range.json
+          I2_RANGE_CSV: docs/inning_markets/2026-09-26_prod_market_range.csv
+        run: node src/pipeline/build_i2_market_range_report.mjs
+
+      - name: Build board and Kelly stakes
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const prod=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-26_prod_v04.json','utf8'));
+          const range=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-26_prod_market_range.json','utf8'));
+          const markets=JSON.parse(fs.readFileSync('data/runtime/i2/2026-09-26_prod_markets.json','utf8'));
+
+          const bankroll=10000, floor=1000, horizon=100, maxBreach=.10;
+          const prefGroups=[
+            ['DraftKings',['draftkings']],['FanDuel',['fanduel']],['BetMGM',['betmgm']],
+            ['Caesars',['caesars']],['bet365',['bet365']],['Fanatics',['fanatics']],
+            ['Hard Rock',['hardrock','hardrockbet']],['theScore',['thescore','thescorebet']],['Kalshi',['kalshi']]
+          ];
+          const norm=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]/g,'');
+          const prefName=b=>{
+            const x=norm(b);
+            for(const [name,aliases] of prefGroups) if(aliases.some(a=>x.includes(norm(a)))) return name;
+            return null;
+          };
+          const bookName=b=>prefName(b)||(norm(b)==='fliff'?'Fliff':b);
+          const bnet=a=>a>0?a/100:100/Math.abs(a);
+          const kelly=(p,a)=>Math.max(0,(bnet(a)*p-(1-p))/bnet(a));
+
+          function floorHit(f,p,a,N=horizon){
+            if(!(f>0)) return 0;
+            const b=bnet(a);
+            let live=new Map([[0,1]]),absorbed=0;
+            for(let n=0;n<N;n++){
+              const next=new Map();
+              for(const [wins,prob] of live){
+                const losses=n-wins;
+                const wwin=bankroll*Math.pow(1+f*b,wins+1)*Math.pow(1-f,losses);
+                const wloss=bankroll*Math.pow(1+f*b,wins)*Math.pow(1-f,losses+1);
+                const wp=prob*p,lp=prob*(1-p);
+                if(wwin<=floor) absorbed+=wp; else next.set(wins+1,(next.get(wins+1)||0)+wp);
+                if(wloss<=floor) absorbed+=lp; else next.set(wins,(next.get(wins)||0)+lp);
+              }
+              live=next;
+            }
+            return Math.min(1,absorbed);
+          }
+          function cap(p,a){
+            let lo=0,hi=.9999;
+            for(let i=0;i<60;i++){
+              const mid=(lo+hi)/2;
+              if(floorHit(mid,p,a)<=maxBreach) lo=mid; else hi=mid;
+            }
+            return lo;
+          }
+          const best=rs=>rs.length?rs.slice().sort((a,b)=>Number(b.americanOdds)-Number(a.americanOdds))[0]:null;
+          const rows=(range.marketComparisons||[]).filter(r=>r.segment==='full'&&Number(r.line)===0.5&&r.modelAvailable);
+          function snap(r){
+            if(!r) return null;
+            const p=Number(r.combinedConditionalPct)/100;
+            const raw=kelly(p,r.americanOdds);
+            const ceiling=cap(p,r.americanOdds);
+            const gate=r.robustPositiveEV===true&&r.recommendationEligible===true;
+            const f=gate?Math.min(raw,ceiling):0;
+            return {book:bookName(r.bookmaker),bookID:r.bookmaker,odds:r.americanOdds,updatedAt:r.lastUpdatedAt,
+              breakEvenPct:r.breakEvenPct,productionPct:r.productionConditionalPct,combinedPct:r.combinedConditionalPct,
+              empiricalPct:r.empiricalConditionalPct,productionEVPct:r.productionEVPct,combinedEVPct:r.combinedEVPct,
+              empiricalEVPct:r.empiricalEVPct,rangeLowPct:r.rangeLowPct,rangeHighPct:r.rangeHighPct,
+              robustPositiveEV:r.robustPositiveEV,fullKellyPct:+(100*raw).toFixed(2),
+              riskCeilingPct:+(100*ceiling).toFixed(2),stakePct:+(100*f).toFixed(2),stakeDollars:+(bankroll*f).toFixed(2),
+              floorBreachProbPct:+(100*floorHit(f,p,r.americanOdds)).toFixed(4)};
+          }
+
+          const board=(prod.ranking||[]).map(g=>{
+            const gr=rows.filter(r=>String(r.gamePk)===String(g.gamePk));
+            const entry={rank:g.rank,gamePk:g.gamePk,matchup:g.matchup,gameDate:g.gameDate,
+              awayStarter:g.awayStarter,homeStarter:g.homeStarter,productionUnder05Pct:g.under05Pct,
+              productionOver05Pct:g.over05Pct,fairUnder:g.fairUnder,fairOver:g.fairOver,
+              top2ScorePct:g.top2ScorePct,bottom2ScorePct:g.bottom2ScorePct};
+            for(const side of ['under','over']){
+              const sr=gr.filter(r=>r.side===side);
+              entry[side]={allBest:snap(best(sr)),preferredBest:snap(best(sr.filter(r=>prefName(r.bookmaker))))};
+            }
+            return entry;
+          });
+          const books=[...new Set((markets.rows||[]).map(r=>r.bookmakerID))].sort();
+          const pref=prefGroups.map(([name,aliases])=>({requested:name,apiBooks:books.filter(b=>aliases.some(a=>norm(b).includes(norm(a))))}));
+          const recs=[];
+          for(const g of board) for(const side of ['under','over']) for(const scope of ['allBest','preferredBest']){
+            const x=g[side][scope]; if(x?.stakeDollars>0) recs.push({matchup:g.matchup,side,scope,...x});
+          }
+          recs.sort((a,b)=>b.stakeDollars-a.stakeDollars);
+          const out={generatedAt:new Date().toISOString(),date:'2026-09-26',
+            staking:{bankroll,floor,horizon,maxFloorBreachProbability:maxBreach,kellyMultiplier:1,
+              gate:'All P/C/E EV > 0',sizingProbability:'50/50 combined',compounding:'current bankroll'},
+            books,preferredAvailability:pref,board,recommendations:recs};
+          fs.writeFileSync('data/runtime/i2/2026-09-26_prod_betting_board.json',JSON.stringify(out,null,2)+'\n');
+          console.log('BOOKS='+JSON.stringify(books));
+          console.log('PREFERRED='+JSON.stringify(pref));
+          console.log('BOARD='+JSON.stringify(board));
+          console.log('RECS='+JSON.stringify(recs));
+          NODE
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sep26-production-prices-kelly
+          path: |
+            data/runtime/i2/2026-09-26_prod_parent.json
+            data/runtime/i2/2026-09-26_prod_v04.json
+            data/runtime/i2/2026-09-26_prod_empirical.json
+            data/runtime/i2/2026-09-26_prod_markets.json
+            data/runtime/i2/2026-09-26_prod_market_range.json
+            data/runtime/i2/2026-09-26_prod_betting_board.json
+          retention-days: 30
