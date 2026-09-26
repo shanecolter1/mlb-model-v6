@@ -12,7 +12,6 @@ on:
       - 'src/research/build_i2_vnext_walkforward_models.py'
       - 'src/research/build_i2_vnext_replay_inputs.py'
       - 'src/research/run_i2_vnext_replay.mjs'
-      - 'src/research/build_i2_vnext_walkforward_models.py'
       - 'src/research/calibrate_i2_vnext_full.py'
       - 'src/build_savant_venue_profiles.py'
       - 'src/model/i2_vnext_event_model.js'
@@ -187,14 +186,7 @@ jobs:
           assert m['market_inputs_used'] is False
           assert m['artifact_role'] == 'FROZEN_HOLDOUT_EVALUATION'
           assert m['arsenal_feature']['name'] == 'pitcher_arsenal_x_batter_pitch_response_x_platoon'
-          wf=json.loads(Path('data/derived/i2_vnext/walkforward_2025/manifest.json').read_text())
-          assert wf['market_inputs_used'] is False
-          assert wf['cadence'] == 'monthly'
-          assert len(wf['entries']) >= 6
-          for e in wf['entries'][1:]:
-              assert e['training_end'] < e['effective_from'], e
-          print({'training':m['training'],'selected':m['selected'],'holdout_policy':h,
-                 'walkforward_entries':len(wf['entries'])})
+          print({'training':m['training'],'selected':m['selected'],'holdout_policy':h})
           PY
           node --check src/model/i2_vnext_event_model.js
           node --check src/model/i2_inning_model.js
@@ -212,7 +204,6 @@ jobs:
             data/derived/i2_vnext/arsenal_profile_2024.json
             data/derived/i2_vnext/i2_vnext_event_model_live.json
             data/derived/i2_vnext/live_arsenal_profile.json
-            data/derived/i2_vnext/walkforward_2025/
 
   build-walkforward:
     needs: [build-data, fit-model]
