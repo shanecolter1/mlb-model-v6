@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { selectLineup,selectStarter,projectionGate,provisionalConfidence,lineupDelta,assertBaseballOnly,srmReview } from '../src/inputs/i2_source_governance.mjs';
+import { selectLineup,selectStarter,projectionGate,provisionalConfidence,lineupDelta,assertBaseballOnly,srmReview,sameMlbIdentityName } from '../src/inputs/i2_source_governance.mjs';
 import { safeSource,normalizeRotowire,parseNews,collectSources } from '../src/inputs/i2_baseball_sources.mjs';
 import { recommendationGate,enrichPriceDependentRecommendation } from '../src/model/i2_price_dependent_recommendations.mjs';
 const timestamp=new Date().toISOString(), players=Array.from({length:9},(_,i)=>`Player ${i+1}`);
@@ -88,4 +88,36 @@ test('news parser identifies workload for review without auto-applying narrative
 test('missing governance cannot bypass postfreeze Kelly recommendation gate',()=>{
  const result=enrichPriceDependentRecommendation({gamePk:1,segment:'full',side:'under',line:.5,bookmaker:'x',americanOdds:100,lastUpdatedAt:timestamp,modelAvailable:true,productionConditionalPct:60},{projectionFrozen:true});
  assert.equal(result.recommendationEligible,false);assert.equal(result.productionKellyPct,null);
+});
+
+test('suffix and diacritic variants do not create false lineup or starter changes',()=>{
+ const previous={away:side(),home:side()};
+ previous.away.lineup={...previous.away.lineup,players:['Fernando Tatis Jr.',...players.slice(1)]};
+ previous.away.starter={...previous.away.starter,name:'Ronald Acuña Jr.'};
+ const away=side();
+ away.lineup={...away.lineup,players:['Fernando Tatis',...players.slice(1)]};
+ away.starter={...away.starter,name:'Ronald Acuna'};
+ const gate=projectionGate({away,home:side(),previous});
+ assert.equal(gate.requiresCleanRerun,false);
+ assert.equal(gate.invalidations.length,0);
+ assert.equal(lineupDelta(previous.away.lineup.players,away.lineup.players).added.length,0);
+ assert.equal(lineupDelta(previous.away.lineup.players,away.lineup.players).removed.length,0);
+ assert.equal(lineupDelta(previous.away.lineup.players,away.lineup.players).exactSlots,9);
+ assert.equal(sameMlbIdentityName('Bobby Witt Jr.','Bobby Witt'),true);
+});
+test('resolved MLB IDs take priority and real identity/order changes still invalidate',()=>{
+ const previous={away:side(),home:side()},away=side();
+ previous.away.lineup={...previous.away.lineup,resolvedMlbIds:[1,2,3,4,5,6,7,8,9]};
+ away.lineup={...away.lineup,resolvedMlbIds:[1,2,3,4,5,6,7,9,8]};
+ previous.away.starter={...previous.away.starter,name:'Same Name',resolvedMlbId:100};
+ away.starter={...away.starter,name:'Same Name',resolvedMlbId:101};
+ const gate=projectionGate({away,home:side(),previous});
+ assert.ok(gate.invalidations.includes('PROJECTION_INVALIDATED_STARTER_CHANGE'));
+ assert.ok(gate.invalidations.includes('PROJECTION_INVALIDATED_LINEUP_CHANGE'));
+ assert.equal(gate.requiresCleanRerun,true);
+});
+test('starter source suffix variants do not create false source conflict',()=>{
+ const s=selectStarter([pitcher('ROTOWIRE','Bobby Witt'),pitcher('MLB','Bobby Witt Jr.')]);
+ assert.notEqual(s.status,'CONFLICTING');
+ assert.equal(s.conflict,null);
 });
