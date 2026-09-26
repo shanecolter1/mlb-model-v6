@@ -17,10 +17,14 @@ files are no longer injected into MLB feed responses.
 
 The user-owned MLB upstream remains read-only. Historical schedule range requests
 fall through to MLB because the upstream's single-date schedule interface cannot
-represent those queries. Exact full names (never surname-only matching) resolve to
-MLB IDs; RotoWire IDs are never interpreted as MLB IDs. Ambiguous identity blocks
-that game without crashing the slate. Doubleheaders require both-team and start-time
-matching within 30 minutes; ambiguous matches are rejected.
+represent those queries. MLB identity resolution is team-scoped: exact full-name
+matches win first; if no exact match exists, a second pass removes accents/punctuation
+and only recognized generational suffixes (Jr., Sr., II, III, IV). That fallback is
+accepted only when exactly one player on the game's MLB team roster/boxscore matches.
+There is no fuzzy, surname-only, or cross-team matching. RotoWire IDs are never
+interpreted as MLB IDs. Zero or multiple matches block that game without crashing the
+slate. Doubleheaders require both-team and start-time matching within 30 minutes;
+ambiguous matches are rejected.
 
 Lineups: posted TEAM / BEAT / confirmed RotoWire; MLB final-system confirmation;
 otherwise expected RotoWire, RosterResource, previous completed MLB game. Explicit
