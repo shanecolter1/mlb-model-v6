@@ -172,15 +172,6 @@ jobs:
           SGO_INCLUDE_ALT_LINES: 'true'
         run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
 
-      - name: Exhaustively discover MLB second-inning markets across all books
-        if: steps.config.outputs.configured == 'true'
-        env:
-          I2_DATE: ${{ steps.params.outputs.date }}
-          I2_TIME_ZONE: America/Chicago
-          FROZEN_PROJECTION_PATH: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
-          SGO_I2_DISCOVERY_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_i2_exhaustive_discovery.json
-        run: node src/pipeline/discover_sgo_i2_markets.mjs
-
       - name: Upload normalized price board
         if: steps.config.outputs.configured == 'true'
         uses: actions/upload-artifact@v4
@@ -190,7 +181,8 @@ jobs:
             data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_inning_markets.json
             data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_market_support.json
             docs/inning_markets/${{ steps.params.outputs.date }}_sportsgameodds_inning_markets.csv
-            data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_i2_exhaustive_discovery.json
+            data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_i2_market_catalog.json
+            data/runtime/i2/${{ steps.params.outputs.date }}_sportsgameodds_i2_raw_events.json
           retention-days: 90
 
       - name: Commit post-freeze market artifacts
@@ -202,11 +194,9 @@ jobs:
           JSON="data/runtime/i2/${DATE}_sportsgameodds_inning_markets.json"
           SUPPORT="data/runtime/i2/${DATE}_sportsgameodds_market_support.json"
           CSV="docs/inning_markets/${DATE}_sportsgameodds_inning_markets.csv"
-          DISCOVERY="data/runtime/i2/${DATE}_sportsgameodds_i2_exhaustive_discovery.json"
           cp "$JSON" /tmp/sgo-markets.json
           cp "$SUPPORT" /tmp/sgo-support.json
           cp "$CSV" /tmp/sgo-markets.csv
-          cp "$DISCOVERY" /tmp/sgo-discovery.json
 
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
@@ -218,8 +208,7 @@ jobs:
             cp /tmp/sgo-markets.json "$JSON"
             cp /tmp/sgo-support.json "$SUPPORT"
             cp /tmp/sgo-markets.csv "$CSV"
-            cp /tmp/sgo-discovery.json "$DISCOVERY"
-            git add "$JSON" "$SUPPORT" "$CSV" "$DISCOVERY"
+            git add "$JSON" "$SUPPORT" "$CSV"
             if git diff --cached --quiet; then
               echo "No SportsGameOdds artifact changes."
               exit 0
