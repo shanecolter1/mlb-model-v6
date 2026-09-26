@@ -1,0 +1,25 @@
+name: I2 Price Dependence Guard
+
+on:
+  push:
+    paths:
+      - 'src/model/i2_price_dependent_recommendations.mjs'
+      - 'src/pipeline/build_i2_market_range_report.mjs'
+      - 'tests/i2_price_dependent_recommendations.test.mjs'
+      - 'package.json'
+  pull_request:
+    paths:
+      - 'src/model/i2_price_dependent_recommendations.mjs'
+      - 'src/pipeline/build_i2_market_range_report.mjs'
+      - 'tests/i2_price_dependent_recommendations.test.mjs'
+      - 'package.json'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
