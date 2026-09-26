@@ -234,7 +234,7 @@ jobs:
       - name: Run leakage-safe full-I2 2025 replay
         run: |
           node src/research/run_i2_vnext_replay.mjs \
-            --trials 10000 \
+            --trials 2500 \
             --input data/derived/i2_vnext/replay_2025_inputs.json \
             --model data/derived/i2_vnext/i2_vnext_event_model.json \
             --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
@@ -270,7 +270,7 @@ jobs:
           path: data/derived/i2_vnext/replay_2025_predictions.json
 
   calibrate-full:
-    needs: replay-2025
+    needs: [replay-2025, fit-model]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -287,6 +287,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: i2-vnext-replay-2025
+          path: data/derived/i2_vnext
+
+      - name: Restore frozen and live fixed-spec models
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-frozen-pa-model
           path: data/derived/i2_vnext
 
       - name: Restore fitted model artifacts for compact commit
@@ -347,6 +353,24 @@ jobs:
             git push origin HEAD:research/i2-vnext-direct-talent
           fi
 
+      - name: Commit compact production-candidate artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/derived/i2_vnext/i2_vnext_event_model.json \
+            data/derived/i2_vnext/i2_vnext_event_model_live.json \
+            data/derived/i2_vnext/live_arsenal_profile.json \
+            data/derived/i2_vnext/arsenal_profile_2024.json \
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+          if git diff --cached --quiet; then
+            echo "No compact artifact changes"
+          else
+            git commit -m "research: fit I2 vNext production-candidate artifacts"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
+
       - name: Upload final shadow artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -354,5 +378,9 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           path: |
+            data/derived/i2_vnext/i2_vnext_event_model.json
+            data/derived/i2_vnext/i2_vnext_event_model_live.json
+            data/derived/i2_vnext/live_arsenal_profile.json
+            data/derived/i2_vnext/arsenal_profile_2024.json
             data/derived/i2_vnext/i2_vnext_full_calibration.json
             data/derived/i2_vnext/replay_2025_predictions.json
