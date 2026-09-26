@@ -133,8 +133,16 @@ function sideFactor(context, batterSide, eventName) {
     eventName === "double" ? "double" :
     eventName === "triple" ? "triple" :
     null;
-  if (!splitName) return 1;
-  return context?.handedness?.[side]?.[splitName] ?? 1;
+  if (!splitName) return null;
+  const value = context?.handedness?.[side]?.[splitName];
+  return Number.isFinite(Number(value)) ? Number(value) : null;
+}
+
+function absoluteParkFactor(context, batterSide, eventName, overallKey) {
+  const split = sideFactor(context, batterSide, eventName);
+  if (split !== null) return split;
+  const overall = context?.multipliers?.[overallKey];
+  return Number.isFinite(Number(overall)) ? Number(overall) : 1;
 }
 
 /**
@@ -150,18 +158,10 @@ export function applyEnvironmentalEventVector({
   validateEventVector(neutralVector);
 
   const factors = {
-    single:
-      (environmentalContext?.multipliers?.single ?? 1) *
-      sideFactor(environmentalContext, batterSide, "single"),
-    double:
-      (environmentalContext?.multipliers?.double ?? 1) *
-      sideFactor(environmentalContext, batterSide, "double"),
-    triple:
-      (environmentalContext?.multipliers?.triple ?? 1) *
-      sideFactor(environmentalContext, batterSide, "triple"),
-    home_run:
-      (environmentalContext?.multipliers?.hr ?? 1) *
-      sideFactor(environmentalContext, batterSide, "home_run"),
+    single: absoluteParkFactor(environmentalContext, batterSide, "single", "single"),
+    double: absoluteParkFactor(environmentalContext, batterSide, "double", "double"),
+    triple: absoluteParkFactor(environmentalContext, batterSide, "triple", "triple"),
+    home_run: absoluteParkFactor(environmentalContext, batterSide, "home_run", "hr"),
     walk: enableCandidateDisciplineFactors
       ? environmentalContext?.diagnostics?.bb ?? 1
       : 1,
@@ -186,6 +186,7 @@ export function applyEnvironmentalEventVector({
       aggregateRunFactorApplied: false,
       candidateDisciplineFactorsApplied: enableCandidateDisciplineFactors,
       factors,
+      parkFactorApplication: "handedness_absolute_else_overall_once",
     },
   };
 }
