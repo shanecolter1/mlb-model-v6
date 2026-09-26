@@ -10,6 +10,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: i2-vnext-i1-state-ab
+  cancel-in-progress: true
+
 jobs:
   compare-i1-state:
     runs-on: ubuntu-latest
