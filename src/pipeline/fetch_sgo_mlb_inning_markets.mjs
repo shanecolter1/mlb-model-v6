@@ -67,10 +67,13 @@ for (const event of events) {
         segment: market.segment,
         marketType: market.marketType,
         side: market.side,
+        equivalentMarketType: market.equivalentMarketType || '',
+        equivalentSide: market.equivalentSide || '',
+        equivalentLine: market.equivalentLine ?? '',
         teamSide: market.teamSide || '',
         oddID: market.oddID,
         bookmakerID: price.bookmakerID,
-        line: price.line ?? market.providerConsensusLine ?? market.providerFairLine ?? '',
+        line: price.line ?? market.equivalentLine ?? market.providerConsensusLine ?? market.providerFairLine ?? '',
         isAlternateLine: price.isAlternateLine === true,
         americanOdds: price.americanOdds,
         lastUpdatedAt: price.lastUpdatedAt || '',
@@ -93,6 +96,7 @@ const coverage = {
   fullInningTotalRows: rows.filter(x => x.marketType === 'FULL_INNING_TOTAL').length,
   halfInningTotalRows: rows.filter(x => x.marketType === 'TEAM_HALF_INNING_TOTAL').length,
   threeWayRows: rows.filter(x => x.marketType === 'FULL_INNING_3WAY').length,
+  anyRunsRows: rows.filter(x => x.marketType === 'FULL_INNING_ANY_RUNS').length,
   ninthFullInningEnabled: activeOddIDs.some(id => id.includes('-9i-') && (id.includes('-ml3way-') || id.startsWith('points-all-9i-ou-'))),
 };
 
@@ -114,7 +118,7 @@ const output = {
 };
 
 const csvColumns = [
-  'provider','eventID','startTime','matchup','awayTeam','homeTeam','inning','segment','marketType','side','teamSide','oddID',
+  'provider','eventID','startTime','matchup','awayTeam','homeTeam','inning','segment','marketType','side','equivalentMarketType','equivalentSide','equivalentLine','teamSide','oddID',
   'bookmakerID','line','isAlternateLine','americanOdds','lastUpdatedAt','providerFairLine','providerConsensusLine','providerFairOdds','providerConsensusOdds','deeplink',
 ];
 const quote = value => `"${String(value ?? '').replaceAll('"','""')}"`;
