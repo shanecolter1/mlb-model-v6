@@ -49,20 +49,24 @@ export function predictI2EventVector({
 }) {
   if (!model?.classes?.length) throw new Error('Missing I2 vNext model classes');
   const score = arsenalMatchupScore({ batterId, pitcherId, arsenalProfile });
-  const mean = finite(model?.arsenal_feature?.mean, 0.320);
-  const sd = Math.max(1e-9, finite(model?.arsenal_feature?.sd, 1));
-  const z = (score - mean) / sd;
+  const platoon = `${String(batterSide || '?')}v${String(pitcherThrows || '?')}`;
   const featureKeys = [
     `cat__batter_${String(batterId)}`,
     `cat__pitcher_${String(pitcherId)}`,
-    `cat__platoon_${String(batterSide || '?')}v${String(pitcherThrows || '?')}`,
+    `cat__platoon_${platoon}`,
   ];
+  const arsenalFeature = `arsenal_x_${platoon}`;
+  const arsenalScale = Math.max(
+    1e-9,
+    finite(model?.arsenal_feature?.scales?.[arsenalFeature], 1)
+  );
+  const scaledArsenal = score / arsenalScale;
 
   const logits = model.classes.map(cls => {
     const coef = model.coefficients?.[cls] || {};
     let value = finite(model.intercepts?.[cls], 0);
     for (const key of featureKeys) value += finite(coef[key], 0);
-    value += finite(coef['num__arsenal_matchup_xwoba'], 0) * z;
+    value += finite(coef[`num__${arsenalFeature}`], 0) * scaledArsenal;
     return value;
   });
 
