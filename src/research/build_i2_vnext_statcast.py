@@ -132,6 +132,7 @@ def terminal_pa_rows(df: pd.DataFrame) -> pd.DataFrame:
     keep = [
         "game_date", "season", "game_pk", "at_bat_number", "batter", "pitcher",
         "stand", "p_throws", "platoon", "events", "event_class", "pitch_type",
+        "inning_topbot", "outs_when_up", "bat_score", "post_bat_score",
         "home_team", "away_team",
     ]
     keep = [c for c in keep if c in x.columns]
