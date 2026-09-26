@@ -1,0 +1,193 @@
+name: I2 vNext Phase 6 - prospective shadow smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase6_shadow.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i2-vnext-phase6-shadow
+  cancel-in-progress: true
+
+jobs:
+  shadow-next-slate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded park dependencies
+        run: python -m pip install --upgrade pip pandas requests lxml html5lib beautifulsoup4
+
+      - name: Verify governed live artifacts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          model=json.loads(Path('data/derived/i2_vnext/i2_vnext_event_model_live.json').read_text())
+          arsenal=json.loads(Path('data/derived/i2_vnext/live_arsenal_profile.json').read_text())
+          cal=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
+          precision=json.loads(Path('data/derived/i2_vnext/phase5_precision_manifest.json').read_text())
+
+          assert model['market_inputs_used'] is False
+          assert model['artifact_role']=='LIVE_REFIT_FIXED_SPECIFICATION'
+          assert model['training']['end']=='2026-09-25'
+          assert model['selected']['half_life_days']==730
+          assert model['selected']['C']==0.05
+          assert arsenal['season']==2026
+          assert cal['market_inputs_used'] is False
+          assert cal['final_curve']['type']=='none'
+          assert cal['governance']['market_conditioning'] is False
+          assert cal['governance']['prospective_validation_required'] is True
+          assert precision['precision_10000']['chosen']=='identity'
+          assert precision['selection_stable'] is False
+          print({
+            'live_training':model['training'],
+            'arsenal_season':arsenal['season'],
+            'final_calibration':cal['final_curve'],
+          })
+          PY
+
+      - name: Verify source governance and syntax
+        run: |
+          node --input-type=module - <<'NODE'
+          import assert from 'node:assert/strict';
+          import { projectionGate } from './src/inputs/i2_source_governance.mjs';
+
+          const players=Array.from({length:9},(_,i)=>`Player ${i+1}`);
+          const side=(status)=>({
+            starter:{name:'Starter',status:'PROJECTED_HIGH'},
+            lineup:{players,status,unresolved:false},
+            pitchingPlan:{role:'NORMAL_STARTER',i2RoleResolved:true},
+            news:[],
+          });
+
+          const confirmed=projectionGate({away:side('CONFIRMED_MLB'),home:side('CONFIRMED_EXTERNAL')});
+          assert.equal(confirmed.eligible,true);
+          assert.equal(confirmed.projection,'VALID');
+
+          const provisional=projectionGate({away:side('PROVISIONAL_ROTOWIRE'),home:side('CONFIRMED_MLB')});
+          assert.equal(provisional.eligible,false);
+          assert.equal(provisional.projection,'PRELIMINARY');
+          assert.ok(provisional.reasons.includes('LINEUP_NOT_CONFIRMED'));
+          console.log({confirmed,provisional});
+          NODE
+          node --check src/pipeline/run_i2_vnext_today.mjs
+          node --check src/model/i2_vnext_event_model.js
+          node --check src/model/i2_inning_model.js
+          node --check src/event_probability_engine.js
+
+      - name: Build current Savant park profile
+        run: |
+          mkdir -p data/runtime/i2
+          python src/build_savant_venue_profiles.py \
+            --year 2026 \
+            --rolling 3 \
+            --output-dir data/runtime/i2
+          test -s data/runtime/i2/savant_venue_profiles_2026_3yr.json
+
+      - name: Run next-slate baseball-only shadow
+        env:
+          I2_DATE: '2026-09-27'
+          I2_CUTOFF: '2026-09-27T00:00:00-05:00'
+          I2_TRIALS: '10000'
+          I2_OUTPUT: 'data/runtime/i2/2026-09-27_vnext_predictions.json'
+          I2_VENUE_PROFILES: 'data/runtime/i2/savant_venue_profiles_2026_3yr.json'
+        run: node src/pipeline/run_i2_vnext_today.mjs
+
+      - name: Verify shadow governance and checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter
+          from pathlib import Path
+
+          path=Path('data/runtime/i2/2026-09-27_vnext_predictions.json')
+          m=json.loads(path.read_text())
+          games=m.get('games',[])
+          assert m['date']=='2026-09-27'
+          assert m['marketDataUsed'] is False
+          assert m['netlifyMlbProxyUsed'] is False
+          assert m['paidRotowireApiUsed'] is False
+          assert m['promotionStatus']=='SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED'
+          assert m['finalCalibration']['type']=='none'
+          assert m['trialsPerGame']==10000
+          assert m['remainingGamesAtCutoff'] > 0
+          assert len(games)==m['remainingGamesAtCutoff']
+          assert not any(g.get('bettingEligibility',{}).get('eligible') is True for g in games)
+
+          model_status=Counter(g.get('modelStatus','UNKNOWN') for g in games)
+          source_status=Counter(
+              (g.get('sourceEligibility') or {}).get('status','MISSING')
+              for g in games
+          )
+          betting_status=Counter(
+              (g.get('bettingEligibility') or {}).get('status','MISSING')
+              for g in games
+          )
+          lineup_class=Counter(g.get('predictionClass','UNKNOWN') for g in games)
+          venues=Counter(
+              (g.get('dataAudit') or {}).get('venueStatus','UNKNOWN')
+              for g in games
+          )
+
+          checkpoint={
+            'version':'i2-vnext-phase6-shadow-v1',
+            'date':m['date'],
+            'cutoff':m['cutoff'],
+            'market_inputs_used':False,
+            'promotion_status':m['promotionStatus'],
+            'trials_per_game':m['trialsPerGame'],
+            'remaining_games':m['remainingGamesAtCutoff'],
+            'projected_games':m['projectedGames'],
+            'pending_or_errored_games':m['pendingOrErroredGames'],
+            'model_status_counts':dict(model_status),
+            'source_eligibility_counts':dict(source_status),
+            'betting_status_counts':dict(betting_status),
+            'prediction_class_counts':dict(lineup_class),
+            'venue_status_counts':dict(venues),
+            'actionable_outputs':sum(bool(g.get('bettingEligibility',{}).get('eligible')) for g in games),
+            'final_calibration':m['finalCalibration'],
+            'i1_state_rule':'player season-to-date with 100 PA hitter / 180 BF pitcher league-prior shrinkage',
+            'prospective_validation_required':True,
+          }
+          assert checkpoint['actionable_outputs']==0
+          Path('data/derived/i2_vnext/phase6_shadow_manifest.json').write_text(json.dumps(checkpoint,indent=2))
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload Phase 6 shadow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase6-shadow-2026-09-27
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/runtime/i2/2026-09-27_vnext_predictions.json
+            data/runtime/i2/savant_venue_profiles_2026_3yr.json
+            data/derived/i2_vnext/phase6_shadow_manifest.json
+
+      - name: Commit compact Phase 6 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/phase6_shadow_manifest.json
+          if git diff --cached --quiet; then
+            echo "No Phase 6 checkpoint change"
+          else
+            git commit -m "research: checkpoint I2 vNext Phase 6 shadow"
+            git stash --include-untracked
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
