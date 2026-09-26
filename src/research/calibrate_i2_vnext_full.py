@@ -1,400 +1,389 @@
 #!/usr/bin/env python3
-"""Estimate the single final full-I2 calibration curve for vNext.
+"""Estimate the single final full-I2 calibration curve for I2 vNext.
 
-Chronology:
-- 2024 is already reserved for PA-model hyperparameter selection.
-- Train through 2024 -> generate 2025 full-I2 OOS probabilities -> fit sigmoid.
-- Train through 2025 -> generate 2026 full-I2 OOS probabilities -> validate sigmoid.
-- Adopt sigmoid only if it improves both Brier and log loss in 2026; otherwise identity.
-
-The historical replay is intentionally lean. It uses actual inning-two batter order
-observed in Statcast for the known batters in that half inning, fills only unobserved
-future lineup slots with a league-average hitter, and computes scoreless probability
-exactly from the existing empirical event/base/out transition table.
+Uses 2025 normal-starter games only. The PA event model is trained on 2023-24,
+then 2025 full-I2 raw probabilities are replayed from Retrosheet pregame
+lineups and observed I2 starting slots. The I2 outcome is never used as a
+feature. Calibration is fit on the first chronological half of 2025 and
+validated on the second half.
 """
 from __future__ import annotations
 
 import argparse
+import csv
+import io
 import json
-import math
-from datetime import datetime, timezone
+import sys
+import zipfile
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import requests
+from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import log_loss
 
-from fit_i2_vnext import add_arsenal_feature, fit_one
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src/research"))
+from fit_i2_vnext import add_arsenal_feature, arsenal_maps, fit_one, matchup_score, score
 
 EVENTS = [
     "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
     "strikeout", "ball_in_play_out",
 ]
+CHADWICK_BASE = "https://raw.githubusercontent.com/chadwickbureau/register/master/data"
+RETRO_URL = "https://www.retrosheet.org/downloads/plays/2025plays.zip"
 
 
 def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--dataset", type=Path, default=Path("data/derived/i2_vnext/i2_pa_statcast.csv"))
     p.add_argument("--arsenal-dir", type=Path, default=Path("data/derived/i2_vnext/arsenal"))
-    p.add_argument("--event-model", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_event_model.json"))
-    p.add_argument("--transitions", type=Path, default=Path("data/derived/i2/i2_play_calibration.json"))
-    p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_full_calibration.json"))
+    p.add_argument("--play-calibration", type=Path, default=Path("data/derived/i2/i2_play_calibration.json"))
+    p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/full_model_calibration.json"))
+    p.add_argument("--half-lives", default="180,365,730,1460")
+    p.add_argument("--c-grid", default="0.05,0.2,1.0")
     return p.parse_args()
 
 
-def sigmoid(x: float) -> float:
-    if x >= 0:
-        z = math.exp(-x)
-        return 1 / (1 + z)
-    z = math.exp(x)
-    return z / (1 + z)
+def download_bytes(url: str) -> bytes:
+    r = requests.get(url, timeout=120, headers={"User-Agent": "MLB-I2-vNext/1.0"})
+    r.raise_for_status()
+    return r.content
 
 
-def logit(p: float) -> float:
-    p = min(1 - 1e-9, max(1e-9, float(p)))
-    return math.log(p / (1 - p))
+def chadwick_map() -> dict[str, int]:
+    out = {}
+    for suffix in "0123456789abcdef":
+        url = f"{CHADWICK_BASE}/people-{suffix}.csv"
+        r = requests.get(url, timeout=60, headers={"User-Agent": "MLB-I2-vNext/1.0"})
+        r.raise_for_status()
+        df = pd.read_csv(io.StringIO(r.text), low_memory=False, usecols=lambda c: c in {"key_retro", "key_mlbam"})
+        df = df.dropna(subset=["key_retro", "key_mlbam"])
+        for rr in df.itertuples(index=False):
+            try:
+                out[str(rr.key_retro)] = int(rr.key_mlbam)
+            except Exception:
+                pass
+    return out
 
 
-def metrics(y: np.ndarray, p: np.ndarray) -> dict:
-    p = np.clip(np.asarray(p, dtype=float), 1e-9, 1 - 1e-9)
-    y = np.asarray(y, dtype=int)
-    return {
-        "n": int(len(y)),
-        "base_rate": float(y.mean()) if len(y) else None,
-        "predicted_mean": float(p.mean()) if len(p) else None,
-        "brier": float(np.mean((p - y) ** 2)) if len(y) else None,
-        "logloss": float(log_loss(y, p, labels=[0, 1])) if len(y) else None,
-    }
+def as_int(v):
+    try:
+        return int(v or 0)
+    except Exception:
+        return 0
 
 
-def bases_to_mask(first: bool, second: bool, third: bool) -> int:
-    return int(first) + 2 * int(second) + 4 * int(third)
+def retrosheet_cases(blob: bytes, idmap: dict[str, int]) -> list[dict]:
+    with zipfile.ZipFile(io.BytesIO(blob)) as zf:
+        with zf.open("2025plays.csv") as raw:
+            reader = csv.DictReader(io.TextIOWrapper(raw, encoding="utf-8-sig", newline=""))
+            by_side = defaultdict(lambda: {1: [], 2: []})
+            for row in reader:
+                if row.get("gametype") != "regular":
+                    continue
+                inning = as_int(row.get("inning"))
+                if inning not in (1, 2):
+                    continue
+                by_side[(row["gid"], as_int(row.get("top_bot")))][inning].append(row)
+
+    halves = {}
+    for (gid, top_bot), innings in by_side.items():
+        i1, i2 = innings[1], innings[2]
+        if not i1 or not i2:
+            continue
+        first1, first2 = i1[0], i2[0]
+        retro_lineup = [first1.get(f"l{k}") for k in range(1, 10)]
+        if any(not x for x in retro_lineup):
+            continue
+        lineup = [idmap.get(x) for x in retro_lineup]
+        i2_pitcher = idmap.get(first2.get("pitcher"))
+        i1_pitcher = idmap.get(first1.get("pitcher"))
+        if any(x is None for x in lineup) or i2_pitcher is None or i1_pitcher is None:
+            continue
+        if i1_pitcher != i2_pitcher:
+            continue
+        slot_map = {b: idx + 1 for idx, b in enumerate(retro_lineup)}
+        start_slot = slot_map.get(first2.get("batter")) or as_int(first2.get("lp"))
+        if not 1 <= int(start_slot) <= 9:
+            continue
+        halves[(gid, top_bot)] = {
+            "gid": gid,
+            "date": str(first1.get("date")),
+            "lineup": [int(x) for x in lineup],
+            "pitcher": int(i2_pitcher),
+            "start_slot": int(start_slot),
+            "runs": sum(as_int(r.get("runs")) for r in i2),
+        }
+
+    games = []
+    for gid in sorted({g for g, _ in halves}):
+        top, bottom = halves.get((gid, 0)), halves.get((gid, 1))
+        if top and bottom:
+            games.append({"gid": gid, "date": top["date"], "top": top, "bottom": bottom})
+    return games
 
 
-def fallback_transitions(event: str, outs: int, mask: int):
-    first, second, third = bool(mask & 1), bool(mask & 2), bool(mask & 4)
-    if event in ("strikeout", "ball_in_play_out"):
-        return [(1, mask, 0, 1.0)]
-    if event in ("walk", "hit_by_pitch"):
-        runs = int(first and second and third)
-        post = bases_to_mask(True, first, bool(third or (first and second)))
-        return [(0, post, runs, 1.0)]
-    if event == "single":
-        runs = int(third)
-        post = bases_to_mask(True, first, second)
-        return [(0, post, runs, 1.0)]
-    if event == "double":
-        runs = int(second) + int(third)
-        post = bases_to_mask(False, True, first)
-        return [(0, post, runs, 1.0)]
-    if event == "triple":
-        return [(0, 4, int(first) + int(second) + int(third), 1.0)]
-    if event == "home_run":
-        return [(0, 0, 1 + int(first) + int(second) + int(third), 1.0)]
-    raise ValueError(event)
+def player_sides(df: pd.DataFrame):
+    pitcher_throws = {}
+    for pid, g in df.groupby("pitcher"):
+        vals = [str(x) for x in g["p_throws"].dropna() if str(x) in {"L", "R"}]
+        if vals:
+            pitcher_throws[int(pid)] = Counter(vals).most_common(1)[0][0]
+    batter_bats = {}
+    for bid, g in df.groupby("batter"):
+        vals = {str(x) for x in g["stand"].dropna() if str(x) in {"L", "R"}}
+        if vals == {"L", "R"}:
+            batter_bats[int(bid)] = "S"
+        elif vals:
+            batter_bats[int(bid)] = next(iter(vals))
+    return batter_bats, pitcher_throws
+
+
+def batter_side(batter: int, throws: str, bats: dict[int, str]) -> str:
+    side = bats.get(batter, "R")
+    if side == "S":
+        return "L" if throws == "R" else "R"
+    return side
+
+
+def prepare_train(df: pd.DataFrame, arsenal_dir: Path):
+    train = df[df["season"].isin([2023, 2024])].copy()
+    train["batter"] = pd.to_numeric(train["batter"], errors="raise").astype(int)
+    train["pitcher"] = pd.to_numeric(train["pitcher"], errors="raise").astype(int)
+    train = add_arsenal_feature(train, arsenal_dir)
+    mean = float(train["arsenal_matchup_xwoba"].mean())
+    sd = float(train["arsenal_matchup_xwoba"].std(ddof=0)) or 1.0
+    train["arsenal_z"] = (train["arsenal_matchup_xwoba"] - mean) / sd
+    train["batter"] = train["batter"].astype(str)
+    train["pitcher"] = train["pitcher"].astype(str)
+    train["platoon"] = train["platoon"].fillna("?v?").astype(str)
+    return train, mean, sd
+
+
+def select_hyperparams(train: pd.DataFrame, half_lives: list[float], cs: list[float]):
+    tr = train[train["season"] == 2023]
+    te = train[train["season"] == 2024]
+    if tr.empty or te.empty:
+        raise RuntimeError("Need both 2023 and 2024 for chronological hyperparameter selection")
+    best = None
+    table = []
+    for half_life in half_lives:
+        for c in cs:
+            prep, model = fit_one(tr, c, half_life)
+            result = score(prep, model, te)
+            row = {"half_life_days": half_life, "C": c, **result}
+            table.append(row)
+            key = (result["logloss"], result["brier_multiclass"], half_life, c)
+            if best is None or key < best[0]:
+                best = (key, half_life, c)
+    return best[1], best[2], table
 
 
 def load_transitions(path: Path):
-    payload = json.loads(path.read_text())
-    raw = payload["base_transitions"]
-    out = {}
-    for key, rows in raw.items():
-        total = sum(float(r.get("p", 0)) for r in rows)
-        if total <= 0:
-            continue
-        out[key] = [
-            (
-                int(r.get("outs_added", 0)),
-                int(r.get("post_mask", 0)),
-                int(r.get("runs", 0)),
-                float(r.get("p", 0)) / total,
-            )
-            for r in rows
-        ]
-    return out
+    return json.loads(path.read_text())["base_transitions"]
 
 
-def scoreless_probability(vectors: list[dict[str, float]], transitions: dict) -> float:
-    if len(vectors) != 9:
-        raise ValueError("Need nine lineup vectors")
-    v = np.ones((3, 8, 9), dtype=float)
-    for _ in range(1000):
-        nxt = np.zeros_like(v)
-        for outs in range(3):
-            for mask in range(8):
-                for slot in range(9):
-                    total = 0.0
-                    vec = vectors[slot]
-                    next_slot = (slot + 1) % 9
-                    for event in EVENTS:
-                        pe = float(vec.get(event, 0.0))
-                        if pe <= 0:
-                            continue
-                        rows = transitions.get(f"{event}|{outs}|{mask}")
-                        if not rows:
-                            rows = fallback_transitions(event, outs, mask)
-                        for outs_added, post_mask, runs, pt in rows:
-                            if runs > 0:
-                                continuation = 0.0
-                            elif outs + outs_added >= 3:
-                                continuation = 1.0
-                            else:
-                                continuation = v[outs + outs_added, post_mask, next_slot]
-                            total += pe * pt * continuation
-                    nxt[outs, mask, slot] = total
-        delta = float(np.max(np.abs(nxt - v)))
-        v = nxt
-        if delta < 1e-12:
+def event_vector(prep, model, batter, pitcher, side, throws, arsenal, mean, sd):
+    score_x = matchup_score(batter, pitcher, arsenal)
+    row = pd.DataFrame([{
+        "batter": str(batter),
+        "pitcher": str(pitcher),
+        "platoon": f"{side}v{throws}",
+        "arsenal_z": (score_x - mean) / sd,
+    }])
+    p = model.predict_proba(prep.transform(row[["batter", "pitcher", "platoon", "arsenal_z"]]))[0]
+    return {str(cls): float(prob) for cls, prob in zip(model.classes_, p)}
+
+
+def p_scoreless_half(case, prep, model, arsenal, mean, sd, bats, throws_map, transitions):
+    pitcher = case["pitcher"]
+    throws = throws_map.get(pitcher, "R")
+    cache = {}
+    states = {(0, 0, case["start_slot"]): 1.0}
+    finished = 0.0
+    for _ in range(40):
+        if not states:
             break
-    return float(v[0, 0, 0])
+        nxt = defaultdict(float)
+        for (outs, mask, slot), mass in states.items():
+            batter = case["lineup"][slot - 1]
+            side = batter_side(batter, throws, bats)
+            key = (batter, pitcher, side, throws)
+            vec = cache.get(key)
+            if vec is None:
+                vec = event_vector(prep, model, batter, pitcher, side, throws, arsenal, mean, sd)
+                cache[key] = vec
+            next_slot = 1 if slot == 9 else slot + 1
+            for event, event_p in vec.items():
+                for opt in transitions.get(f"{event}|{outs}|{mask}") or []:
+                    p = mass * event_p * float(opt.get("p", 0))
+                    if p <= 0 or int(opt.get("runs", 0)) > 0:
+                        continue
+                    new_outs = min(3, outs + int(opt.get("outs_added", 0)))
+                    if new_outs >= 3:
+                        finished += p
+                    else:
+                        nxt[(new_outs, int(opt.get("post_mask", 0)), next_slot)] += p
+        states = dict(nxt)
+        if sum(states.values()) < 1e-12:
+            break
+    return max(0.0, min(1.0, finished))
 
 
-def predict_vectors(prep, model, feature_rows: pd.DataFrame) -> list[dict[str, float]]:
-    p = model.predict_proba(
-        prep.transform(
-            feature_rows[["batter", "pitcher", "platoon", "arsenal_matchup_xwoba"]]
-        )
-    )
-    classes = [str(x) for x in model.classes_]
-    out = []
-    for row in p:
-        vec = {e: 0.0 for e in EVENTS}
-        for cls, value in zip(classes, row):
-            if cls in vec:
-                vec[cls] = float(value)
-        s = sum(vec.values())
-        out.append({k: v / s for k, v in vec.items()})
-    return out
+def clip_prob(p):
+    return max(1e-6, min(1 - 1e-6, float(p)))
 
 
-def league_unknown_vector(
-    prep, model, pitcher: str, throws: str, arsenal_matchup_xwoba: float
-) -> dict[str, float]:
-    rows = pd.DataFrame([
-        {
-            "batter": "__UNKNOWN__",
-            "pitcher": pitcher,
-            "platoon": f"Lv{throws}",
-            "arsenal_matchup_xwoba": arsenal_matchup_xwoba,
-        },
-        {
-            "batter": "__UNKNOWN__",
-            "pitcher": pitcher,
-            "platoon": f"Rv{throws}",
-            "arsenal_matchup_xwoba": arsenal_matchup_xwoba,
-        },
-    ])
-    vectors = predict_vectors(prep, model, rows)
-    return {e: 0.5 * (vectors[0][e] + vectors[1][e]) for e in EVENTS}
+def logits(values):
+    p = np.asarray([clip_prob(x) for x in values], dtype=float)
+    return np.log(p / (1 - p)).reshape(-1, 1)
 
 
-def prepare_dataset(path: Path, arsenal_dir: Path) -> pd.DataFrame:
-    df = pd.read_csv(path)
-    df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce")
-    df = df[df["game_date"].notna() & df["event_class"].isin(EVENTS)].copy()
-    df["season"] = pd.to_numeric(df["season"], errors="raise").astype(int)
-    numeric = df.copy()
-    numeric["batter"] = pd.to_numeric(numeric["batter"], errors="raise").astype(int)
-    numeric["pitcher"] = pd.to_numeric(numeric["pitcher"], errors="raise").astype(int)
-    numeric = add_arsenal_feature(numeric, arsenal_dir)
-    df["arsenal_matchup_xwoba"] = numeric["arsenal_matchup_xwoba"].to_numpy()
-    df["batter"] = pd.to_numeric(df["batter"], errors="raise").astype(int).astype(str)
-    df["pitcher"] = pd.to_numeric(df["pitcher"], errors="raise").astype(int).astype(str)
-    df["platoon"] = df["platoon"].fillna("?v?").astype(str)
-    if "inning_topbot" not in df.columns:
-        raise RuntimeError("Dataset lacks inning_topbot; rebuild with current builder")
-    return df
-
-
-def half_predictions(test: pd.DataFrame, prep, model, transitions: dict) -> pd.DataFrame:
-    rows = []
-    for (game_pk, half), g in test.groupby(["game_pk", "inning_topbot"], sort=False):
-        g = g.sort_values("at_bat_number")
-        if g.empty:
-            continue
-        first_pitcher = str(g.iloc[0]["pitcher"])
-        throws = str(g.iloc[0].get("p_throws", "?"))
-
-        known = []
-        seen = set()
-        for r in g.itertuples(index=False):
-            batter = str(r.batter)
-            if batter in seen:
-                continue
-            seen.add(batter)
-            known.append({
-                "batter": batter,
-                "pitcher": first_pitcher,
-                "platoon": f"{getattr(r, 'stand', '?')}v{throws}",
-                "arsenal_matchup_xwoba": float(r.arsenal_matchup_xwoba),
-            })
-            if len(known) == 9:
-                break
-
-        known_df = pd.DataFrame(known)
-        vectors = predict_vectors(prep, model, known_df) if len(known_df) else []
-        avg_matchup = (
-            float(g["arsenal_matchup_xwoba"].mean()) if len(g) else 0.320
-        )
-        filler = league_unknown_vector(
-            prep, model, first_pitcher, throws, avg_matchup
-        )
-        while len(vectors) < 9:
-            vectors.append(filler)
-
-        p0 = scoreless_probability(vectors[:9], transitions)
-        first_score = float(g.iloc[0].get("bat_score", 0) or 0)
-        last_post = float(
-            g.iloc[-1].get("post_bat_score", first_score) or first_score
-        )
-        actual_runs = max(0.0, last_post - first_score)
-        rows.append({
-            "game_pk": int(game_pk),
-            "half": str(half),
-            "p0": p0,
-            "actual_scoreless": int(actual_runs == 0),
-        })
-    return pd.DataFrame(rows)
-
-
-def full_game_predictions(halves: pd.DataFrame) -> pd.DataFrame:
-    rows = []
-    for game_pk, g in halves.groupby("game_pk"):
-        if len(g) < 2 or g["half"].nunique() < 2:
-            continue
-        p = float(np.prod(g["p0"].iloc[:2]))
-        y = int(np.prod(g["actual_scoreless"].iloc[:2]))
-        rows.append({
-            "game_pk": int(game_pk),
-            "raw_under": p,
-            "actual_under": y,
-        })
-    return pd.DataFrame(rows)
-
-
-def make_oos_full(
-    df: pd.DataFrame,
-    train_through: int,
-    test_year: int,
-    c: float,
-    half_life: float,
-    transitions: dict,
-):
-    train = df[df["season"] <= train_through].copy()
-    test = df[df["season"] == test_year].copy()
-    if train.empty or test.empty:
-        raise RuntimeError(
-            f"Missing train/test data for {train_through}->{test_year}"
-        )
-    prep, model = fit_one(train, c, half_life)
-    halves = half_predictions(test, prep, model, transitions)
-    return full_game_predictions(halves)
-
-
-def fit_sigmoid(cal: pd.DataFrame):
-    x = np.array([[logit(p)] for p in cal["raw_under"]], dtype=float)
-    y = cal["actual_under"].astype(int).to_numpy()
-    model = LogisticRegression(C=1e6, solver="lbfgs")
-    model.fit(x, y)
-    return float(model.intercept_[0]), float(model.coef_[0][0])
-
-
-def apply_sigmoid(
-    p: np.ndarray, intercept: float, slope: float
-) -> np.ndarray:
-    return np.array(
-        [sigmoid(intercept + slope * logit(x)) for x in p], dtype=float
-    )
+def metrics(y, p):
+    p = np.asarray([clip_prob(x) for x in p], dtype=float)
+    y = np.asarray(y, dtype=int)
+    return {
+        "n": int(len(y)),
+        "brier": float(np.mean((p - y) ** 2)),
+        "logloss": float(log_loss(y, np.column_stack([1 - p, p]), labels=[0, 1])),
+        "predicted_mean": float(np.mean(p)),
+        "realized_rate": float(np.mean(y)),
+    }
 
 
 def main():
     args = parse_args()
-    artifact = json.loads(args.event_model.read_text())
-    selected = artifact["selected"]
-    c = float(selected["C"])
-    half_life = float(selected["half_life_days"])
+    df = pd.read_csv(args.dataset)
+    df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce")
+    df["season"] = pd.to_numeric(df["season"], errors="raise").astype(int)
+    bats, pitcher_throws = player_sides(df)
 
-    df = prepare_dataset(args.dataset, args.arsenal_dir)
-    transitions = load_transitions(args.transitions)
+    train, mean, sd = prepare_train(df, args.arsenal_dir)
+    half_life, c, grid = select_hyperparams(
+        train,
+        [float(x) for x in args.half_lives.split(",") if x],
+        [float(x) for x in args.c_grid.split(",") if x],
+    )
+    prep, model = fit_one(train, c, half_life)
+    arsenal_2024 = arsenal_maps(
+        args.arsenal_dir / "batter_2024.csv",
+        args.arsenal_dir / "pitcher_2024.csv",
+    )
+    transitions = load_transitions(args.play_calibration)
+    games = retrosheet_cases(download_bytes(RETRO_URL), chadwick_map())
 
-    cal_2025 = make_oos_full(
-        df, 2024, 2025, c, half_life, transitions
-    )
-    val_2026 = make_oos_full(
-        df, 2025, 2026, c, half_life, transitions
-    )
-    if len(cal_2025) < 100 or len(val_2026) < 100:
-        raise RuntimeError(
-            f"Insufficient calibration/validation games: "
-            f"{len(cal_2025)}, {len(val_2026)}"
+    rows = []
+    for game in games:
+        top_p0 = p_scoreless_half(
+            game["top"], prep, model, arsenal_2024, mean, sd,
+            bats, pitcher_throws, transitions,
         )
+        bottom_p0 = p_scoreless_half(
+            game["bottom"], prep, model, arsenal_2024, mean, sd,
+            bats, pitcher_throws, transitions,
+        )
+        rows.append({
+            "gid": game["gid"],
+            "date": game["date"],
+            "raw_under": top_p0 * bottom_p0,
+            "realized_under": int(game["top"]["runs"] == 0 and game["bottom"]["runs"] == 0),
+        })
 
-    intercept, slope = fit_sigmoid(cal_2025)
-    raw_val = val_2026["raw_under"].to_numpy(dtype=float)
-    y_val = val_2026["actual_under"].to_numpy(dtype=int)
-    cal_val = apply_sigmoid(raw_val, intercept, slope)
+    replay = pd.DataFrame(rows).sort_values(["date", "gid"]).reset_index(drop=True)
+    if len(replay) < 500:
+        raise RuntimeError(f"Insufficient 2025 replay sample: {len(replay)}")
 
-    raw_metrics = metrics(y_val, raw_val)
-    calibrated_metrics = metrics(y_val, cal_val)
-    adopt = (
-        calibrated_metrics["brier"] < raw_metrics["brier"]
-        and calibrated_metrics["logloss"] < raw_metrics["logloss"]
+    cut = len(replay) // 2
+    cal, val = replay.iloc[:cut], replay.iloc[cut:]
+    y_cal = cal["realized_under"].to_numpy(int)
+    y_val = val["realized_under"].to_numpy(int)
+    p_cal = cal["raw_under"].to_numpy(float)
+    p_val = val["raw_under"].to_numpy(float)
+
+    candidates = {"none": {"validation": metrics(y_val, p_val)}}
+
+    sigmoid = LogisticRegression(C=1e6, solver="lbfgs").fit(logits(p_cal), y_cal)
+    p_sigmoid = sigmoid.predict_proba(logits(p_val))[:, 1]
+    candidates["sigmoid"] = {
+        "validation": metrics(y_val, p_sigmoid),
+        "intercept": float(sigmoid.intercept_[0]),
+        "slope": float(sigmoid.coef_[0, 0]),
+    }
+
+    isotonic = IsotonicRegression(out_of_bounds="clip").fit(p_cal, y_cal)
+    p_isotonic = isotonic.predict(p_val)
+    candidates["isotonic"] = {
+        "validation": metrics(y_val, p_isotonic),
+        "x_thresholds": [float(x) for x in isotonic.X_thresholds_],
+        "y_thresholds": [float(x) for x in isotonic.y_thresholds_],
+    }
+
+    chosen = min(
+        candidates,
+        key=lambda k: (
+            candidates[k]["validation"]["logloss"],
+            candidates[k]["validation"]["brier"],
+        ),
     )
+
+    final = {"type": chosen}
+    if chosen == "sigmoid":
+        m = LogisticRegression(C=1e6, solver="lbfgs").fit(
+            logits(replay["raw_under"]),
+            replay["realized_under"].to_numpy(int),
+        )
+        final.update({"intercept": float(m.intercept_[0]), "slope": float(m.coef_[0, 0])})
+    elif chosen == "isotonic":
+        m = IsotonicRegression(out_of_bounds="clip").fit(
+            replay["raw_under"], replay["realized_under"]
+        )
+        final.update({
+            "x_thresholds": [float(x) for x in m.X_thresholds_],
+            "y_thresholds": [float(x) for x in m.y_thresholds_],
+        })
 
     payload = {
-        "version": "i2-vnext-full-calibration-v1",
-        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "version": "i2-vnext-full-model-calibration-v2",
         "market_inputs_used": False,
-        "target": "full I2 Under 0.5 probability",
-        "chronology": {
-            "hyperparameter_selection": 2024,
-            "calibration_fit": 2025,
-            "calibration_validation": 2026,
+        "scope": "2025 normal-starter games; Retrosheet pregame lineups; observed pre-I2 start slot; exact scoreless recursion",
+        "event_model_training": "2023-2024 only",
+        "hyperparameter_selection": {
+            "train": 2023,
+            "test": 2024,
+            "selected_half_life_days": half_life,
+            "selected_C": c,
+            "grid": grid,
         },
-        "calibration_fit_games": int(len(cal_2025)),
-        "validation_games": int(len(val_2026)),
-        "candidate": {
-            "method": "sigmoid_logit",
-            "intercept": intercept,
-            "slope": slope,
+        "calibration_selection": {
+            "train_segment": "first chronological half of 2025",
+            "validation_segment": "second chronological half of 2025",
+            "candidates": candidates,
+            "chosen": chosen,
         },
-        "validation": {
-            "raw": raw_metrics,
-            "sigmoid": calibrated_metrics,
-            "delta_brier": (
-                calibrated_metrics["brier"] - raw_metrics["brier"]
-            ),
-            "delta_logloss": (
-                calibrated_metrics["logloss"] - raw_metrics["logloss"]
-            ),
-        },
-        "selected": (
-            {
-                "method": "sigmoid_logit",
-                "intercept": intercept,
-                "slope": slope,
-            }
-            if adopt
-            else {
-                "method": "identity",
-                "intercept": 0.0,
-                "slope": 1.0,
-            }
-        ),
-        "selection_rule": (
-            "sigmoid must improve both 2026 Brier and log loss; "
-            "otherwise identity"
-        ),
-        "historical_replay_limitations": [
-            "Uses known I2 batter order for batters actually observed in the half inning; unobserved future lineup slots are league-average fillers.",
-            "Historical replay does not apply venue park factors; park remains a live baseball input before final calibration.",
-            "Actual scoreless label uses terminal-PA bat_score/post_bat_score and may miss rare runs scored before the first terminal PA on a nonterminal pitch.",
+        "raw_all_2025": metrics(replay["realized_under"], replay["raw_under"]),
+        "final_curve": final,
+        "replay_games": int(len(replay)),
+        "notes": [
+            "Final probability calibration is applied once at the full-I2 level.",
+            "No market data is used.",
+            "Replay excludes I1-to-I2 pitcher changes; opener/bulk handling remains a separate workflow path.",
+            "Observed I2 start slot is fixed before I2 and does not use the I2 scoring outcome.",
+            "Live inference continues to use the existing I1 start-slot engine.",
         ],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    print(json.dumps(payload, indent=2))
+    replay.to_csv(args.output.with_name("full_model_oos_2025.csv"), index=False)
+    print(json.dumps({
+        "replay_games": len(replay),
+        "chosen": chosen,
+        "raw": payload["raw_all_2025"],
+        "validation": candidates[chosen]["validation"],
+    }, indent=2))
 
 
 if __name__ == "__main__":
