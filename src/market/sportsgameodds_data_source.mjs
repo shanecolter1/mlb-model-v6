@@ -55,6 +55,13 @@ export function buildMlbInningOddIds({ innings = [1,2,3,4,5,6,7,8,9] } = {}) {
     if (inning <= 8) {
       ids.push(`points-all-${period}-ou-over`);
       ids.push(`points-all-${period}-ou-under`);
+      // Sportsbooks may express the exact same 0.5-run proposition as
+      // "Any Runs? Yes/No" instead of an Over/Under. These are canonical
+      // economic equivalents for full-inning I2 price discovery:
+      //   NO  = Under 0.5
+      //   YES = Over 0.5
+      ids.push(`points-all-${period}-yn-yes`);
+      ids.push(`points-all-${period}-yn-no`);
       ids.push(`points-away-${period}-ml3way-away`);
       ids.push(`points-all-${period}-ml3way-draw`);
       ids.push(`points-home-${period}-ml3way-home`);
@@ -188,6 +195,17 @@ export function classifyMlbOdd(odd = {}) {
 
   if (betType === 'ou' && entity === 'all' && ['over','under'].includes(side)) {
     return { marketType: 'FULL_INNING_TOTAL', inning, segment: 'full', side };
+  }
+  if (betType === 'yn' && entity === 'all' && ['yes','no'].includes(side) && inning <= 8) {
+    return {
+      marketType: 'FULL_INNING_ANY_RUNS',
+      inning,
+      segment: 'full',
+      side,
+      equivalentMarketType: 'FULL_INNING_TOTAL',
+      equivalentSide: side === 'no' ? 'under' : 'over',
+      equivalentLine: 0.5,
+    };
   }
   if (betType === 'ou' && ['away','home'].includes(entity) && ['over','under'].includes(side)) {
     return { marketType: 'TEAM_HALF_INNING_TOTAL', inning, segment: entity === 'away' ? 'top' : 'bottom', teamSide: entity, side };
