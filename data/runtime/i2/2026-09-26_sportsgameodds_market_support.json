@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T15:26:24.579Z",
+  "generatedAt": "2026-09-26T15:28:16.762Z",
   "date": "2026-09-26",
   "bookmakerIDs": [],
   "guaranteedOddIDs": [
@@ -1120,7 +1120,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1140,13 +1140,13 @@
         "available": true,
         "americanOdds": "+100",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+270",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1167,13 +1167,13 @@
         "available": true,
         "americanOdds": "-140",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-380",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1194,7 +1194,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1214,7 +1214,7 @@
         "available": true,
         "americanOdds": "+100",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1234,7 +1234,7 @@
         "available": true,
         "americanOdds": "+320",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1254,25 +1254,25 @@
         "available": true,
         "americanOdds": "-1400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+700",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+300",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-450",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1293,7 +1293,7 @@
         "available": true,
         "americanOdds": "+320",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1313,25 +1313,25 @@
         "available": true,
         "americanOdds": "+650",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+300",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-450",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1600",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1352,7 +1352,7 @@
         "available": true,
         "americanOdds": "-280",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571328&selectionId=7534608",
         "altLines": []
       },
@@ -1372,7 +1372,7 @@
         "available": true,
         "americanOdds": "+220",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571328&selectionId=7534607",
         "altLines": []
       },
@@ -1392,7 +1392,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571383&selectionId=131604",
         "altLines": []
       },
@@ -1412,13 +1412,13 @@
         "available": true,
         "americanOdds": "+110",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571271&selectionId=7017905",
         "altLines": [
           {
             "odds": "+290",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -1439,13 +1439,13 @@
         "available": true,
         "americanOdds": "-134",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571271&selectionId=7017906",
         "altLines": [
           {
             "odds": "-385",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -1466,7 +1466,7 @@
         "available": true,
         "americanOdds": "-134",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571271&selectionId=7017906",
         "altLines": []
       },
@@ -1486,7 +1486,7 @@
         "available": true,
         "americanOdds": "+110",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571271&selectionId=7017905",
         "altLines": []
       },
@@ -1506,7 +1506,7 @@
         "available": true,
         "americanOdds": "+350",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571383&selectionId=29165",
         "altLines": []
       },
@@ -1526,7 +1526,7 @@
         "available": true,
         "americanOdds": "-1500",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571358&selectionId=7679576",
         "altLines": []
       },
@@ -1546,7 +1546,7 @@
         "available": true,
         "americanOdds": "+310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571383&selectionId=29177",
         "altLines": []
       },
@@ -1566,7 +1566,7 @@
         "available": true,
         "americanOdds": "+790",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188571358&selectionId=7678706",
         "altLines": []
       },
@@ -1586,7 +1586,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1606,7 +1606,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1626,7 +1626,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1646,7 +1646,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1666,7 +1666,7 @@
         "available": true,
         "americanOdds": "-170",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1686,13 +1686,13 @@
         "available": true,
         "americanOdds": "+115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+275",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1713,13 +1713,13 @@
         "available": true,
         "americanOdds": "-155",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-390",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1740,7 +1740,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1760,7 +1760,7 @@
         "available": true,
         "americanOdds": "+115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1780,7 +1780,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1800,25 +1800,25 @@
         "available": true,
         "americanOdds": "+600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+320",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-450",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1600",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1839,7 +1839,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -1859,25 +1859,25 @@
         "available": true,
         "americanOdds": "-1400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+650",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+310",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-475",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -1898,7 +1898,7 @@
         "available": true,
         "americanOdds": "-280",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569075&selectionId=7534608",
         "altLines": []
       },
@@ -1918,7 +1918,7 @@
         "available": true,
         "americanOdds": "+220",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569075&selectionId=7534607",
         "altLines": []
       },
@@ -1938,7 +1938,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569098&selectionId=131604",
         "altLines": []
       },
@@ -1958,13 +1958,13 @@
         "available": true,
         "americanOdds": "+112",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569151&selectionId=7017905",
         "altLines": [
           {
             "odds": "+285",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -1985,13 +1985,13 @@
         "available": true,
         "americanOdds": "-140",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569151&selectionId=7017906",
         "altLines": [
           {
             "odds": "-375",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -2012,7 +2012,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569151&selectionId=7017906",
         "altLines": []
       },
@@ -2032,7 +2032,7 @@
         "available": true,
         "americanOdds": "+112",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569151&selectionId=7017905",
         "altLines": []
       },
@@ -2052,7 +2052,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569098&selectionId=7100960",
         "altLines": []
       },
@@ -2072,7 +2072,7 @@
         "available": true,
         "americanOdds": "+820",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569127&selectionId=7688236",
         "altLines": []
       },
@@ -2092,7 +2092,7 @@
         "available": true,
         "americanOdds": "+340",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569098&selectionId=6266193",
         "altLines": []
       },
@@ -2112,7 +2112,7 @@
         "available": true,
         "americanOdds": "-1600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188569127&selectionId=7685228",
         "altLines": []
       },
@@ -2132,7 +2132,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2152,7 +2152,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2172,7 +2172,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2192,7 +2192,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2212,7 +2212,7 @@
         "available": true,
         "americanOdds": "-165",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2232,13 +2232,13 @@
         "available": true,
         "americanOdds": "+110",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+275",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2259,13 +2259,13 @@
         "available": true,
         "americanOdds": "-145",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-390",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2286,7 +2286,7 @@
         "available": true,
         "americanOdds": "-145",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2306,7 +2306,7 @@
         "available": true,
         "americanOdds": "+110",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2326,7 +2326,7 @@
         "available": true,
         "americanOdds": "+400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2346,25 +2346,25 @@
         "available": true,
         "americanOdds": "-1100",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+800",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+370",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-370",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2385,7 +2385,7 @@
         "available": true,
         "americanOdds": "+270",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2405,25 +2405,25 @@
         "available": true,
         "americanOdds": "+550",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+255",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-600",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-2500",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2444,7 +2444,7 @@
         "available": true,
         "americanOdds": "-290",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528593&selectionId=7534608",
         "altLines": []
       },
@@ -2464,7 +2464,7 @@
         "available": true,
         "americanOdds": "+225",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528593&selectionId=7534607",
         "altLines": []
       },
@@ -2484,7 +2484,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528603&selectionId=131604",
         "altLines": []
       },
@@ -2504,13 +2504,13 @@
         "available": true,
         "americanOdds": "+116",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528602&selectionId=7017905",
         "altLines": [
           {
             "odds": "+290",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -2531,13 +2531,13 @@
         "available": true,
         "americanOdds": "-142",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528602&selectionId=7017906",
         "altLines": [
           {
             "odds": "-385",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -2558,7 +2558,7 @@
         "available": true,
         "americanOdds": "-142",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528602&selectionId=7017906",
         "altLines": []
       },
@@ -2578,7 +2578,7 @@
         "available": true,
         "americanOdds": "+116",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528602&selectionId=7017905",
         "altLines": []
       },
@@ -2598,7 +2598,7 @@
         "available": true,
         "americanOdds": "+420",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528603&selectionId=29167",
         "altLines": []
       },
@@ -2618,7 +2618,7 @@
         "available": true,
         "americanOdds": "-1200",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528719&selectionId=7684833",
         "altLines": []
       },
@@ -2638,7 +2638,7 @@
         "available": true,
         "americanOdds": "+280",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528603&selectionId=29164",
         "altLines": []
       },
@@ -2658,7 +2658,7 @@
         "available": true,
         "americanOdds": "+680",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528719&selectionId=7685720",
         "altLines": []
       },
@@ -2678,7 +2678,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2698,7 +2698,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2718,7 +2718,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2738,7 +2738,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2758,7 +2758,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2778,13 +2778,13 @@
         "available": true,
         "americanOdds": "+105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+265",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2805,13 +2805,13 @@
         "available": true,
         "americanOdds": "-140",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-370",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2832,7 +2832,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2852,7 +2852,7 @@
         "available": true,
         "americanOdds": "+105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2872,7 +2872,7 @@
         "available": true,
         "americanOdds": "+320",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2892,25 +2892,25 @@
         "available": true,
         "americanOdds": "+700",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+300",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-450",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1400",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2931,7 +2931,7 @@
         "available": true,
         "americanOdds": "+320",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -2951,25 +2951,25 @@
         "available": true,
         "americanOdds": "-1600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+650",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+300",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-450",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -2990,7 +2990,7 @@
         "available": true,
         "americanOdds": "-280",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537173&selectionId=7534608",
         "altLines": []
       },
@@ -3010,7 +3010,7 @@
         "available": true,
         "americanOdds": "+220",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537173&selectionId=7534607",
         "altLines": []
       },
@@ -3030,7 +3030,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537206&selectionId=131604",
         "altLines": []
       },
@@ -3050,13 +3050,13 @@
         "available": true,
         "americanOdds": "+114",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537128&selectionId=7017905",
         "altLines": [
           {
             "odds": "+310",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -3077,13 +3077,13 @@
         "available": true,
         "americanOdds": "-140",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537128&selectionId=7017906",
         "altLines": [
           {
             "odds": "-420",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -3104,7 +3104,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537128&selectionId=7017906",
         "altLines": []
       },
@@ -3124,7 +3124,7 @@
         "available": true,
         "americanOdds": "+114",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537128&selectionId=7017905",
         "altLines": []
       },
@@ -3144,7 +3144,7 @@
         "available": true,
         "americanOdds": "+340",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537206&selectionId=41541473",
         "altLines": []
       },
@@ -3164,7 +3164,7 @@
         "available": true,
         "americanOdds": "+880",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537130&selectionId=43549812",
         "altLines": []
       },
@@ -3184,7 +3184,7 @@
         "available": true,
         "americanOdds": "+340",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537206&selectionId=29179",
         "altLines": []
       },
@@ -3204,7 +3204,7 @@
         "available": true,
         "americanOdds": "-1800",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188537130&selectionId=7685896",
         "altLines": []
       },
@@ -3224,7 +3224,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3244,7 +3244,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3264,7 +3264,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3284,7 +3284,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3304,7 +3304,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3324,13 +3324,13 @@
         "available": true,
         "americanOdds": "+100",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+240",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -3351,13 +3351,13 @@
         "available": true,
         "americanOdds": "-135",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-340",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -3378,7 +3378,7 @@
         "available": true,
         "americanOdds": "-135",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3398,7 +3398,7 @@
         "available": true,
         "americanOdds": "+100",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3418,7 +3418,7 @@
         "available": true,
         "americanOdds": "+400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3438,25 +3438,25 @@
         "available": true,
         "americanOdds": "-900",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+800",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+380",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-340",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -3477,7 +3477,7 @@
         "available": true,
         "americanOdds": "+250",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3497,25 +3497,25 @@
         "available": true,
         "americanOdds": "+500",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+240",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-600",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-2000",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -3536,7 +3536,7 @@
         "available": true,
         "americanOdds": "-290",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535652&selectionId=7534608",
         "altLines": []
       },
@@ -3556,7 +3556,7 @@
         "available": true,
         "americanOdds": "+225",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535652&selectionId=7534607",
         "altLines": []
       },
@@ -3576,7 +3576,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535538&selectionId=131604",
         "altLines": []
       },
@@ -3596,13 +3596,13 @@
         "available": true,
         "americanOdds": "+114",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535622&selectionId=7017905",
         "altLines": [
           {
             "odds": "+300",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -3623,13 +3623,13 @@
         "available": true,
         "americanOdds": "-140",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535622&selectionId=7017906",
         "altLines": [
           {
             "odds": "-400",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -3650,7 +3650,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535622&selectionId=7017906",
         "altLines": []
       },
@@ -3670,7 +3670,7 @@
         "available": true,
         "americanOdds": "+114",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535622&selectionId=7017905",
         "altLines": []
       },
@@ -3690,7 +3690,7 @@
         "available": true,
         "americanOdds": "+420",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535538&selectionId=29168",
         "altLines": []
       },
@@ -3710,7 +3710,7 @@
         "available": true,
         "americanOdds": "-1200",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535703&selectionId=7686087",
         "altLines": []
       },
@@ -3730,7 +3730,7 @@
         "available": true,
         "americanOdds": "+280",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535538&selectionId=5408012",
         "altLines": []
       },
@@ -3750,7 +3750,7 @@
         "available": true,
         "americanOdds": "+680",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535703&selectionId=7221191",
         "altLines": []
       },
@@ -3770,7 +3770,7 @@
         "available": true,
         "americanOdds": "+100",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3790,7 +3790,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3810,7 +3810,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3830,7 +3830,7 @@
         "available": true,
         "americanOdds": "+100",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3850,7 +3850,7 @@
         "available": true,
         "americanOdds": "-130",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3870,13 +3870,13 @@
         "available": true,
         "americanOdds": "-115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+215",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -3897,13 +3897,13 @@
         "available": true,
         "americanOdds": "-115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-295",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -3924,7 +3924,7 @@
         "available": true,
         "americanOdds": "-115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3944,7 +3944,7 @@
         "available": true,
         "americanOdds": "-115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3964,7 +3964,7 @@
         "available": true,
         "americanOdds": "+255",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -3984,25 +3984,25 @@
         "available": true,
         "americanOdds": "+500",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+250",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-450",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1400",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4023,7 +4023,7 @@
         "available": true,
         "americanOdds": "+310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4043,25 +4043,25 @@
         "available": true,
         "americanOdds": "-900",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+650",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+300",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-350",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4082,7 +4082,7 @@
         "available": true,
         "americanOdds": "-265",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587345&selectionId=7534608",
         "altLines": []
       },
@@ -4102,7 +4102,7 @@
         "available": true,
         "americanOdds": "+210",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587345&selectionId=7534607",
         "altLines": []
       },
@@ -4120,9 +4120,9 @@
         "marketGroupName": "2nd Inning 3-Way Moneyline",
         "bookmakerID": "fanduel",
         "available": true,
-        "americanOdds": "-140",
+        "americanOdds": "-145",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587263&selectionId=131604",
         "altLines": []
       },
@@ -4142,13 +4142,13 @@
         "available": true,
         "americanOdds": "-105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587313&selectionId=7017905",
         "altLines": [
           {
             "odds": "+240",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -4167,15 +4167,15 @@
         "marketGroupName": "2nd Inning Over/Under",
         "bookmakerID": "fanduel",
         "available": true,
-        "americanOdds": "-114",
+        "americanOdds": "-115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587313&selectionId=7017906",
         "altLines": [
           {
             "odds": "-310",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -4194,9 +4194,9 @@
         "marketGroupName": "Any 2nd Inning Runs Yes/No",
         "bookmakerID": "fanduel",
         "available": true,
-        "americanOdds": "-114",
+        "americanOdds": "-115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587313&selectionId=7017906",
         "altLines": []
       },
@@ -4216,7 +4216,7 @@
         "available": true,
         "americanOdds": "-105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587313&selectionId=7017905",
         "altLines": []
       },
@@ -4234,9 +4234,9 @@
         "marketGroupName": "2nd Inning 3-Way Moneyline",
         "bookmakerID": "fanduel",
         "available": true,
-        "americanOdds": "+270",
+        "americanOdds": "+260",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587263&selectionId=29170",
         "altLines": []
       },
@@ -4254,9 +4254,9 @@
         "marketGroupName": "2nd Inning Spread",
         "bookmakerID": "fanduel",
         "available": true,
-        "americanOdds": "+590",
+        "americanOdds": "+610",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587337&selectionId=7690340",
         "altLines": []
       },
@@ -4276,7 +4276,7 @@
         "available": true,
         "americanOdds": "+350",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587263&selectionId=75117758",
         "altLines": []
       },
@@ -4294,9 +4294,9 @@
         "marketGroupName": "2nd Inning Spread",
         "bookmakerID": "fanduel",
         "available": true,
-        "americanOdds": "-950",
+        "americanOdds": "-1000",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188587337&selectionId=81813149",
         "altLines": []
       },
@@ -4316,7 +4316,7 @@
         "available": true,
         "americanOdds": "-120",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4336,7 +4336,7 @@
         "available": true,
         "americanOdds": "-135",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4356,7 +4356,7 @@
         "available": true,
         "americanOdds": "-135",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4376,7 +4376,7 @@
         "available": true,
         "americanOdds": "-120",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4396,7 +4396,7 @@
         "available": true,
         "americanOdds": "-180",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4416,13 +4416,13 @@
         "available": true,
         "americanOdds": "+115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+320",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4443,13 +4443,13 @@
         "available": true,
         "americanOdds": "-160",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-450",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4470,7 +4470,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4490,7 +4490,7 @@
         "available": true,
         "americanOdds": "+115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4510,7 +4510,7 @@
         "available": true,
         "americanOdds": "+450",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4530,25 +4530,25 @@
         "available": true,
         "americanOdds": "-1200",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+950",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+400",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-370",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4569,7 +4569,7 @@
         "available": true,
         "americanOdds": "+270",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4589,25 +4589,25 @@
         "available": true,
         "americanOdds": "+600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+260",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-700",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-3500",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4628,7 +4628,7 @@
         "available": true,
         "americanOdds": "-300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535023&selectionId=7534608",
         "altLines": []
       },
@@ -4648,7 +4648,7 @@
         "available": true,
         "americanOdds": "+235",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535023&selectionId=7534607",
         "altLines": []
       },
@@ -4668,7 +4668,7 @@
         "available": true,
         "americanOdds": "-180",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535045&selectionId=131604",
         "altLines": []
       },
@@ -4688,13 +4688,13 @@
         "available": true,
         "americanOdds": "+130",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535166&selectionId=7017905",
         "altLines": [
           {
             "odds": "+370",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -4715,13 +4715,13 @@
         "available": true,
         "americanOdds": "-160",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535166&selectionId=7017906",
         "altLines": [
           {
             "odds": "-520",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -4742,7 +4742,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535166&selectionId=7017906",
         "altLines": []
       },
@@ -4762,7 +4762,7 @@
         "available": true,
         "americanOdds": "+130",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535166&selectionId=7017905",
         "altLines": []
       },
@@ -4782,7 +4782,7 @@
         "available": true,
         "americanOdds": "+490",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535045&selectionId=1093236",
         "altLines": []
       },
@@ -4802,7 +4802,7 @@
         "available": true,
         "americanOdds": "-1400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535012&selectionId=7688479",
         "altLines": []
       },
@@ -4822,7 +4822,7 @@
         "available": true,
         "americanOdds": "+290",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535045&selectionId=7100968",
         "altLines": []
       },
@@ -4842,7 +4842,7 @@
         "available": true,
         "americanOdds": "+760",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188535012&selectionId=7678935",
         "altLines": []
       },
@@ -4862,7 +4862,7 @@
         "available": true,
         "americanOdds": "+105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4882,7 +4882,7 @@
         "available": true,
         "americanOdds": "-175",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4902,7 +4902,7 @@
         "available": true,
         "americanOdds": "-175",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4922,7 +4922,7 @@
         "available": true,
         "americanOdds": "+105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4942,7 +4942,7 @@
         "available": true,
         "americanOdds": "-170",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -4962,13 +4962,13 @@
         "available": true,
         "americanOdds": "+115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+290",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -4989,13 +4989,13 @@
         "available": true,
         "americanOdds": "-155",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-425",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5016,7 +5016,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5036,7 +5036,7 @@
         "available": true,
         "americanOdds": "+115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5056,7 +5056,7 @@
         "available": true,
         "americanOdds": "+230",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5076,25 +5076,25 @@
         "available": true,
         "americanOdds": "+475",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+220",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-900",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-5000",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5115,7 +5115,7 @@
         "available": true,
         "americanOdds": "+500",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5135,25 +5135,25 @@
         "available": true,
         "americanOdds": "-900",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+1000",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+500",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-310",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5174,7 +5174,7 @@
         "available": true,
         "americanOdds": "-325",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528862&selectionId=7534608",
         "altLines": []
       },
@@ -5194,7 +5194,7 @@
         "available": true,
         "americanOdds": "+250",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528862&selectionId=7534607",
         "altLines": []
       },
@@ -5214,7 +5214,7 @@
         "available": true,
         "americanOdds": "-190",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528893&selectionId=131604",
         "altLines": []
       },
@@ -5234,13 +5234,13 @@
         "available": true,
         "americanOdds": "+136",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528802&selectionId=7017905",
         "altLines": [
           {
             "odds": "+340",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -5261,13 +5261,13 @@
         "available": true,
         "americanOdds": "-168",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528802&selectionId=7017906",
         "altLines": [
           {
             "odds": "-470",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -5288,7 +5288,7 @@
         "available": true,
         "americanOdds": "-168",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528802&selectionId=7017906",
         "altLines": []
       },
@@ -5308,7 +5308,7 @@
         "available": true,
         "americanOdds": "+136",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528802&selectionId=7017905",
         "altLines": []
       },
@@ -5328,7 +5328,7 @@
         "available": true,
         "americanOdds": "+260",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528893&selectionId=29171",
         "altLines": []
       },
@@ -5348,7 +5348,7 @@
         "available": true,
         "americanOdds": "+610",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528865&selectionId=7679577",
         "altLines": []
       },
@@ -5368,7 +5368,7 @@
         "available": true,
         "americanOdds": "+600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528893&selectionId=29178",
         "altLines": []
       },
@@ -5388,7 +5388,7 @@
         "available": true,
         "americanOdds": "-1000",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528865&selectionId=7685046",
         "altLines": []
       },
@@ -5408,7 +5408,7 @@
         "available": true,
         "americanOdds": "+110",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5428,7 +5428,7 @@
         "available": true,
         "americanOdds": "-185",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5448,7 +5448,7 @@
         "available": true,
         "americanOdds": "-185",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5468,7 +5468,7 @@
         "available": true,
         "americanOdds": "+110",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5488,7 +5488,7 @@
         "available": true,
         "americanOdds": "-155",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5506,15 +5506,15 @@
         "marketGroupName": "2nd Inning Over/Under",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "+105",
+        "americanOdds": "+100",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
-            "odds": "+265",
+            "odds": "+255",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5533,15 +5533,15 @@
         "marketGroupName": "2nd Inning Over/Under",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "-140",
+        "americanOdds": "-135",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
-            "odds": "-370",
+            "odds": "-360",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5560,9 +5560,9 @@
         "marketGroupName": "Any 2nd Inning Runs Yes/No",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "-140",
+        "americanOdds": "-135",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5580,9 +5580,9 @@
         "marketGroupName": "Any 2nd Inning Runs Yes/No",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "+105",
+        "americanOdds": "+100",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5602,7 +5602,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5622,25 +5622,25 @@
         "available": true,
         "americanOdds": "+700",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+310",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-425",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1200",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5661,7 +5661,7 @@
         "available": true,
         "americanOdds": "+300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5681,25 +5681,25 @@
         "available": true,
         "americanOdds": "-1600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+600",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+285",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-475",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -5720,7 +5720,7 @@
         "available": true,
         "americanOdds": "-265",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528000&selectionId=7534608",
         "altLines": []
       },
@@ -5740,7 +5740,7 @@
         "available": true,
         "americanOdds": "+210",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528000&selectionId=7534607",
         "altLines": []
       },
@@ -5760,7 +5760,7 @@
         "available": true,
         "americanOdds": "-150",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528109&selectionId=131604",
         "altLines": []
       },
@@ -5780,13 +5780,13 @@
         "available": true,
         "americanOdds": "+104",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528057&selectionId=7017905",
         "altLines": [
           {
             "odds": "+260",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -5807,13 +5807,13 @@
         "available": true,
         "americanOdds": "-128",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528057&selectionId=7017906",
         "altLines": [
           {
             "odds": "-340",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -5834,7 +5834,7 @@
         "available": true,
         "americanOdds": "-128",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528057&selectionId=7017906",
         "altLines": []
       },
@@ -5854,7 +5854,7 @@
         "available": true,
         "americanOdds": "+104",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528057&selectionId=7017905",
         "altLines": []
       },
@@ -5874,7 +5874,7 @@
         "available": true,
         "americanOdds": "+310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528109&selectionId=29174",
         "altLines": []
       },
@@ -5894,7 +5894,7 @@
         "available": true,
         "americanOdds": "+710",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528028&selectionId=7691548",
         "altLines": []
       },
@@ -5914,7 +5914,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528109&selectionId=1033687",
         "altLines": []
       },
@@ -5934,7 +5934,7 @@
         "available": true,
         "americanOdds": "-1250",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188528028&selectionId=7685247",
         "altLines": []
       },
@@ -5952,9 +5952,9 @@
         "marketGroupName": "2nd Inning Over/Under",
         "bookmakerID": "fliff",
         "available": true,
-        "americanOdds": "-105",
+        "americanOdds": "-110",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:50.678Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5974,7 +5974,7 @@
         "available": true,
         "americanOdds": "-150",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -5994,7 +5994,7 @@
         "available": true,
         "americanOdds": "-150",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6012,9 +6012,9 @@
         "marketGroupName": "Any 2nd Inning Runs Yes/No",
         "bookmakerID": "fliff",
         "available": true,
-        "americanOdds": "-105",
+        "americanOdds": "-110",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:50.678Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6034,7 +6034,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6054,13 +6054,13 @@
         "available": true,
         "americanOdds": "-110",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+230",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6081,13 +6081,13 @@
         "available": true,
         "americanOdds": "-125",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-320",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6108,7 +6108,7 @@
         "available": true,
         "americanOdds": "-125",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6128,7 +6128,7 @@
         "available": true,
         "americanOdds": "-110",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6148,7 +6148,7 @@
         "available": true,
         "americanOdds": "+310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6168,25 +6168,25 @@
         "available": true,
         "americanOdds": "-1200",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+600",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+295",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-380",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6207,7 +6207,7 @@
         "available": true,
         "americanOdds": "+280",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6227,25 +6227,25 @@
         "available": true,
         "americanOdds": "+550",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+265",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-425",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1400",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6266,7 +6266,7 @@
         "available": true,
         "americanOdds": "-265",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546057&selectionId=7534608",
         "altLines": []
       },
@@ -6286,7 +6286,7 @@
         "available": true,
         "americanOdds": "+210",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546057&selectionId=7534607",
         "altLines": []
       },
@@ -6306,7 +6306,7 @@
         "available": true,
         "americanOdds": "-145",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546132&selectionId=131604",
         "altLines": []
       },
@@ -6326,13 +6326,13 @@
         "available": true,
         "americanOdds": "+102",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546126&selectionId=7017905",
         "altLines": [
           {
             "odds": "+270",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -6353,13 +6353,13 @@
         "available": true,
         "americanOdds": "-124",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546126&selectionId=7017906",
         "altLines": [
           {
             "odds": "-355",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -6380,7 +6380,7 @@
         "available": true,
         "americanOdds": "-124",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546126&selectionId=7017906",
         "altLines": []
       },
@@ -6400,7 +6400,7 @@
         "available": true,
         "americanOdds": "+102",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546126&selectionId=7017905",
         "altLines": []
       },
@@ -6420,7 +6420,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546132&selectionId=29176",
         "altLines": []
       },
@@ -6440,7 +6440,7 @@
         "available": true,
         "americanOdds": "-1300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546145&selectionId=7678707",
         "altLines": []
       },
@@ -6460,7 +6460,7 @@
         "available": true,
         "americanOdds": "+310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546132&selectionId=29159",
         "altLines": []
       },
@@ -6480,7 +6480,7 @@
         "available": true,
         "americanOdds": "+730",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188546145&selectionId=7678963",
         "altLines": []
       },
@@ -6500,7 +6500,7 @@
         "available": true,
         "americanOdds": "-115",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6520,7 +6520,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6540,7 +6540,7 @@
         "available": true,
         "americanOdds": "-140",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6560,7 +6560,7 @@
         "available": true,
         "americanOdds": "-115",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6580,7 +6580,7 @@
         "available": true,
         "americanOdds": "-170",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6600,13 +6600,13 @@
         "available": true,
         "americanOdds": "+110",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+275",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6627,13 +6627,13 @@
         "available": true,
         "americanOdds": "-150",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-390",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6654,7 +6654,7 @@
         "available": true,
         "americanOdds": "-150",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6674,7 +6674,7 @@
         "available": true,
         "americanOdds": "+110",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6694,7 +6694,7 @@
         "available": true,
         "americanOdds": "+380",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6714,25 +6714,25 @@
         "available": true,
         "americanOdds": "-1200",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+750",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+350",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-425",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6753,7 +6753,7 @@
         "available": true,
         "americanOdds": "+300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -6773,25 +6773,25 @@
         "available": true,
         "americanOdds": "+600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+285",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-550",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-2000",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -6812,7 +6812,7 @@
         "available": true,
         "americanOdds": "-300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531399&selectionId=7534608",
         "altLines": []
       },
@@ -6832,7 +6832,7 @@
         "available": true,
         "americanOdds": "+235",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531399&selectionId=7534607",
         "altLines": []
       },
@@ -6852,7 +6852,7 @@
         "available": true,
         "americanOdds": "-170",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531348&selectionId=131604",
         "altLines": []
       },
@@ -6872,13 +6872,13 @@
         "available": true,
         "americanOdds": "+120",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531300&selectionId=7017905",
         "altLines": [
           {
             "odds": "+320",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -6899,13 +6899,13 @@
         "available": true,
         "americanOdds": "-148",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531300&selectionId=7017906",
         "altLines": [
           {
             "odds": "-430",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -6926,7 +6926,7 @@
         "available": true,
         "americanOdds": "-148",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531300&selectionId=7017906",
         "altLines": []
       },
@@ -6946,7 +6946,7 @@
         "available": true,
         "americanOdds": "+120",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531300&selectionId=7017905",
         "altLines": []
       },
@@ -6966,7 +6966,7 @@
         "available": true,
         "americanOdds": "+400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531348&selectionId=50291",
         "altLines": []
       },
@@ -6986,7 +6986,7 @@
         "available": true,
         "americanOdds": "-1300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531276&selectionId=12805701",
         "altLines": []
       },
@@ -7006,7 +7006,7 @@
         "available": true,
         "americanOdds": "+310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531348&selectionId=29172",
         "altLines": []
       },
@@ -7026,7 +7026,7 @@
         "available": true,
         "americanOdds": "+730",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188531276&selectionId=7687395",
         "altLines": []
       },
@@ -7046,7 +7046,7 @@
         "available": true,
         "americanOdds": "+105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7066,7 +7066,7 @@
         "available": true,
         "americanOdds": "-170",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7086,7 +7086,7 @@
         "available": true,
         "americanOdds": "-170",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7106,7 +7106,7 @@
         "available": true,
         "americanOdds": "+105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7124,9 +7124,9 @@
         "marketGroupName": "2nd Inning 3-Way Moneyline",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "-200",
+        "americanOdds": "-205",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7146,13 +7146,13 @@
         "available": true,
         "americanOdds": "+130",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
-            "odds": "+340",
+            "odds": "+350",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7171,15 +7171,15 @@
         "marketGroupName": "2nd Inning Over/Under",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "-175",
+        "americanOdds": "-180",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
-            "odds": "-500",
+            "odds": "-525",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7198,9 +7198,9 @@
         "marketGroupName": "Any 2nd Inning Runs Yes/No",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "-175",
+        "americanOdds": "-180",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7220,7 +7220,7 @@
         "available": true,
         "americanOdds": "+130",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7240,7 +7240,7 @@
         "available": true,
         "americanOdds": "+360",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7260,25 +7260,25 @@
         "available": true,
         "americanOdds": "+750",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+340",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-550",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-2500",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7297,9 +7297,9 @@
         "marketGroupName": "2nd Inning 3-Way Moneyline",
         "bookmakerID": "draftkings",
         "available": true,
-        "americanOdds": "+380",
+        "americanOdds": "+390",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7319,25 +7319,25 @@
         "available": true,
         "americanOdds": "-1800",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+800",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+360",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-525",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7358,7 +7358,7 @@
         "available": true,
         "americanOdds": "-310",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572153&selectionId=7534608",
         "altLines": []
       },
@@ -7378,7 +7378,7 @@
         "available": true,
         "americanOdds": "+240",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572153&selectionId=7534607",
         "altLines": []
       },
@@ -7398,7 +7398,7 @@
         "available": true,
         "americanOdds": "-190",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572177&selectionId=131604",
         "altLines": []
       },
@@ -7418,13 +7418,13 @@
         "available": true,
         "americanOdds": "+136",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572213&selectionId=7017905",
         "altLines": [
           {
             "odds": "+370",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -7445,13 +7445,13 @@
         "available": true,
         "americanOdds": "-168",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572213&selectionId=7017906",
         "altLines": [
           {
             "odds": "-520",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -7472,7 +7472,7 @@
         "available": true,
         "americanOdds": "-168",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572213&selectionId=7017906",
         "altLines": []
       },
@@ -7492,7 +7492,7 @@
         "available": true,
         "americanOdds": "+136",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572213&selectionId=7017905",
         "altLines": []
       },
@@ -7512,7 +7512,7 @@
         "available": true,
         "americanOdds": "+370",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572177&selectionId=29162",
         "altLines": []
       },
@@ -7532,7 +7532,7 @@
         "available": true,
         "americanOdds": "+980",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572219&selectionId=7685693",
         "altLines": []
       },
@@ -7552,7 +7552,7 @@
         "available": true,
         "americanOdds": "+400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572177&selectionId=29175",
         "altLines": []
       },
@@ -7572,7 +7572,7 @@
         "available": true,
         "americanOdds": "-2200",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188572219&selectionId=7691549",
         "altLines": []
       },
@@ -7592,7 +7592,7 @@
         "available": true,
         "americanOdds": "+120",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7612,7 +7612,7 @@
         "available": true,
         "americanOdds": "-195",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7632,7 +7632,7 @@
         "available": true,
         "americanOdds": "-195",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7652,7 +7652,7 @@
         "available": true,
         "americanOdds": "+120",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7672,7 +7672,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7692,13 +7692,13 @@
         "available": true,
         "americanOdds": "+105",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+275",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7719,13 +7719,13 @@
         "available": true,
         "americanOdds": "-145",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "-390",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7746,7 +7746,7 @@
         "available": true,
         "americanOdds": "-145",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7766,7 +7766,7 @@
         "available": true,
         "americanOdds": "+105",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7786,7 +7786,7 @@
         "available": true,
         "americanOdds": "+300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7806,25 +7806,25 @@
         "available": true,
         "americanOdds": "+600",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+290",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-475",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-1600",
             "spread": "+1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7845,7 +7845,7 @@
         "available": true,
         "americanOdds": "+330",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": []
       },
@@ -7865,25 +7865,25 @@
         "available": true,
         "americanOdds": "-1400",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+        "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
         "deeplink": null,
         "altLines": [
           {
             "odds": "+700",
             "spread": "-1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "+310",
             "spread": "-0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           },
           {
             "odds": "-425",
             "spread": "+0.5",
-            "lastUpdatedAt": "2026-09-26T15:19:42.195Z",
+            "lastUpdatedAt": "2026-09-26T15:24:31.860Z",
             "available": true
           }
         ]
@@ -7904,7 +7904,7 @@
         "available": true,
         "americanOdds": "-290",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583339&selectionId=7534608",
         "altLines": []
       },
@@ -7924,7 +7924,7 @@
         "available": true,
         "americanOdds": "+225",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583339&selectionId=7534607",
         "altLines": []
       },
@@ -7944,7 +7944,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583336&selectionId=131604",
         "altLines": []
       },
@@ -7964,13 +7964,13 @@
         "available": true,
         "americanOdds": "+116",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583360&selectionId=7017905",
         "altLines": [
           {
             "odds": "+300",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -7991,13 +7991,13 @@
         "available": true,
         "americanOdds": "-142",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583360&selectionId=7017906",
         "altLines": [
           {
             "odds": "-400",
             "overUnder": "1.5",
-            "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+            "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
             "available": true
           }
         ]
@@ -8018,7 +8018,7 @@
         "available": true,
         "americanOdds": "-142",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583360&selectionId=7017906",
         "altLines": []
       },
@@ -8038,7 +8038,7 @@
         "available": true,
         "americanOdds": "+116",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583360&selectionId=7017905",
         "altLines": []
       },
@@ -8058,7 +8058,7 @@
         "available": true,
         "americanOdds": "+300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583336&selectionId=29163",
         "altLines": []
       },
@@ -8078,7 +8078,7 @@
         "available": true,
         "americanOdds": "+730",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583225&selectionId=7685897",
         "altLines": []
       },
@@ -8098,7 +8098,7 @@
         "available": true,
         "americanOdds": "+390",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583336&selectionId=29160",
         "altLines": []
       },
@@ -8118,7 +8118,7 @@
         "available": true,
         "americanOdds": "-1300",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:19:46.135Z",
+        "lastUpdatedAt": "2026-09-26T15:24:43.736Z",
         "deeplink": "https://sportsbook.fanduel.com/addToBetslip?marketId=717.188583225&selectionId=7680239",
         "altLines": []
       },
@@ -8138,7 +8138,7 @@
         "available": true,
         "americanOdds": "+100",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -8158,7 +8158,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": "0.5",
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -8178,7 +8178,7 @@
         "available": true,
         "americanOdds": "-160",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       },
@@ -8198,7 +8198,7 @@
         "available": true,
         "americanOdds": "+100",
         "line": null,
-        "lastUpdatedAt": "2026-09-26T15:18:04.045Z",
+        "lastUpdatedAt": "2026-09-26T15:23:09.252Z",
         "deeplink": null,
         "altLines": []
       }
