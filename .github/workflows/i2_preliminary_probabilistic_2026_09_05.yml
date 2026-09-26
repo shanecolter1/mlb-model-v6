@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DATE: '2026-09-05'
-      MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
       SPORTSBOOK_DATA_SOURCE: THE_ODDS_API
       ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       SAMPLE_COUNT: '12'
