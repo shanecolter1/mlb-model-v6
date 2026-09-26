@@ -12,6 +12,8 @@ import {
 
 const ids = buildMlbInningOddIds();
 assert(ids.includes('points-all-2i-ou-over'));
+assert(ids.includes('points-all-2i-yn-yes'));
+assert(ids.includes('points-all-2i-yn-no'));
 assert(ids.includes('points-away-2i-ou-over'));
 assert(ids.includes('points-home-2i-ou-under'));
 assert(ids.includes('points-away-2i-ml3way-away'));
@@ -32,6 +34,10 @@ assert.deepEqual(
   classifyMlbOdd({ statID:'points', statEntityID:'away', periodID:'2i', betTypeID:'ou', sideID:'over' }),
   { marketType:'TEAM_HALF_INNING_TOTAL', inning:2, segment:'top', teamSide:'away', side:'over' }
 );
+assert.deepEqual(
+  classifyMlbOdd({ statID:'points', statEntityID:'all', periodID:'2i', betTypeID:'yn', sideID:'no' }),
+  { marketType:'FULL_INNING_ANY_RUNS', inning:2, segment:'full', side:'no', equivalentMarketType:'FULL_INNING_TOTAL', equivalentSide:'under', equivalentLine:0.5 }
+);
 
 const event = {
   eventID: 'evt1', leagueID: 'MLB', status: { started:false, startsAt:'2026-09-25T23:10:00Z' },
@@ -48,10 +54,17 @@ const event = {
         pinnacle:{ odds:'+145', overUnder:'0.5', available:true },
       },
     },
+    'points-all-2i-yn-no': {
+      oddID:'points-all-2i-yn-no', statID:'points', statEntityID:'all', periodID:'2i', betTypeID:'yn', sideID:'no',
+      fairOdds:'-120', bookOdds:'-125',
+      byBookmaker: {
+        caesars:{ odds:'-137', available:true, lastUpdatedAt:'2026-09-25T14:06:00Z' },
+      },
+    },
   },
 };
-const normalized = normalizeSgoEvent(event, { bookmakerIDs:['draftkings'] });
-assert.equal(normalized.markets.length, 1);
+const normalized = normalizeSgoEvent(event, { bookmakerIDs:['draftkings','caesars'] });
+assert.equal(normalized.markets.length, 2);
 assert.equal(normalized.markets[0].marketType, 'FULL_INNING_TOTAL');
 assert.equal(normalized.markets[0].prices.length, 2);
 const dkHalf = normalized.markets[0].prices.find(x => x.line === 0.5);
@@ -59,6 +72,11 @@ assert.equal(dkHalf.americanOdds, 150);
 assert.equal(dkHalf.isAlternateLine, true);
 assert.equal(normalized.markets[0].providerFairOdds, 125);
 assert.equal(normalized.markets[0].providerFairLine, 0.5);
+const caesarsNo = normalized.markets.find(x => x.marketType === 'FULL_INNING_ANY_RUNS');
+assert.equal(caesarsNo.equivalentSide, 'under');
+assert.equal(caesarsNo.equivalentLine, 0.5);
+assert.equal(caesarsNo.prices[0].bookmakerID, 'caesars');
+assert.equal(caesarsNo.prices[0].americanOdds, -137);
 
 const dated = filterEventsByLocalDate([normalized], '2026-09-25', 'America/Chicago');
 assert.equal(dated.length, 1);
