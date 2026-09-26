@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
+import path from 'node:path';
 import { simulateFullSecondInning } from '../model/i2_inning_model.js';
 import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
 import { applyEnvironmentalEventVector } from '../event_probability_engine.js';
@@ -162,7 +163,7 @@ const payload={
   raw_logloss:n ? ll/n : null,
   predictions,
 };
-fs.mkdirSync(new URL('../../data/derived/i2_vnext/',import.meta.url),{recursive:true});
+fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});
 fs.writeFileSync(OUTPUT,JSON.stringify(payload));
 console.log(JSON.stringify({
   n:payload.n,raw_brier:payload.raw_brier,raw_logloss:payload.raw_logloss,
