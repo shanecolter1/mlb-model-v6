@@ -29,6 +29,8 @@ test('RosterResource is audit-only and never becomes the production provisional 
  const rw=selectLineup([rr,lineup('ROTOWIRE')]);
  assert.deepEqual(rw.players,players);
  assert.ok(rw.audit.rotowireVsRosterResource);
+ assert.equal(rw.audit.provisionalSourcePolicy,'ROTOWIRE_ONLY');
+ assert.equal(rw.audit.rosterResourceRole,'AUDIT_ONLY');
  const fallback=selectLineup([rr,lineup('PREVIOUS_GAME')]);
  assert.equal(fallback.status,'FALLBACK_PREVIOUS_GAME');
  assert.deepEqual(fallback.players,players);
