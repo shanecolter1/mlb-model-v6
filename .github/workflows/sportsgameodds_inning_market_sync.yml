@@ -1,16 +1,6 @@
 name: Sync SportsGameOdds MLB inning markets
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/sportsgameodds_inning_market_sync.yml'
-      - 'src/market/sportsgameodds_data_source.mjs'
-      - 'src/pipeline/fetch_sgo_mlb_inning_markets.mjs'
-      - 'tests/sportsgameodds_data_source.test.mjs'
-  workflow_run:
-    workflows: ['Run I2 daily slate']
-    types: [completed]
   workflow_dispatch:
     inputs:
       date:
@@ -31,7 +21,6 @@ concurrency:
 
 jobs:
   sync:
-    if: ${{ github.event_name == 'push' || github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
@@ -70,25 +59,6 @@ jobs:
             echo "configured=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Validate SportsGameOdds authentication
-        if: steps.config.outputs.configured == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { fetchMlbMarketSupport } from './src/market/sportsgameodds_data_source.mjs';
-          const response = await fetchMlbMarketSupport({
-            oddIDs: ['points-all-2i-ou-over'],
-          });
-          const data = Array.isArray(response?.data) ? response.data : [];
-          console.log(JSON.stringify({
-            authenticated: true,
-            league: 'MLB',
-            requestedOddID: 'points-all-2i-ou-over',
-            note: 'Bookmaker-specific availability is verified on /events after freeze',
-            returnedMarketRecords: data.length,
-          }, null, 2));
-          NODE
 
       - name: Check for existing frozen projection
         if: steps.config.outputs.configured == 'true'
@@ -159,10 +129,9 @@ jobs:
           I2_PRELIM_LOOKBACK_DAYS: '7'
         run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
 
-      - name: Generate unchanged parent projection before market access
+      - name: Generate self-contained parent projection before market access
         if: steps.config.outputs.configured == 'true' && steps.frozen.outputs.exists != 'true' && steps.restore.outputs.restored != 'true'
         env:
-          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_DATE: ${{ steps.params.outputs.date }}
           I2_CUTOFF: '1970-01-01T00:00:00Z'
           I2_TRIALS: '50000'
