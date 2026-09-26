@@ -1,0 +1,44 @@
+{
+  "version": "i1-state-ab-selection-v1",
+  "generated_at": "2026-09-26T22:15:19.563199+00:00",
+  "selection_year": 2024,
+  "market_inputs_used": false,
+  "target": "actual I2 starting batting slot",
+  "evaluation_method": "exact dynamic propagation through validated empirical event/base-out transition table; run-only transition differences collapsed",
+  "arms": {
+    "league": {
+      "n": 4857,
+      "slot_logloss": 1.5071312216273973,
+      "slot_brier": 0.7349516373333563,
+      "mean_probability_on_observed_slot": 0.2650884524775241,
+      "top1_accuracy": 0.37142268890261476
+    },
+    "player_asof": {
+      "n": 4857,
+      "slot_logloss": 1.5042873049510501,
+      "slot_brier": 0.7337942670050281,
+      "mean_probability_on_observed_slot": 0.2668105591874597,
+      "top1_accuracy": 0.37142268890261476
+    }
+  },
+  "paired_deltas_player_minus_league": {
+    "slot_logloss": -0.0028439166763470714,
+    "slot_brier": -0.0011573703283283329,
+    "slot_logloss_bootstrap_95pct": [
+      -0.004237904348782589,
+      -0.0013175420299714362
+    ],
+    "slot_brier_bootstrap_95pct": [
+      -0.0017404562829495729,
+      -0.0005812829937587889
+    ]
+  },
+  "selection_rule": "player_asof must lower both paired mean slot logloss and Brier, with logloss bootstrap 95% CI entirely below zero; otherwise league",
+  "selected": "player_asof",
+  "governance": {
+    "2025_full_i2_holdout_consumed": false,
+    "observed_i2_runs_used": false,
+    "observed_i2_start_slot_used_as_predictor": false,
+    "sportsbook_or_market_inputs_used": false
+  }
+}
