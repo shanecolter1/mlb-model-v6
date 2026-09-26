@@ -23,14 +23,14 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import log_loss
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 EVENTS = [
     "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
     "strikeout", "ball_in_play_out",
 ]
 CAT = ["batter", "pitcher", "platoon"]
-NUM = ["arsenal_z"]
+NUM = ["arsenal_matchup_xwoba"]
 
 
 def parse_args() -> argparse.Namespace:
@@ -163,7 +163,7 @@ def fit_one(train: pd.DataFrame, c: float, half_life: float):
     prep = ColumnTransformer(
         [
             ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=True, dtype=np.float64), CAT),
-            ("num", "passthrough", NUM),
+            ("num", StandardScaler(), NUM),
         ],
         sparse_threshold=1.0,
     )
@@ -208,7 +208,7 @@ def validation_folds(df: pd.DataFrame):
     return folds
 
 
-def serialize_model(prep, model, mean: float, sd: float, selected: dict, trials: list[dict]) -> dict:
+def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
     names = [str(x) for x in prep.get_feature_names_out()]
     artifact = {
         "version": "i2-vnext-direct-talent-v1",
@@ -222,8 +222,8 @@ def serialize_model(prep, model, mean: float, sd: float, selected: dict, trials:
             "name": "arsenal_matchup_xwoba",
             "historical_source_rule": "prior-season Savant pitch-arsenal stats",
             "live_source_rule": "current YTD Savant pitch-arsenal snapshot at cutoff",
-            "mean": mean,
-            "sd": sd,
+            "mean": float(prep.named_transformers_["num"].mean_[0]),
+            "sd": float(prep.named_transformers_["num"].scale_[0]),
         },
         "selected": {**selected, "selection_year": 2024},
         "chronological_validation": trials,
@@ -298,10 +298,6 @@ def main() -> None:
     df["pitcher"] = pd.to_numeric(df["pitcher"], errors="raise").astype(int).astype(str)
     df["platoon"] = df["platoon"].fillna("?v?").astype(str)
 
-    mean = float(df["arsenal_matchup_xwoba"].mean())
-    sd = float(df["arsenal_matchup_xwoba"].std(ddof=0)) or 1.0
-    df["arsenal_z"] = (df["arsenal_matchup_xwoba"] - mean) / sd
-
     half_lives = [float(x) for x in args.half_lives.split(",") if x]
     c_grid = [float(x) for x in args.c_grid.split(",") if x]
     folds = validation_folds(df)
@@ -343,7 +339,7 @@ def main() -> None:
         "selection_metric": "chronological weighted multiclass log loss",
     }
     prep, model = fit_one(df, best[2], best[1])
-    artifact = serialize_model(prep, model, mean, sd, selected, trials)
+    artifact = serialize_model(prep, model, selected, trials)
     artifact["training"] = {
         "start": df["game_date"].min().date().isoformat(),
         "end": df["game_date"].max().date().isoformat(),
