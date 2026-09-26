@@ -303,6 +303,7 @@ jobs:
           node src/research/run_i2_vnext_replay.mjs \
             --trials 2500 \
             --i1-mode player_asof \
+            --i1-mode player_asof \
             --input data/derived/i2_vnext/replay_2025_inputs.json \
             --model data/derived/i2_vnext/i2_vnext_event_model.json \
             --walkforward-manifest data/derived/i2_vnext/walkforward_2025/manifest.json \
@@ -320,6 +321,8 @@ jobs:
           assert m['market_inputs_used'] is False
           assert m['observed_i2_state_used_as_predictor'] is False
           assert m['point_in_time_player_refits'] is True
+          assert m['i1_state_mode'] == 'player_asof'
+          assert m['i1_state_model']['player_specific_i1_talent_used'] is True
           assert m['i1_state_mode'] == 'player_asof'
           assert m['i1_state_model']['player_specific_i1_talent_used'] is True
           assert m['i1_state_mode'] == 'player_asof'
