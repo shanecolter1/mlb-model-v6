@@ -15,7 +15,6 @@ jobs:
       I2_DATE: '2026-09-25'
       I2_TRIALS: '50000'
       I2_CUTOFF: '1970-01-01T00:00:00Z'
-      MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
       SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
       I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-25_scratch_run_environment.json
       I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-25_scratch_lineup_overrides.json
