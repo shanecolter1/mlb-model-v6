@@ -11,7 +11,6 @@ jobs:
     env:
       I2_DATE: '2026-09-23'
       I2_TRIALS: '50000'
-      MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
       ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       I2_RUN_ENVIRONMENT: data/runtime/i2/2026-09-23_run_environment.json
       I2_LINEUP_OVERRIDES: data/runtime/i2/2026-09-23_lineup_overrides.json
@@ -29,7 +28,7 @@ jobs:
           import fs from 'node:fs';
           const d=process.env.I2_DATE;
           let s,source;
-          for(const [label,url] of [['PRIMARY',`${process.env.MLB_OTHER_MODEL_BASE_URL}/.netlify/functions/mlb?type=schedule&date=${d}`],['FALLBACK',`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${d}&hydrate=probablePitcher,team,venue`]]){
+          for(const [label,url] of [['PRIMARY',`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${d}&hydrate=probablePitcher,team,venue`]]){
             try{const r=await fetch(url,{signal:AbortSignal.timeout(20000)});if(!r.ok)throw Error(r.status);s=await r.json();if(!s.dates)throw Error('dates missing');source=label;break;}catch(e){console.log(label,String(e));}
           }
           if(!s?.dates)throw Error('Schedule unavailable');
