@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { simulateFullSecondInning } from '../model/i2_inning_model.js';
 import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
-import { applyEnvironmentalEventVector } from '../event_probability_engine.js';
+import { applyEnvironmentalEventVector, buildNeutralEventVector } from '../event_probability_engine.js';
 import { createSeededRandom, seedFromGameId } from '../model/seeded_random.js';
 
 function arg(name, fallback=null) {
@@ -18,6 +18,8 @@ const PARKS=arg('--parks','data/derived/i2_vnext/park/savant_venue_profiles_2024
 const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/replay_2025_predictions.json');
 const TRIALS=Number(arg('--trials','10000'));
+const I2_MODEL=arg('--i2-model','vnext');
+if (!['vnext','production_formula'].includes(I2_MODEL)) throw new Error('Unknown --i2-model');
 const I1_MODE=arg('--i1-mode','league');
 const SHARD_COUNT=Number(arg('--shard-count','1'));
 const SHARD_INDEX=Number(arg('--shard-index','0'));
@@ -229,8 +231,17 @@ for (const game of replayGames) {
     lineup:makeLineup(game.home_lineup,leagueRates),
     starter:makePitcher(game.home_starter,leagueRates),
   };
+  const formulaCache=new Map();
   const provider=({batter,pitcher})=>{
     const batterSide=stand(batter.bats,pitcher.throws);
+    if (I2_MODEL === 'production_formula') {
+      const key=`${batter.id}|${pitcher.id}|${batterSide}`;
+      if (!formulaCache.has(key)) {
+        const neutralVector=buildNeutralEventVector({batter:batter.eventRates,pitcher:pitcher.eventRatesAllowed,league:leagueRates,weights:{batter:0.5,pitcher:0.5}});
+        formulaCache.set(key,applyEnvironmentalEventVector({neutralVector,environmentalContext:venue.profile,batterSide}).probabilities);
+      }
+      return formulaCache.get(key);
+    }
     const neutral=predictI2EventVector({
       batterId:batter.id,
       pitcherId:pitcher.id,
@@ -302,6 +313,8 @@ const payload={
   market_inputs_used:false,
   observed_i2_state_used_as_predictor:false,
   point_in_time_player_refits:Boolean(walkforward),
+  i2_model:I2_MODEL,
+  comparison_scope:I2_MODEL === 'production_formula' ? 'Controlled production event formula; shared pregame as-of rates, prior-season baseline, I1 state and transitions. Not exact deployed production.' : null,
   i1_state_mode:I1_MODE,
   i1_state_model:replay.i1_state_model,
   i1_player_asof_model:I1_MODE === 'player_asof' ? (replay.i1_player_asof_model || null) : null,

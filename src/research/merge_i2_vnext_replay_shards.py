@@ -37,7 +37,7 @@ def main():
     invariant_keys=[
         "season","base_model_version","trials_per_game","market_inputs_used",
         "observed_i2_state_used_as_predictor","point_in_time_player_refits",
-        "i1_state_mode","transition_model",
+        "i1_state_mode","transition_model","i2_model",
     ]
     for s in shards[1:]:
         for key in invariant_keys:
