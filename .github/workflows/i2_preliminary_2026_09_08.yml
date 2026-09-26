@@ -1,11 +1,8 @@
 name: Run preliminary I2 slate 2026-09-08
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_preliminary_2026_09_08.yml'
   workflow_dispatch:
+
 
 permissions:
   contents: write
