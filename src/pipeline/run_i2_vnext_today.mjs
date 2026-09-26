@@ -14,9 +14,9 @@ const TRIALS = Number(process.env.I2_TRIALS || 50000);
 const OUTPUT = process.env.I2_OUTPUT || `data/runtime/i2/${DATE}_vnext_predictions.json`;
 const CALIBRATION_PATH = process.env.I2_PLAY_CALIBRATION || 'data/derived/i2/i2_play_calibration.json';
 const VENUE_PATH = process.env.I2_VENUE_PROFILES || `data/runtime/i2/savant_venue_profiles_${SEASON}_3yr.json`;
-const VNEXT_MODEL_PATH = process.env.I2_VNEXT_MODEL || 'data/derived/i2_vnext/i2_vnext_event_model.json';
+const VNEXT_MODEL_PATH = process.env.I2_VNEXT_MODEL || 'data/derived/i2_vnext/i2_vnext_event_model_live.json';
 const VNEXT_ARSENAL_PATH = process.env.I2_VNEXT_ARSENAL || 'data/derived/i2_vnext/live_arsenal_profile.json';
-const VNEXT_CALIBRATION_PATH = process.env.I2_VNEXT_CALIBRATION || 'data/derived/i2_vnext/full_model_calibration.json';
+const VNEXT_CALIBRATION_PATH = process.env.I2_VNEXT_CALIBRATION || 'data/derived/i2_vnext/i2_vnext_full_calibration.json';
 
 let baseballSources;
 const priorFrozen = fs.existsSync(OUTPUT) ? JSON.parse(fs.readFileSync(OUTPUT, 'utf8')) : null;
@@ -109,16 +109,16 @@ function sanitizeEnvironment(profile) {
     },
     handedness: {
       L: {
-        single: profile.handedness?.L?.single ?? 1,
-        double: profile.handedness?.L?.double ?? 1,
-        triple: profile.handedness?.L?.triple ?? 1,
-        hr: profile.handedness?.L?.hr ?? 1,
+        single: profile.handedness?.L?.single ?? null,
+        double: profile.handedness?.L?.double ?? null,
+        triple: profile.handedness?.L?.triple ?? null,
+        hr: profile.handedness?.L?.hr ?? null,
       },
       R: {
-        single: profile.handedness?.R?.single ?? 1,
-        double: profile.handedness?.R?.double ?? 1,
-        triple: profile.handedness?.R?.triple ?? 1,
-        hr: profile.handedness?.R?.hr ?? 1,
+        single: profile.handedness?.R?.single ?? null,
+        double: profile.handedness?.R?.double ?? null,
+        triple: profile.handedness?.R?.triple ?? null,
+        hr: profile.handedness?.R?.hr ?? null,
       },
     },
     audit: profile.audit || null,
@@ -334,18 +334,22 @@ async function runGame(game) {
 
   const random = createSeededRandom(seedFromGameId(String(gamePk), Number(DATE.replaceAll('-',''))));
   const i2EventVectorProvider = ({batter, pitcher}) => {
+    const pitcherThrows = pitcher.throws || 'R';
+    const batterSide = batter.side === 'S'
+      ? (pitcherThrows === 'L' ? 'R' : 'L')
+      : (batter.side || 'R');
     const neutral = predictI2EventVector({
       batterId: batter.id,
       pitcherId: pitcher.id,
-      batterSide: batter.side,
-      pitcherThrows: pitcher.throws || 'R',
+      batterSide,
+      pitcherThrows,
       model: vnextEventModel,
       arsenalProfile: vnextArsenal,
     });
     return applyEnvironmentalEventVector({
       neutralVector: neutral,
       environmentalContext,
-      batterSide: batter.side,
+      batterSide,
     }).probabilities;
   };
   const result = simulateFullSecondInning({
@@ -368,7 +372,7 @@ async function runGame(game) {
   inputAudit.previousProjectionInvalidations = inputAudit.gate.invalidations;
   inputAudit.gate = projectionGate(inputAudit);
   base.bettingEligibility = inputAudit.gate;
-  return {...base,modelStatus:'FROZEN_VNEXT_SHADOW_PROJECTION',trials:TRIALS,rawUnder05,rawOver05:1-rawUnder05,under05:finalUnder05,over05:finalOver05,under05Pct:pct(finalUnder05),over05Pct:pct(finalOver05),rawUnder05Pct:pct(rawUnder05),fairUnder:odds(finalFairUnder),fairOver:odds(finalFairOver),fullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),fullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),top2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),top2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),bottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),bottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),top2ScorePct:pct(result.top2.cumulative['1+']),bottom2ScorePct:pct(result.bottom2.cumulative['1+']),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
+  return {...base,modelStatus:'FROZEN_VNEXT_SHADOW_PROJECTION',trials:TRIALS,rawUnder05,rawOver05:1-rawUnder05,under05:finalUnder05,over05:finalOver05,under05Pct:pct(finalUnder05),over05Pct:pct(finalOver05),rawUnder05Pct:pct(rawUnder05),fairUnder:odds(finalFairUnder),fairOver:odds(finalFairOver),rawFullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),rawFullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),rawTop2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),rawTop2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),rawBottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),rawBottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),top2ScorePct:pct(result.top2.cumulative['1+']),bottom2ScorePct:pct(result.bottom2.cumulative['1+']),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
 }
 
 async function main(){
