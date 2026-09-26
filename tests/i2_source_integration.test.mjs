@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
+import {canonicalMlbIdentityName, resolveMlbIdentity} from '../src/inputs/i2_baseball_sources.mjs';
 const fixture=JSON.parse(fs.readFileSync('tests/fixtures/i2_source_parity.json','utf8'));
 function run(mode) {
  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'i2-sourcing-')),output=path.join(dir,'predictions.json');
@@ -24,4 +25,27 @@ test('expected RotoWire feeds reach real production runner; source confidence do
 });
 test('starter changes during simulation invalidate freeze and suppress ranking',()=>{
  const p=run('change'),g=p.games[0];assert.equal(g.modelStatus,'PROJECTION_INVALIDATED');assert.equal(g.bettingEligibility.eligible,false);assert.ok(g.bettingEligibility.reasons.includes('PROJECTION_INVALIDATED_STARTER_CHANGE'));assert.equal(p.ranking.length,0);
+});
+
+test('MLB identity resolver preserves exact match priority and canonicalizes only generational suffixes',()=>{
+ const people=[
+  {id:1,fullName:'Bobby Witt Jr.'},
+  {id:2,fullName:'Ronald Acuña Jr.'},
+  {id:3,fullName:'Vladimir Guerrero Jr.'},
+  {id:4,fullName:'Fernando Tatis Jr.'}
+ ];
+ assert.equal(resolveMlbIdentity('Bobby Witt Jr.',people).method,'EXACT');
+ assert.equal(resolveMlbIdentity('Bobby Witt',people).person.id,1);
+ assert.equal(resolveMlbIdentity('Ronald Acuna',people).person.id,2);
+ assert.equal(resolveMlbIdentity('Vladimir Guerrero',people).person.id,3);
+ assert.equal(resolveMlbIdentity('Fernando Tatis',people).person.id,4);
+ assert.equal(canonicalMlbIdentityName('José Ramírez'),'joseramirez');
+ assert.equal(canonicalMlbIdentityName('José Ramírez Jr.'),'joseramirez');
+});
+test('MLB identity resolver fails closed on ambiguous or non-suffix approximate names',()=>{
+ assert.throws(()=>resolveMlbIdentity('Victor Mesa',[
+  {id:10,fullName:'Victor Mesa Jr.'},
+  {id:11,fullName:'Victor Mesa II'}
+ ]),/AMBIGUOUS_MLB_ID:Victor Mesa/);
+ assert.throws(()=>resolveMlbIdentity('Mike Trot',[{id:12,fullName:'Mike Trout'}]),/UNRESOLVED_MLB_ID:Mike Trot/);
 });
