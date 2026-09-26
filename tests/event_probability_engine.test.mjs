@@ -65,6 +65,17 @@ assert.equal(overallFallback.audit.factors.triple, 0.90);
 assert.equal(overallFallback.audit.factors.home_run, 1.12);
 assert.equal(validateEventVector(overallFallback.probabilities), true);
 
+const unknownSideFallback = applyEnvironmentalEventVector({
+  neutralVector: neutral,
+  environmentalContext: context,
+  batterSide: "?",
+});
+// Unknown side must not silently inherit the right-handed split.
+assert.equal(unknownSideFallback.audit.factors.single, 1.02);
+assert.equal(unknownSideFallback.audit.factors.double, 1.10);
+assert.equal(unknownSideFallback.audit.factors.triple, 0.90);
+assert.equal(unknownSideFallback.audit.factors.home_run, 1.12);
+
 const lineup = lineupWeightedEventVector([
   { projectedPlateAppearanceShare: 0.6, probabilities: neutral },
   { projectedPlateAppearanceShare: 0.4, probabilities: adjusted.probabilities },
