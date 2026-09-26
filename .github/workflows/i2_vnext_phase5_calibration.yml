@@ -1,0 +1,117 @@
+name: I2 vNext Phase 5 - final calibration
+
+on:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - 'data/derived/i2_vnext/phase4b_replay_manifest.json'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase5-calibration
+  cancel-in-progress: true
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded calibration dependencies
+        run: python -m pip install --upgrade pip numpy scikit-learn
+
+      - name: Restore untouched 2025 replay
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase4b-replay-2025
+          path: data/derived/i2_vnext
+          run-id: 36277501894
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify replay checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2_vnext/phase4b_replay_manifest.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['season'] == 2025
+          assert m['n'] >= 2000
+          assert m['i1_state_mode'] == 'player_asof'
+          assert m['point_in_time_player_refits'] is True
+          assert m['observed_i2_state_used_as_predictor'] is False
+          assert m['calibration_applied'] is False
+          print(json.dumps(m,indent=2))
+          PY
+
+      - name: Fit single final full-I2 calibration curve
+        run: |
+          python src/research/calibrate_i2_vnext_full.py \
+            --replay data/derived/i2_vnext/replay_2025_predictions.json \
+            --output data/derived/i2_vnext/i2_vnext_full_calibration.json
+
+      - name: Verify calibration governance and checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['replay_games'] >= 2000
+          assert m['governance']['component_level_probability_calibration'] is False
+          assert m['governance']['market_conditioning'] is False
+          assert m['governance']['prospective_validation_required'] is True
+          assert m['calibration_selection']['split_date'].startswith('2025')
+          assert '2025' in m['calibration_selection']['fit_segment']
+          assert '2025' in m['calibration_selection']['validation_segment']
+          assert m['final_curve']['type'] in ('none','sigmoid')
+
+          checkpoint={
+            'version':'i2-vnext-phase5-calibration-v1',
+            'market_inputs_used':False,
+            'replay_games':m['replay_games'],
+            'raw_all_2025':m['raw_all_2025'],
+            'calibration_selection':m['calibration_selection'],
+            'final_curve':m['final_curve'],
+            'component_level_probability_calibration':False,
+            'market_conditioning':False,
+            'prospective_validation_required':True,
+          }
+          Path('data/derived/i2_vnext/phase5_calibration_manifest.json').write_text(json.dumps(checkpoint,indent=2))
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload durable Phase 5 calibration
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase5-calibration
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+            data/derived/i2_vnext/phase5_calibration_manifest.json
+
+      - name: Commit compact Phase 5 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/derived/i2_vnext/i2_vnext_full_calibration.json \
+            data/derived/i2_vnext/phase5_calibration_manifest.json
+          if git diff --cached --quiet; then
+            echo "No Phase 5 checkpoint change"
+          else
+            git commit -m "research: checkpoint I2 vNext Phase 5 calibration"
+            git stash --include-untracked
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
