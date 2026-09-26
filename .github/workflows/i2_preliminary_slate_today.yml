@@ -62,7 +62,6 @@ jobs:
 
       - name: Run full preliminary I2 model
         env:
-          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_DATE: ${{ steps.params.outputs.date }}
           I2_CUTOFF: '1970-01-01T00:00:00Z'
           I2_TRIALS: ${{ steps.params.outputs.trials }}
