@@ -466,9 +466,36 @@ def main() -> None:
     for half_life in half_lives:
         for c in c_grid:
             fold_scores = []
+            candidate_error = None
             for year, train, test in folds:
-                prep, model = fit_one(train, c, half_life)
-                fold_scores.append({"test_year": year, **score(prep, model, test)})
+                try:
+                    prep, model = fit_one(train, c, half_life)
+                except RuntimeError as exc:
+                    if "did not converge" not in str(exc):
+                        raise
+                    candidate_error = str(exc)
+                    fold_scores.append({
+                        "test_year": year,
+                        "status": "NONCONVERGENT",
+                        "error": candidate_error,
+                    })
+                    break
+                fold_scores.append({
+                    "test_year": year,
+                    "status": "CONVERGED",
+                    "iterations_used": max(int(v) for v in np.atleast_1d(model.n_iter_)),
+                    **score(prep, model, test),
+                })
+
+            if candidate_error is not None:
+                trials.append({
+                    "half_life_days": half_life,
+                    "C": c,
+                    "status": "DISQUALIFIED_NONCONVERGENT",
+                    "folds": fold_scores,
+                })
+                continue
+
             weighted_ll = float(np.average(
                 [x["logloss"] for x in fold_scores],
                 weights=[x["n"] for x in fold_scores],
@@ -480,6 +507,7 @@ def main() -> None:
             row = {
                 "half_life_days": half_life,
                 "C": c,
+                "status": "CONVERGED",
                 "weighted_logloss": weighted_ll,
                 "weighted_brier": weighted_bs,
                 "folds": fold_scores,
@@ -490,7 +518,7 @@ def main() -> None:
                 best = (key, half_life, c)
 
     if best is None:
-        raise RuntimeError("Hyperparameter selection failed")
+        raise RuntimeError("Hyperparameter selection failed: no converged candidate")
 
     selected = {
         "half_life_days": best[1],
