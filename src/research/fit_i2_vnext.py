@@ -29,6 +29,8 @@ EVENTS = [
     "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
     "strikeout", "ball_in_play_out",
 ]
+MAX_MODEL_ITER = 2500
+
 CAT = ["batter", "pitcher", "platoon", "home_team"]
 PLATOONS = ["LvL", "LvR", "RvL", "RvR"]
 NUM = [f"arsenal_x_{p}" for p in PLATOONS]
@@ -246,7 +248,7 @@ def fit_one(train: pd.DataFrame, c: float, half_life: float):
     model = LogisticRegression(
         C=c,
         solver="saga",
-        max_iter=800,
+        max_iter=MAX_MODEL_ITER,
         tol=1e-4,
         random_state=73,
     )
@@ -255,6 +257,12 @@ def fit_one(train: pd.DataFrame, c: float, half_life: float):
         train["event_class"].astype(str),
         sample_weight=recency_weights(train["game_date"], half_life),
     )
+    iterations = max(int(v) for v in np.atleast_1d(model.n_iter_))
+    if iterations >= MAX_MODEL_ITER:
+        raise RuntimeError(
+            f"I2 vNext logistic fit did not converge: iterations={iterations}, "
+            f"max_iter={MAX_MODEL_ITER}, C={c}, half_life={half_life}"
+        )
     return prep, model
 
 
@@ -298,6 +306,13 @@ def serialize_model(
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "market_inputs_used": False,
         "target": "I2 terminal PA event class",
+        "convergence": {
+            "solver": "saga",
+            "tol": 1e-4,
+            "max_iter": MAX_MODEL_ITER,
+            "iterations_used": max(int(v) for v in np.atleast_1d(model.n_iter_)),
+            "converged": True,
+        },
         "classes": [str(x) for x in model.classes_],
         "categorical_features": CAT,
         "category_levels": {
