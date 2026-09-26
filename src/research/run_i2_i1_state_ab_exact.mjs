@@ -181,6 +181,59 @@ function i2Provider(environmentalContext){
     }).probabilities;
   };
 }
+function stateIndex(outs,mask,slot){ return ((outs*8+mask)*9)+(slot-1); }
+
+function exactScorelessByStartSlot({lineup,pitcher,eventVectorForPA}){
+  const N=3*8*9;
+  const edges=Array.from({length:N},()=>[]);
+  const absorb=new Float64Array(N);
+  const vectors=Array(10);
+  for(let slot=1;slot<=9;slot+=1){
+    const v=eventVectorForPA({batter:lineup[slot-1],pitcher});
+    validateEventVector(v);
+    vectors[slot]=v;
+  }
+  for(let outs=0;outs<3;outs+=1){
+    for(let mask=0;mask<8;mask+=1){
+      for(let slot=1;slot<=9;slot+=1){
+        const i=stateIndex(outs,mask,slot);
+        const ns=nextSlot(slot);
+        const vector=vectors[slot];
+        for(const [event,pe] of Object.entries(vector)){
+          if(!(pe>0)) continue;
+          for(const tr of transitions(event,outs,mask)){
+            if(Number(tr.runs||0)>0) continue;
+            const q=pe*Number(tr.p||0);
+            if(!(q>0)) continue;
+            const no=Math.min(3,outs+Number(tr.outs_added||0));
+            const nm=Number(tr.post_mask||0);
+            if(no>=3) absorb[i]+=q;
+            else edges[i].push([stateIndex(no,nm,ns),q]);
+          }
+        }
+      }
+    }
+  }
+  let f=new Float64Array(N);
+  let converged=false;
+  for(let iter=0;iter<500;iter+=1){
+    const nf=new Float64Array(N);
+    let diff=0;
+    for(let i=0;i<N;i+=1){
+      let x=absorb[i];
+      for(const [j,w] of edges[i]) x+=w*f[j];
+      nf[i]=x;
+      diff=Math.max(diff,Math.abs(x-f[i]));
+    }
+    f=nf;
+    if(diff<1e-13){ converged=true; break; }
+  }
+  if(!converged) throw new Error('I2 scoreless fixed-point iteration did not converge');
+  const out=Array(10).fill(0);
+  for(let slot=1;slot<=9;slot+=1) out[slot]=f[stateIndex(0,0,slot)];
+  return out;
+}
+
 function weightedP0(slotDist,p0BySlot){
   let x=0;
   for (let slot=1;slot<=9;slot+=1) x+=Number(slotDist[slot]||0)*Number(p0BySlot[slot]||0);
@@ -217,12 +270,8 @@ for (const game of replay.games) {
   });
 
   const provider=i2Provider(env);
-  const awayP0=Array(10).fill(0);
-  const homeP0=Array(10).fill(0);
-  for(let slot=1;slot<=9;slot+=1){
-    awayP0[slot]=exactScorelessProbability({lineup:awayLineup,startSlot:slot,pitcher:homePitcher,eventVectorForPA:provider});
-    homeP0[slot]=exactScorelessProbability({lineup:homeLineup,startSlot:slot,pitcher:awayPitcher,eventVectorForPA:provider});
-  }
+  const awayP0=exactScorelessByStartSlot({lineup:awayLineup,pitcher:homePitcher,eventVectorForPA:provider});
+  const homeP0=exactScorelessByStartSlot({lineup:homeLineup,pitcher:awayPitcher,eventVectorForPA:provider});
 
   const leagueTop0=weightedP0(awayLeague,awayP0);
   const leagueBot0=weightedP0(homeLeague,homeP0);
