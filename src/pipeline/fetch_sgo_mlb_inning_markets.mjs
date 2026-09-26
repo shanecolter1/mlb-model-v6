@@ -47,6 +47,32 @@ const ninthInningCandidates = buildMlbNinthInningCandidateOddIds();
 const support = await fetchMlbMarketSupport({ oddIDs: [...guaranteedOddIDs, ...ninthInningCandidates] });
 const supportedOddIDs = new Set((Array.isArray(support?.data) ? support.data : []).filter(x => x?.isSupported !== false).map(x => x?.oddID).filter(Boolean));
 const activeOddIDs = [...new Set([...guaranteedOddIDs, ...ninthInningCandidates.filter(id => supportedOddIDs.has(id))])];
+const i2TargetBookmakers = [
+  'draftkings','fanduel','betmgm','caesars','bet365','fanatics',
+  'hardrockbet','thescorebet','kalshi','pinnacle','fliff','betrivers'
+];
+const supportRows = Array.isArray(support?.data) ? support.data : [];
+const supportByOddID = new Map(supportRows.map(x => [x?.oddID, x]));
+const supports = (oddID, bookmakerID) =>
+  supportByOddID.get(oddID)?.support?.MLB?.[bookmakerID]?.supported === true;
+
+const i2BookmakerSupport = i2TargetBookmakers.map(bookmakerID => {
+  const cleanOuUnder = supports('points-all-2i-ou-under', bookmakerID);
+  const cleanOuOver = supports('points-all-2i-ou-over', bookmakerID);
+  const cleanYnNo = supports('points-all-2i-yn-no', bookmakerID);
+  const cleanYnYes = supports('points-all-2i-yn-yes', bookmakerID);
+  const fallbackDraw = supports('points-all-2i-ml3way-draw', bookmakerID);
+  return {
+    bookmakerID,
+    cleanOuUnder,
+    cleanOuOver,
+    cleanYnNo,
+    cleanYnYes,
+    fallbackDraw,
+    preferredUnderPath: cleanOuUnder ? 'OU_UNDER_0.5' : (cleanYnNo ? 'ANY_RUNS_NO' : (fallbackDraw ? '3WAY_DRAW_FALLBACK' : null)),
+    preferredOverPath: cleanOuOver ? 'OU_OVER_0.5' : (cleanYnYes ? 'ANY_RUNS_YES' : null),
+  };
+});
 const feed = await fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds, includeAltLines, oddIDs: activeOddIDs });
 
 const events = filterEventsByLocalDate(feed.events, date, timeZone);
@@ -112,6 +138,7 @@ const output = {
     oddsNotAvailableToPredictionEngine: true,
   },
   requested: { bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, includeOpenCloseOdds, includeAltLines },
+  i2BookmakerSupport,
   coverage,
   events,
   rows,
@@ -129,6 +156,6 @@ await fs.mkdir(path.dirname(csvPath), { recursive: true });
 await fs.mkdir(path.dirname(supportPath), { recursive: true });
 await fs.writeFile(outputPath, JSON.stringify(output, null, 2) + '\n');
 await fs.writeFile(csvPath, csv);
-await fs.writeFile(supportPath, JSON.stringify({ generatedAt: new Date().toISOString(), date, bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, response: support }, null, 2) + '\n');
+await fs.writeFile(supportPath, JSON.stringify({ generatedAt: new Date().toISOString(), date, bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, i2BookmakerSupport, response: support }, null, 2) + '\n');
 
-console.log(JSON.stringify({ date, frozenAt, outputPath, csvPath, supportPath, coverage }, null, 2));
+console.log(JSON.stringify({ date, frozenAt, outputPath, csvPath, supportPath, coverage, i2BookmakerSupport }, null, 2));
