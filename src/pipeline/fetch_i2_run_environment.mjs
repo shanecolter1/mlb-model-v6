@@ -11,6 +11,7 @@ const DATE = process.env.I2_DATE || new Date().toISOString().slice(0, 10);
 const OUTPUT = process.env.I2_RUN_ENVIRONMENT || `data/runtime/i2/${DATE}_run_environment.json`;
 const ATTEMPTS = Number(process.env.I2_RUN_ENVIRONMENT_ATTEMPTS || 3);
 const RETRY_MS = Number(process.env.I2_RUN_ENVIRONMENT_RETRY_MS || 3000);
+const REFRESH = /^true$/i.test(String(process.env.I2_REFRESH_RUN_ENVIRONMENT || 'false'));
 
 function loadExisting() {
   if (!fs.existsSync(OUTPUT)) return null;
@@ -23,6 +24,19 @@ function loadExisting() {
   } catch {
     return null;
   }
+}
+
+const existing = loadExisting();
+if (existing && !REFRESH) {
+  console.log(JSON.stringify({
+    output: OUTPUT,
+    events: existing.events.length,
+    scope: existing.scope,
+    source: SPORTSGAMEODDS_DATA_SOURCE.provider,
+    reuse: 'VALIDATED_EXISTING_LOCKED_ARTIFACT',
+    paidApiRequestMade: false,
+  }, null, 2));
+  process.exit(0);
 }
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -46,7 +60,6 @@ for (let attempt = 1; attempt <= ATTEMPTS; attempt += 1) {
   }
 }
 
-const existing = loadExisting();
 if (!events) {
   if (existing) {
     console.warn(`[I2 run environment] SportsGameOdds unavailable; using validated locked existing artifact ${OUTPUT}`);
