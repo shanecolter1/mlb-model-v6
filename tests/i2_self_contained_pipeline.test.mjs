@@ -20,8 +20,7 @@ function filesUnder(root, extensions) {
 
 test('production I2 source tree has no retired Netlify MLB upstream dependency', () => {
   const files = [
-    ...filesUnder('src/pipeline', ['.mjs', '.js']),
-    ...filesUnder('src/inputs', ['.mjs', '.js']),
+    ...filesUnder('src', ['.mjs', '.js']),
     ...filesUnder('.github/workflows', ['.yml', '.yaml']),
   ];
   for (const file of files) {
