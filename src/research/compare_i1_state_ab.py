@@ -1,157 +1,117 @@
 #!/usr/bin/env python3
-"""Compare league-average vs point-in-time player-specific I1 state generators.
-
-The downstream I2 model is held fixed. Reports paired Brier/log-loss differences,
-calibration, and a deterministic paired bootstrap confidence interval.
-"""
+"""Paired statistical comparison for league vs player-as-of I1 state generators."""
 from __future__ import annotations
 
 import argparse
 import json
-import math
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
 
 
-def clip(p: float) -> float:
-    return min(1 - 1e-9, max(1e-9, float(p)))
+def parse_args():
+    p = argparse.ArgumentParser()
+    p.add_argument("--input", type=Path, required=True)
+    p.add_argument("--output", type=Path, required=True)
+    p.add_argument("--bootstrap", type=int, default=2000)
+    return p.parse_args()
 
 
-def loss_rows(rows):
-    out = {}
-    for r in rows:
-        gid = str(r["gid"])
-        y = int(r["observed_under05"])
-        p = clip(r["raw_under05"])
-        out[gid] = {
-            "y": y,
-            "p": p,
-            "brier": (p - y) ** 2,
-            "logloss": -(y * math.log(p) + (1-y) * math.log(1-p)),
-        }
-    return out
-
-
-def arm_metrics(vals):
-    ys = np.asarray([v["y"] for v in vals], dtype=float)
-    ps = np.asarray([v["p"] for v in vals], dtype=float)
+def summary(rows, arm):
+    ll = np.array([r[arm]["logloss"] for r in rows], dtype=float)
+    bs = np.array([r[arm]["brier"] for r in rows], dtype=float)
+    op = np.array([r[arm]["observed_probability"] for r in rows], dtype=float)
+    acc = np.array([r[arm]["top1"] for r in rows], dtype=float)
     return {
-        "n": int(len(vals)),
-        "realized_under_rate": float(np.mean(ys)),
-        "predicted_under_mean": float(np.mean(ps)),
-        "calibration_bias_pred_minus_actual": float(np.mean(ps) - np.mean(ys)),
-        "brier": float(np.mean([(v["p"]-v["y"])**2 for v in vals])),
-        "logloss": float(np.mean([v["logloss"] for v in vals])),
-    }
-
-
-def ece(vals, bins=10):
-    ps=np.asarray([v["p"] for v in vals],dtype=float)
-    ys=np.asarray([v["y"] for v in vals],dtype=float)
-    order=np.argsort(ps)
-    splits=np.array_split(order,bins)
-    total=len(vals)
-    e=0.0
-    table=[]
-    for idx in splits:
-        if len(idx)==0:
-            continue
-        mp=float(np.mean(ps[idx])); my=float(np.mean(ys[idx]))
-        e += len(idx)/total * abs(mp-my)
-        table.append({"n":int(len(idx)),"pred":mp,"actual":my,"gap":mp-my})
-    return float(e), table
-
-
-def bootstrap(d_brier, d_logloss, reps=5000, seed=730):
-    rng=np.random.default_rng(seed)
-    n=len(d_brier)
-    mb=[]; ml=[]
-    for _ in range(reps):
-        idx=rng.integers(0,n,n)
-        mb.append(float(np.mean(d_brier[idx])))
-        ml.append(float(np.mean(d_logloss[idx])))
-    def ci(x):
-        return [float(np.quantile(x,0.025)),float(np.quantile(x,0.975))]
-    return {
-        "reps": reps,
-        "seed": seed,
-        "delta_brier_ci95": ci(np.asarray(mb)),
-        "delta_logloss_ci95": ci(np.asarray(ml)),
+        "n": int(len(rows)),
+        "slot_logloss": float(ll.mean()),
+        "slot_brier": float(bs.mean()),
+        "mean_probability_on_observed_slot": float(op.mean()),
+        "top1_accuracy": float(acc.mean()),
     }
 
 
 def main():
-    p=argparse.ArgumentParser()
-    p.add_argument("--league",type=Path,required=True)
-    p.add_argument("--player",type=Path,required=True)
-    p.add_argument("--output",type=Path,required=True)
-    a=p.parse_args()
+    args = parse_args()
+    x = json.loads(args.input.read_text())
+    if x.get("market_inputs_used") is not False:
+        raise RuntimeError("A/B evaluation must be baseball-only")
+    if x.get("observed_i2_start_slot_used_as_predictor") is not False:
+        raise RuntimeError("Observed I2 start slot leaked into predictors")
 
-    league=json.loads(a.league.read_text())
-    player=json.loads(a.player.read_text())
-    if league.get("i1_state_mode")!="league":
-        raise RuntimeError("League arm mislabeled")
-    if player.get("i1_state_mode")!="player_asof":
-        raise RuntimeError("Player arm mislabeled")
+    rows = x["rows"]
+    if len(rows) < 4000:
+        raise RuntimeError(f"Insufficient paired half-innings: {len(rows)}")
 
-    L=loss_rows(league["predictions"])
-    P=loss_rows(player["predictions"])
-    ids=sorted(set(L)&set(P))
-    if len(ids)!=len(L) or len(ids)!=len(P):
-        raise RuntimeError("Arms do not contain identical game sets")
-    for gid in ids:
-        if L[gid]["y"]!=P[gid]["y"]:
-            raise RuntimeError(f"Outcome mismatch for {gid}")
+    league = summary(rows, "league")
+    player = summary(rows, "player_asof")
 
-    lv=[L[g] for g in ids]; pv=[P[g] for g in ids]
-    lm=arm_metrics(lv); pm=arm_metrics(pv)
-    lece,lrel=ece(lv); pece,prel=ece(pv)
-    lm["ece_decile"]=lece; pm["ece_decile"]=pece
-
-    d_b=np.asarray([P[g]["brier"]-L[g]["brier"] for g in ids],dtype=float)
-    d_l=np.asarray([P[g]["logloss"]-L[g]["logloss"] for g in ids],dtype=float)
-    boot=bootstrap(d_b,d_l)
-
-    mean_db=float(np.mean(d_b)); mean_dl=float(np.mean(d_l))
-    player_better = mean_db < 0 and mean_dl < 0
-    statistically_clear = (
-        boot["delta_brier_ci95"][1] < 0 and boot["delta_logloss_ci95"][1] < 0
+    dll = np.array(
+        [r["player_asof"]["logloss"] - r["league"]["logloss"] for r in rows],
+        dtype=float,
     )
-    league_clear = (
-        boot["delta_brier_ci95"][0] > 0 and boot["delta_logloss_ci95"][0] > 0
+    dbs = np.array(
+        [r["player_asof"]["brier"] - r["league"]["brier"] for r in rows],
+        dtype=float,
     )
-    if statistically_clear:
-        verdict="PLAYER_ASOF_PASS"
-    elif league_clear:
-        verdict="LEAGUE_AVERAGE_PASS"
-    elif player_better:
-        verdict="PLAYER_ASOF_DIRECTIONAL_ONLY"
-    else:
-        verdict="LEAGUE_AVERAGE_OR_NO_CLEAR_GAIN"
 
-    payload={
-        "version":"i2-i1-state-ab-v1",
-        "games":len(ids),
-        "comparison":"player_asof minus league; negative delta favors player_asof",
-        "league":lm,
-        "player_asof":pm,
-        "delta_player_minus_league":{
-            "brier":mean_db,
-            "logloss":mean_dl,
-            "predicted_under_mean":pm["predicted_under_mean"]-lm["predicted_under_mean"],
-            "ece_decile":pm["ece_decile"]-lm["ece_decile"],
+    rng = np.random.default_rng(20240926)
+    n = len(rows)
+    boot_ll = np.empty(args.bootstrap)
+    boot_bs = np.empty(args.bootstrap)
+    for i in range(args.bootstrap):
+        idx = rng.integers(0, n, size=n)
+        boot_ll[i] = dll[idx].mean()
+        boot_bs[i] = dbs[idx].mean()
+
+    ll_ci = [float(v) for v in np.quantile(boot_ll, [0.025, 0.975])]
+    bs_ci = [float(v) for v in np.quantile(boot_bs, [0.025, 0.975])]
+
+    mean_dll = float(dll.mean())
+    mean_dbs = float(dbs.mean())
+
+    # Precommitted conservative rule:
+    # player-specific must improve both paired means, and the log-loss
+    # bootstrap interval must be entirely below zero. Otherwise keep the
+    # simpler league-average generator.
+    player_pass = mean_dll < 0 and mean_dbs < 0 and ll_ci[1] < 0
+    selected = "player_asof" if player_pass else "league"
+
+    payload = {
+        "version": "i1-state-ab-selection-v1",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "selection_year": int(x["season"]),
+        "market_inputs_used": False,
+        "target": "actual I2 starting batting slot",
+        "evaluation_method": x.get("evaluation_method"),
+        "arms": {
+            "league": league,
+            "player_asof": player,
         },
-        "paired_bootstrap":boot,
-        "verdict":verdict,
-        "promotion_rule":"Promote player-specific I1 only if it improves both Brier and log loss; require both paired 95% CIs below zero for a statistically clear pass.",
-        "reliability":{"league":lrel,"player_asof":prel},
-        "market_inputs_used":False,
+        "paired_deltas_player_minus_league": {
+            "slot_logloss": mean_dll,
+            "slot_brier": mean_dbs,
+            "slot_logloss_bootstrap_95pct": ll_ci,
+            "slot_brier_bootstrap_95pct": bs_ci,
+        },
+        "selection_rule": (
+            "player_asof must lower both paired mean slot logloss and Brier, "
+            "with logloss bootstrap 95% CI entirely below zero; otherwise league"
+        ),
+        "selected": selected,
+        "governance": {
+            "2025_full_i2_holdout_consumed": False,
+            "observed_i2_runs_used": False,
+            "observed_i2_start_slot_used_as_predictor": False,
+            "sportsbook_or_market_inputs_used": False,
+        },
     }
-    a.output.parent.mkdir(parents=True,exist_ok=True)
-    a.output.write_text(json.dumps(payload,indent=2))
-    print(json.dumps(payload,indent=2))
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(payload, indent=2))
+    print(json.dumps(payload, indent=2))
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
