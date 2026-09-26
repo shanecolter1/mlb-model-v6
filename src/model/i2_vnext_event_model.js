@@ -23,13 +23,21 @@ function softmax(logits) {
   return e.map(x => x / s);
 }
 
-export function arsenalMatchupScore({ batterId, pitcherId, arsenalProfile }) {
+export function arsenalMatchupScore({ batterId, pitcherId, batterSide, arsenalProfile }) {
   const globalX = finite(arsenalProfile?.league_global_xwoba, 0.320);
   const leagueUsage = arsenalProfile?.league_pitch_usage || {};
+  const leagueUsageBySide = arsenalProfile?.league_pitch_usage_by_side?.[String(batterSide)] || null;
   const leagueX = arsenalProfile?.league_xwoba_by_pitch || {};
   const batter = arsenalProfile?.batter_xwoba_by_pitch?.[String(batterId)] || {};
   const pitcher = arsenalProfile?.pitcher_usage_by_pitch?.[String(pitcherId)] || null;
-  const usage = pitcher && Object.keys(pitcher).length ? pitcher : leagueUsage;
+  const pitcherBySide = arsenalProfile?.pitcher_usage_by_side?.[String(pitcherId)]?.[String(batterSide)] || null;
+  const usage = pitcherBySide && Object.keys(pitcherBySide).length
+    ? pitcherBySide
+    : pitcher && Object.keys(pitcher).length
+      ? pitcher
+      : leagueUsageBySide && Object.keys(leagueUsageBySide).length
+        ? leagueUsageBySide
+        : leagueUsage;
   const entries = Object.entries(usage).filter(([, w]) => finite(w, 0) > 0);
   const total = entries.reduce((s, [, w]) => s + finite(w, 0), 0);
   if (!(total > 0)) return globalX;
@@ -48,7 +56,7 @@ export function predictI2EventVector({
   arsenalProfile,
 }) {
   if (!model?.classes?.length) throw new Error('Missing I2 vNext model classes');
-  const score = arsenalMatchupScore({ batterId, pitcherId, arsenalProfile });
+  const score = arsenalMatchupScore({ batterId, pitcherId, batterSide, arsenalProfile });
   const platoon = `${String(batterSide || '?')}v${String(pitcherThrows || '?')}`;
   const featureKeys = [
     `cat__batter_${String(batterId)}`,
