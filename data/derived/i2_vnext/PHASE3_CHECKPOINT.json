@@ -1,20 +1,30 @@
 {
   "phase": "phase3-direct-i2-model-fit",
-  "status": "SUPERSEDED_NONCONVERGED",
+  "status": "COMPLETE_STRICT_CONVERGED",
   "model_branch": "research/i2-vnext-direct-talent",
-  "source_commit": "9f5284c19228c32019d46197a5710185abe85c90",
-  "workflow_run_id": 36273188235,
+  "source_commit": "c85c9eaed7698806eff156e79becda9e6b44a0ee",
+  "workflow_run_id": 36273567216,
+  "fit_job_id": 108492005213,
   "artifact": {
-    "id": 10916455429,
+    "id": 10916199125,
     "name": "i2-vnext-frozen-pa-model",
-    "sha256": "d9f2fd5b60dfe5c5fabf208551e2bb6222e7c9a3807dd9e81976622f81dd118a",
-    "expires_at": "2026-10-10T21:33:50Z"
+    "sha256": "aff199f31e50db7f9b3aaa98d3f906337c5e14a2269d3d842f91e7bd6f77366d",
+    "expires_at": "2026-10-10T21:42:43Z"
   },
   "selected": {
     "half_life_days": 730,
     "C": 0.05,
     "selection_metric": "chronological weighted multiclass log loss",
     "selection_period": "train through 2024-06-30; test 2024-07-01 through season end"
+  },
+  "convergence_policy": {
+    "solver": "saga",
+    "tol": 0.0001,
+    "max_iter": 2500,
+    "nonconvergent_grid_candidates": "DISQUALIFIED_AND_RECORDED",
+    "selected_frozen_fit_must_converge": true,
+    "live_refit_must_converge": true,
+    "strict_run_result": "PASSED"
   },
   "frozen_training": {
     "start": "2023-03-30",
@@ -33,12 +43,5 @@
     "fit_uses_2025": false,
     "fit_uses_2026": false
   },
-  "market_inputs_used": false,
-  "superseded_reason": "Previous selected model came from fits that emitted max_iter convergence warnings. Strict rerun on commit 4171ad227f93fb7add5c215bbc495c050a5df9ed failed closed on C=0.2, half_life=180 at 2500 iterations. Do not use this artifact.",
-  "strict_rerun": {
-    "source_commit": "4171ad227f93fb7add5c215bbc495c050a5df9ed",
-    "workflow_run_id": 36273399279,
-    "fit_job_id": 108491586412,
-    "result": "FAILED_NONCONVERGENCE"
-  }
+  "market_inputs_used": false
 }
