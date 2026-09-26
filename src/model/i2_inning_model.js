@@ -237,7 +237,7 @@ export function simulateSideToI2({
   random = Math.random,
   pitchCountDraw = null,
   playCalibration = null,
-  eventVectorProvider = null,
+  i2EventVectorProvider = null,
 }) {
   const starterMixture = [{ weight: 1, pitcher: starter }];
   const i1 = simulateHalfInningWithLineup({
@@ -250,7 +250,7 @@ export function simulateSideToI2({
     random,
     pitchCountDraw,
     playCalibration,
-    eventVectorProvider,
+    eventVectorProvider: null,
   });
 
   // Conventional starter default. Opener/bulk games should supply an explicit
@@ -266,7 +266,7 @@ export function simulateSideToI2({
     random,
     pitchCountDraw,
     playCalibration,
-    eventVectorProvider,
+    eventVectorProvider: i2EventVectorProvider,
   });
 
   return {
@@ -313,7 +313,7 @@ export function simulateFullSecondInning({
   random = Math.random,
   pitchCountDraw = null,
   playCalibration = null,
-  eventVectorProvider = null,
+  i2EventVectorProvider = null,
 }) {
   if (!Number.isInteger(trials) || trials <= 0) {
     throw new RangeError("trials must be a positive integer");
@@ -339,7 +339,7 @@ export function simulateFullSecondInning({
       random,
       pitchCountDraw,
       playCalibration,
-      eventVectorProvider,
+      i2EventVectorProvider,
     });
     const bottom = simulateSideToI2({
       lineup: home.lineup,
@@ -351,7 +351,7 @@ export function simulateFullSecondInning({
       random,
       pitchCountDraw,
       playCalibration,
-      eventVectorProvider,
+      i2EventVectorProvider,
     });
 
     topCounts[bucket(top.i2.runs)] += 1;
