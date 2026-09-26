@@ -114,7 +114,7 @@ def main() -> None:
     df = prepare_frame(args.input, args.arsenal_dir)
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
-    base_name = "model_before_2025-05-01.json"
+    base_name = "model_end_2024_frozen.json"
     shutil.copyfile(args.frozen_model, args.output_dir / base_name)
     entries = [{
         "effective_from": "2025-01-01",
