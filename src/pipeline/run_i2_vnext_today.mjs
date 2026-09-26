@@ -237,6 +237,47 @@ async function seasonStats(personId, group) {
   return statCache.get(key);
 }
 
+const gameLogCache = new Map();
+async function pitchingGameLog(personId) {
+  const key = `${personId}:pitchingGameLog:${SEASON}`;
+  if (!gameLogCache.has(key)) {
+    const url = `https://statsapi.mlb.com/api/v1/people/${personId}/stats?stats=gameLog&group=pitching&season=${SEASON}`;
+    gameLogCache.set(key, fetchJson(url).then(x => x?.stats?.[0]?.splits || []).catch(() => []));
+  }
+  return gameLogCache.get(key);
+}
+function inningsOuts(raw) {
+  const [wholeText='0', outsText='0'] = String(raw ?? '0').split('.');
+  const whole = Number(wholeText) || 0;
+  const outs = Math.max(0, Math.min(2, Number(outsText) || 0));
+  return whole * 3 + outs;
+}
+async function estimateOpenerI2Survival(personId) {
+  const rows = await pitchingGameLog(personId);
+  const cutoff = Date.parse(`${DATE}T00:00:00Z`);
+  const recent = rows
+    .filter(x => {
+      const t = Date.parse(x.date || x.game?.gameDate || '');
+      const gs = Number(x.stat?.gamesStarted || 0);
+      const outs = inningsOuts(x.stat?.inningsPitched);
+      const ageDays = Number.isFinite(t) ? (cutoff - t) / 86400000 : Infinity;
+      return gs > 0 && ageDays > 0 && ageDays <= 90 && outs <= 9;
+    })
+    .sort((a,b)=>Date.parse(b.date || b.game?.gameDate || '')-Date.parse(a.date || a.game?.gameDate || ''))
+    .slice(0,8);
+  if (recent.length < 3) {
+    return {status:'INSUFFICIENT_OPENER_HISTORY',n:recent.length,probability:null};
+  }
+  const reached = recent.filter(x => inningsOuts(x.stat?.inningsPitched) > 3).length;
+  return {
+    status:'EMPIRICAL_RECENT_SHORT_STARTS',
+    n:recent.length,
+    reachedI2:reached,
+    probability:reached/recent.length,
+    sample:recent.map(x=>({date:x.date || x.game?.gameDate || null,inningsPitched:x.stat?.inningsPitched ?? null})),
+  };
+}
+
 function lineupFromFeed(feed, side) {
   const team = feed?.liveData?.boxscore?.teams?.[side];
   const players = Object.values(team?.players || {});
@@ -261,16 +302,16 @@ async function buildLineup(feed, side) {
   return {confirmed:true, lineup, names: lineup.map(x=>x.name)};
 }
 
-async function buildStarter(feed, side) {
-  const p = probableStarter(feed, side);
-  if (!p?.id) return null;
-  const stat = await seasonStats(p.id, 'pitching');
+async function buildPitcherById(feed, id, name = null) {
+  if (!id) return null;
+  const stat = await seasonStats(id, 'pitching');
   const pc = pitcherCounts(stat);
   const seasonSnapshot = starterSeasonSnapshot(stat, pc);
+  const person = feed?.gameData?.players?.[`ID${id}`] || {};
   return {
-    id:p.id,
-    name:p.fullName,
-    throws: feed?.gameData?.players?.[`ID${p.id}`]?.pitchHand?.code || 'R',
+    id:Number(id),
+    name:name || person.fullName || String(id),
+    throws:person?.pitchHand?.code || 'R',
     eventRatesAllowed:ratesFromCounts(pc.counts, pc.denom, 180),
     seasonBF:pc.denom,
     fallbackExtraBaseSplit:pc.fallbackExtraBaseSplit,
@@ -278,6 +319,69 @@ async function buildStarter(feed, side) {
     gamesStarted:seasonSnapshot.gamesStarted ?? n(stat,'gamesStarted'),
     era:seasonSnapshot.era,
     seasonStats:seasonSnapshot,
+  };
+}
+async function buildStarter(feed, side) {
+  const p = probableStarter(feed, side);
+  return p?.id ? buildPitcherById(feed, p.id, p.fullName) : null;
+}
+
+async function buildI2PitchingPlan(feed, side, starter, auditSide) {
+  const plan = auditSide?.pitchingPlan || {role:'NORMAL_STARTER'};
+  const restriction = (auditSide?.news || []).find(n =>
+    /innings limit|pitch.?count|rehab|abbreviated start|return.*(IL|injur)/i.test(String(n.reason || ''))
+  );
+  if (restriction && plan.role === 'NORMAL_STARTER') {
+    return {
+      status:'STARTER_RESTRICTION_UNRESOLVED',
+      eligible:false,
+      mixture:null,
+      audit:{restriction:restriction.reason || null},
+    };
+  }
+  if (plan.role !== 'OPENER_BULK') {
+    return {status:'NORMAL_STARTER',eligible:true,mixture:null,audit:null};
+  }
+  const openerId = Number(plan.resolvedOpenerMlbId || starter?.id || 0);
+  const bulkId = Number(plan.resolvedBulkMlbId || 0);
+  if (!openerId || !bulkId) {
+    return {
+      status:'OPENER_BULK_IDENTITY_UNRESOLVED',
+      eligible:false,
+      mixture:null,
+      audit:{openerId:openerId || null,bulkId:bulkId || null},
+    };
+  }
+  const survival = await estimateOpenerI2Survival(openerId);
+  if (survival.probability == null) {
+    return {
+      status:survival.status,
+      eligible:false,
+      mixture:null,
+      audit:{...survival,openerId,bulkId},
+    };
+  }
+  const opener = openerId === starter?.id
+    ? starter
+    : await buildPitcherById(feed, openerId, plan.resolvedOpenerMlbName || plan.opener);
+  const bulk = await buildPitcherById(feed, bulkId, plan.resolvedBulkMlbName || plan.primaryBulkPitcher);
+  if (!opener || !bulk) {
+    return {
+      status:'OPENER_BULK_PITCHER_BUILD_FAILED',
+      eligible:false,
+      mixture:null,
+      audit:{...survival,openerId,bulkId},
+    };
+  }
+  const p = Math.max(0, Math.min(1, Number(survival.probability)));
+  return {
+    status:'OPENER_BULK_EMPIRICAL_MIXTURE',
+    eligible:true,
+    mixture:[
+      {weight:p,pitcher:opener},
+      {weight:1-p,pitcher:bulk},
+    ].filter(x=>x.weight>0),
+    audit:{...survival,openerId,bulkId,opener:opener.name,bulk:bulk.name},
   };
 }
 
@@ -297,6 +401,8 @@ async function runGame(game) {
   const homeBuilt = await buildLineup(feed,'home');
   const awayStarter = await buildStarter(feed,'away');
   const homeStarter = await buildStarter(feed,'home');
+  const awayPitchingPlan = awayStarter ? await buildI2PitchingPlan(feed,'away',awayStarter,inputAudit.away) : null;
+  const homePitchingPlan = homeStarter ? await buildI2PitchingPlan(feed,'home',homeStarter,inputAudit.home) : null;
   const venueProfile = venueProfileFor(game);
   const environmentalContext = sanitizeEnvironment(venueProfile);
   const base = {
@@ -327,10 +433,28 @@ async function runGame(game) {
       awayStarterStatsError:awayStarter?.rawStatsError ?? null,
       homeStarterStatsError:homeStarter?.rawStatsError ?? null,
       venueProfileMatched:Boolean(venueProfile),
+      awayI2PitchingPlan:awayPitchingPlan?.status || null,
+      homeI2PitchingPlan:homePitchingPlan?.status || null,
+      awayI2PitchingPlanAudit:awayPitchingPlan?.audit || null,
+      homeI2PitchingPlanAudit:homePitchingPlan?.audit || null,
     }
   };
   if (!awayBuilt.confirmed || !homeBuilt.confirmed) return {...base, modelStatus:'PENDING_CONFIRMED_LINEUP'};
   if (!awayStarter || !homeStarter) return {...base, modelStatus:'PENDING_PROBABLE_STARTER'};
+  if (!awayPitchingPlan?.eligible || !homePitchingPlan?.eligible) {
+    return {
+      ...base,
+      modelStatus:'PENDING_I2_PITCHING_PLAN',
+      bettingEligibility:{
+        eligible:false,
+        status:'NO_ACTIONABLE_RECOMMENDATION',
+        reasons:[
+          ...(!awayPitchingPlan?.eligible ? [awayPitchingPlan?.status || 'AWAY_I2_PITCHING_PLAN_UNRESOLVED'] : []),
+          ...(!homePitchingPlan?.eligible ? [homePitchingPlan?.status || 'HOME_I2_PITCHING_PLAN_UNRESOLVED'] : []),
+        ],
+      },
+    };
+  }
 
   const random = createSeededRandom(seedFromGameId(String(gamePk), Number(DATE.replaceAll('-',''))));
   const i2EventVectorProvider = ({batter, pitcher}) => {
@@ -353,8 +477,8 @@ async function runGame(game) {
     }).probabilities;
   };
   const result = simulateFullSecondInning({
-    away:{lineup:awayBuilt.lineup, starter:awayStarter},
-    home:{lineup:homeBuilt.lineup, starter:homeStarter},
+    away:{lineup:awayBuilt.lineup, starter:awayStarter, i2PitcherMixture:awayPitchingPlan.mixture},
+    home:{lineup:homeBuilt.lineup, starter:homeStarter, i2PitcherMixture:homePitchingPlan.mixture},
     league,
     environmentalContext,
     weights:{batter:0.5,pitcher:0.5},
