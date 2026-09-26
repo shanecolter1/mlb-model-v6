@@ -19,7 +19,7 @@ on:
       bookmakers:
         description: 'Comma-separated SportsGameOdds bookmaker IDs'
         required: false
-        default: 'draftkings,fanduel,betmgm,caesars'
+        default: '*'
 
 permissions:
   contents: write
@@ -198,7 +198,7 @@ jobs:
           I2_DATE: ${{ steps.params.outputs.date }}
           I2_TIME_ZONE: America/Chicago
           FROZEN_PROJECTION_PATH: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
-          SGO_BOOKMAKERS: ${{ inputs.bookmakers || 'draftkings,fanduel,betmgm,caesars' }}
+          SGO_BOOKMAKERS: ${{ inputs.bookmakers || '*' }}
           SGO_INCLUDE_OPEN_CLOSE: 'false'
           SGO_INCLUDE_ALT_LINES: 'true'
         run: node src/pipeline/fetch_sgo_mlb_inning_markets.mjs
