@@ -1,0 +1,16 @@
+{
+  "version": "i2-vnext-phase4b-replay-v1",
+  "market_inputs_used": false,
+  "season": 2025,
+  "n": 2430,
+  "raw_brier": 0.24743437807407406,
+  "raw_logloss": 0.6880343847320948,
+  "park_match_rate": 0.0,
+  "trials_per_game": 2500,
+  "i1_state_mode": "player_asof",
+  "point_in_time_player_refits": true,
+  "walkforward_cadence": "monthly",
+  "observed_i2_state_used_as_predictor": false,
+  "shards": 6,
+  "calibration_applied": false
+}
