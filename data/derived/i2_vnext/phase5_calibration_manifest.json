@@ -1,13 +1,14 @@
 {
-  "version": "i2-vnext-phase5-calibration-v1",
+  "version": "i2-vnext-phase5-calibration-v2-precision",
   "market_inputs_used": false,
   "replay_games": 2430,
+  "replay_trials_per_game": 10000,
   "raw_all_2025": {
     "n": 2430,
     "realized_under_rate": 0.551440329218107,
-    "predicted_under_mean": 0.5713496296296298,
-    "brier": 0.2473611880164609,
-    "logloss": 0.6878910550617064
+    "predicted_under_mean": 0.5714136625514403,
+    "brier": 0.24705671633744858,
+    "logloss": 0.6872618188154105
   },
   "calibration_selection": {
     "fit_segment": "2025 dates before 20250625",
@@ -15,35 +16,44 @@
     "split_date": "20250625",
     "fit_games": 1189,
     "validation_games": 1241,
-    "candidate_models": [
-      "identity",
-      "single_sigmoid_logit"
-    ],
+    "candidate_models": ["identity", "single_sigmoid_logit"],
     "selection_rule": "sigmoid must improve both Brier and log loss on later-2025 validation; otherwise identity",
     "identity_validation": {
       "n": 1241,
       "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.5741482675261885,
-      "brier": 0.25006779964544723,
-      "logloss": 0.693414060131608
+      "predicted_under_mean": 0.5741922643029814,
+      "brier": 0.24970507481063658,
+      "logloss": 0.692651717890755
     },
     "sigmoid_validation": {
       "n": 1241,
       "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.569865049730227,
-      "brier": 0.24997690833846412,
-      "logloss": 0.6932335472896648
+      "predicted_under_mean": 0.5706423214414869,
+      "brier": 0.2498500148422421,
+      "logloss": 0.6929743715134274
     },
     "sigmoid_candidate": {
-      "intercept": -0.04842031105651121,
-      "slope": 1.1036980910899656
+      "intercept": -0.0893061569366758,
+      "slope": 1.2512597580121654
     },
-    "chosen": "sigmoid"
+    "chosen": "identity"
   },
   "final_curve": {
-    "type": "sigmoid",
-    "intercept": 0.01734074338291061,
-    "slope": 0.6568473204438623
+    "type": "none",
+    "intercept": 0.0,
+    "slope": 1.0
+  },
+  "numerical_precision_verification": {
+    "baseline_trials_per_game": 2500,
+    "baseline_chosen": "sigmoid",
+    "precision_trials_per_game": 10000,
+    "precision_chosen": "identity",
+    "selection_stable": false,
+    "resolution": "Higher-precision replay governs. The 2500-trial sigmoid selection was rejected as Monte Carlo-sensitive.",
+    "precision_sigmoid_minus_identity": {
+      "brier": 0.00014494003160550606,
+      "logloss": 0.0003226536226724752
+    }
   },
   "component_level_probability_calibration": false,
   "market_conditioning": false,
