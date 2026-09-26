@@ -1,22 +1,56 @@
 {
   "year": "2026",
-  "generatedAt": "2026-09-26T13:20:10.667Z",
+  "generatedAt": "2026-09-26T14:10:59.999Z",
   "source": "RotoWire provisional lineups vs eventual MLB starting lineups",
   "sourceRole": "AUDIT_ONLY",
   "affectsPrediction": false,
   "affectsEligibility": false,
   "methodology": "Identity-aware comparison using MLB-equivalent names/IDs where available; no score is fed back into production.",
-  "datesIncluded": [],
-  "sidesGraded": 0,
-  "gamesRepresented": 0,
+  "datesIncluded": [
+    "2026-09-26"
+  ],
+  "sidesGraded": 1,
+  "gamesRepresented": 1,
   "exactLineups": 0,
-  "exactLineupRate": null,
+  "exactLineupRate": 0,
   "exactPlayerSets": 0,
-  "exactPlayerSetRate": null,
-  "meanPlayerSetAccuracy": null,
-  "meanSlotAccuracy": null,
-  "meanTop4SlotAccuracy": null,
-  "meanObservationLeadHours": null,
-  "monthly": {},
-  "rows": []
+  "exactPlayerSetRate": 0,
+  "meanPlayerSetAccuracy": 0.6666666666666666,
+  "meanSlotAccuracy": 0.1111111111111111,
+  "meanTop4SlotAccuracy": 0,
+  "meanObservationLeadHours": 3.5891930555555556,
+  "monthly": {
+    "2026-09": {
+      "sidesGraded": 1,
+      "gamesRepresented": 1,
+      "exactLineups": 0,
+      "exactLineupRate": 0,
+      "exactPlayerSets": 0,
+      "exactPlayerSetRate": 0,
+      "meanPlayerSetAccuracy": 0.6666666666666666,
+      "meanSlotAccuracy": 0.1111111111111111,
+      "meanTop4SlotAccuracy": 0,
+      "meanObservationLeadHours": 3.5891930555555556
+    }
+  },
+  "rows": [
+    {
+      "date": "2026-09-26",
+      "month": "2026-09",
+      "gamePk": 824219,
+      "matchup": "Pittsburgh Pirates @ Detroit Tigers",
+      "side": "home",
+      "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+      "retrievedAt": "2026-09-26T13:34:38.905Z",
+      "observationLeadHours": 3.5891930555555556,
+      "playersMatched": 6,
+      "playerSetAccuracy": 0.6666666666666666,
+      "exactPlayerSet": false,
+      "exactSlots": 1,
+      "slotAccuracy": 0.1111111111111111,
+      "top4ExactSlots": 0,
+      "top4SlotAccuracy": 0,
+      "exactLineup": false
+    }
+  ]
 }

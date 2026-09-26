@@ -1,7 +1,7 @@
 {
   "summary": {
     "date": "2026-09-26",
-    "generatedAt": "2026-09-26T13:20:10.642Z",
+    "generatedAt": "2026-09-26T14:10:59.964Z",
     "historicalBaselineUnder": 0.564958,
     "gradedGames": 0,
     "actualUnders": 0,
@@ -14,13 +14,13 @@
     "modelLogLoss": null,
     "meanProbabilityAssignedToActualI2StartSlot": null,
     "rotowireProvisionalAccuracy": {
-      "sidesGraded": 0,
+      "sidesGraded": 1,
       "exactLineups": 0,
       "exactPlayerSets": 0,
-      "meanPlayerSetAccuracy": null,
-      "meanSlotAccuracy": null,
-      "meanTop4SlotAccuracy": null,
-      "meanObservationLeadHours": null,
+      "meanPlayerSetAccuracy": 0.6666666666666666,
+      "meanSlotAccuracy": 0.1111111111111111,
+      "meanTop4SlotAccuracy": 0,
+      "meanObservationLeadHours": 3.5891930555555556,
       "sourceRole": "AUDIT_ONLY",
       "affectsPrediction": false,
       "affectsEligibility": false
@@ -28,9 +28,8 @@
     "starterMismatches": [],
     "lineupMismatches": [],
     "sourcePriorityAudit": {
-      "upstreamAttempts": 13,
-      "upstreamSuccesses": 13,
-      "officialFallbacks": 0
+      "mlbStatsApiAttempts": 13,
+      "mlbStatsApiSuccesses": 13
     }
   },
   "rows": [
@@ -38,7 +37,7 @@
       "gamePk": 822678,
       "matchup": "New York Mets @ Washington Nationals",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -86,10 +85,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 3.4903794444444443,
+          "observationLeadHours": 3.005859722222222,
           "projectedLineup": [
             "Francisco Lindor",
             "Juan Soto",
@@ -106,10 +105,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 3.4903794444444443,
+          "observationLeadHours": 3.005859722222222,
           "projectedLineup": [
             "James Wood",
             "Daylen Lile",
@@ -135,8 +134,8 @@
     {
       "gamePk": 824219,
       "matchup": "Pittsburgh Pirates @ Detroit Tigers",
-      "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "status": "Pre-Game",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -152,9 +151,9 @@
       "predictedAwayStarter": "Kirby Yates",
       "actualAwayStarter": null,
       "predictedHomeStarter": "Justin Verlander",
-      "actualHomeStarter": null,
+      "actualHomeStarter": "Justin Verlander",
       "awayStarterMatch": null,
-      "homeStarterMatch": null,
+      "homeStarterMatch": true,
       "predictedAwayLineup": [
         "Konnor Griffin",
         "Brandon Lowe",
@@ -178,16 +177,26 @@
         "Brett Callahan",
         "John Peck"
       ],
-      "actualHomeLineup": [],
+      "actualHomeLineup": [
+        "Max Clark",
+        "Hao-Yu Lee",
+        "Kevin McGonigle",
+        "Eduardo Valencia",
+        "Riley Greene",
+        "Dillon Dingler",
+        "Spencer Torkelson",
+        "Zach McKinstry",
+        "Javier Báez"
+      ],
       "awayLineupExactMatch": null,
-      "homeLineupExactMatch": null,
+      "homeLineupExactMatch": false,
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 4.073712777777778,
+          "observationLeadHours": 3.5891930555555556,
           "projectedLineup": [
             "Konnor Griffin",
             "Brandon Lowe",
@@ -204,10 +213,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 4.073712777777778,
+          "observationLeadHours": 3.5891930555555556,
           "projectedLineup": [
             "Kevin McGonigle",
             "Gleyber Torres",
@@ -219,8 +228,90 @@
             "Brett Callahan",
             "John Peck"
           ],
-          "actualLineup": [],
-          "accuracy": null
+          "actualLineup": [
+            "Max Clark",
+            "Hao-Yu Lee",
+            "Kevin McGonigle",
+            "Eduardo Valencia",
+            "Riley Greene",
+            "Dillon Dingler",
+            "Spencer Torkelson",
+            "Zach McKinstry",
+            "Javier Báez"
+          ],
+          "accuracy": {
+            "playersMatched": 6,
+            "playerSetAccuracy": 0.6666666666666666,
+            "exactPlayerSet": false,
+            "exactSlots": 1,
+            "slotAccuracy": 0.1111111111111111,
+            "top4ExactSlots": 0,
+            "top4SlotAccuracy": 0,
+            "exactLineup": false,
+            "delta": {
+              "added": [
+                "Eduardo Valencia",
+                "Zach McKinstry",
+                "Javier Báez"
+              ],
+              "removed": [
+                "Gleyber Torres",
+                "Brett Callahan",
+                "John Peck"
+              ],
+              "moves": [
+                {
+                  "player": "Max Clark",
+                  "from": 6,
+                  "to": 1
+                },
+                {
+                  "player": "Hao-Yu Lee",
+                  "from": 3,
+                  "to": 2
+                },
+                {
+                  "player": "Kevin McGonigle",
+                  "from": 1,
+                  "to": 3
+                },
+                {
+                  "player": "Riley Greene",
+                  "from": 4,
+                  "to": 5
+                },
+                {
+                  "player": "Dillon Dingler",
+                  "from": 5,
+                  "to": 6
+                }
+              ],
+              "top4Changes": [
+                {
+                  "position": 1,
+                  "before": "Kevin McGonigle",
+                  "after": "Max Clark"
+                },
+                {
+                  "position": 2,
+                  "before": "Gleyber Torres",
+                  "after": "Hao-Yu Lee"
+                },
+                {
+                  "position": 3,
+                  "before": "Hao-Yu Lee",
+                  "after": "Kevin McGonigle"
+                },
+                {
+                  "position": 4,
+                  "before": "Riley Greene",
+                  "after": "Eduardo Valencia"
+                }
+              ],
+              "exactSlots": 1,
+              "weightedSlotAccuracy": 0.07692307692307693
+            }
+          }
         }
       },
       "actualAwayI2StartSlot": null,
@@ -234,7 +325,7 @@
       "gamePk": 822759,
       "matchup": "Cincinnati Reds @ Toronto Blue Jays",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -282,10 +373,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 6.023712777777778,
+          "observationLeadHours": 5.539193055555556,
           "projectedLineup": [
             "Carlos Jorge",
             "Elly De La Cruz",
@@ -302,10 +393,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 6.023712777777778,
+          "observationLeadHours": 5.539193055555556,
           "projectedLineup": [
             "Brett Bateman",
             "Vladimir Guerrero",
@@ -332,7 +423,7 @@
       "gamePk": 823165,
       "matchup": "Los Angeles Dodgers @ San Francisco Giants",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -380,10 +471,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 6.990379444444445,
+          "observationLeadHours": 6.5058597222222225,
           "projectedLineup": [
             "Mookie Betts",
             "Shohei Ohtani",
@@ -400,10 +491,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 6.990379444444445,
+          "observationLeadHours": 6.5058597222222225,
           "projectedLineup": [
             "Jonah Cox",
             "Turner Hill",
@@ -430,7 +521,7 @@
       "gamePk": 823653,
       "matchup": "Texas Rangers @ Minnesota Twins",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -478,10 +569,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 7.073712777777778,
+          "observationLeadHours": 6.589193055555556,
           "projectedLineup": [
             "Brandon Nimmo",
             "Ezequiel Duran",
@@ -498,10 +589,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 7.073712777777778,
+          "observationLeadHours": 6.589193055555556,
           "projectedLineup": [
             "Luke Keaschall",
             "Brooks Lee",
@@ -528,7 +619,7 @@
       "gamePk": 823813,
       "matchup": "Atlanta Braves @ Miami Marlins",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -576,10 +667,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 7.073712777777778,
+          "observationLeadHours": 6.589193055555556,
           "projectedLineup": [
             "Drake Baldwin",
             "Ronald Acuna",
@@ -596,10 +687,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 7.073712777777778,
+          "observationLeadHours": 6.589193055555556,
           "projectedLineup": [
             "Heriberto Hernandez",
             "Otto Lopez",
@@ -626,7 +717,7 @@
       "gamePk": 824057,
       "matchup": "Cleveland Guardians @ Kansas City Royals",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -674,10 +765,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.073712777777779,
+          "observationLeadHours": 9.589193055555555,
           "projectedLineup": [
             "Steven Kwan",
             "Chase DeLauter",
@@ -694,10 +785,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.073712777777779,
+          "observationLeadHours": 9.589193055555555,
           "projectedLineup": [
             "Carter Jensen",
             "Bobby Witt",
@@ -724,7 +815,7 @@
       "gamePk": 824543,
       "matchup": "Colorado Rockies @ Chicago White Sox",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -772,10 +863,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.073712777777779,
+          "observationLeadHours": 9.589193055555555,
           "projectedLineup": [
             "Jake McCarthy",
             "Connor Norby",
@@ -792,10 +883,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.073712777777779,
+          "observationLeadHours": 9.589193055555555,
           "projectedLineup": [
             "Miguel Vargas",
             "Tommy Pham",
@@ -822,7 +913,7 @@
       "gamePk": 823733,
       "matchup": "St. Louis Cardinals @ Milwaukee Brewers",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -870,10 +961,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.073712777777779,
+          "observationLeadHours": 9.589193055555555,
           "projectedLineup": [
             "JJ Wetherholt",
             "Ivan Herrera",
@@ -890,10 +981,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.073712777777779,
+          "observationLeadHours": 9.589193055555555,
           "projectedLineup": [
             "Jackson Chourio",
             "Brice Turang",
@@ -920,7 +1011,7 @@
       "gamePk": 823407,
       "matchup": "Tampa Bay Rays @ Philadelphia Phillies",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -968,10 +1059,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.15704611111111,
+          "observationLeadHours": 9.672526388888889,
           "projectedLineup": [
             "Yandy Diaz",
             "Jonathan Aranda",
@@ -988,10 +1079,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 10.15704611111111,
+          "observationLeadHours": 9.672526388888889,
           "projectedLineup": [
             "Kyle Schwarber",
             "Trea Turner",
@@ -1018,7 +1109,7 @@
       "gamePk": 823245,
       "matchup": "Arizona Diamondbacks @ San Diego Padres",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -1066,10 +1157,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 11.573712777777779,
+          "observationLeadHours": 11.089193055555555,
           "projectedLineup": [
             "Lars Nootbaar",
             "Ketel Marte",
@@ -1086,10 +1177,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 11.573712777777779,
+          "observationLeadHours": 11.089193055555555,
           "projectedLineup": [
             "Fernando Tatis",
             "Dustin Harris",
@@ -1116,7 +1207,7 @@
       "gamePk": 824949,
       "matchup": "Houston Astros @ Athletics",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -1164,10 +1255,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 12.573712777777779,
+          "observationLeadHours": 12.089193055555555,
           "projectedLineup": [
             "Jeremy Pena",
             "Yordan Alvarez",
@@ -1184,10 +1275,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 12.573712777777779,
+          "observationLeadHours": 12.089193055555555,
           "projectedLineup": [
             "Henry Bolte",
             "Jeff McNeil",
@@ -1214,7 +1305,7 @@
       "gamePk": 823083,
       "matchup": "Los Angeles Angels @ Seattle Mariners",
       "status": "Scheduled",
-      "source": "USER_UPSTREAM",
+      "source": "MLB_STATS_API_PRIMARY",
       "modelStatus": "FROZEN_RESEARCH_PROJECTION",
       "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
       "lineupSource": null,
@@ -1262,10 +1353,10 @@
       "rotowireProvisionalAudit": {
         "away": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 12.573712777777779,
+          "observationLeadHours": 12.089193055555555,
           "projectedLineup": [
             "Zach Neto",
             "Mike Trout",
@@ -1282,10 +1373,10 @@
         },
         "home": {
           "source": "https://www.rotowire.com/baseball/daily-lineups.php",
-          "retrievedAt": "2026-09-26T13:05:34.634Z",
+          "retrievedAt": "2026-09-26T13:34:38.905Z",
           "timestamp": null,
           "confirmed": false,
-          "observationLeadHours": 12.573712777777779,
+          "observationLeadHours": 12.089193055555555,
           "projectedLineup": [
             "J.P. Crawford",
             "Randy Arozarena",
