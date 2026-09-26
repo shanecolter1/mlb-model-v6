@@ -1,11 +1,14 @@
 name: Run I2 postmortem
 
 on:
+  schedule:
+    - cron: '30 10 * * *'
   push:
     branches: [main]
     paths:
       - '.github/workflows/i2_postmortem.yml'
       - 'src/analysis/i2_postmortem_today.mjs'
+      - 'src/analysis/i2_rotowire_accuracy_season.mjs'
   workflow_dispatch:
     inputs:
       date:
@@ -30,8 +33,15 @@ jobs:
         shell: bash
         run: |
           DATE_INPUT='${{ inputs.date }}'
-          if [ -z "$DATE_INPUT" ]; then DATE_INPUT="$(date -u +%F)"; fi
+          if [ -z "$DATE_INPUT" ]; then
+            if [ "${{ github.event_name }}" = "schedule" ]; then
+              DATE_INPUT="$(date -u -d 'yesterday' +%F)"
+            else
+              DATE_INPUT="$(date -u +%F)"
+            fi
+          fi
           echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
+          echo "year=${DATE_INPUT:0:4}" >> "$GITHUB_OUTPUT"
       - name: Run postmortem
         env:
           MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
@@ -39,18 +49,26 @@ jobs:
           I2_PREDICTIONS: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
           I2_POSTMORTEM_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_postmortem.json
         run: node src/analysis/i2_postmortem_today.mjs
-      - name: Commit postmortem artifact
+      - name: Roll up RotoWire provisional accuracy
+        env:
+          I2_YEAR: ${{ steps.params.outputs.year }}
+          I2_POSTMORTEM_DIR: data/runtime/i2
+          I2_ROTOWIRE_ACCURACY_OUTPUT: data/derived/i2/rotowire_provisional_accuracy_${{ steps.params.outputs.year }}.json
+        run: node src/analysis/i2_rotowire_accuracy_season.mjs
+      - name: Commit postmortem and RotoWire accuracy artifacts
         shell: bash
         run: |
           set -euo pipefail
           FILE="data/runtime/i2/${{ steps.params.outputs.date }}_postmortem.json"
+          ACC="data/derived/i2/rotowire_provisional_accuracy_${{ steps.params.outputs.year }}.json"
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
           git fetch origin main
           git reset --hard origin/main
-          # Re-run after reset so artifact reflects current frozen file on main.
+          # Re-run after reset so artifacts reflect the current frozen file on main.
           MLB_OTHER_MODEL_BASE_URL=https://lambent-brioche-ca05b1.netlify.app I2_DATE='${{ steps.params.outputs.date }}' I2_PREDICTIONS="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json" I2_POSTMORTEM_OUTPUT="$FILE" node src/analysis/i2_postmortem_today.mjs
-          git add "$FILE"
+          I2_YEAR='${{ steps.params.outputs.year }}' I2_POSTMORTEM_DIR=data/runtime/i2 I2_ROTOWIRE_ACCURACY_OUTPUT="$ACC" node src/analysis/i2_rotowire_accuracy_season.mjs
+          git add "$FILE" "$ACC"
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Postmortem I2 projections ${{ steps.params.outputs.date }}"
+          git commit -m "Postmortem I2 projections and RotoWire accuracy ${{ steps.params.outputs.date }}"
           git push origin HEAD:main
