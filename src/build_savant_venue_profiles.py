@@ -76,7 +76,7 @@ def read_leaderboard(url: str) -> pd.DataFrame:
     # Savant renders this leaderboard from an embedded JSON payload. Parse the
     # payload directly because CI clients can receive an HTML shell without a
     # materialized table.
-    match = re.search(r"\\bdata\\s*=\\s*(\\[.*?\\]);", text, re.S)
+    match = re.search(r"\bdata\s*=\s*(\[.*?\]);", text, re.S)
     if match:
         raw = pd.DataFrame(json.loads(match.group(1)))
         aliases = {
