@@ -18,6 +18,8 @@ jobs:
       ROTOWIRE_API_KEY: ${{ secrets.ROTOWIRE_API_KEY }}
       I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
       I2_BASEBALL_REPORTS: config/i2_baseball_reports.json
+      SPORTSBOOK_DATA_SOURCE: SPORTSGAMEODDS
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,6 +27,12 @@ jobs:
           node-version: '22'
       - name: Set date
         run: echo "I2_DATE=$(date -u +%F)" >> "$GITHUB_ENV"
+      - name: Capture required pre-freeze run environment
+        env:
+          I2_RUN_ENVIRONMENT: data/runtime/i2/${{ env.I2_DATE }}_run_environment.json
+          I2_RUN_ENVIRONMENT_ATTEMPTS: '3'
+        run: node src/pipeline/fetch_i2_run_environment.mjs
+
       - name: Refresh preliminary baseball lineups
         env:
           I2_LINEUP_OVERRIDES: data/runtime/i2/${{ env.I2_DATE }}_lineup_overrides.json
