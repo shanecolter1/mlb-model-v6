@@ -82,23 +82,47 @@ function adaptPlayCalibration(payload){
 const playCalibration=adaptPlayCalibration(rawPlayCalibration);
 const parkProfiles=fs.existsSync(PARKS) ? JSON.parse(fs.readFileSync(PARKS,'utf8')) : [];
 
-const RETRO_TEAM_ALIASES = {
-  ARI:['ARI','ARIZONA DIAMONDBACKS'], ATL:['ATL','ATLANTA BRAVES'],
-  BAL:['BAL','BALTIMORE ORIOLES'], BOS:['BOS','BOSTON RED SOX'],
-  CHA:['CHW','CWS','CHICAGO WHITE SOX'], CHN:['CHC','CHICAGO CUBS'],
-  CIN:['CIN','CINCINNATI REDS'], CLE:['CLE','CLEVELAND GUARDIANS'],
-  COL:['COL','COLORADO ROCKIES'], DET:['DET','DETROIT TIGERS'],
-  HOU:['HOU','HOUSTON ASTROS'], KCA:['KC','KCR','KANSAS CITY ROYALS'],
-  LAA:['LAA','LOS ANGELES ANGELS'], LAN:['LAD','LOS ANGELES DODGERS'],
-  MIA:['MIA','MIAMI MARLINS'], MIL:['MIL','MILWAUKEE BREWERS'],
-  MIN:['MIN','MINNESOTA TWINS'], NYA:['NYY','NEW YORK YANKEES'],
-  NYN:['NYM','NEW YORK METS'], PHI:['PHI','PHILADELPHIA PHILLIES'],
-  PIT:['PIT','PITTSBURGH PIRATES'], SDN:['SD','SDP','SAN DIEGO PADRES'],
-  SEA:['SEA','SEATTLE MARINERS'], SFN:['SF','SFG','SAN FRANCISCO GIANTS'],
-  SLN:['STL','ST. LOUIS CARDINALS','ST LOUIS CARDINALS'],
-  TEX:['TEX','TEXAS RANGERS'], TOR:['TOR','TORONTO BLUE JAYS'],
-  WAS:['WSH','WAS','WASHINGTON NATIONALS'],
+const RETRO_SITE_TO_SAVANT_TEAM = {
+  ANA01:'ANGELS',
+  PHO01:'D-BACKS',
+  ATL03:'BRAVES',
+  BAL12:'ORIOLES',
+  BOS07:'RED SOX',
+  CHI12:'WHITE SOX',
+  CHI11:'CUBS',
+  CIN09:'REDS',
+  CLE08:'GUARDIANS',
+  DEN02:'ROCKIES',
+  DET05:'TIGERS',
+  HOU03:'ASTROS',
+  KAN06:'ROYALS',
+  LOS03:'DODGERS',
+  MIA02:'MARLINS',
+  MIL06:'BREWERS',
+  MIN04:'TWINS',
+  NYC21:'YANKEES',
+  NYC20:'METS',
+  PHI13:'PHILLIES',
+  PIT08:'PIRATES',
+  SAN02:'PADRES',
+  SEA03:'MARINERS',
+  SFO03:'GIANTS',
+  STL10:'CARDINALS',
+  ARL03:'RANGERS',
+  TOR02:'BLUE JAYS',
+  WAS11:'NATIONALS',
 };
+
+// These 2025 Retrosheet sites have no valid 2024 Savant profile for the
+// actual venue used in the replay. Fail transparent to neutral rather than
+// borrowing the nominal home club's ordinary park.
+const EXPLICIT_NEUTRAL_2025_SITES = new Set([
+  'SAC01', // Athletics at Sutter Health Park
+  'TAM02', // Rays at George M. Steinbrenner Field
+  'TOK01', // Tokyo Dome
+  'BST01', // Bristol Motor Speedway
+  'WIL02', // Williamsport special-event site
+]);
 
 function norm(x){ return String(x??'').trim().toUpperCase(); }
 function compactDate(x){ return String(x??'').replace(/[^0-9]/g,'').slice(0,8); }
@@ -122,16 +146,18 @@ function modelForGame(game){
 }
 
 function venueFor(game){
-  // 2025 Athletics (Sutter Health Park) and Rays (Steinbrenner Field) did not
-  // have an established 2024 Savant park profile. Deliberately use neutral.
-  if (['ATH','OAK','TBA'].includes(norm(game.home_team_retro))) {
-    return {profile:null,status:'NEW_OR_TEMPORARY_2025_VENUE_NEUTRAL'};
+  const site=norm(game.site);
+  if (EXPLICIT_NEUTRAL_2025_SITES.has(site)) {
+    return {profile:null,status:'EXPLICIT_2025_SITE_NEUTRAL'};
   }
-  const aliases=RETRO_TEAM_ALIASES[norm(game.home_team_retro)] || [];
-  const profile=parkProfiles.find(p=>aliases.includes(norm(p.team)));
+  const savantTeam=RETRO_SITE_TO_SAVANT_TEAM[site];
+  if (!savantTeam) {
+    return {profile:null,status:'UNMAPPED_RETROSHEET_SITE_NEUTRAL'};
+  }
+  const profile=parkProfiles.find(p=>norm(p.team)===savantTeam);
   return profile
-    ? {profile,status:'PRIOR_SEASON_SAVANT_3YR'}
-    : {profile:null,status:'UNMATCHED_PRIOR_SEASON_VENUE_NEUTRAL'};
+    ? {profile,status:'RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT'}
+    : {profile:null,status:'MAPPED_SITE_SAVANT_PROFILE_MISSING_NEUTRAL'};
 }
 
 function stand(bats, throws){
