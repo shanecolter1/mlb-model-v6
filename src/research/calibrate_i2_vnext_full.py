@@ -1,464 +1,165 @@
 #!/usr/bin/env python3
-"""Estimate the single final full-I2 calibration curve for I2 vNext.
+"""Fit the single final full-I2 calibration curve for I2 vNext.
 
-Uses 2025 normal-starter games only. The PA event model is trained on 2023-24,
-then 2025 full-I2 raw probabilities are replayed from Retrosheet pregame
-lineups and observed I2 starting slots. The I2 outcome is never used as a
-feature. Calibration is fit on the first chronological half of 2025 and
-validated on the second half.
+Input is the leakage-safe 2025 full-model replay produced by
+run_i2_vnext_replay.mjs. The raw baseball model is already frozen.
+
+Chronology:
+- first chronological half of 2025: fit one sigmoid/logit candidate
+- second chronological half of 2025: validate candidate vs identity
+- adopt sigmoid only if BOTH Brier and log loss improve
+- if adopted, refit that same one-dimensional curve on all 2025 replay games
+
+No component-level calibration or additional probability shrinkage is allowed.
 """
 from __future__ import annotations
 
 import argparse
-import csv
-import io
 import json
-import sys
-import zipfile
-from collections import Counter, defaultdict
+import math
+from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
-import requests
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import log_loss
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src/research"))
-from fit_i2_vnext import add_arsenal_feature, arsenal_maps, fit_one, matchup_score, score
 
-EVENTS = [
-    "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
-    "strikeout", "ball_in_play_out",
-]
-CHADWICK_BASE = "https://raw.githubusercontent.com/chadwickbureau/register/master/data"
-RETRO_URL = "https://www.retrosheet.org/downloads/plays/2025plays.zip"
-
-
-def parse_args():
+def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
-    p.add_argument("--dataset", type=Path, default=Path("data/derived/i2_vnext/i2_pa_statcast.csv"))
-    p.add_argument("--arsenal-dir", type=Path, default=Path("data/derived/i2_vnext/arsenal"))
-    p.add_argument("--event-model", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_event_model.json"))
-    p.add_argument("--play-calibration", type=Path, default=Path("data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json"))
-    p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_full_calibration.json"))
+    p.add_argument(
+        "--replay",
+        type=Path,
+        default=Path("data/derived/i2_vnext/replay_2025_predictions.json"),
+    )
+    p.add_argument(
+        "--output",
+        type=Path,
+        default=Path("data/derived/i2_vnext/i2_vnext_full_calibration.json"),
+    )
     return p.parse_args()
 
 
-def download_bytes(url: str) -> bytes:
-    r = requests.get(url, timeout=120, headers={"User-Agent": "MLB-I2-vNext/1.0"})
-    r.raise_for_status()
-    return r.content
+def clip(p: float) -> float:
+    return min(1 - 1e-9, max(1e-9, float(p)))
 
 
-def chadwick_map() -> dict[str, int]:
-    out = {}
-    for suffix in "0123456789abcdef":
-        url = f"{CHADWICK_BASE}/people-{suffix}.csv"
-        r = requests.get(url, timeout=60, headers={"User-Agent": "MLB-I2-vNext/1.0"})
-        r.raise_for_status()
-        df = pd.read_csv(io.StringIO(r.text), low_memory=False, usecols=lambda c: c in {"key_retro", "key_mlbam"})
-        df = df.dropna(subset=["key_retro", "key_mlbam"])
-        for rr in df.itertuples(index=False):
-            try:
-                out[str(rr.key_retro)] = int(rr.key_mlbam)
-            except Exception:
-                pass
-    return out
-
-
-def as_int(v):
-    try:
-        return int(v or 0)
-    except Exception:
-        return 0
-
-
-def retrosheet_cases(blob: bytes, idmap: dict[str, int]) -> list[dict]:
-    with zipfile.ZipFile(io.BytesIO(blob)) as zf:
-        with zf.open("2025plays.csv") as raw:
-            reader = csv.DictReader(io.TextIOWrapper(raw, encoding="utf-8-sig", newline=""))
-            by_side = defaultdict(lambda: {1: [], 2: []})
-            for row in reader:
-                if row.get("gametype") != "regular":
-                    continue
-                inning = as_int(row.get("inning"))
-                if inning not in (1, 2):
-                    continue
-                by_side[(row["gid"], as_int(row.get("top_bot")))][inning].append(row)
-
-    halves = {}
-    for (gid, top_bot), innings in by_side.items():
-        i1, i2 = innings[1], innings[2]
-        if not i1 or not i2:
-            continue
-        first1, first2 = i1[0], i2[0]
-        retro_lineup = [first1.get(f"l{k}") for k in range(1, 10)]
-        if any(not x for x in retro_lineup):
-            continue
-        lineup = [idmap.get(x) for x in retro_lineup]
-        i2_pitcher = idmap.get(first2.get("pitcher"))
-        i1_pitcher = idmap.get(first1.get("pitcher"))
-        if any(x is None for x in lineup) or i2_pitcher is None or i1_pitcher is None:
-            continue
-        if i1_pitcher != i2_pitcher:
-            continue
-        slot_map = {b: idx + 1 for idx, b in enumerate(retro_lineup)}
-        start_slot = slot_map.get(first2.get("batter")) or as_int(first2.get("lp"))
-        if not 1 <= int(start_slot) <= 9:
-            continue
-        halves[(gid, top_bot)] = {
-            "gid": gid,
-            "date": str(first1.get("date")),
-            "lineup": [int(x) for x in lineup],
-            "pitcher": int(i2_pitcher),
-            "start_slot": int(start_slot),
-            "runs": sum(as_int(r.get("runs")) for r in i2),
-        }
-
-    games = []
-    for gid in sorted({g for g, _ in halves}):
-        top, bottom = halves.get((gid, 0)), halves.get((gid, 1))
-        if top and bottom:
-            games.append({"gid": gid, "date": top["date"], "top": top, "bottom": bottom})
-    return games
-
-
-def player_sides(df: pd.DataFrame):
-    pitcher_throws = {}
-    for pid, g in df.groupby("pitcher"):
-        vals = [str(x) for x in g["p_throws"].dropna() if str(x) in {"L", "R"}]
-        if vals:
-            pitcher_throws[int(pid)] = Counter(vals).most_common(1)[0][0]
-    batter_bats = {}
-    for bid, g in df.groupby("batter"):
-        vals = {str(x) for x in g["stand"].dropna() if str(x) in {"L", "R"}}
-        if vals == {"L", "R"}:
-            batter_bats[int(bid)] = "S"
-        elif vals:
-            batter_bats[int(bid)] = next(iter(vals))
-    return batter_bats, pitcher_throws
-
-
-def batter_side(batter: int, throws: str, bats: dict[int, str]) -> str:
-    side = bats.get(batter, "R")
-    if side == "S":
-        return "L" if throws == "R" else "R"
-    return side
-
-
-def attach_home_teams(games: list[dict], statcast: pd.DataFrame) -> float:
-    x = statcast[statcast["season"] == 2025].copy()
-    x["game_date"] = pd.to_datetime(x["game_date"], errors="coerce").dt.strftime("%Y-%m-%d")
-    game_meta = []
-    for game_pk, g in x.groupby("game_pk"):
-        pitchers = {
-            int(v) for v in pd.to_numeric(g["pitcher"], errors="coerce").dropna().astype(int)
-        }
-        game_meta.append({
-            "game_pk": int(game_pk),
-            "date": str(g.iloc[0]["game_date"]),
-            "home_team": str(g.iloc[0].get("home_team", "")),
-            "pitchers": pitchers,
-        })
-
-    matched = 0
-    for game in games:
-        need = {int(game["top"]["pitcher"]), int(game["bottom"]["pitcher"])}
-        candidates = [
-            m for m in game_meta
-            if m["date"] == str(game["date"]) and need.issubset(m["pitchers"])
-        ]
-        if len(candidates) == 1:
-            game["home_team"] = candidates[0]["home_team"]
-            game["game_pk"] = candidates[0]["game_pk"]
-            matched += 1
-        else:
-            game["home_team"] = None
-            game["game_pk"] = None
-    return matched / len(games) if games else 0.0
-
-
-def norm_team(value: object) -> str:
-    raw = "".join(ch for ch in str(value or "").upper() if ch.isalnum())
-    aliases = {
-        "AZ": "ARI", "ARI": "ARI",
-        "CHW": "CWS", "CWS": "CWS",
-        "KC": "KC", "KCR": "KC",
-        "WSN": "WSH", "WSH": "WSH",
-        "SD": "SD", "SDP": "SD",
-        "SF": "SF", "SFG": "SF",
-        "TB": "TB", "TBR": "TB",
-    }
-    return aliases.get(raw, raw)
-
-
-def load_venue_profiles(path: Path) -> dict[str, dict]:
-    rows = json.loads(path.read_text())
-    out = {}
-    for row in rows:
-        key = norm_team(row.get("team"))
-        if key:
-            out[key] = row
-    return out
-
-
-def apply_park(vec: dict[str, float], batter_side_code: str, profile: dict | None):
-    if not profile:
-        return vec
-    side = "L" if batter_side_code == "L" else "R"
-    event_key = {
-        "single": "single",
-        "double": "double",
-        "triple": "triple",
-        "home_run": "hr",
-    }
-    adjusted = {}
-    for event, p in vec.items():
-        key = event_key.get(event)
-        factor = 1.0
-        if key:
-            split = profile.get("handedness", {}).get(side, {}).get(key)
-            overall = profile.get("multipliers", {}).get(key)
-            try:
-                factor = float(split) if split is not None else float(overall)
-            except (TypeError, ValueError):
-                factor = 1.0
-        adjusted[event] = max(0.0, float(p) * factor)
-    total = sum(adjusted.values())
-    return {k: v / total for k, v in adjusted.items()} if total > 0 else vec
-
-
-def prepare_train(df: pd.DataFrame, arsenal_dir: Path):
-    train = df[df["season"].isin([2023, 2024])].copy()
-    train["batter"] = pd.to_numeric(train["batter"], errors="raise").astype(int)
-    train["pitcher"] = pd.to_numeric(train["pitcher"], errors="raise").astype(int)
-    train = add_arsenal_feature(train, arsenal_dir)
-    train["batter"] = train["batter"].astype(str)
-    train["pitcher"] = train["pitcher"].astype(str)
-    train["platoon"] = train["platoon"].fillna("?v?").astype(str)
-    return train
-
-def load_transitions(path: Path):
-    payload = json.loads(path.read_text())
-    states = payload["states"]
-    mapping = {
-        "strikeout": "out",
-        "ball_in_play_out": "out",
-        "walk": "bb",
-        "hit_by_pitch": "bb",
-        "single": "single",
-        "double": "double",
-        "triple": "triple",
-        "home_run": "hr",
-    }
-    expanded = {}
-    for event, source in mapping.items():
-        for outs in (0, 1, 2):
-            for mask in range(8):
-                expanded[f"{event}|{outs}|{mask}"] = states.get(
-                    f"{source}|{outs}|{mask}", []
-                )
-    return expanded
-
-
-def event_vector(prep, model, batter, pitcher, side, throws, arsenal):
-    score_x = matchup_score(batter, pitcher, arsenal)
-    row = pd.DataFrame([{
-        "batter": str(batter),
-        "pitcher": str(pitcher),
-        "platoon": f"{side}v{throws}",
-        "arsenal_matchup_xwoba": score_x,
-    }])
-    p = model.predict_proba(
-        prep.transform(
-            row[["batter", "pitcher", "platoon", "arsenal_matchup_xwoba"]]
-        )
-    )[0]
-    return {str(cls): float(prob) for cls, prob in zip(model.classes_, p)}
-
-def p_scoreless_half(case, prep, model, arsenal, bats, throws_map, transitions):
-    pitcher = case["pitcher"]
-    throws = throws_map.get(pitcher, "R")
-    cache = {}
-    states = {(0, 0, case["start_slot"]): 1.0}
-    finished = 0.0
-    for _ in range(40):
-        if not states:
-            break
-        nxt = defaultdict(float)
-        for (outs, mask, slot), mass in states.items():
-            batter = case["lineup"][slot - 1]
-            side = batter_side(batter, throws, bats)
-            key = (batter, pitcher, side, throws)
-            vec = cache.get(key)
-            if vec is None:
-                vec = event_vector(prep, model, batter, pitcher, side, throws, arsenal)
-                cache[key] = vec
-            next_slot = 1 if slot == 9 else slot + 1
-            for event, event_p in vec.items():
-                for opt in transitions.get(f"{event}|{outs}|{mask}") or []:
-                    p = mass * event_p * float(opt.get("p", 0))
-                    if p <= 0 or int(opt.get("runs", 0)) > 0:
-                        continue
-                    new_outs = min(3, outs + int(opt.get("outs_added", 0)))
-                    if new_outs >= 3:
-                        finished += p
-                    else:
-                        nxt[(new_outs, int(opt.get("post_mask", 0)), next_slot)] += p
-        states = dict(nxt)
-        if sum(states.values()) < 1e-12:
-            break
-    return max(0.0, min(1.0, finished))
-
-
-def clip_prob(p):
-    return max(1e-6, min(1 - 1e-6, float(p)))
-
-
-def logits(values):
-    p = np.asarray([clip_prob(x) for x in values], dtype=float)
+def logit_values(values) -> np.ndarray:
+    p = np.asarray([clip(x) for x in values], dtype=float)
     return np.log(p / (1 - p)).reshape(-1, 1)
 
 
-def metrics(y, p):
-    p = np.asarray([clip_prob(x) for x in p], dtype=float)
+def metrics(y, p) -> dict:
     y = np.asarray(y, dtype=int)
+    p = np.asarray([clip(x) for x in p], dtype=float)
     return {
         "n": int(len(y)),
+        "realized_under_rate": float(np.mean(y)),
+        "predicted_under_mean": float(np.mean(p)),
         "brier": float(np.mean((p - y) ** 2)),
-        "logloss": float(log_loss(y, np.column_stack([1 - p, p]), labels=[0, 1])),
-        "predicted_mean": float(np.mean(p)),
-        "realized_rate": float(np.mean(y)),
+        "logloss": float(log_loss(y, p, labels=[0, 1])),
     }
 
 
-def main():
+def sigmoid_prob(raw, intercept: float, slope: float) -> np.ndarray:
+    z = intercept + slope * logit_values(raw).reshape(-1)
+    return 1.0 / (1.0 + np.exp(-z))
+
+
+def fit_sigmoid(raw, y):
+    model = LogisticRegression(C=1e6, solver="lbfgs")
+    model.fit(logit_values(raw), np.asarray(y, dtype=int))
+    return model
+
+
+def main() -> None:
     args = parse_args()
-    df = pd.read_csv(args.dataset)
-    df["game_date"] = pd.to_datetime(df["game_date"], errors="coerce")
-    df["season"] = pd.to_numeric(df["season"], errors="raise").astype(int)
-    bats, pitcher_throws = player_sides(df)
+    replay = json.loads(args.replay.read_text())
+    if replay.get("market_inputs_used") is not False:
+        raise RuntimeError("Replay must be baseball-only")
+    if replay.get("observed_i2_state_used_as_predictor") is not False:
+        raise RuntimeError("Replay used observed I2 state as a predictor")
 
-    train = prepare_train(df, args.arsenal_dir)
-    frozen = json.loads(args.event_model.read_text())
-    half_life = float(frozen["selected"]["half_life_days"])
-    c = float(frozen["selected"]["C"])
-    prep, model = fit_one(train, c, half_life)
-    arsenal_2024 = arsenal_maps(
-        args.arsenal_dir / "batter_2024.csv",
-        args.arsenal_dir / "pitcher_2024.csv",
+    rows = sorted(
+        replay.get("predictions") or [],
+        key=lambda r: (str(r.get("date") or ""), str(r.get("gid") or "")),
     )
-    transitions = load_transitions(args.play_calibration)
-    venue_profiles = load_venue_profiles(args.venue_profile)
-    games = retrosheet_cases(download_bytes(RETRO_URL), chadwick_map())
-    home_team_match_rate = attach_home_teams(games, df)
-    if home_team_match_rate < 0.90:
-        raise RuntimeError(f"Historical game-to-Statcast home-team match rate too low: {home_team_match_rate:.3f}")
+    if len(rows) < 500:
+        raise RuntimeError(f"Insufficient 2025 replay games: {len(rows)}")
 
-    rows = []
-    park_matched = 0
-    for game in games:
-        top_p0 = p_scoreless_half(
-            game["top"], prep, model, arsenal_2024,
-            bats, pitcher_throws, transitions,
-        )
-        bottom_p0 = p_scoreless_half(
-            game["bottom"], prep, model, arsenal_2024,
-            bats, pitcher_throws, transitions,
-        )
-        rows.append({
-            "gid": game["gid"],
-            "date": game["date"],
-            "raw_under": top_p0 * bottom_p0,
-            "realized_under": int(game["top"]["runs"] == 0 and game["bottom"]["runs"] == 0),
-        })
+    raw = np.asarray([clip(r["raw_under05"]) for r in rows], dtype=float)
+    y = np.asarray([int(r["observed_under05"]) for r in rows], dtype=int)
+    cut = len(rows) // 2
+    raw_fit, raw_val = raw[:cut], raw[cut:]
+    y_fit, y_val = y[:cut], y[cut:]
 
-    replay = pd.DataFrame(rows).sort_values(["date", "gid"]).reset_index(drop=True)
-    if len(replay) < 500:
-        raise RuntimeError(f"Insufficient 2025 replay sample: {len(replay)}")
+    identity_val = metrics(y_val, raw_val)
+    candidate = fit_sigmoid(raw_fit, y_fit)
+    cand_intercept = float(candidate.intercept_[0])
+    cand_slope = float(candidate.coef_[0, 0])
+    candidate_val_p = sigmoid_prob(raw_val, cand_intercept, cand_slope)
+    sigmoid_val = metrics(y_val, candidate_val_p)
 
-    cut = len(replay) // 2
-    cal, val = replay.iloc[:cut], replay.iloc[cut:]
-    y_cal = cal["realized_under"].to_numpy(int)
-    y_val = val["realized_under"].to_numpy(int)
-    p_cal = cal["raw_under"].to_numpy(float)
-    p_val = val["raw_under"].to_numpy(float)
-
-    candidates = {"none": {"validation": metrics(y_val, p_val)}}
-
-    sigmoid = LogisticRegression(C=1e6, solver="lbfgs").fit(logits(p_cal), y_cal)
-    p_sigmoid = sigmoid.predict_proba(logits(p_val))[:, 1]
-    candidates["sigmoid"] = {
-        "validation": metrics(y_val, p_sigmoid),
-        "intercept": float(sigmoid.intercept_[0]),
-        "slope": float(sigmoid.coef_[0, 0]),
-    }
-
-    chosen = min(
-        candidates,
-        key=lambda k: (
-            candidates[k]["validation"]["logloss"],
-            candidates[k]["validation"]["brier"],
-        ),
+    adopt = (
+        sigmoid_val["brier"] < identity_val["brier"]
+        and sigmoid_val["logloss"] < identity_val["logloss"]
     )
 
-    final = {"type": chosen}
-    if chosen == "sigmoid":
-        m = LogisticRegression(C=1e6, solver="lbfgs").fit(
-            logits(replay["raw_under"]),
-            replay["realized_under"].to_numpy(int),
-        )
-        final.update({"intercept": float(m.intercept_[0]), "slope": float(m.coef_[0, 0])})
+    if adopt:
+        final_model = fit_sigmoid(raw, y)
+        final_curve = {
+            "type": "sigmoid",
+            "intercept": float(final_model.intercept_[0]),
+            "slope": float(final_model.coef_[0, 0]),
+        }
+    else:
+        final_curve = {"type": "none", "intercept": 0.0, "slope": 1.0}
 
     payload = {
-        "version": "i2-vnext-full-model-calibration-v3",
+        "version": "i2-vnext-full-calibration-v1",
+        "generated_at": datetime.now(timezone.utc).isoformat(),
         "market_inputs_used": False,
-        "scope": "2025 normal-starter games; Retrosheet pregame lineups; observed pre-I2 start slot; prior-year Savant park profile; exact scoreless recursion",
-        "event_model_training": "2023-2024 only",
-        "frozen_event_model": {
-            "training_years": [2023, 2024],
-            "hyperparameter_selection_year": 2024,
-            "selected_half_life_days": half_life,
-            "selected_C": c,
-            "artifact_role": frozen.get("artifact_role"),
-        },
+        "target": "full I2 Under 0.5 probability",
+        "source_replay_version": replay.get("version"),
+        "source_model_version": replay.get("model_version"),
+        "source_model_training": replay.get("model_training"),
+        "holdout_policy": replay.get("holdout_policy"),
         "calibration_selection": {
-            "train_segment": "first chronological half of 2025",
+            "fit_segment": "first chronological half of 2025",
             "validation_segment": "second chronological half of 2025",
-            "candidates_limited_to": ["none", "sigmoid"],
-            "candidates": candidates,
-            "chosen": chosen,
+            "candidate_models": ["identity", "single_sigmoid_logit"],
+            "selection_rule": (
+                "sigmoid must improve both Brier and log loss on later-2025 validation; "
+                "otherwise identity"
+            ),
+            "identity_validation": identity_val,
+            "sigmoid_validation": sigmoid_val,
+            "sigmoid_candidate": {
+                "intercept": cand_intercept,
+                "slope": cand_slope,
+            },
+            "chosen": "sigmoid" if adopt else "identity",
         },
-        "raw_all_2025": metrics(replay["realized_under"], replay["raw_under"]),
-        "park_audit": {
-            "profile_year": 2024,
-            "rolling_years": 3,
-            "game_to_statcast_home_team_match_rate": home_team_match_rate,
-            "venue_profile_match_rate": park_matched / len(games) if games else 0.0,
-            "missing_venues_use_neutral_only_for_calibration_replay": True,
+        "raw_all_2025": metrics(y, raw),
+        "replay_games": int(len(rows)),
+        "final_curve": final_curve,
+        "governance": {
+            "probability_calibration_layers": 1 if adopt else 0,
+            "component_level_probability_calibration": False,
+            "market_conditioning": False,
+            "observed_i2_state_used_as_predictor": False,
+            "prospective_validation_required": True,
         },
-        "final_curve": final,
-        "replay_games": int(len(replay)),
-        "notes": [
-            "Final probability calibration is applied once at the full-I2 level; no component-level probability calibration is added.",
-            "No market data is used.",
-            "Replay excludes I1-to-I2 pitcher changes; opener/bulk handling remains a separate workflow path.",
-            "Observed I2 start slot is fixed before I2 and does not use the I2 scoring outcome.",
-            "2025 replay uses the 2024 three-year Savant park profile so park is represented without future leakage.",
-            "New/temporary 2025 venues absent from the 2024 profile are explicit neutral fallbacks in the calibration audit.",
-            "Live inference continues to use the existing I1 start-slot engine.",
-        ],
     }
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    replay.to_csv(args.output.with_name("full_model_oos_2025.csv"), index=False)
     print(json.dumps({
-        "replay_games": len(replay),
-        "chosen": chosen,
-        "raw": payload["raw_all_2025"],
-        "validation": candidates[chosen]["validation"],
+        "replay_games": payload["replay_games"],
+        "raw_all_2025": payload["raw_all_2025"],
+        "identity_validation": identity_val,
+        "sigmoid_validation": sigmoid_val,
+        "final_curve": final_curve,
     }, indent=2))
 
 
