@@ -1,9 +1,9 @@
 {
   "version": "i2-vnext-full-calibration-v1",
-  "generated_at": "2026-09-26T22:14:53.945070+00:00",
+  "generated_at": "2026-09-26T23:15:35.282054+00:00",
   "market_inputs_used": false,
   "target": "full I2 Under 0.5 probability",
-  "source_replay_version": "i2-vnext-full-replay-v2",
+  "source_replay_version": "i2-vnext-full-replay-v4-player-asof-i1-sharded",
   "source_model_version": "i2-vnext-walkforward-2025-v1",
   "source_model_training": {
     "start": "2023-03-30",
@@ -53,38 +53,38 @@
     "identity_validation": {
       "n": 1241,
       "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.5758884770346495,
-      "brier": 0.24985312618855762,
-      "logloss": 0.6929407441457595
+      "predicted_under_mean": 0.5741482675261885,
+      "brier": 0.25006779964544723,
+      "logloss": 0.693414060131608
     },
     "sigmoid_validation": {
       "n": 1241,
       "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.5731660657452776,
-      "brier": 0.2502400184168796,
-      "logloss": 0.6937822587221769
+      "predicted_under_mean": 0.569865049730227,
+      "brier": 0.24997690833846412,
+      "logloss": 0.6932335472896648
     },
     "sigmoid_candidate": {
-      "intercept": -0.14158044213537865,
-      "slope": 1.4283017003626333
+      "intercept": -0.04842031105651121,
+      "slope": 1.1036980910899656
     },
-    "chosen": "identity"
+    "chosen": "sigmoid"
   },
   "raw_all_2025": {
     "n": 2430,
     "realized_under_rate": 0.551440329218107,
-    "predicted_under_mean": 0.5725688888888889,
-    "brier": 0.24716723595061726,
-    "logloss": 0.6874818962705525
+    "predicted_under_mean": 0.5713496296296298,
+    "brier": 0.2473611880164609,
+    "logloss": 0.6878910550617064
   },
   "replay_games": 2430,
   "final_curve": {
-    "type": "none",
-    "intercept": 0.0,
-    "slope": 1.0
+    "type": "sigmoid",
+    "intercept": 0.01734074338291061,
+    "slope": 0.6568473204438623
   },
   "governance": {
-    "probability_calibration_layers": 0,
+    "probability_calibration_layers": 1,
     "component_level_probability_calibration": false,
     "market_conditioning": false,
     "observed_i2_state_used_as_predictor": false,

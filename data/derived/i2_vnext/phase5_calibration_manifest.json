@@ -1,0 +1,51 @@
+{
+  "version": "i2-vnext-phase5-calibration-v1",
+  "market_inputs_used": false,
+  "replay_games": 2430,
+  "raw_all_2025": {
+    "n": 2430,
+    "realized_under_rate": 0.551440329218107,
+    "predicted_under_mean": 0.5713496296296298,
+    "brier": 0.2473611880164609,
+    "logloss": 0.6878910550617064
+  },
+  "calibration_selection": {
+    "fit_segment": "2025 dates before 20250625",
+    "validation_segment": "2025 dates on/after 20250625",
+    "split_date": "20250625",
+    "fit_games": 1189,
+    "validation_games": 1241,
+    "candidate_models": [
+      "identity",
+      "single_sigmoid_logit"
+    ],
+    "selection_rule": "sigmoid must improve both Brier and log loss on later-2025 validation; otherwise identity",
+    "identity_validation": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5741482675261885,
+      "brier": 0.25006779964544723,
+      "logloss": 0.693414060131608
+    },
+    "sigmoid_validation": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.569865049730227,
+      "brier": 0.24997690833846412,
+      "logloss": 0.6932335472896648
+    },
+    "sigmoid_candidate": {
+      "intercept": -0.04842031105651121,
+      "slope": 1.1036980910899656
+    },
+    "chosen": "sigmoid"
+  },
+  "final_curve": {
+    "type": "sigmoid",
+    "intercept": 0.01734074338291061,
+    "slope": 0.6568473204438623
+  },
+  "component_level_probability_calibration": false,
+  "market_conditioning": false,
+  "prospective_validation_required": true
+}
