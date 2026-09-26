@@ -1,17 +1,11 @@
 import fs from 'node:fs';
 import { fetchRotowirePublic } from './rotowire_public.mjs';
-import { assertBaseballOnly, norm, fresh, selectLineup, selectStarter, projectionGate, srmReview } from './i2_source_governance.mjs';
+import { assertBaseballOnly, norm, canonicalMlbIdentityName, fresh, selectLineup, selectStarter, projectionGate, srmReview } from './i2_source_governance.mjs';
 
 const MLB = 'https://statsapi.mlb.com';
 const fullName = p => [p?.FirstName,p?.LastName].filter(Boolean).join(' ');
 const TEAM_CODES = {108:['LAA'],109:['ARI','AZ'],110:['BAL'],111:['BOS'],112:['CHC'],113:['CIN'],114:['CLE'],115:['COL'],116:['DET'],117:['HOU'],118:['KC','KCR'],119:['LAD'],120:['WSH','WAS'],121:['NYM'],133:['ATH','OAK'],134:['PIT'],135:['SD','SDP'],136:['SEA'],137:['SF','SFG'],138:['STL'],139:['TB','TBR'],140:['TEX'],141:['TOR'],142:['MIN'],143:['PHI'],144:['ATL'],145:['CWS','CHW'],146:['MIA'],147:['NYY'],158:['MIL']};
 const stamp = () => new Date().toISOString();
-const GENERATIONAL_SUFFIXES = new Set(['jr','sr','ii','iii','iv']);
-export function canonicalMlbIdentityName(value) {
-  const tokens=String(value || '').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().split(/\s+/).filter(Boolean);
-  if (GENERATIONAL_SUFFIXES.has(tokens.at(-1))) tokens.pop();
-  return tokens.join('');
-}
 function peopleById(rows) {
   return new Map((rows || []).filter(p=>p?.fullName && Number.isFinite(Number(p?.id))).map(p=>[String(p.id),p]));
 }
@@ -168,16 +162,28 @@ export async function applyResolvedInputs(feed, audit) {
     const people=[...boxPeople,...teamLocal,...(probablePerson?[probablePerson]:[]),...(roster.value?.roster || []).map(r=>r.person)];
     const resolve=name=>resolveMlbIdentity(name,people).person;
     for (const p of Object.values(box.players || {})) p.battingOrder='';
+    const resolvedLineup=[];
     for (const [index,name] of audit[side].lineup.players.entries()) {
       const p=resolve(name), key=`ID${p.id}`;
+      resolvedLineup.push(p);
       output.gameData.players[key] ||= p;
       box.players[key] ||= {person:{id:p.id,fullName:p.fullName}};
       box.players[key].battingOrder=String((index+1)*100);
     }
+    audit[side].lineup.resolvedMlbIds=resolvedLineup.map(p=>p.id);
+    audit[side].lineup.resolvedMlbNames=resolvedLineup.map(p=>p.fullName);
     const starter=audit[side].starter;
     output.gameData.probablePitchers ||= {};
-    if (starter.name) { const p=resolve(starter.name);output.gameData.probablePitchers[side]={id:p.id,fullName:p.fullName}; }
-    else delete output.gameData.probablePitchers[side];
+    if (starter.name) {
+      const p=resolve(starter.name);
+      starter.resolvedMlbId=p.id;
+      starter.resolvedMlbName=p.fullName;
+      output.gameData.probablePitchers[side]={id:p.id,fullName:p.fullName};
+    } else {
+      starter.resolvedMlbId=null;
+      starter.resolvedMlbName=null;
+      delete output.gameData.probablePitchers[side];
+    }
   }
   return output;
 }
