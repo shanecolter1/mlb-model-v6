@@ -85,6 +85,7 @@ jobs:
             data/derived/i2_vnext/park/
 
   build-replay-inputs:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
