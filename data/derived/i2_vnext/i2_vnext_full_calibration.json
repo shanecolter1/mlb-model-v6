@@ -1,6 +1,6 @@
 {
   "version": "i2-vnext-full-calibration-v1",
-  "generated_at": "2026-09-26T23:15:35.282054+00:00",
+  "generated_at": "2026-09-26T23:23:30.921249+00:00",
   "market_inputs_used": false,
   "target": "full I2 Under 0.5 probability",
   "source_replay_version": "i2-vnext-full-replay-v4-player-asof-i1-sharded",
@@ -9,10 +9,7 @@
     "start": "2023-03-30",
     "end": "2024-09-30",
     "n": 40812,
-    "seasons": [
-      2023,
-      2024
-    ],
+    "seasons": [2023, 2024],
     "event_counts": {
       "ball_in_play_out": 18363,
       "strikeout": 9675,
@@ -27,10 +24,7 @@
     "pitchers": 546
   },
   "holdout_policy": {
-    "raw_pa_estimation_years": [
-      2023,
-      2024
-    ],
+    "raw_pa_estimation_years": [2023, 2024],
     "hyperparameter_selection_period": "2024H2",
     "full_i2_calibration_year": 2025,
     "full_i2_calibration_fit_segment": "first chronological half",
@@ -45,46 +39,43 @@
     "split_date": "20250625",
     "fit_games": 1189,
     "validation_games": 1241,
-    "candidate_models": [
-      "identity",
-      "single_sigmoid_logit"
-    ],
+    "candidate_models": ["identity", "single_sigmoid_logit"],
     "selection_rule": "sigmoid must improve both Brier and log loss on later-2025 validation; otherwise identity",
     "identity_validation": {
       "n": 1241,
       "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.5741482675261885,
-      "brier": 0.25006779964544723,
-      "logloss": 0.693414060131608
+      "predicted_under_mean": 0.5741922643029814,
+      "brier": 0.24970507481063658,
+      "logloss": 0.692651717890755
     },
     "sigmoid_validation": {
       "n": 1241,
       "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.569865049730227,
-      "brier": 0.24997690833846412,
-      "logloss": 0.6932335472896648
+      "predicted_under_mean": 0.5706423214414869,
+      "brier": 0.2498500148422421,
+      "logloss": 0.6929743715134274
     },
     "sigmoid_candidate": {
-      "intercept": -0.04842031105651121,
-      "slope": 1.1036980910899656
+      "intercept": -0.0893061569366758,
+      "slope": 1.2512597580121654
     },
-    "chosen": "sigmoid"
+    "chosen": "identity"
   },
   "raw_all_2025": {
     "n": 2430,
     "realized_under_rate": 0.551440329218107,
-    "predicted_under_mean": 0.5713496296296298,
-    "brier": 0.2473611880164609,
-    "logloss": 0.6878910550617064
+    "predicted_under_mean": 0.5714136625514403,
+    "brier": 0.24705671633744858,
+    "logloss": 0.6872618188154105
   },
   "replay_games": 2430,
   "final_curve": {
-    "type": "sigmoid",
-    "intercept": 0.01734074338291061,
-    "slope": 0.6568473204438623
+    "type": "none",
+    "intercept": 0.0,
+    "slope": 1.0
   },
   "governance": {
-    "probability_calibration_layers": 1,
+    "probability_calibration_layers": 0,
     "component_level_probability_calibration": false,
     "market_conditioning": false,
     "observed_i2_state_used_as_predictor": false,
