@@ -1,4 +1,5 @@
-import { collectSources, resolveGameInputs } from './i2_baseball_sources.mjs';
+import { collectSources, resolveGameInputs, applyResolvedInputs } from './i2_baseball_sources.mjs';
+import { projectionGate } from './i2_source_governance.mjs';
 // Revalidate identities before recommendations, never recompute or modify probabilities.
 export async function revalidateFrozen(payload) {
   const sources=await collectSources(payload.date);
@@ -14,7 +15,10 @@ export async function revalidateFrozen(payload) {
       if (!game.inputAudit || !scheduled) throw new Error('INPUT_AUDIT_MISSING');
       const r=await fetch(`https://statsapi.mlb.com/api/v1.1/game/${game.gamePk}/feed/live`,{signal:AbortSignal.timeout(15000)});
       if (!r.ok) throw new Error('feed');
-      const current=await resolveGameInputs(scheduled,await r.json(),sources,game.inputAudit);
+      const feed=await r.json();
+      const current=await resolveGameInputs(scheduled,feed,sources,game.inputAudit);
+      await applyResolvedInputs(feed,current);
+      current.gate=projectionGate({...current,previous:game.inputAudit});
       if (!['FROZEN_RESEARCH_PROJECTION','PROVISIONAL_RESEARCH_PROJECTION'].includes(game.modelStatus)) throw new Error('PROJECTION_NOT_VALID');
       if (Date.parse(game.gameDate)<=Date.now()) throw new Error('GAME_STARTED');
       game.bettingEligibility=current.gate;
