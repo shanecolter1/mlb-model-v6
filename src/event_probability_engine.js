@@ -126,7 +126,8 @@ export function buildNeutralEventVector({
 }
 
 function sideFactor(context, batterSide, eventName) {
-  const side = batterSide === "L" ? "L" : "R";
+  const side = batterSide === "L" ? "L" : batterSide === "R" ? "R" : null;
+  if (!side) return null;
   const splitName =
     eventName === "home_run" ? "hr" :
     eventName === "single" ? "single" :
