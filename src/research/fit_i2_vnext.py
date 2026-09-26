@@ -59,7 +59,11 @@ def read_arsenal(path: Path) -> pd.DataFrame:
     return x[x["player_id"].notna() & x["pitch_type"].notna()].copy()
 
 
-def arsenal_maps(batter_file: Path, pitcher_file: Path):
+def arsenal_maps(
+    batter_file: Path,
+    pitcher_file: Path,
+    pitcher_side_file: Path | None = None,
+):
     b = read_arsenal(batter_file)
     p = read_arsenal(pitcher_file)
 
@@ -98,23 +102,84 @@ def arsenal_maps(batter_file: Path, pitcher_file: Path):
         str(k): float(v / total) for k, v in league_usage_raw.items()
     } if total > 0 else {}
 
+    pitcher_side_usage = {}
+    types_by_pitcher_side: dict[tuple[int, str], list[str]] = {}
+    league_usage_by_side: dict[str, dict[str, float]] = {}
+    if pitcher_side_file is not None and pitcher_side_file.exists():
+        side = pd.read_csv(pitcher_side_file)
+        needed = {"pitcher", "stand", "pitch_type", "pitches"}
+        if needed.issubset(side.columns):
+            side["pitcher"] = pd.to_numeric(side["pitcher"], errors="coerce").astype("Int64")
+            side["pitches"] = pd.to_numeric(side["pitches"], errors="coerce").fillna(0.0)
+            side["stand"] = side["stand"].astype(str)
+            side["pitch_type"] = side["pitch_type"].astype(str)
+            side = side[
+                side["pitcher"].notna()
+                & side["stand"].isin(["L", "R"])
+                & (side["pitches"] > 0)
+            ].copy()
+            if not side.empty:
+                stot = side.groupby(["pitcher", "stand"], observed=True)["pitches"].transform("sum")
+                side["usage"] = np.where(stot > 0, side["pitches"] / stot, 0.0)
+                pitcher_side_usage = {
+                    (int(r.pitcher), str(r.stand), str(r.pitch_type)): float(r.usage)
+                    for r in side.itertuples(index=False)
+                }
+                for (pid, stand), group in side.groupby(["pitcher", "stand"], observed=True):
+                    types_by_pitcher_side[(int(pid), str(stand))] = list(group["pitch_type"].astype(str))
+                for stand, group in side.groupby("stand", observed=True):
+                    lg = group.groupby("pitch_type", observed=True)["pitches"].sum()
+                    denom = float(lg.sum())
+                    if denom > 0:
+                        league_usage_by_side[str(stand)] = {
+                            str(k): float(v / denom) for k, v in lg.items()
+                        }
+
     return (
         {(int(pid), str(pt)): float(v) for (pid, pt), v in batter_x.items()},
         pitcher_usage,
         types_by_pitcher,
+        pitcher_side_usage,
+        types_by_pitcher_side,
         league_x,
         global_x,
         league_usage,
+        league_usage_by_side,
     )
 
 
-def matchup_score(batter: int, pitcher: int, maps) -> float:
-    batter_x, pitcher_usage, types_by_pitcher, league_x, global_x, league_usage = maps
-    pitch_types = types_by_pitcher.get(pitcher)
-    if pitch_types:
-        weights = [(pt, pitcher_usage.get((pitcher, pt), 0.0)) for pt in pitch_types]
+def matchup_score(
+    batter: int,
+    pitcher: int,
+    maps,
+    batter_side: str | None = None,
+) -> float:
+    (
+        batter_x,
+        pitcher_usage,
+        types_by_pitcher,
+        pitcher_side_usage,
+        types_by_pitcher_side,
+        league_x,
+        global_x,
+        league_usage,
+        league_usage_by_side,
+    ) = maps
+
+    side = batter_side if batter_side in {"L", "R"} else None
+    side_types = types_by_pitcher_side.get((pitcher, side)) if side else None
+    if side_types:
+        weights = [
+            (pt, pitcher_side_usage.get((pitcher, side, pt), 0.0))
+            for pt in side_types
+        ]
     else:
-        weights = list(league_usage.items())
+        pitch_types = types_by_pitcher.get(pitcher)
+        if pitch_types:
+            weights = [(pt, pitcher_usage.get((pitcher, pt), 0.0)) for pt in pitch_types]
+        else:
+            weights = list((league_usage_by_side.get(side) or league_usage).items())
+
     total = sum(w for _, w in weights)
     if total <= 0:
         return global_x
@@ -122,7 +187,6 @@ def matchup_score(batter: int, pitcher: int, maps) -> float:
         (w / total) * batter_x.get((batter, pt), league_x.get(pt, global_x))
         for pt, w in weights
     )
-
 
 def add_arsenal_feature(df: pd.DataFrame, arsenal_dir: Path) -> pd.DataFrame:
     out = df.copy()
@@ -137,12 +201,20 @@ def add_arsenal_feature(df: pd.DataFrame, arsenal_dir: Path) -> pd.DataFrame:
                 f"Missing leakage-safe prior-season arsenal files for {season}: "
                 f"{batter_file}, {pitcher_file}"
             )
-        maps = cache.setdefault(prior, arsenal_maps(batter_file, pitcher_file))
+        side_file = arsenal_dir / f"pitcher_usage_side_{prior}.csv"
+        maps = cache.setdefault(
+            prior,
+            arsenal_maps(
+                batter_file,
+                pitcher_file,
+                side_file if side_file.exists() else None,
+            ),
+        )
         mask = out["season"] == season
-        pairs = out.loc[mask, ["batter", "pitcher"]]
+        pairs = out.loc[mask, ["batter", "pitcher", "stand"]]
         out.loc[mask, "arsenal_matchup_xwoba"] = [
-            matchup_score(int(b), int(p), maps)
-            for b, p in pairs.itertuples(index=False, name=None)
+            matchup_score(int(b), int(p), maps, str(stand))
+            for b, p, stand in pairs.itertuples(index=False, name=None)
         ]
     return out
 
@@ -256,14 +328,27 @@ def serialize_model(prep, model, selected: dict, trials: list[dict]) -> dict:
 
 
 def live_arsenal_payload(year: int, arsenal_dir: Path) -> dict:
+    side_file = arsenal_dir / f"pitcher_usage_side_{year}.csv"
     maps = arsenal_maps(
         arsenal_dir / f"batter_{year}.csv",
         arsenal_dir / f"pitcher_{year}.csv",
+        side_file if side_file.exists() else None,
     )
-    batter_x, pitcher_usage, types_by_pitcher, league_x, global_x, league_usage = maps
+    (
+        batter_x,
+        pitcher_usage,
+        types_by_pitcher,
+        pitcher_side_usage,
+        types_by_pitcher_side,
+        league_x,
+        global_x,
+        league_usage,
+        league_usage_by_side,
+    ) = maps
     batter_ids = sorted({pid for pid, _ in batter_x})
+    side_pitchers = sorted({pid for pid, _, _ in pitcher_side_usage})
     return {
-        "version": "i2-vnext-live-arsenal-v1",
+        "version": "i2-vnext-live-arsenal-v2",
         "season": year,
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "batter_xwoba_by_pitch": {
@@ -279,11 +364,27 @@ def live_arsenal_payload(year: int, arsenal_dir: Path) -> dict:
             }
             for pid in sorted(types_by_pitcher)
         },
+        "pitcher_usage_by_side": {
+            str(pid): {
+                side: {
+                    pt: pitcher_side_usage.get((pid, side, pt), 0.0)
+                    for pt in types_by_pitcher_side.get((pid, side), [])
+                }
+                for side in ("L", "R")
+                if (pid, side) in types_by_pitcher_side
+            }
+            for pid in side_pitchers
+        },
         "league_xwoba_by_pitch": league_x,
         "league_global_xwoba": global_x,
         "league_pitch_usage": league_usage,
+        "league_pitch_usage_by_side": league_usage_by_side,
+        "side_specific_usage_source": (
+            "I2 Statcast pitches by actual batter side"
+            if side_file.exists()
+            else "unavailable; overall pitcher arsenal fallback"
+        ),
     }
-
 
 def main() -> None:
     args = parse_args()
