@@ -13,6 +13,7 @@ on:
       - 'src/pipeline/run_i2_today_upstream_wrapper.mjs'
       - 'src/pipeline/run_i2_full_slate_override.mjs'
       - 'src/pipeline/run_i2_total_conditioned.mjs'
+      - 'src/pipeline/run_i2_empirical_snapshot.mjs'
       - 'src/pipeline/fetch_i2_run_environment.mjs'
       - 'src/model/i2_total_conditioning.js'
       - 'data/derived/i2/i2_total_conditioned_prior.json'
@@ -110,6 +111,16 @@ jobs:
           set -euo pipefail
           node src/pipeline/run_i2_total_conditioned.mjs
 
+      - name: Run empirical companion analysis after production freeze
+        env:
+          I2_DATE: ${{ steps.params.outputs.date }}
+          I2_EMPIRICAL_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_empirical_snapshot.json
+          I2_EMPIRICAL_CONCURRENCY: '10'
+        shell: bash
+        run: |
+          set -euo pipefail
+          node src/pipeline/run_i2_empirical_snapshot.mjs
+
       - name: Commit frozen prediction and run-environment artifacts safely
         shell: bash
         run: |
@@ -117,10 +128,13 @@ jobs:
           DATE="${{ steps.params.outputs.date }}"
           ART="data/runtime/i2/${DATE}_frozen_predictions.json"
           ENV_ART="data/runtime/i2/${DATE}_run_environment.json"
+          EMP_ART="data/runtime/i2/${DATE}_empirical_snapshot.json"
           TMP="/tmp/i2_frozen_predictions.json"
           ENV_TMP="/tmp/i2_run_environment.json"
+          EMP_TMP="/tmp/i2_empirical_snapshot.json"
           cp "$ART" "$TMP"
           cp "$ENV_ART" "$ENV_TMP"
+          cp "$EMP_ART" "$EMP_TMP"
           git config user.name "github-actions[bot]"
           git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
 
@@ -130,12 +144,13 @@ jobs:
             mkdir -p "$(dirname "$ART")"
             cp "$TMP" "$ART"
             cp "$ENV_TMP" "$ENV_ART"
-            git add "$ART" "$ENV_ART"
+            cp "$EMP_TMP" "$EMP_ART"
+            git add "$ART" "$ENV_ART" "$EMP_ART"
             if git diff --cached --quiet; then
-              echo 'No prediction or run-environment changes.'
+              echo 'No prediction, run-environment, or empirical changes.'
               exit 0
             fi
-            git commit -m "Update I2 projection and SportsGameOdds run environment ${DATE}"
+            git commit -m "Update I2 projection, empirical analysis and SportsGameOdds run environment ${DATE}"
             if git push origin HEAD:main; then
               exit 0
             fi
