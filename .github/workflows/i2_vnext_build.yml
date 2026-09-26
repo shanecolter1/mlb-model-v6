@@ -12,13 +12,14 @@ on:
       - 'src/research/build_i2_vnext_replay_inputs.py'
       - 'src/research/run_i2_vnext_replay.mjs'
       - 'src/research/calibrate_i2_vnext_full.py'
+      - 'src/build_savant_venue_profiles.py'
       - 'src/model/i2_vnext_event_model.js'
       - 'src/model/i2_inning_model.js'
       - 'src/event_probability_engine.js'
       - 'docs/I2_VNEXT_DIRECT_TALENT_SPEC.md'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: i2-vnext-direct-talent-build
@@ -42,7 +43,7 @@ jobs:
           key: i2-vnext-statcast-2023-2026-v3
 
       - name: Install bounded data dependencies
-        run: python -m pip install --upgrade pip pandas requests
+        run: python -m pip install --upgrade pip pandas requests lxml
 
       - name: Build inning-2-only Statcast dataset
         run: |
@@ -51,20 +52,31 @@ jobs:
             --end 2026-09-25 \
             --sleep 0.20
 
+      - name: Build leakage-safe prior-season park profile
+        run: |
+          mkdir -p data/derived/i2_vnext/park
+          python src/build_savant_venue_profiles.py \
+            --year 2024 \
+            --rolling 3 \
+            --output-dir data/derived/i2_vnext/park
+
       - name: Verify dataset governance
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          m=json.loads(Path('data/derived/i2_vnext/dataset_manifest.json').read_text())
+          p=Path('data/derived/i2_vnext/dataset_manifest.json')
+          m=json.loads(p.read_text())
           assert m['market_inputs_used'] is False
           assert m['start'].startswith('2023-')
           assert m['end']=='2026-09-25'
           assert m['rows'] > 0
+          park=Path('data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json')
+          assert park.exists() and park.stat().st_size > 0
           print({'rows':m['rows'],'games':m['games'],'batters':m['batters'],'pitchers':m['pitchers']})
           PY
 
-      - name: Persist phase 1 data
+      - name: Persist phase 1 baseball data
         uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-data-phase
@@ -74,6 +86,66 @@ jobs:
             data/derived/i2_vnext/dataset_manifest.json
             data/derived/i2_vnext/i2_pa_statcast.csv
             data/derived/i2_vnext/arsenal/
+            data/derived/i2_vnext/park/
+
+  build-replay-inputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download bounded public replay sources
+        run: |
+          set -euo pipefail
+          mkdir -p data/raw/i2_vnext/retrosheet data/raw/i2_vnext/chadwick
+          for year in 2024 2025; do
+            curl --fail --location --retry 3 \
+              "https://www.retrosheet.org/downloads/${year}/${year}csvs.zip" \
+              --output "data/raw/i2_vnext/retrosheet/${year}csvs.zip"
+          done
+          for suffix in 0 1 2 3 4 5 6 7 8 9 a b c d e f; do
+            curl --fail --location --retry 3 \
+              "https://raw.githubusercontent.com/chadwickbureau/register/master/data/people-${suffix}.csv" \
+              --output "data/raw/i2_vnext/chadwick/people-${suffix}.csv"
+          done
+
+      - name: Build pregame 2025 replay inputs
+        run: |
+          python src/research/build_i2_vnext_replay_inputs.py \
+            --season 2025 \
+            --retrosheet-zip data/raw/i2_vnext/retrosheet/2025csvs.zip \
+            --prior-retrosheet-zip data/raw/i2_vnext/retrosheet/2024csvs.zip \
+            --chadwick-dir data/raw/i2_vnext/chadwick \
+            --output data/derived/i2_vnext/replay_2025_inputs.json
+
+      - name: Verify replay input eligibility
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/i2_vnext/replay_2025_inputs.json')
+          m=json.loads(p.read_text())
+          assert m['market_inputs_used'] is False
+          assert m['season'] == 2025
+          assert m['games_eligible'] >= 2000, m['games_eligible']
+          assert m['i1_state_model']['source_season'] == 2024
+          assert m['i1_state_model']['player_specific_i1_talent_used'] is False
+          print({
+            'games_total':m['games_total'],
+            'games_eligible':m['games_eligible'],
+            'games_excluded':m['games_excluded'],
+            'exclusions':m['exclusions'],
+            'starter_i2_continuation_audit':m['historical_starter_i2_continuation_rate_audit_only']
+          })
+          PY
+
+      - name: Persist phase 2 replay inputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-replay-inputs
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/replay_2025_inputs.json
 
   fit-model:
     needs: build-data
@@ -86,59 +158,121 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install model dependencies
+      - name: Install bounded model dependencies
         run: python -m pip install --upgrade pip pandas numpy scikit-learn
 
-      - name: Restore phase 1 data
+      - name: Restore exact phase 1 artifacts
         uses: actions/download-artifact@v4
         with:
           name: i2-vnext-data-phase
           path: data/derived/i2_vnext
 
-      - name: Fit frozen evaluation model and fixed-spec live refit
+      - name: Fit frozen direct-I2 PA model
         run: |
           python src/research/fit_i2_vnext.py \
             --half-lives 180,365,730,1460 \
             --c-grid 0.05,0.2,1.0
 
-      - name: Verify holdout isolation and artifacts
+      - name: Verify holdout isolation and syntax
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          frozen=json.loads(Path('data/derived/i2_vnext/i2_vnext_event_model.json').read_text())
-          live=json.loads(Path('data/derived/i2_vnext/i2_vnext_event_model_live.json').read_text())
-          h=frozen['holdout_policy']
+          m=json.loads(Path('data/derived/i2_vnext/i2_vnext_event_model.json').read_text())
+          h=m['holdout_policy']
           assert h['fit_uses_2025'] is False
           assert h['fit_uses_2026'] is False
           assert h['full_i2_calibration_year'] == 2025
           assert h['prospective_validation_start'] == '2026-09-26'
-          assert frozen['artifact_role'] == 'FROZEN_HOLDOUT_EVALUATION'
-          assert live['artifact_role'] == 'LIVE_REFIT_FIXED_SPECIFICATION'
-          assert frozen['market_inputs_used'] is False
-          assert live['market_inputs_used'] is False
-          print({'frozen_training':frozen['training'],'live_training':live['training'],'selected':frozen['selected']})
+          assert m['market_inputs_used'] is False
+          assert m['artifact_role'] == 'FROZEN_HOLDOUT_EVALUATION'
+          assert m['arsenal_feature']['name'] == 'pitcher_arsenal_x_batter_pitch_response_x_platoon'
+          print({'training':m['training'],'selected':m['selected'],'holdout_policy':h})
           PY
           node --check src/model/i2_vnext_event_model.js
           node --check src/model/i2_inning_model.js
           node --check src/event_probability_engine.js
+          node --check src/research/run_i2_vnext_replay.mjs
 
-      - name: Persist phase 2 models
+      - name: Persist phase 3 frozen model
         uses: actions/upload-artifact@v4
         with:
-          name: i2-vnext-model-phase
+          name: i2-vnext-frozen-pa-model
           if-no-files-found: error
           retention-days: 14
           path: |
             data/derived/i2_vnext/i2_vnext_event_model.json
+            data/derived/i2_vnext/arsenal_profile_2024.json
             data/derived/i2_vnext/i2_vnext_event_model_live.json
             data/derived/i2_vnext/live_arsenal_profile.json
-            data/derived/i2_vnext/arsenal_profile_2024.json
 
-  replay-and-calibrate:
-    needs: [build-data, fit-model]
+  replay-2025:
+    needs: [build-data, build-replay-inputs, fit-model]
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore baseball data
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-data-phase
+          path: data/derived/i2_vnext
+
+      - name: Restore replay inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-replay-inputs
+          path: data/derived/i2_vnext
+
+      - name: Restore frozen PA model
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-frozen-pa-model
+          path: data/derived/i2_vnext
+
+      - name: Run leakage-safe full-I2 2025 replay
+        run: |
+          node src/research/run_i2_vnext_replay.mjs \
+            --trials 10000 \
+            --input data/derived/i2_vnext/replay_2025_inputs.json \
+            --model data/derived/i2_vnext/i2_vnext_event_model.json \
+            --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
+            --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json \
+            --play-calibration data/derived/i2/i2_play_calibration.json \
+            --output data/derived/i2_vnext/replay_2025_predictions.json
+
+      - name: Verify replay governance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['observed_i2_state_used_as_predictor'] is False
+          assert m['n'] >= 2000
+          assert m['holdout_policy']['fit_uses_2025'] is False
+          print({
+            'n':m['n'],
+            'raw_brier':m['raw_brier'],
+            'raw_logloss':m['raw_logloss'],
+            'park_match_rate':m['park_match_rate'],
+            'trials_per_game':m['trials_per_game']
+          })
+          PY
+
+      - name: Persist phase 4 replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-replay-2025
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/replay_2025_predictions.json
+
+  calibrate-full:
+    needs: replay-2025
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -146,118 +280,48 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install replay dependencies
-        run: python -m pip install --upgrade pip pandas numpy scikit-learn requests lxml
+      - name: Install calibration dependencies
+        run: python -m pip install --upgrade pip numpy scikit-learn
 
-      - name: Restore phase 1 data
+      - name: Restore 2025 full-model replay
         uses: actions/download-artifact@v4
         with:
-          name: i2-vnext-data-phase
+          name: i2-vnext-replay-2025
           path: data/derived/i2_vnext
 
-      - name: Restore phase 2 models
-        uses: actions/download-artifact@v4
-        with:
-          name: i2-vnext-model-phase
-          path: data/derived/i2_vnext
-
-      - name: Download bounded 2024/2025 replay sources
-        run: |
-          python - <<'PY'
-          import requests
-          from pathlib import Path
-          for year in (2024,2025):
-              url=f'https://www.retrosheet.org/downloads/plays/{year}plays.zip'
-              r=requests.get(url,timeout=120,headers={'User-Agent':'MLB-I2-vNext/1.0'})
-              r.raise_for_status()
-              Path(f'/tmp/{year}plays.zip').write_bytes(r.content)
-          PY
-          git clone --depth 1 https://github.com/chadwickbureau/register.git /tmp/chadwick-register
-
-      - name: Build leakage-safe 2025 pregame replay inputs
-        run: |
-          python src/research/build_i2_vnext_replay_inputs.py \
-            --season 2025 \
-            --retrosheet-zip /tmp/2025plays.zip \
-            --prior-retrosheet-zip /tmp/2024plays.zip \
-            --chadwick-dir /tmp/chadwick-register/data \
-            --output data/derived/i2_vnext/replay_2025_inputs.json
-
-      - name: Build prior-season Savant park profiles
-        run: |
-          mkdir -p data/derived/i2_vnext/park
-          python src/build_savant_venue_profiles.py \
-            --year 2024 \
-            --rolling 3 \
-            --output-dir data/derived/i2_vnext/park
-
-      - name: Run full-model 2025 replay
-        run: |
-          node src/research/run_i2_vnext_replay.mjs \
-            --input data/derived/i2_vnext/replay_2025_inputs.json \
-            --model data/derived/i2_vnext/i2_vnext_event_model.json \
-            --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
-            --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json \
-            --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json \
-            --output data/derived/i2_vnext/replay_2025_predictions.json \
-            --trials 2500
-
-      - name: Fit exactly one final full-I2 calibration layer
+      - name: Fit the single final full-I2 calibration curve
         run: |
           python src/research/calibrate_i2_vnext_full.py \
             --replay data/derived/i2_vnext/replay_2025_predictions.json \
             --output data/derived/i2_vnext/i2_vnext_full_calibration.json
 
-      - name: Verify final model governance
+      - name: Verify final calibration governance
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          replay=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
-          cal=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
-          assert replay['market_inputs_used'] is False
-          assert replay['observed_i2_state_used_as_predictor'] is False
-          assert cal['market_inputs_used'] is False
-          assert cal['final_curve']['type'] in ('none','sigmoid')
-          assert cal['governance']['component_level_probability_calibration'] is False
+          m=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['replay_games'] >= 2000
+          assert m['governance']['component_level_probability_calibration'] is False
+          assert m['governance']['market_conditioning'] is False
+          assert m['governance']['prospective_validation_required'] is True
+          assert m['calibration_selection']['fit_segment'].endswith('2025')
+          assert m['calibration_selection']['validation_segment'].endswith('2025')
+          assert m['final_curve']['type'] in ('none','sigmoid')
           print(json.dumps({
-            'replay_games':replay['n'],
-            'raw_brier':replay['raw_brier'],
-            'raw_logloss':replay['raw_logloss'],
-            'park_match_rate':replay['park_match_rate'],
-            'calibration_selection':cal['calibration_selection'],
-            'final_curve':cal['final_curve']
+            'raw_all_2025':m['raw_all_2025'],
+            'selection':m['calibration_selection'],
+            'final_curve':m['final_curve']
           }, indent=2))
           PY
-          node --check src/pipeline/run_i2_vnext_today.mjs
 
-      - name: Commit compact production-candidate artifacts
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add \
-            data/derived/i2_vnext/dataset_manifest.json \
-            data/derived/i2_vnext/i2_vnext_event_model.json \
-            data/derived/i2_vnext/i2_vnext_event_model_live.json \
-            data/derived/i2_vnext/live_arsenal_profile.json \
-            data/derived/i2_vnext/arsenal_profile_2024.json \
-            data/derived/i2_vnext/i2_vnext_full_calibration.json
-          if git diff --cached --quiet; then
-            echo "No compact artifact changes"
-          else
-            git commit -m "research: fit I2 vNext production-candidate artifacts"
-            git pull --rebase origin research/i2-vnext-direct-talent
-            git push origin HEAD:research/i2-vnext-direct-talent
-          fi
-
-      - name: Upload replay diagnostics
+      - name: Upload final shadow artifacts
         uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: i2-vnext-replay-diagnostics
-          if-no-files-found: warn
+          name: i2-vnext-shadow-final
+          if-no-files-found: error
           retention-days: 14
           path: |
-            data/derived/i2_vnext/replay_2025_inputs.json
-            data/derived/i2_vnext/replay_2025_predictions.json
             data/derived/i2_vnext/i2_vnext_full_calibration.json
+            data/derived/i2_vnext/replay_2025_predictions.json
