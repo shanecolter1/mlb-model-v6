@@ -168,6 +168,16 @@ def main() -> None:
             f"missing source gids={missing[:10]}"
         )
 
+    # The replay base artifact was built with league-average I1 talent disabled.
+    # Flip the governance flag only after every eligible game has received
+    # leakage-safe player-specific as-of rates. The replay runner fails closed
+    # on this flag in player_asof mode.
+    replay.setdefault("i1_state_model", {})["player_specific_i1_talent_used"] = True
+    replay["i1_state_model"]["selected_by"] = "2024 OOS I1 starting-slot A/B"
+    replay["i1_state_model"]["player_specific_source"] = (
+        "Retrosheet current-season PAs/BF strictly before each game"
+    )
+
     replay["i1_player_asof_model"] = {
         "status": "SELECTED_BY_2024_OOS_AB",
         "source": "Retrosheet regular-season PAs strictly before each game",
