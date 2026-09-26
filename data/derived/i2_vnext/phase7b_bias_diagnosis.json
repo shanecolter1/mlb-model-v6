@@ -1,0 +1,378 @@
+{
+  "version": "i2-vnext-bias-diagnosis-v1",
+  "market_inputs_used": false,
+  "promotion_status": "SHADOW_ONLY",
+  "games": 2430,
+  "full_season": {
+    "n": 2430,
+    "vnext": {
+      "n": 2430,
+      "realized_under_rate": 0.551440329218107,
+      "predicted_under_mean": 0.5714136625514403,
+      "brier": 0.24705671633744858,
+      "logloss": 0.6872618188154105
+    },
+    "production_formula_controlled": {
+      "n": 2430,
+      "realized_under_rate": 0.551440329218107,
+      "predicted_under_mean": 0.5739525925925926,
+      "brier": 0.24665380428806583,
+      "logloss": 0.6864267900630117
+    },
+    "vnext_minus_comparator": {
+      "brier": {
+        "estimate": 0.00040291204938271494,
+        "ci95": [
+          -0.0007508292530420027,
+          0.0016022565538228843
+        ]
+      },
+      "logloss": {
+        "estimate": 0.0008350287523987808,
+        "ci95": [
+          -0.0015181259500863932,
+          0.003286900242617511
+        ]
+      }
+    },
+    "interval_method": "5000 paired calendar-date cluster percentile draws; conditional on frozen predictions; descriptive after selection"
+  },
+  "later_validation": {
+    "n": 1241,
+    "vnext": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5741922643029814,
+      "brier": 0.24970507481063658,
+      "logloss": 0.692651717890755
+    },
+    "production_formula_controlled": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5737403706688156,
+      "brier": 0.24839025701853348,
+      "logloss": 0.6899380103939801
+    },
+    "vnext_minus_comparator": {
+      "brier": {
+        "estimate": 0.0013148177921031407,
+        "ci95": [
+          -0.0003519026909557164,
+          0.002959115528910843
+        ]
+      },
+      "logloss": {
+        "estimate": 0.0027137074967748076,
+        "ci95": [
+          -0.0006876431443194822,
+          0.006077903210160009
+        ]
+      }
+    },
+    "interval_method": "5000 paired calendar-date cluster percentile draws; conditional on frozen predictions; descriptive after selection"
+  },
+  "bias_subgroups": {
+    "park": {
+      "EXPLICIT_2025_SITE_NEUTRAL": {
+        "n": 166,
+        "realized_under_rate": 0.4578313253012048,
+        "predicted_under_mean": 0.5732987951807228,
+        "brier": 0.25949400325301203,
+        "logloss": 0.7124471610097651,
+        "under_overprediction": 0.115467469879518,
+        "excess_expected_unders": 19.1676
+      },
+      "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT": {
+        "n": 2264,
+        "realized_under_rate": 0.558303886925795,
+        "predicted_under_mean": 0.5712754416961131,
+        "brier": 0.24614479512367493,
+        "logloss": 0.6854151903682978,
+        "under_overprediction": 0.012971554770318083,
+        "excess_expected_unders": 29.367600000000003
+      }
+    },
+    "starter_continuation": {
+      "at_least_one_changed_before_i2": {
+        "n": 77,
+        "realized_under_rate": 0.5324675324675324,
+        "predicted_under_mean": 0.5684753246753247,
+        "brier": 0.2518974638961039,
+        "logloss": 0.6970215656150326,
+        "under_overprediction": 0.036007792207792266,
+        "excess_expected_unders": 2.7726
+      },
+      "both_started_i2": {
+        "n": 2353,
+        "realized_under_rate": 0.5520611984700382,
+        "predicted_under_mean": 0.5715098172545686,
+        "brier": 0.24689830683382916,
+        "logloss": 0.6869424390858859,
+        "under_overprediction": 0.019448618784530414,
+        "excess_expected_unders": 45.7626
+      }
+    },
+    "month": {
+      "202503": {
+        "n": 67,
+        "realized_under_rate": 0.43283582089552236,
+        "predicted_under_mean": 0.5727238805970148,
+        "brier": 0.2648610685074627,
+        "logloss": 0.7231423645434861,
+        "under_overprediction": 0.13988805970149248,
+        "excess_expected_unders": 9.372499999999999
+      },
+      "202504": {
+        "n": 391,
+        "realized_under_rate": 0.5396419437340153,
+        "predicted_under_mean": 0.5672020460358057,
+        "brier": 0.2482677801534527,
+        "logloss": 0.6897433251169622,
+        "under_overprediction": 0.0275601023017904,
+        "excess_expected_unders": 10.776
+      },
+      "202505": {
+        "n": 411,
+        "realized_under_rate": 0.6155717761557178,
+        "predicted_under_mean": 0.5664627737226277,
+        "brier": 0.23762889698296835,
+        "logloss": 0.6681307345307768,
+        "under_overprediction": -0.04910900243309013,
+        "excess_expected_unders": -20.183799999999998
+      },
+      "202506": {
+        "n": 397,
+        "realized_under_rate": 0.5541561712846348,
+        "predicted_under_mean": 0.5719931989924433,
+        "brier": 0.243375527581864,
+        "logloss": 0.6797514809789331,
+        "under_overprediction": 0.017837027707808484,
+        "excess_expected_unders": 7.081300000000001
+      },
+      "202507": {
+        "n": 369,
+        "realized_under_rate": 0.5501355013550135,
+        "predicted_under_mean": 0.5747626016260162,
+        "brier": 0.24865696953929542,
+        "logloss": 0.6904603920592594,
+        "under_overprediction": 0.024627100271002678,
+        "excess_expected_unders": 9.0874
+      },
+      "202508": {
+        "n": 421,
+        "realized_under_rate": 0.5486935866983373,
+        "predicted_under_mean": 0.5740197149643705,
+        "brier": 0.2498072711401425,
+        "logloss": 0.6929382015464098,
+        "under_overprediction": 0.0253261282660332,
+        "excess_expected_unders": 10.6623
+      },
+      "202509": {
+        "n": 374,
+        "realized_under_rate": 0.516042780748663,
+        "predicted_under_mean": 0.5741697860962566,
+        "brier": 0.2521940723262032,
+        "logloss": 0.6976901171513654,
+        "under_overprediction": 0.05812700534759352,
+        "excess_expected_unders": 21.7395
+      }
+    }
+  },
+  "half_inning_bias": {
+    "top": {
+      "n": 2430,
+      "realized_under_rate": 0.762962962962963,
+      "predicted_under_mean": 0.7560060082304526,
+      "brier": 0.18056104798353909,
+      "logloss": 0.5467066154889487,
+      "under_overprediction": -0.006956954732510345,
+      "excess_expected_unders": -16.9054,
+      "bias_ci95": [
+        -0.024870855341982148,
+        0.010417573379670867
+      ]
+    },
+    "bottom": {
+      "n": 2430,
+      "realized_under_rate": 0.7312757201646091,
+      "predicted_under_mean": 0.7555545679012347,
+      "brier": 0.19685512114403292,
+      "logloss": 0.583068610540167,
+      "under_overprediction": 0.024278847736625586,
+      "excess_expected_unders": 58.9976,
+      "bias_ci95": [
+        0.005714647326672606,
+        0.04294593780299029
+      ]
+    }
+  },
+  "transition_audit": {
+    "strikeout_and_ball_in_play_out_share_table": true,
+    "example_runner_on_first_no_outs": {
+      "outs": 0,
+      "base_mask": 1,
+      "probability_multiple_outs": 0.16911403338472647,
+      "probability_run_scores": 0.00011775918826324655
+    },
+    "all_states": [
+      {
+        "outs": 0,
+        "base_mask": 0,
+        "probability_multiple_outs": 1.4588952687558125e-06,
+        "probability_run_scores": 6.573010758294258e-07
+      },
+      {
+        "outs": 0,
+        "base_mask": 1,
+        "probability_multiple_outs": 0.16911403338472647,
+        "probability_run_scores": 0.00011775918826324655
+      },
+      {
+        "outs": 0,
+        "base_mask": 2,
+        "probability_multiple_outs": 0.006193053350811345,
+        "probability_run_scores": 0.0005407698072200568
+      },
+      {
+        "outs": 0,
+        "base_mask": 3,
+        "probability_multiple_outs": 0.1485004399562703,
+        "probability_run_scores": 0.005505275635250139
+      },
+      {
+        "outs": 0,
+        "base_mask": 4,
+        "probability_multiple_outs": 0.007628305202912105,
+        "probability_run_scores": 0.3004477533293146
+      },
+      {
+        "outs": 0,
+        "base_mask": 5,
+        "probability_multiple_outs": 0.12942798536017922,
+        "probability_run_scores": 0.45900088830018965
+      },
+      {
+        "outs": 0,
+        "base_mask": 6,
+        "probability_multiple_outs": 0.012583210444160295,
+        "probability_run_scores": 0.3351633936833186
+      },
+      {
+        "outs": 0,
+        "base_mask": 7,
+        "probability_multiple_outs": 0.13254751618866586,
+        "probability_run_scores": 0.40795777919209775
+      },
+      {
+        "outs": 1,
+        "base_mask": 0,
+        "probability_multiple_outs": 3.163629808278905e-06,
+        "probability_run_scores": 1.9940882809889757e-06
+      },
+      {
+        "outs": 1,
+        "base_mask": 1,
+        "probability_multiple_outs": 0.17214908026469994,
+        "probability_run_scores": 6.836459822822368e-05
+      },
+      {
+        "outs": 1,
+        "base_mask": 2,
+        "probability_multiple_outs": 0.008941220891904576,
+        "probability_run_scores": 0.0010628537408075855
+      },
+      {
+        "outs": 1,
+        "base_mask": 3,
+        "probability_multiple_outs": 0.16814397933792424,
+        "probability_run_scores": 0.006279482921875392
+      },
+      {
+        "outs": 1,
+        "base_mask": 4,
+        "probability_multiple_outs": 0.014624668858539434,
+        "probability_run_scores": 0.3199335031289543
+      },
+      {
+        "outs": 1,
+        "base_mask": 5,
+        "probability_multiple_outs": 0.18797600581643728,
+        "probability_run_scores": 0.36212073578252374
+      },
+      {
+        "outs": 1,
+        "base_mask": 6,
+        "probability_multiple_outs": 0.027720028963740997,
+        "probability_run_scores": 0.37524947175419054
+      },
+      {
+        "outs": 1,
+        "base_mask": 7,
+        "probability_multiple_outs": 0.16733114481481723,
+        "probability_run_scores": 0.33910272769174754
+      },
+      {
+        "outs": 2,
+        "base_mask": 0,
+        "probability_multiple_outs": 1.720989976041052e-08,
+        "probability_run_scores": 2.2149356826248727e-08
+      },
+      {
+        "outs": 2,
+        "base_mask": 1,
+        "probability_multiple_outs": 3.83210927170954e-08,
+        "probability_run_scores": 4.931972692341007e-08
+      },
+      {
+        "outs": 2,
+        "base_mask": 2,
+        "probability_multiple_outs": 7.19044986339891e-08,
+        "probability_run_scores": 0.00011596068404586034
+      },
+      {
+        "outs": 2,
+        "base_mask": 3,
+        "probability_multiple_outs": 8.506809807548225e-08,
+        "probability_run_scores": 0.00013718967562135678
+      },
+      {
+        "outs": 2,
+        "base_mask": 4,
+        "probability_multiple_outs": 1.8206594556568664e-07,
+        "probability_run_scores": 0.0007336947876361441
+      },
+      {
+        "outs": 2,
+        "base_mask": 5,
+        "probability_multiple_outs": 1.9644563958868088e-07,
+        "probability_run_scores": 0.00031680870011326296
+      },
+      {
+        "outs": 2,
+        "base_mask": 6,
+        "probability_multiple_outs": 2.5543188946723314e-07,
+        "probability_run_scores": 0.0024699727037076754
+      },
+      {
+        "outs": 2,
+        "base_mask": 7,
+        "probability_multiple_outs": 2.302251068301402e-07,
+        "probability_run_scores": 0.0011132623571351503
+      }
+    ],
+    "interpretation": "Pooled out transitions impose the same advancement and multiple-out probabilities on strikeouts and balls in play. Net effect has not been isolated by ablation."
+  },
+  "governance": {
+    "model_parameters_changed": false,
+    "outcomes_used_only_for_scoring_and_diagnostic_grouping": true,
+    "observed_starter_changes_not_used_for_predictions": true,
+    "exact_deployed_production_replay": false,
+    "comparison_scope": "Controlled production event formula; shared pregame as-of rates, prior-season baseline, I1 state and transitions. Not exact deployed production.",
+    "limitations": [
+      "Same data already used for calibration selection; no independent promotion claim.",
+      "Shared transitions and I1 engine mean this isolates the I2 event-formula difference, not every production component.",
+      "Subgroups and monthly results are descriptive, not causal attribution.",
+      "Exact production baseline and transition artifacts pool through 2025; cannot use unchanged for leakage-safe 2025 testing."
+    ]
+  }
+}
