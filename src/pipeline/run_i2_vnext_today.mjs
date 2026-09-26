@@ -136,6 +136,11 @@ function venueProfileFor(game) {
   return p || null;
 }
 
+function venueStatusFor(profile) {
+  if (!venueProfiles.length) return 'SAVANT_PROFILE_SET_MISSING';
+  return profile ? 'SAVANT_PROFILE_MATCHED' : 'SAVANT_PROFILE_UNMATCHED_NEUTRAL_FALLBACK';
+}
+
 function sanitizeEnvironment(profile) {
   if (!profile) return null;
   return {
@@ -442,6 +447,7 @@ async function runGame(game) {
   const awayPitchingPlan = awayStarter ? await buildI2PitchingPlan(feed,'away',awayStarter,inputAudit.away) : null;
   const homePitchingPlan = homeStarter ? await buildI2PitchingPlan(feed,'home',homeStarter,inputAudit.home) : null;
   const venueProfile = venueProfileFor(game);
+  const venueStatus = venueStatusFor(venueProfile);
   const environmentalContext = sanitizeEnvironment(venueProfile);
   const base = {
     gamePk,
@@ -460,6 +466,7 @@ async function runGame(game) {
     awayStarterStats:awayStarter?.seasonStats || null,
     homeStarterStats:homeStarter?.seasonStats || null,
     venueProfile:venueProfile?.venue_name || null,
+    venueStatus,
     status:game.status?.detailedState || null,
     dataAudit:{
       awayStarterBF:awayStarter?.seasonBF ?? null,
@@ -471,6 +478,8 @@ async function runGame(game) {
       awayStarterStatsError:awayStarter?.rawStatsError ?? null,
       homeStarterStatsError:homeStarter?.rawStatsError ?? null,
       venueProfileMatched:Boolean(venueProfile),
+      venueStatus,
+      venueFallbackApplied:!venueProfile,
       awayI2PitchingPlan:awayPitchingPlan?.status || null,
       homeI2PitchingPlan:homePitchingPlan?.status || null,
       awayI2PitchingPlanAudit:awayPitchingPlan?.audit || null,
@@ -526,6 +535,13 @@ async function runGame(game) {
     i2EventVectorProvider,
   });
   const rawUnder05 = result.under05;
+  if (!venueProfile) {
+    base.bettingEligibility = {
+      eligible:false,
+      status:'SHADOW_INPUT_INCOMPLETE',
+      reasons:['SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK'],
+    };
+  }
   const finalUnder05 = applyFinalCalibration(rawUnder05);
   const finalOver05 = 1 - finalUnder05;
   const finalFairUnder = fairAmericanOdds(finalUnder05);
@@ -533,7 +549,7 @@ async function runGame(game) {
   // A fresh simulation of the resolved identities satisfies a prior invalidation.
   inputAudit.previousProjectionInvalidations = inputAudit.gate.invalidations;
   inputAudit.gate = projectionGate(inputAudit);
-  base.bettingEligibility = inputAudit.gate;
+  if (venueProfile) base.bettingEligibility = inputAudit.gate;
   return {...base,modelStatus:'FROZEN_VNEXT_SHADOW_PROJECTION',trials:TRIALS,rawUnder05,rawOver05:1-rawUnder05,under05:finalUnder05,over05:finalOver05,under05Pct:pct(finalUnder05),over05Pct:pct(finalOver05),rawUnder05Pct:pct(rawUnder05),fairUnder:odds(finalFairUnder),fairOver:odds(finalFairOver),rawFullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),rawFullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),rawTop2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),rawTop2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),rawBottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),rawBottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),top2ScorePct:pct(result.top2.cumulative['1+']),bottom2ScorePct:pct(result.bottom2.cumulative['1+']),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
 }
 
@@ -561,7 +577,11 @@ async function main(){
       await applyResolvedInputs(freshFeed, checked);
       checked.gate = projectionGate({...checked,previous:projected.inputAudit});
       projected.inputAudit.freezeCheck = {checkedAt:new Date().toISOString(), gate:checked.gate};
-      projected.bettingEligibility = projected.modelStatus === 'FROZEN_VNEXT_SHADOW_PROJECTION' ? checked.gate : {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['MODEL_UNAVAILABLE']};
+      projected.bettingEligibility = projected.modelStatus === 'FROZEN_VNEXT_SHADOW_PROJECTION'
+        ? (projected.dataAudit?.venueProfileMatched
+            ? checked.gate
+            : {eligible:false,status:'SHADOW_INPUT_INCOMPLETE',reasons:['SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK']})
+        : {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['MODEL_UNAVAILABLE']};
       if (checked.gate.requiresCleanRerun) projected.modelStatus = 'PROJECTION_INVALIDATED';
       projected.inputAudit.confirmationAudit = {away:checked.away.lineup.audit,home:checked.home.lineup.audit};
     } catch { projected.bettingEligibility = {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['PREFREEZE_RECHECK_FAILED']}; }
@@ -592,6 +612,7 @@ async function main(){
     starterStatsFields:['wins','losses','record','era','whip','inningsPitched','strikeOuts','walks','homeRunsAllowed','battersFaced','gamesStarted'],
     knownResearchLimitations:[
       'Weather/roof is not yet applied.',
+      'Missing Savant venue profiles use an explicit neutral fallback and are fail-closed for betting eligibility.',
       'Normal starters default to the probable starter for I2; confirmed opener/bulk identities must be supplied by the input workflow.',
       'Full-I2 calibration is validated on the normal-starter path; nonstandard pitching plans are not silently assigned the same calibration evidence.',
       'MLB season-to-date rates remain in I1 only to generate the I2 starting-position distribution; they are not I2 talent inputs.'
