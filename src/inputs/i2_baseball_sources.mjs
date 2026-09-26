@@ -6,6 +6,25 @@ const MLB = 'https://statsapi.mlb.com';
 const fullName = p => [p?.FirstName,p?.LastName].filter(Boolean).join(' ');
 const TEAM_CODES = {108:['LAA'],109:['ARI','AZ'],110:['BAL'],111:['BOS'],112:['CHC'],113:['CIN'],114:['CLE'],115:['COL'],116:['DET'],117:['HOU'],118:['KC','KCR'],119:['LAD'],120:['WSH','WAS'],121:['NYM'],133:['ATH','OAK'],134:['PIT'],135:['SD','SDP'],136:['SEA'],137:['SF','SFG'],138:['STL'],139:['TB','TBR'],140:['TEX'],141:['TOR'],142:['MIN'],143:['PHI'],144:['ATL'],145:['CWS','CHW'],146:['MIA'],147:['NYY'],158:['MIL']};
 const stamp = () => new Date().toISOString();
+const GENERATIONAL_SUFFIXES = new Set(['jr','sr','ii','iii','iv']);
+export function canonicalMlbIdentityName(value) {
+  const tokens=String(value || '').normalize('NFD').replace(/\p{Diacritic}/gu,'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim().split(/\s+/).filter(Boolean);
+  if (GENERATIONAL_SUFFIXES.has(tokens.at(-1))) tokens.pop();
+  return tokens.join('');
+}
+function peopleById(rows) {
+  return new Map((rows || []).filter(p=>p?.fullName && Number.isFinite(Number(p?.id))).map(p=>[String(p.id),p]));
+}
+export function resolveMlbIdentity(name, people = []) {
+  const exact=peopleById(people.filter(p=>norm(p.fullName)===norm(name)));
+  if (exact.size===1) return {person:[...exact.values()][0],method:'EXACT'};
+  if (exact.size>1) throw new Error(`AMBIGUOUS_MLB_ID:${name}`);
+  const target=canonicalMlbIdentityName(name);
+  const canonical=peopleById(target ? people.filter(p=>canonicalMlbIdentityName(p.fullName)===target) : []);
+  if (canonical.size===1) return {person:[...canonical.values()][0],method:'CANONICAL_GENERATIONAL_SUFFIX'};
+  if (canonical.size>1) throw new Error(`AMBIGUOUS_MLB_ID:${name}`);
+  throw new Error(`UNRESOLVED_MLB_ID:${name}`);
+}
 export async function safeSource(source, fn) {
   try { return { source, status: 'AVAILABLE', retrievedAt: stamp(), value: await fn() }; }
   catch (e) { return { source, status: `${source}_UNAVAILABLE`, retrievedAt: stamp(), reason: e?.message?.startsWith('HTTP_') ? e.message : 'MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA', value: null }; }
@@ -131,21 +150,23 @@ export async function resolveGameInputs(game, feed, sources, previous = null) {
   assertBaseballOnly(result);
   return result;
 }
-// Resolve exact MLB identities only. Provider IDs are NEVER treated as MLB IDs.
+// Resolve team-scoped MLB identities only. Provider IDs are NEVER treated as MLB IDs.
 export async function applyResolvedInputs(feed, audit) {
   const output=structuredClone(feed);
   for (const side of ['away','home']) {
     const box=output.liveData?.boxscore?.teams?.[side];
     if (!box) throw new Error('MISSING_TEAM_BOX');
     const rosterId=output.gameData?.teams?.[side]?.id;
-    const local=Object.values(output.gameData?.players || {});
+    const gamePeople=Object.values(output.gameData?.players || {});
+    const boxPeople=Object.values(box.players || {}).map(p=>gamePeople.find(g=>String(g?.id)===String(p?.person?.id)) || p?.person).filter(Boolean);
+    const teamLocal=gamePeople.filter(p=>String(p?.currentTeam?.id || '')===String(rosterId || ''));
+    const probable=output.gameData?.probablePitchers?.[side];
+    const probablePerson=probable?.id ? gamePeople.find(p=>String(p?.id)===String(probable.id)) || probable : null;
     const roster=rosterId ? await safeSource('MLB_ROSTER',()=>request(`${MLB}/api/v1/teams/${rosterId}/roster?rosterType=40Man&hydrate=person`)) : {value:null};
-    const people=[...local,...(roster.value?.roster || []).map(r=>r.person)];
-    const resolve=name=>{
-      const found=new Map(people.filter(p=>norm(p.fullName)===norm(name)).map(p=>[p.id,p]));
-      if (found.size!==1) throw new Error(`UNRESOLVED_MLB_ID:${name}`);
-      return [...found.values()][0];
-    };
+    // Candidate identities are team-scoped. Exact MLB names win; only a unique
+    // generational-suffix canonical match is allowed as the fallback. No fuzzy matching.
+    const people=[...boxPeople,...teamLocal,...(probablePerson?[probablePerson]:[]),...(roster.value?.roster || []).map(r=>r.person)];
+    const resolve=name=>resolveMlbIdentity(name,people).person;
     for (const p of Object.values(box.players || {})) p.battingOrder='';
     for (const [index,name] of audit[side].lineup.players.entries()) {
       const p=resolve(name), key=`ID${p.id}`;
