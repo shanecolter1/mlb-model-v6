@@ -1,0 +1,11 @@
+{
+  "phase": "phase4a-walkforward-2025",
+  "status": "FAILED_GOVERNANCE_FILE_COLLISION",
+  "source_commit": "c85c9eaed7698806eff156e79becda9e6b44a0ee",
+  "workflow_run_id": 36273567216,
+  "job_id": 108492754409,
+  "fitted_models_completed": true,
+  "artifact_persisted": false,
+  "failure": "The frozen end-2024 model and the 2025-05-01 monthly refit both used model_before_2025-05-01.json. The monthly refit overwrote the frozen model, causing point-in-time verification to fail for the 2025-01-01 effective entry.",
+  "action": "Use a distinct model_before_2025-01-01.json for the frozen model and enforce unique model_file names."
+}
