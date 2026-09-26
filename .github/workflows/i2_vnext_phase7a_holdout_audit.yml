@@ -6,6 +6,7 @@ on:
       - research/i2-vnext-direct-talent
     paths:
       - '.github/workflows/i2_vnext_phase7a_holdout_audit.yml'
+      - 'src/research/audit_i2_vnext_holdout.py'
 
 permissions:
   contents: write
@@ -63,6 +64,16 @@ jobs:
           assert a['prior_season_baseline']['games'] >= 2400
           assert a['later_2025_validation']['selected_calibration_validation']['chosen'] == 'identity'
           assert a['governance']['2025_realized_prevalence_not_used_as_baseline_probability'] is True
+          assert a['promotion_assessment']['status'] == 'SHADOW_ONLY'
+          assert a['promotion_assessment']['independent_post_selection_test'] is False
+          assert sum(x['n'] for x in a['monthly_diagnostics']) == 2430
+          for period in ['all_2025', 'later_2025_validation']:
+              u=a['uncertainty'][period]
+              assert u['draws'] == 5000
+              assert u['dates'] > 30
+              for metric in ['brier_delta', 'logloss_delta', 'under_overprediction']:
+                  assert all(math.isfinite(x) for x in u[metric]['ci95'])
+                  assert u[metric]['ci95'][0] <= u[metric]['ci95'][1]
           for x in [
               a['all_2025']['vnext_raw']['brier'],
               a['all_2025']['vnext_raw']['logloss'],

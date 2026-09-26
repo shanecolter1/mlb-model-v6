@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Final leakage-safe holdout audit for I2 vNext.
 
-Compares the untouched 2025 point-in-time replay against a genuinely available
+Compares the 2025 point-in-time replay (also used for calibration selection) against a genuinely available
 pregame baseline: the prior-season (2024) regular-season full-I2 Under 0.5 rate.
 
 The script also reports discrimination and the later-2025 calibration-selection
@@ -121,6 +121,67 @@ def deciles(rows):
     return out
 
 
+def paired_uncertainty(rows, baseline, draws=5000, seed=20260926):
+    """Paired calendar-date cluster bootstrap; fixed predictions, no refitting.
+
+    Resamples whole dates so games sharing a date stay together. Intervals are
+    conditional on the frozen model and baseline; they do not include training
+    uncertainty, multi-day dependence or calibration-selection uncertainty.
+    """
+    groups=defaultdict(list)
+    for row in rows:
+        y=float(row["observed_under05"])
+        p=clip(row["raw_under05"])
+        b=clip(baseline)
+        groups[str(row["date"])].append([
+            (p-y)**2-(b-y)**2,
+            -(y*math.log(p)+(1-y)*math.log(1-p))
+            +(y*math.log(b)+(1-y)*math.log(1-b)),
+            p-y,
+        ])
+    if len(groups)<2:
+        raise ValueError("Bootstrap requires at least two calendar dates")
+    sums=np.asarray([np.sum(v,axis=0) for _,v in sorted(groups.items())])
+    counts=np.asarray([len(v) for _,v in sorted(groups.items())])
+    rng=np.random.default_rng(seed)
+    samples=np.empty((draws,3))
+    for i in range(draws):
+        idx=rng.integers(0,len(counts),size=len(counts))
+        samples[i]=sums[idx].sum(axis=0)/counts[idx].sum()
+    point=sums.sum(axis=0)/counts.sum()
+    result={
+        "method":"paired_calendar_date_cluster_percentile_bootstrap",
+        "draws":draws,"seed":seed,"dates":len(groups),"games":len(rows),
+        "confidence_level":0.95,
+        "conditional_on_frozen_predictions_and_baseline":True,
+        "includes_training_or_selection_uncertainty":False,
+        "accounts_for_multiday_dependence":False,
+    }
+    for j,name in enumerate(["brier_delta","logloss_delta","under_overprediction"]):
+        lo,hi=np.quantile(samples[:,j],[0.025,0.975])
+        result[name]={"estimate":float(point[j]),"ci95":[float(lo),float(hi)]}
+    result["interpretation"]="Negative loss deltas favor vNext; positive bias overpredicts Under. Descriptive after calibration selection, not an independent promotion test."
+    return result
+
+
+def monthly_diagnostics(rows, baseline):
+    groups=defaultdict(list)
+    for r in rows:
+        groups[str(r["date"]).replace("-","")[:6]].append(r)
+    result=[]
+    for month,values in sorted(groups.items()):
+        y=[int(r["observed_under05"]) for r in values]
+        p=[float(r["raw_under05"]) for r in values]
+        model=metrics(y,p)
+        prior=metrics(y,[baseline]*len(y))
+        result.append({"month":month,"n":len(y),"vnext":model,
+                       "prior_season_constant":prior,
+                       "brier_delta":model["brier"]-prior["brier"],
+                       "logloss_delta":model["logloss"]-prior["logloss"],
+                       "under_overprediction":model["predicted_under_mean"]-model["realized_under_rate"]})
+    return result
+
+
 def main():
     args=parse_args()
     replay=json.loads(args.replay.read_text())
@@ -157,7 +218,7 @@ def main():
     decile_corr=float(np.corrcoef(decile_index,decile_real)[0,1]) if np.std(decile_real)>0 else None
 
     payload={
-        "version":"i2-vnext-final-holdout-audit-v1",
+        "version":"i2-vnext-final-holdout-audit-v2",
         "market_inputs_used":False,
         "replay_version":replay.get("version"),
         "replay_games":len(rows),
@@ -183,6 +244,18 @@ def main():
                 "identity":sel["identity_validation"],
                 "sigmoid":sel["sigmoid_validation"],
             },
+        },
+        "uncertainty":{
+            "all_2025":paired_uncertainty(rows,prior["under_rate"]),
+            "later_2025_validation":paired_uncertainty(val,prior["under_rate"]),
+        },
+        "monthly_diagnostics":monthly_diagnostics(rows,prior["under_rate"]),
+        "promotion_assessment":{
+            "status":"SHADOW_ONLY",
+            "later_validation_beats_prior_on_both":raw_val["brier"]<prior_val["brier"] and raw_val["logloss"]<prior_val["logloss"],
+            "independent_post_selection_test":False,
+            "current_production_comparison":"NOT_PERFORMED",
+            "reason":"Calibration-selection data are reused here; prospective validation and current-model benchmark remain required.",
         },
         "discrimination":{
             "auc":auc_rank(y,p),
