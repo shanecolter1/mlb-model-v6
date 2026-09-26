@@ -37,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser()
     p.add_argument("--season", type=int, default=2025)
     p.add_argument("--retrosheet-zip", type=Path, required=True)
+    p.add_argument("--prior-retrosheet-zip", type=Path, required=True)
     p.add_argument("--chadwick-dir", type=Path, required=True)
     p.add_argument(
         "--output",
@@ -72,6 +73,50 @@ def load_chadwick(directory: Path) -> dict[str, int]:
     for retro in conflicts:
         mapping.pop(retro, None)
     return mapping
+
+
+
+def event_class(row: dict) -> str | None:
+    if as_int(row.get("pa")) != 1:
+        return None
+    if as_int(row.get("single")):
+        return "single"
+    if as_int(row.get("double")):
+        return "double"
+    if as_int(row.get("triple")):
+        return "triple"
+    if as_int(row.get("hr")):
+        return "home_run"
+    if as_int(row.get("hbp")):
+        return "hit_by_pitch"
+    if as_int(row.get("walk")):
+        return "walk"
+    if as_int(row.get("k")):
+        return "strikeout"
+    return "ball_in_play_out"
+
+
+def league_event_rates(zip_path: Path, season: int) -> dict[str, float]:
+    counts = Counter()
+    with zipfile.ZipFile(zip_path) as zf:
+        member = f"{season}plays.csv"
+        if member not in zf.namelist():
+            raise RuntimeError(f"{zip_path} does not contain {member}")
+        with zf.open(member) as raw:
+            for row in csv.DictReader(io.TextIOWrapper(raw, encoding="utf-8-sig", newline="")):
+                if row.get("gametype") != "regular":
+                    continue
+                event = event_class(row)
+                if event:
+                    counts[event] += 1
+    total = sum(counts.values())
+    if total <= 0:
+        raise RuntimeError(f"No regular-season PA events found in {zip_path}")
+    keys = [
+        "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
+        "strikeout", "ball_in_play_out",
+    ]
+    return {k: counts[k] / total for k in keys}
 
 
 def load_plays(zip_path: Path, season: int):
@@ -196,6 +241,8 @@ def build_game(
 def main() -> None:
     args = parse_args()
     id_map = load_chadwick(args.chadwick_dir)
+    prior_year = args.season - 1
+    i1_rates = league_event_rates(args.prior_retrosheet_zip, prior_year)
     games, bat_hands, pitch_hands = load_plays(args.retrosheet_zip, args.season)
 
     output = []
@@ -223,6 +270,12 @@ def main() -> None:
         "prediction_inputs": "pregame starting lineups + starting pitchers + handedness + site",
         "target_only_fields": "observed full-I2 runs/under result",
         "identity_crosswalk": "Chadwick public register key_retro -> key_mlbam",
+        "i1_state_model": {
+            "method": "existing batting-order simulator with prior-season league-average PA event vector",
+            "source_season": prior_year,
+            "event_rates": i1_rates,
+            "player_specific_i1_talent_used": False,
+        },
         "games_total": len(games),
         "games_eligible": len(output),
         "games_excluded": int(sum(exclusions.values())),
