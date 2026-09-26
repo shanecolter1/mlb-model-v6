@@ -3,9 +3,13 @@
   "market_inputs_used": false,
   "season": 2025,
   "n": 2430,
-  "raw_brier": 0.24743437807407406,
-  "raw_logloss": 0.6880343847320948,
-  "park_match_rate": 0.0,
+  "raw_brier": 0.2473611880164609,
+  "raw_logloss": 0.6878910550617064,
+  "park_match_rate": 0.9316872427983539,
+  "park_status_counts": {
+    "EXPLICIT_2025_SITE_NEUTRAL": 166,
+    "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT": 2264
+  },
   "trials_per_game": 2500,
   "i1_state_mode": "player_asof",
   "point_in_time_player_refits": true,
