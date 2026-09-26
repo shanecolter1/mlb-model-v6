@@ -1,0 +1,48 @@
+{
+  "version": "i2-i1-state-ab-exact-result-v1",
+  "games": 2430,
+  "market_inputs_used": false,
+  "method": "exact finite-state propagation through empirical PA transitions; no Monte Carlo",
+  "downstream_i2_model": "i2-vnext-direct-talent-v1",
+  "league": {
+    "n": 2430,
+    "realized_under_rate": 0.551440329218107,
+    "predicted_under_mean": 0.5672007620949665,
+    "calibration_bias_pred_minus_actual": 0.015760432876859465,
+    "brier": 0.24629462760247392,
+    "logloss": 0.68569096810803,
+    "ece_decile": 0.02258548628574635
+  },
+  "player_asof": {
+    "n": 2430,
+    "realized_under_rate": 0.551440329218107,
+    "predicted_under_mean": 0.567275968261012,
+    "calibration_bias_pred_minus_actual": 0.01583563904290497,
+    "brier": 0.24629380772340292,
+    "logloss": 0.6856893007976224,
+    "ece_decile": 0.021468262553416058
+  },
+  "delta_player_minus_league": {
+    "brier": -8.198790709946377e-07,
+    "logloss": -1.6673104077183742e-06,
+    "predicted_under_mean": 7.520616604550501e-05,
+    "ece_decile": -0.0011172237323302907
+  },
+  "paired_bootstrap": {
+    "reps": 10000,
+    "seed": 730,
+    "delta_brier_ci95": [
+      -1.1063733757995079e-05,
+      9.476903474663991e-06
+    ],
+    "delta_logloss_ci95": [
+      -2.262346975052192e-05,
+      1.933274251961638e-05
+    ],
+    "p_delta_brier_lt_0": 0.5649,
+    "p_delta_logloss_lt_0": 0.5647
+  },
+  "mean_start_slot_total_variation": 0.017982844158679484,
+  "verdict": "PLAYER_ASOF_DIRECTIONAL_ONLY",
+  "promotion_rule": "Promote player-specific I1 only if both Brier and log loss improve; statistically clear PASS requires both paired 95% CIs below zero."
+}
