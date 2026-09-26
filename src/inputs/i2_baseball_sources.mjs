@@ -63,20 +63,14 @@ export function parseNews(xml, now = Date.now()) {
   });
 }
 export async function collectSources(date, env = process.env) {
-  const rw = async endpoint => {
-    if (!env.ROTOWIRE_API_KEY) throw new Error('MISSING_KEY');
-    const u = new URL(`https://api.rotowire.com/Baseball/MLB/${endpoint}.php`);
-    u.searchParams.set('key',env.ROTOWIRE_API_KEY);u.searchParams.set('date',date);u.searchParams.set('format','json');
-    return normalizeRotowire(await request(u),date,stamp());
-  };
   const publicPage=safeSource('ROTOWIRE_PUBLIC',()=>fetchRotowirePublic(date));
-  const rotowire=async(endpoint,kind)=>{
+  const rotowirePublic=async(kind)=>{
     const page=await publicPage;
-    if(page.value?.some(g=>g.teams.some(t=>t[kind]))) return page.value;
-    return rw(endpoint);
+    if(page.value?.some(g=>g.teams.some(t=>t[kind] || (kind === 'starter' && t.primaryPitcher)))) return page.value;
+    throw new Error('ROTOWIRE_PUBLIC_DATA_UNAVAILABLE');
   };
   const [lineups,starters,rr,reports,news] = await Promise.all([
-    safeSource('ROTOWIRE',()=>rotowire('ProjectedLineups','lineup')),safeSource('ROTOWIRE_STARTERS',()=>rotowire('ProjectedStarters','starter')),
+    safeSource('ROTOWIRE',()=>rotowirePublic('lineup')),safeSource('ROTOWIRE_STARTERS',()=>rotowirePublic('starter')),
     // FanGraphs has no verified public JSON contract. Reviewed same-day export is explicit,
     // never reinterpret a depth chart as a game-confirmed lineup.
     safeSource('ROSTERRESOURCE',()=>readSnapshot(env.I2_ROSTERRESOURCE_SNAPSHOT,date)),
