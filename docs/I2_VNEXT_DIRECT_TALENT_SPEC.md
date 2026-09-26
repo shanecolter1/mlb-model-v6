@@ -12,19 +12,20 @@ The lean PA model is one jointly regularized multinomial model with:
 - batter MLBAM identity (direct I2 effect)
 - pitcher MLBAM identity (direct I2 effect allowed)
 - batter/pitcher handedness interaction
-- one pitcher-arsenal × batter pitch-type response feature
+- one pitcher-arsenal × batter pitch-type response interaction, specific to the batter side when I2 pitch-mix support exists
+- home-team/park identity as a fit-only nuisance control so player effects do not absorb park signal
 
 No fixed batter/pitcher blend is permitted.
 
 ## Arsenal feature
 For historical PA fitting, season Y uses season Y-1 Baseball Savant pitch-arsenal profiles to prevent future leakage. For a live prediction, use the current YTD Savant arsenal snapshot available at the prediction cutoff and archive that snapshot.
 
-The matchup scalar is the pitcher's pitch-usage distribution weighted by the batter's Savant expected wOBA against those pitch types. Missing pitch-type cells fall back inside the feature calculation to the league pitch-type expectation; this is not a separate probability adjustment.
+The matchup scalar is the pitcher's **I2 pitch-usage distribution versus the actual batter side** weighted by the batter's Savant expected wOBA against those pitch types. If pitcher-side I2 usage is unavailable, fall back to the pitcher's overall Savant arsenal, then league-side/league overall usage. Missing batter pitch-type cells fall back inside the feature calculation to the league pitch-type expectation. This is one matchup interaction, not another talent or probability-adjustment layer.
 
 ## Recency and regularization
 Do not guess recent/current/prior-season weights.
-- Fit exponential recency half-life from chronological validation.
-- Fit the model's L2 regularization strength from chronological validation.
+- Fit exponential recency half-life from a bounded chronological fold that trains through June 30, 2024 and tests the remainder of 2024, so both prior-season and current-season evidence are present when recency is selected.
+- Fit the model's L2 regularization strength on that same chronological fold.
 - Player effects are regularized jointly inside the single PA model.
 
 Do not apply independent hitter shrinkage, pitcher shrinkage, empirical blending, confidence multipliers, or market conditioning after this fit.
@@ -34,8 +35,9 @@ PA probabilities are not post-calibrated separately. After the complete pregame 
 
 Candidate final calibrators are restricted to:
 1. no calibration;
-2. a single sigmoid/logit calibration;
-3. isotonic only if calibration sample size is sufficiently large and it improves untouched chronological validation.
+2. a single two-parameter sigmoid/logit calibration.
+
+The sigmoid is selected only if it improves both Brier score and log loss on the later chronological 2025 validation segment; otherwise the identity curve is retained.
 
 ## Existing components to reuse
 Reuse rather than rebuild:
@@ -49,7 +51,7 @@ Reuse rather than rebuild:
 - input and model audit conventions.
 
 ## Park/environment rule
-Apply the Savant event park effect exactly once. When handedness-specific absolute park factors exist, use the handedness-specific factor rather than multiplying it by the all-batters absolute factor. Missing venue coverage must be explicit in the audit.
+Home-team/park identity is included in fitting only as a nuisance control and is intentionally omitted from neutral live talent inference. Then apply the Savant event park effect exactly once. When handedness-specific absolute park factors exist, use the handedness-specific factor rather than multiplying it by the all-batters absolute factor. Missing venue coverage must be explicit in the audit.
 
 ## Opener/bulk handling
 - Normal starter: no special opener treatment.
@@ -72,7 +74,7 @@ Do not add these unless they later prove incremental out-of-sample value:
 - full-game market total or any other sportsbook input.
 
 ## Historical data
-Primary direct-talent dataset: Baseball Savant Statcast **inning 2 only**, regular season, terminal PA outcomes, MLBAM IDs, handedness, and pitch type. Use monthly chunks to keep retrieval bounded.
+Primary direct-talent dataset: Baseball Savant Statcast **inning 2 only**, regular season, terminal PA outcomes, MLBAM IDs, handedness, pitch type, and home-team park identity. Raw I2 pitches are also aggregated by pitcher × actual batter side × pitch type to build side-specific I2 arsenal usage. Use monthly chunks to keep retrieval bounded.
 
 PA event taxonomy remains compatible with the existing event simulator:
 - single
