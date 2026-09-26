@@ -13,6 +13,7 @@ Important:
 from __future__ import annotations
 
 import argparse
+import io
 import json
 import math
 from datetime import datetime, timezone
@@ -20,6 +21,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+import requests
 
 BASE_URL = "https://baseballsavant.mlb.com/leaderboard/statcast-park-factors"
 
@@ -56,8 +58,23 @@ def leaderboard_url(year: int, rolling: int, bat_side: str = "") -> str:
     )
 
 def read_leaderboard(url: str) -> pd.DataFrame:
-    tables = pd.read_html(url)
-    candidates = [t for t in tables if {"Venue", "R", "HR", "PA"}.issubset(set(map(str, t.columns)))]
+    response = requests.get(
+        url,
+        timeout=60,
+        headers={
+            "User-Agent": (
+                "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/154.0 Safari/537.36"
+            ),
+            "Accept": "text/html,application/xhtml+xml",
+        },
+    )
+    response.raise_for_status()
+    tables = pd.read_html(io.StringIO(response.text))
+    candidates = [
+        t for t in tables
+        if {"Venue", "R", "HR", "PA"}.issubset(set(map(str, t.columns)))
+    ]
     if not candidates:
         raise RuntimeError(f"Could not locate park-factor table at {url}")
     return candidates[0].copy()
