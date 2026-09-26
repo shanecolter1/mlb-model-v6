@@ -1,0 +1,37 @@
+{
+  "phase": "phase3-direct-i2-model-fit",
+  "status": "COMPLETE",
+  "model_branch": "research/i2-vnext-direct-talent",
+  "source_commit": "9f5284c19228c32019d46197a5710185abe85c90",
+  "workflow_run_id": 36273188235,
+  "artifact": {
+    "id": 10916455429,
+    "name": "i2-vnext-frozen-pa-model",
+    "sha256": "d9f2fd5b60dfe5c5fabf208551e2bb6222e7c9a3807dd9e81976622f81dd118a",
+    "expires_at": "2026-10-10T21:33:50Z"
+  },
+  "selected": {
+    "half_life_days": 730,
+    "C": 0.05,
+    "selection_metric": "chronological weighted multiclass log loss",
+    "selection_period": "train through 2024-06-30; test 2024-07-01 through season end"
+  },
+  "frozen_training": {
+    "start": "2023-03-30",
+    "end": "2024-09-30",
+    "plate_appearances": 40812,
+    "batters": 763,
+    "pitchers": 546,
+    "seasons": [
+      2023,
+      2024
+    ]
+  },
+  "holdout_policy": {
+    "full_i2_calibration_year": 2025,
+    "prospective_validation_start": "2026-09-26",
+    "fit_uses_2025": false,
+    "fit_uses_2026": false
+  },
+  "market_inputs_used": false
+}
