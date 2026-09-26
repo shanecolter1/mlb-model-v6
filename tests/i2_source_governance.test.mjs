@@ -24,10 +24,15 @@ test('team / beat / confirmed RotoWire accepted externally; MLB final confirmati
  for(const provider of ['TEAM','BEAT','ROTOWIRE']) assert.equal(selectLineup([lineup('ROTOWIRE'),lineup(provider,{confirmed:true})]).status,'CONFIRMED_EXTERNAL');
  assert.equal(selectLineup([lineup('ROTOWIRE'),lineup('TEAM',{confirmed:true}),lineup('MLB',{confirmed:true})]).status,'CONFIRMED_MLB');
 });
-test('RosterResource validates without overriding RotoWire and supplies second fallback',()=>{
+test('RosterResource is audit-only and never becomes the production provisional lineup',()=>{
  const rr=lineup('ROSTERRESOURCE',{players:[...players].reverse()});
- assert.deepEqual(selectLineup([rr,lineup('ROTOWIRE')]).players,players);
- assert.equal(selectLineup([rr,lineup('PREVIOUS_GAME')]).status,'PROVISIONAL_ROSTERRESOURCE');
+ const rw=selectLineup([rr,lineup('ROTOWIRE')]);
+ assert.deepEqual(rw.players,players);
+ assert.ok(rw.audit.rotowireVsRosterResource);
+ const fallback=selectLineup([rr,lineup('PREVIOUS_GAME')]);
+ assert.equal(fallback.status,'FALLBACK_PREVIOUS_GAME');
+ assert.deepEqual(fallback.players,players);
+ assert.equal(selectLineup([rr]).status,'MISSING');
 });
 test('credible starter conflict blocks recommendations, even if preferred source is confirmed',()=>{
  const away=side(),home=side();away.starter=selectStarter([pitcher('TEAM','A',{confirmed:true}),pitcher('MLB','B')]);
