@@ -140,7 +140,11 @@ const coverage = {
 };
 
 const exhaustiveCatalogByOddID = new Map((exhaustiveCatalog.markets || []).map(x => [x?.oddID, x]));
-const exhaustiveTodayRawEvents = filterEventsByLocalDate(exhaustiveRaw.events || [], date, timeZone);
+const exhaustiveRawEventsWithStartTime = (exhaustiveRaw.events || []).map(event => ({
+  ...event,
+  startTime: event?.startTime || event?.status?.startsAt || event?.commenceTime || null,
+}));
+const exhaustiveTodayRawEvents = filterEventsByLocalDate(exhaustiveRawEventsWithStartTime, date, timeZone);
 const exhaustivePriceRows = [];
 for (const event of exhaustiveTodayRawEvents) {
   const matchup = `${event?.teams?.away?.names?.long || event?.teams?.away?.name || 'Away'} @ ${event?.teams?.home?.names?.long || event?.teams?.home?.name || 'Home'}`;
@@ -215,7 +219,10 @@ const output = {
   },
   requested: { bookmakerIDs, guaranteedOddIDs, ninthInningCandidates, activeOddIDs, includeOpenCloseOdds, includeAltLines },
   exhaustiveDiscovery: {
+    allMlbMarketCount: exhaustiveCatalog.allMarketCount ?? exhaustiveCatalog.markets.length,
     catalogMarketCount: exhaustiveCatalog.markets.length,
+    supportedMarketCount: exhaustiveCatalog.supportedMarketCount ?? null,
+    unsupportedMarketCount: exhaustiveCatalog.unsupportedMarketCount ?? null,
     oddIDCount: exhaustiveOddIDs.length,
     rawEventCount: exhaustiveRaw.events.length,
     todayRawEventCount: exhaustiveTodayRawEvents.length,
@@ -251,7 +258,10 @@ await fs.writeFile(supportPath, JSON.stringify({
   activeOddIDs,
   i2BookmakerSupport,
   exhaustiveDiscovery: {
+    allMlbMarketCount: exhaustiveCatalog.allMarketCount ?? exhaustiveCatalog.markets.length,
     catalogMarketCount: exhaustiveCatalog.markets.length,
+    supportedMarketCount: exhaustiveCatalog.supportedMarketCount ?? null,
+    unsupportedMarketCount: exhaustiveCatalog.unsupportedMarketCount ?? null,
     oddIDCount: exhaustiveOddIDs.length,
     rawEventCount: exhaustiveRaw.events.length,
     todayRawEventCount: exhaustiveTodayRawEvents.length,
@@ -277,7 +287,10 @@ console.log(JSON.stringify({
   exhaustiveRawPath,
   coverage,
   exhaustiveDiscovery: {
+    allMlbMarketCount: exhaustiveCatalog.allMarketCount ?? exhaustiveCatalog.markets.length,
     catalogMarketCount: exhaustiveCatalog.markets.length,
+    supportedMarketCount: exhaustiveCatalog.supportedMarketCount ?? null,
+    unsupportedMarketCount: exhaustiveCatalog.unsupportedMarketCount ?? null,
     oddIDCount: exhaustiveOddIDs.length,
     rawEventCount: exhaustiveRaw.events.length,
     supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
