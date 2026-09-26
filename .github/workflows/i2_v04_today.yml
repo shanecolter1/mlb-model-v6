@@ -14,6 +14,10 @@ permissions:
 jobs:
   run-v04:
     runs-on: ubuntu-latest
+    env:
+      ROTOWIRE_API_KEY: ${{ secrets.ROTOWIRE_API_KEY }}
+      I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
+      I2_BASEBALL_REPORTS: config/i2_baseball_reports.json
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -23,9 +27,6 @@ jobs:
         run: echo "I2_DATE=$(date -u +%F)" >> "$GITHUB_ENV"
       - name: Refresh preliminary baseball lineups
         env:
-      ROTOWIRE_API_KEY: ${{ secrets.ROTOWIRE_API_KEY }}
-      I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
-      I2_BASEBALL_REPORTS: config/i2_baseball_reports.json
           I2_LINEUP_OVERRIDES: data/runtime/i2/${{ env.I2_DATE }}_lineup_overrides.json
           I2_PRELIM_LOOKBACK_DAYS: '7'
         run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
