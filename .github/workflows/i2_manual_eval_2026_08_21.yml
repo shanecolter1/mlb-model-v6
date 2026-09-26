@@ -1,10 +1,7 @@
 name: Manual governed I2 evaluation 2026-08-21
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_manual_eval_2026_08_21.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
