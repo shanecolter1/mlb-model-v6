@@ -1,0 +1,93 @@
+{
+  "version": "i2-vnext-full-calibration-v1",
+  "generated_at": "2026-09-26T22:14:53.945070+00:00",
+  "market_inputs_used": false,
+  "target": "full I2 Under 0.5 probability",
+  "source_replay_version": "i2-vnext-full-replay-v2",
+  "source_model_version": "i2-vnext-walkforward-2025-v1",
+  "source_model_training": {
+    "start": "2023-03-30",
+    "end": "2024-09-30",
+    "n": 40812,
+    "seasons": [
+      2023,
+      2024
+    ],
+    "event_counts": {
+      "ball_in_play_out": 18363,
+      "strikeout": 9675,
+      "single": 6068,
+      "walk": 3115,
+      "double": 1802,
+      "home_run": 1228,
+      "hit_by_pitch": 400,
+      "triple": 161
+    },
+    "batters": 763,
+    "pitchers": 546
+  },
+  "holdout_policy": {
+    "raw_pa_estimation_years": [
+      2023,
+      2024
+    ],
+    "hyperparameter_selection_period": "2024H2",
+    "full_i2_calibration_year": 2025,
+    "full_i2_calibration_fit_segment": "first chronological half",
+    "full_i2_calibration_validation_segment": "second chronological half",
+    "prospective_validation_start": "2026-09-26",
+    "fit_uses_2025": false,
+    "fit_uses_2026": false
+  },
+  "calibration_selection": {
+    "fit_segment": "2025 dates before 20250625",
+    "validation_segment": "2025 dates on/after 20250625",
+    "split_date": "20250625",
+    "fit_games": 1189,
+    "validation_games": 1241,
+    "candidate_models": [
+      "identity",
+      "single_sigmoid_logit"
+    ],
+    "selection_rule": "sigmoid must improve both Brier and log loss on later-2025 validation; otherwise identity",
+    "identity_validation": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5758884770346495,
+      "brier": 0.24985312618855762,
+      "logloss": 0.6929407441457595
+    },
+    "sigmoid_validation": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5731660657452776,
+      "brier": 0.2502400184168796,
+      "logloss": 0.6937822587221769
+    },
+    "sigmoid_candidate": {
+      "intercept": -0.14158044213537865,
+      "slope": 1.4283017003626333
+    },
+    "chosen": "identity"
+  },
+  "raw_all_2025": {
+    "n": 2430,
+    "realized_under_rate": 0.551440329218107,
+    "predicted_under_mean": 0.5725688888888889,
+    "brier": 0.24716723595061726,
+    "logloss": 0.6874818962705525
+  },
+  "replay_games": 2430,
+  "final_curve": {
+    "type": "none",
+    "intercept": 0.0,
+    "slope": 1.0
+  },
+  "governance": {
+    "probability_calibration_layers": 0,
+    "component_level_probability_calibration": false,
+    "market_conditioning": false,
+    "observed_i2_state_used_as_predictor": false,
+    "prospective_validation_required": true
+  }
+}
