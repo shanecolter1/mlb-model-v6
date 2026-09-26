@@ -1,11 +1,6 @@
 name: I2 v0.4 production daily rerun
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_v04_today.yml'
-      - 'src/pipeline/apply_i2_v04_local_cv.mjs'
   workflow_dispatch:
 
 permissions:
@@ -15,7 +10,6 @@ jobs:
   run-v04:
     runs-on: ubuntu-latest
     env:
-      ROTOWIRE_API_KEY: ${{ secrets.ROTOWIRE_API_KEY }}
       I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
       I2_BASEBALL_REPORTS: config/i2_baseball_reports.json
       SPORTSBOOK_DATA_SOURCE: SPORTSGAMEODDS
@@ -38,9 +32,8 @@ jobs:
           I2_LINEUP_OVERRIDES: data/runtime/i2/${{ env.I2_DATE }}_lineup_overrides.json
           I2_PRELIM_LOOKBACK_DAYS: '7'
         run: node src/pipeline/build_preliminary_lineups_from_last_game.mjs
-      - name: Run parent baseball model using locked run environment
+      - name: Run parent baseball model from self-contained repository pipeline
         env:
-          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_CUTOFF: '1970-01-01T00:00:00Z'
           I2_TRIALS: '50000'
           I2_OUTPUT: data/runtime/i2/${{ env.I2_DATE }}_v04_parent_predictions.json
