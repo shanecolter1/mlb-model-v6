@@ -9,7 +9,10 @@
     "start": "2023-03-30",
     "end": "2024-09-30",
     "n": 40812,
-    "seasons": [2023, 2024],
+    "seasons": [
+      2023,
+      2024
+    ],
     "event_counts": {
       "ball_in_play_out": 18363,
       "strikeout": 9675,
@@ -24,7 +27,10 @@
     "pitchers": 546
   },
   "holdout_policy": {
-    "raw_pa_estimation_years": [2023, 2024],
+    "raw_pa_estimation_years": [
+      2023,
+      2024
+    ],
     "hyperparameter_selection_period": "2024H2",
     "full_i2_calibration_year": 2025,
     "full_i2_calibration_fit_segment": "first chronological half",
@@ -39,7 +45,10 @@
     "split_date": "20250625",
     "fit_games": 1189,
     "validation_games": 1241,
-    "candidate_models": ["identity", "single_sigmoid_logit"],
+    "candidate_models": [
+      "identity",
+      "single_sigmoid_logit"
+    ],
     "selection_rule": "sigmoid must improve both Brier and log loss on later-2025 validation; otherwise identity",
     "identity_validation": {
       "n": 1241,

@@ -1,0 +1,70 @@
+{
+  "version": "i2-vnext-phase6-live-shadow-v1",
+  "date": "2026-09-26",
+  "cutoff": "2026-09-26T23:25:26.800Z",
+  "generatedAt": "2026-09-26T23:25:51.892Z",
+  "marketDataUsed": false,
+  "promotionStatus": "SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED",
+  "prospectiveValidationStart": "2026-09-26",
+  "precision_selection_stable": false,
+  "precision_resolution": "HIGH_PRECISION_SUPERSEDES_2500_TRIAL_SELECTION",
+  "precision_choice": "identity",
+  "finalCalibration": {
+    "type": "none",
+    "intercept": 0,
+    "slope": 1
+  },
+  "trialsPerGame": 50000,
+  "remainingGamesAtCutoff": 3,
+  "projectedGames": 2,
+  "pendingOrErroredGames": 1,
+  "modelStatusCounts": {
+    "PENDING_PROBABLE_STARTER": 1,
+    "FROZEN_VNEXT_SHADOW_PROJECTION": 2
+  },
+  "venueStatusCounts": {
+    "SAVANT_PROFILE_MATCHED": 2,
+    "SAVANT_PROFILE_UNMATCHED_NEUTRAL_FALLBACK": 1
+  },
+  "predictionClassCounts": {
+    "CONFIRMED_INPUTS": 3
+  },
+  "sourceProjectionCounts": {
+    "PRELIMINARY": 1,
+    "VALID": 2
+  },
+  "frozenCandidates": [
+    {
+      "gamePk": 824949,
+      "matchup": "Houston Astros @ Athletics",
+      "gameDate": "2026-09-27T01:40:00Z",
+      "predictionClass": "CONFIRMED_INPUTS",
+      "sourceProjection": "VALID",
+      "venueStatus": "SAVANT_PROFILE_UNMATCHED_NEUTRAL_FALLBACK",
+      "rawUnder05": 0.5834,
+      "under05": 0.5834,
+      "over05": 0.41659999999999997,
+      "fairUnder": -140,
+      "fairOver": 140,
+      "awayStarter": "Hayden Wesneski",
+      "homeStarter": "Jack Perkins",
+      "bettingEligible": false
+    },
+    {
+      "gamePk": 823083,
+      "matchup": "Los Angeles Angels @ Seattle Mariners",
+      "gameDate": "2026-09-27T01:40:00Z",
+      "predictionClass": "CONFIRMED_INPUTS",
+      "sourceProjection": "VALID",
+      "venueStatus": "SAVANT_PROFILE_MATCHED",
+      "rawUnder05": 0.60906,
+      "under05": 0.60906,
+      "over05": 0.39093999999999995,
+      "fairUnder": -156,
+      "fairOver": 156,
+      "awayStarter": "Ryan Johnson",
+      "homeStarter": "Kade Anderson",
+      "bettingEligible": false
+    }
+  ]
+}
