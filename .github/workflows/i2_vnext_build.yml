@@ -7,17 +7,6 @@ on:
       - research/i2-vnext-direct-talent
     paths:
       - '.github/workflows/i2_vnext_build.yml'
-      - 'src/research/build_i2_vnext_statcast.py'
-      - 'src/research/fit_i2_vnext.py'
-      - 'src/research/build_i2_vnext_walkforward_models.py'
-      - 'src/research/build_i2_vnext_replay_inputs.py'
-      - 'src/research/run_i2_vnext_replay.mjs'
-      - 'src/research/calibrate_i2_vnext_full.py'
-      - 'src/build_savant_venue_profiles.py'
-      - 'src/model/i2_vnext_event_model.js'
-      - 'src/model/i2_inning_model.js'
-      - 'src/event_probability_engine.js'
-      - 'docs/I2_VNEXT_DIRECT_TALENT_SPEC.md'
 
 permissions:
   contents: write
@@ -27,7 +16,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  checkpoint-only:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Legacy phase is manual-only; use the bounded phase workflow for continuation."
+
   build-data:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

@@ -1,14 +1,12 @@
 name: I2 vNext Phase 4B - full replay
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - research/i2-vnext-direct-talent
     paths:
-      - 'data/derived/i2_vnext/phase4a_prep_manifest.json'
       - '.github/workflows/i2_vnext_phase4b_replay.yml'
-      - 'src/research/run_i2_vnext_replay.mjs'
-      - 'src/research/merge_i2_vnext_replay_shards.py'
 
 permissions:
   contents: write
@@ -19,7 +17,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  checkpoint-only:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Legacy phase is manual-only; use the bounded phase workflow for continuation."
+
   shard:
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
