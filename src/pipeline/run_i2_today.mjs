@@ -323,6 +323,10 @@ async function main(){
       const scheduled = remaining.find(g => g.gamePk === projected.gamePk);
       const freshFeed = await fetchJson(`https://statsapi.mlb.com/api/v1.1/game/${projected.gamePk}/feed/live`);
       const checked = await resolveGameInputs(scheduled, freshFeed, finalSources, projected.inputAudit);
+      // Re-resolve current source names to team-scoped MLB IDs before deciding whether
+      // the frozen inputs changed. Ambiguous/unresolved identities fail closed here.
+      await applyResolvedInputs(freshFeed, checked);
+      checked.gate = projectionGate({...checked,previous:projected.inputAudit});
       projected.inputAudit.freezeCheck = {checkedAt:new Date().toISOString(), gate:checked.gate};
       projected.bettingEligibility = projected.modelStatus === 'FROZEN_RESEARCH_PROJECTION' ? checked.gate : {eligible:false,status:'NO_ACTIONABLE_RECOMMENDATION',reasons:['MODEL_UNAVAILABLE']};
       if (checked.gate.requiresCleanRerun) projected.modelStatus = 'PROJECTION_INVALIDATED';
