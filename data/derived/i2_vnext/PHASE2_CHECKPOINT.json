@@ -1,0 +1,31 @@
+{
+  "phase": "phase2-historical-i2-data",
+  "status": "COMPLETE",
+  "model_branch": "research/i2-vnext-direct-talent",
+  "source_commit": "9f5284c19228c32019d46197a5710185abe85c90",
+  "workflow_run_id": 36273188235,
+  "artifact": {
+    "id": 10916700010,
+    "name": "i2-vnext-data-phase",
+    "sha256": "b6d0bf6a279137d27d3a68d3f48dcc20c3c8c2f11469d755c766808c24ea33ad",
+    "expires_at": "2026-10-10T21:31:35Z"
+  },
+  "dataset": {
+    "period": [
+      "2023-03-01",
+      "2026-09-25"
+    ],
+    "i2_plate_appearances": 81096,
+    "games": 9691,
+    "batters": 983,
+    "pitchers": 775,
+    "market_inputs_used": false
+  },
+  "components_verified": [
+    "inning-2-only Statcast terminal PA dataset",
+    "pitcher I2 pitch usage by batter side",
+    "Savant arsenal snapshots",
+    "2024 three-year Savant park profile",
+    "dataset governance checks"
+  ]
+}
