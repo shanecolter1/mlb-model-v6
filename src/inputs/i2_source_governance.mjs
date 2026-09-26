@@ -132,7 +132,7 @@ export function srmReview(news, currentStarter) {
 }
 export function compactAudit(game) {
   const input=game.inputAudit;
-  const out={gamePk:game.gamePk,game:`${game.away} @ ${game.home}`,starter:{},awayLineup:null,homeLineup:null,news:[],projection:game.modelStatus==='PROJECTION_INVALIDATED'?'INVALIDATED':game.bettingEligibility?.projection || 'PRELIMINARY',bettingEligibility:game.bettingEligibility || {eligible:false,reasons:['INPUT_AUDIT_MISSING']}};
+  const out={gamePk:game.gamePk,game:`${game.away} @ ${game.home}`,starter:{},awayLineup:null,homeLineup:null,news:[],projection:game.modelStatus==='PROJECTION_INVALIDATED'?'INVALIDATED':game.sourceEligibility?.projection || game.bettingEligibility?.projection || 'PRELIMINARY',sourceEligibility:game.sourceEligibility || null,bettingEligibility:game.bettingEligibility || {eligible:false,reasons:['INPUT_AUDIT_MISSING']}};
   if (!input) return out;
   for (const side of ['away','home']) {
     const s=input[side].starter,l=input[side].lineup;
