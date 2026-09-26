@@ -239,7 +239,7 @@ jobs:
             --model data/derived/i2_vnext/i2_vnext_event_model.json \
             --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
             --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json \
-            --play-calibration data/derived/i2/i2_play_calibration.json \
+            --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json \
             --output data/derived/i2_vnext/replay_2025_predictions.json
 
       - name: Verify replay governance
