@@ -7,8 +7,9 @@ const TOTALS_PATH = process.env.I2_RUN_ENVIRONMENT || `data/runtime/i2/${DATE}_r
 const PRIOR_PATH = process.env.I2_TOTAL_PRIOR || 'data/derived/i2/i2_total_conditioned_prior.json';
 const OVERRIDES = String(process.env.I2_LINEUP_OVERRIDES || '').trim();
 
-if (OVERRIDES && fs.existsSync(OVERRIDES)) await import('./run_i2_full_slate_override.mjs');
-else await import('./run_i2_today_upstream_wrapper.mjs');
+// The common production runner owns lineup/source resolution. I2_LINEUP_OVERRIDES
+// remains an input artifact consumed by that runner, not a separate upstream route.
+await import('./run_i2_today.mjs');
 
 if (!fs.existsSync(OUTPUT)) throw new Error(`Missing I2 prediction artifact: ${OUTPUT}`);
 if (!fs.existsSync(TOTALS_PATH)) throw new Error(`Missing required I2 run-environment artifact: ${TOTALS_PATH}`);
