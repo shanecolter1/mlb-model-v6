@@ -21,7 +21,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
-from sklearn.isotonic import IsotonicRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import log_loss
 
@@ -41,10 +40,9 @@ def parse_args():
     p = argparse.ArgumentParser()
     p.add_argument("--dataset", type=Path, default=Path("data/derived/i2_vnext/i2_pa_statcast.csv"))
     p.add_argument("--arsenal-dir", type=Path, default=Path("data/derived/i2_vnext/arsenal"))
-    p.add_argument("--play-calibration", type=Path, default=Path("data/derived/i2/i2_play_calibration.json"))
-    p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/full_model_calibration.json"))
-    p.add_argument("--half-lives", default="180,365,730,1460")
-    p.add_argument("--c-grid", default="0.05,0.2,1.0")
+    p.add_argument("--event-model", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_event_model.json"))
+    p.add_argument("--play-calibration", type=Path, default=Path("data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json"))
+    p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_full_calibration.json"))
     return p.parse_args()
 
 
@@ -155,51 +153,50 @@ def prepare_train(df: pd.DataFrame, arsenal_dir: Path):
     train["batter"] = pd.to_numeric(train["batter"], errors="raise").astype(int)
     train["pitcher"] = pd.to_numeric(train["pitcher"], errors="raise").astype(int)
     train = add_arsenal_feature(train, arsenal_dir)
-    mean = float(train["arsenal_matchup_xwoba"].mean())
-    sd = float(train["arsenal_matchup_xwoba"].std(ddof=0)) or 1.0
-    train["arsenal_z"] = (train["arsenal_matchup_xwoba"] - mean) / sd
     train["batter"] = train["batter"].astype(str)
     train["pitcher"] = train["pitcher"].astype(str)
     train["platoon"] = train["platoon"].fillna("?v?").astype(str)
-    return train, mean, sd
-
-
-def select_hyperparams(train: pd.DataFrame, half_lives: list[float], cs: list[float]):
-    tr = train[train["season"] == 2023]
-    te = train[train["season"] == 2024]
-    if tr.empty or te.empty:
-        raise RuntimeError("Need both 2023 and 2024 for chronological hyperparameter selection")
-    best = None
-    table = []
-    for half_life in half_lives:
-        for c in cs:
-            prep, model = fit_one(tr, c, half_life)
-            result = score(prep, model, te)
-            row = {"half_life_days": half_life, "C": c, **result}
-            table.append(row)
-            key = (result["logloss"], result["brier_multiclass"], half_life, c)
-            if best is None or key < best[0]:
-                best = (key, half_life, c)
-    return best[1], best[2], table
-
+    return train
 
 def load_transitions(path: Path):
-    return json.loads(path.read_text())["base_transitions"]
+    payload = json.loads(path.read_text())
+    states = payload["states"]
+    mapping = {
+        "strikeout": "out",
+        "ball_in_play_out": "out",
+        "walk": "bb",
+        "hit_by_pitch": "bb",
+        "single": "single",
+        "double": "double",
+        "triple": "triple",
+        "home_run": "hr",
+    }
+    expanded = {}
+    for event, source in mapping.items():
+        for outs in (0, 1, 2):
+            for mask in range(8):
+                expanded[f"{event}|{outs}|{mask}"] = states.get(
+                    f"{source}|{outs}|{mask}", []
+                )
+    return expanded
 
 
-def event_vector(prep, model, batter, pitcher, side, throws, arsenal, mean, sd):
+def event_vector(prep, model, batter, pitcher, side, throws, arsenal):
     score_x = matchup_score(batter, pitcher, arsenal)
     row = pd.DataFrame([{
         "batter": str(batter),
         "pitcher": str(pitcher),
         "platoon": f"{side}v{throws}",
-        "arsenal_z": (score_x - mean) / sd,
+        "arsenal_matchup_xwoba": score_x,
     }])
-    p = model.predict_proba(prep.transform(row[["batter", "pitcher", "platoon", "arsenal_z"]]))[0]
+    p = model.predict_proba(
+        prep.transform(
+            row[["batter", "pitcher", "platoon", "arsenal_matchup_xwoba"]]
+        )
+    )[0]
     return {str(cls): float(prob) for cls, prob in zip(model.classes_, p)}
 
-
-def p_scoreless_half(case, prep, model, arsenal, mean, sd, bats, throws_map, transitions):
+def p_scoreless_half(case, prep, model, arsenal, bats, throws_map, transitions):
     pitcher = case["pitcher"]
     throws = throws_map.get(pitcher, "R")
     cache = {}
@@ -215,7 +212,7 @@ def p_scoreless_half(case, prep, model, arsenal, mean, sd, bats, throws_map, tra
             key = (batter, pitcher, side, throws)
             vec = cache.get(key)
             if vec is None:
-                vec = event_vector(prep, model, batter, pitcher, side, throws, arsenal, mean, sd)
+                vec = event_vector(prep, model, batter, pitcher, side, throws, arsenal)
                 cache[key] = vec
             next_slot = 1 if slot == 9 else slot + 1
             for event, event_p in vec.items():
@@ -262,12 +259,10 @@ def main():
     df["season"] = pd.to_numeric(df["season"], errors="raise").astype(int)
     bats, pitcher_throws = player_sides(df)
 
-    train, mean, sd = prepare_train(df, args.arsenal_dir)
-    half_life, c, grid = select_hyperparams(
-        train,
-        [float(x) for x in args.half_lives.split(",") if x],
-        [float(x) for x in args.c_grid.split(",") if x],
-    )
+    train = prepare_train(df, args.arsenal_dir)
+    frozen = json.loads(args.event_model.read_text())
+    half_life = float(frozen["selected"]["half_life_days"])
+    c = float(frozen["selected"]["C"])
     prep, model = fit_one(train, c, half_life)
     arsenal_2024 = arsenal_maps(
         args.arsenal_dir / "batter_2024.csv",
@@ -279,11 +274,11 @@ def main():
     rows = []
     for game in games:
         top_p0 = p_scoreless_half(
-            game["top"], prep, model, arsenal_2024, mean, sd,
+            game["top"], prep, model, arsenal_2024,
             bats, pitcher_throws, transitions,
         )
         bottom_p0 = p_scoreless_half(
-            game["bottom"], prep, model, arsenal_2024, mean, sd,
+            game["bottom"], prep, model, arsenal_2024,
             bats, pitcher_throws, transitions,
         )
         rows.append({
@@ -314,14 +309,6 @@ def main():
         "slope": float(sigmoid.coef_[0, 0]),
     }
 
-    isotonic = IsotonicRegression(out_of_bounds="clip").fit(p_cal, y_cal)
-    p_isotonic = isotonic.predict(p_val)
-    candidates["isotonic"] = {
-        "validation": metrics(y_val, p_isotonic),
-        "x_thresholds": [float(x) for x in isotonic.X_thresholds_],
-        "y_thresholds": [float(x) for x in isotonic.y_thresholds_],
-    }
-
     chosen = min(
         candidates,
         key=lambda k: (
@@ -337,30 +324,23 @@ def main():
             replay["realized_under"].to_numpy(int),
         )
         final.update({"intercept": float(m.intercept_[0]), "slope": float(m.coef_[0, 0])})
-    elif chosen == "isotonic":
-        m = IsotonicRegression(out_of_bounds="clip").fit(
-            replay["raw_under"], replay["realized_under"]
-        )
-        final.update({
-            "x_thresholds": [float(x) for x in m.X_thresholds_],
-            "y_thresholds": [float(x) for x in m.y_thresholds_],
-        })
 
     payload = {
-        "version": "i2-vnext-full-model-calibration-v2",
+        "version": "i2-vnext-full-model-calibration-v3",
         "market_inputs_used": False,
         "scope": "2025 normal-starter games; Retrosheet pregame lineups; observed pre-I2 start slot; exact scoreless recursion",
         "event_model_training": "2023-2024 only",
-        "hyperparameter_selection": {
-            "train": 2023,
-            "test": 2024,
+        "frozen_event_model": {
+            "training_years": [2023, 2024],
+            "hyperparameter_selection_year": 2024,
             "selected_half_life_days": half_life,
             "selected_C": c,
-            "grid": grid,
+            "artifact_role": frozen.get("artifact_role"),
         },
         "calibration_selection": {
             "train_segment": "first chronological half of 2025",
             "validation_segment": "second chronological half of 2025",
+            "candidates_limited_to": ["none", "sigmoid"],
             "candidates": candidates,
             "chosen": chosen,
         },
@@ -368,7 +348,7 @@ def main():
         "final_curve": final,
         "replay_games": int(len(replay)),
         "notes": [
-            "Final probability calibration is applied once at the full-I2 level.",
+            "Final probability calibration is applied once at the full-I2 level; no component-level probability calibration is added.",
             "No market data is used.",
             "Replay excludes I1-to-I2 pitcher changes; opener/bulk handling remains a separate workflow path.",
             "Observed I2 start slot is fixed before I2 and does not use the I2 scoring outcome.",
