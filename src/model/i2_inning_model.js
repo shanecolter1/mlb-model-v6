@@ -160,10 +160,13 @@ function batterEventVector({ batter, pitcher, league, environmentalContext, weig
     league,
     weights,
   });
+  const batterSide = batter.side === "S"
+    ? (pitcher.throws === "L" ? "R" : "L")
+    : batter.side;
   const adjusted = applyEnvironmentalEventVector({
     neutralVector: neutral,
     environmentalContext,
-    batterSide: batter.side,
+    batterSide,
   });
   validateEventVector(adjusted.probabilities);
   return adjusted.probabilities;
