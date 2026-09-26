@@ -1,0 +1,58 @@
+name: I2 matchup variable research
+
+on:
+  workflow_dispatch:
+    inputs:
+      input_path:
+        description: "Leakage-free historical feature matrix CSV/CSV.GZ already present in the repository or workspace"
+        required: true
+        default: "data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+      prior_strength:
+        description: "Exact-total prior shrinkage strength toward broad training prior"
+        required: true
+        default: "100"
+      ridge_lambda:
+        description: "Ridge penalty for matchup residual coefficients"
+        required: true
+        default: "5"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Verify historical feature matrix
+        run: |
+          test -f "${{ inputs.input_path }}" || {
+            echo "BLOCKED: historical feature matrix not found at ${{ inputs.input_path }}"
+            echo "The current joined-master manifest says the canonical release asset is pending upload."
+            exit 2
+          }
+
+      - name: Run empirical-anchor matchup research
+        run: |
+          python src/analysis/i2_matchup_variable_research.py \
+            --input "${{ inputs.input_path }}" \
+            --registry config/i2_matchup_feature_registry.csv \
+            --output-dir data/derived/i2/matchup_variable_research \
+            --prior-strength "${{ inputs.prior_strength }}" \
+            --ridge-lambda "${{ inputs.ridge_lambda }}"
+
+      - name: Upload research artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-matchup-variable-research
+          path: data/derived/i2/matchup_variable_research/
+          if-no-files-found: warn
+          retention-days: 30
