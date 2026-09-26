@@ -7,6 +7,8 @@ on:
     paths:
       - 'data/derived/i2_vnext/phase4a_prep_manifest.json'
       - '.github/workflows/i2_vnext_phase4b_replay.yml'
+      - 'src/research/run_i2_vnext_replay.mjs'
+      - 'src/research/merge_i2_vnext_replay_shards.py'
 
 permissions:
   contents: write
@@ -99,6 +101,7 @@ jobs:
           assert m['shard_count'] == 6
           assert m['shard_index'] == shard
           assert m['n'] == 405
+          assert m['park_match_rate'] > 0.85
           print({'shard':shard,'n':m['n'],'brier':m['raw_brier'],'logloss':m['raw_logloss']})
           PY
         env:
@@ -138,6 +141,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
+          from collections import Counter
           from pathlib import Path
           m=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
           assert m['market_inputs_used'] is False
@@ -152,6 +156,12 @@ jobs:
           assert m['trials_per_game'] == 2500
           assert m['shard_merge']['shards'] == 6
           assert m['shard_merge']['per_game_seed_unchanged'] is True
+          status_counts=Counter(p['park_status'] for p in m['predictions'])
+          assert status_counts['RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT'] == 2264
+          assert status_counts['EXPLICIT_2025_SITE_NEUTRAL'] == 166
+          assert status_counts.get('UNMAPPED_RETROSHEET_SITE_NEUTRAL',0) == 0
+          assert status_counts.get('MAPPED_SITE_SAVANT_PROFILE_MISSING_NEUTRAL',0) == 0
+          assert abs(m['park_match_rate'] - (2264/2430)) < 1e-12
           assert 0 < m['raw_brier'] < 1
           assert 0 < m['raw_logloss'] < 2
 
@@ -163,6 +173,7 @@ jobs:
             'raw_brier':m['raw_brier'],
             'raw_logloss':m['raw_logloss'],
             'park_match_rate':m['park_match_rate'],
+            'park_status_counts':dict(status_counts),
             'trials_per_game':m['trials_per_game'],
             'i1_state_mode':m['i1_state_mode'],
             'point_in_time_player_refits':m['point_in_time_player_refits'],
