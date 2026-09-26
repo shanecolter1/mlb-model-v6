@@ -62,7 +62,7 @@ export function predictI2EventVector({
     const coef = model.coefficients?.[cls] || {};
     let value = finite(model.intercepts?.[cls], 0);
     for (const key of featureKeys) value += finite(coef[key], 0);
-    value += finite(coef['num__arsenal_z'], 0) * z;
+    value += finite(coef['num__arsenal_matchup_xwoba'], 0) * z;
     return value;
   });
 
