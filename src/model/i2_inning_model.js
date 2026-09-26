@@ -179,6 +179,7 @@ export function simulateHalfInningWithLineup({
   random = Math.random,
   pitchCountDraw = null,
   playCalibration = null,
+  eventVectorProvider = null,
 }) {
   if (!Array.isArray(lineup) || lineup.length !== 9) {
     throw new RangeError("lineup must contain exactly nine hitters in batting-order sequence");
@@ -197,13 +198,16 @@ export function simulateHalfInningWithLineup({
   while (outs < 3) {
     const batter = lineup[slot - 1];
     const pitcher = selectPitcher(pitcherMixture, random);
-    const vector = batterEventVector({
-      batter,
-      pitcher,
-      league,
-      environmentalContext,
-      weights,
-    });
+    const vector = eventVectorProvider
+      ? eventVectorProvider({ batter, pitcher, league, environmentalContext, weights })
+      : batterEventVector({
+          batter,
+          pitcher,
+          league,
+          environmentalContext,
+          weights,
+        });
+    validateEventVector(vector);
     const event = drawEvent(vector, random);
     const pitchDraw = pitchCountDraw
       ? pitchCountDraw(event, random)
@@ -233,6 +237,7 @@ export function simulateSideToI2({
   random = Math.random,
   pitchCountDraw = null,
   playCalibration = null,
+  eventVectorProvider = null,
 }) {
   const starterMixture = [{ weight: 1, pitcher: starter }];
   const i1 = simulateHalfInningWithLineup({
@@ -245,6 +250,7 @@ export function simulateSideToI2({
     random,
     pitchCountDraw,
     playCalibration,
+    eventVectorProvider,
   });
 
   // Conventional starter default. Opener/bulk games should supply an explicit
@@ -260,6 +266,7 @@ export function simulateSideToI2({
     random,
     pitchCountDraw,
     playCalibration,
+    eventVectorProvider,
   });
 
   return {
@@ -306,6 +313,7 @@ export function simulateFullSecondInning({
   random = Math.random,
   pitchCountDraw = null,
   playCalibration = null,
+  eventVectorProvider = null,
 }) {
   if (!Number.isInteger(trials) || trials <= 0) {
     throw new RangeError("trials must be a positive integer");
@@ -331,6 +339,7 @@ export function simulateFullSecondInning({
       random,
       pitchCountDraw,
       playCalibration,
+      eventVectorProvider,
     });
     const bottom = simulateSideToI2({
       lineup: home.lineup,
@@ -342,6 +351,7 @@ export function simulateFullSecondInning({
       random,
       pitchCountDraw,
       playCalibration,
+      eventVectorProvider,
     });
 
     topCounts[bucket(top.i2.runs)] += 1;
