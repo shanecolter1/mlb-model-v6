@@ -1,4 +1,4 @@
-name: I2 vNext I1 state A-B
+name: I2 vNext Phase AB - I1 state generator
 
 on:
   push:
@@ -9,12 +9,11 @@ on:
 
 permissions:
   contents: write
-  actions: read
 
 jobs:
-  compare:
+  compare-i1-state:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -25,122 +24,65 @@ jobs:
       - name: Install comparison dependency
         run: python -m pip install --upgrade pip numpy
 
-      - name: Restore frozen 2023-24 I2 model
-        uses: actions/download-artifact@v4
-        with:
-          name: i2-vnext-frozen-pa-model
-          path: data/derived/i2_vnext
-          run-id: 36273567216
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Restore 2025 replay inputs
-        uses: actions/download-artifact@v4
-        with:
-          name: i2-vnext-replay-inputs
-          path: data/derived/i2_vnext
-          run-id: 36273567216
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Restore park profile
-        uses: actions/download-artifact@v4
-        with:
-          name: i2-vnext-data-phase
-          path: data/derived/i2_vnext
-          run-id: 36273567216
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Download 2025 Retrosheet source
+      - name: Download bounded Retrosheet sources
         run: |
+          set -euo pipefail
           mkdir -p data/raw/i2_vnext/retrosheet
-          curl --fail --location --retry 3 \
-            "https://www.retrosheet.org/downloads/plays/2025plays.zip" \
-            --output data/raw/i2_vnext/retrosheet/2025plays.zip
+          for year in 2023 2024; do
+            curl --fail --location --retry 3               "https://www.retrosheet.org/downloads/plays/${year}plays.zip"               --output "data/raw/i2_vnext/retrosheet/${year}plays.zip"
+          done
 
-      - name: Attach point-in-time player I1 rates
+      - name: Build leakage-safe 2024 A-B inputs
         run: |
-          python src/research/attach_i1_player_asof_rates.py \
-            --input data/derived/i2_vnext/replay_2025_inputs.json \
-            --retrosheet-zip data/raw/i2_vnext/retrosheet/2025plays.zip \
-            --output data/derived/i2_vnext/replay_2025_inputs_i1_ab.json
+          python src/research/build_i1_state_ab_inputs.py             --season 2024             --retrosheet-zip data/raw/i2_vnext/retrosheet/2024plays.zip             --prior-retrosheet-zip data/raw/i2_vnext/retrosheet/2023plays.zip             --output data/derived/i2_vnext/i1_state_ab_2024_inputs.json
 
       - name: Syntax check
         run: |
-          python -m py_compile src/research/attach_i1_player_asof_rates.py src/research/compare_i1_state_ab.py
-          node --check src/research/run_i2_vnext_replay.mjs
+          python -m py_compile src/research/build_i1_state_ab_inputs.py src/research/compare_i1_state_ab.py
+          node --check src/research/run_i1_state_ab.mjs
 
-      - name: Replay league-average I1 arm
+      - name: Run exact I1 state A-B
         run: |
-          node src/research/run_i2_vnext_replay.mjs \
-            --trials 2000 \
-            --i1-mode league \
-            --input data/derived/i2_vnext/replay_2025_inputs_i1_ab.json \
-            --model data/derived/i2_vnext/i2_vnext_event_model.json \
-            --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
-            --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json \
-            --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json \
-            --walkforward-manifest data/derived/i2_vnext/NO_WALKFORWARD.json \
-            --output data/derived/i2_vnext/i1_ab_league.json
+          node src/research/run_i1_state_ab.mjs             --input data/derived/i2_vnext/i1_state_ab_2024_inputs.json             --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json             --output data/derived/i2_vnext/i1_state_ab_2024_rows.json
 
-      - name: Replay point-in-time player I1 arm
+      - name: Compare paired OOS performance
         run: |
-          node src/research/run_i2_vnext_replay.mjs \
-            --trials 2000 \
-            --i1-mode player_asof \
-            --input data/derived/i2_vnext/replay_2025_inputs_i1_ab.json \
-            --model data/derived/i2_vnext/i2_vnext_event_model.json \
-            --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
-            --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json \
-            --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json \
-            --walkforward-manifest data/derived/i2_vnext/NO_WALKFORWARD.json \
-            --output data/derived/i2_vnext/i1_ab_player.json
+          python src/research/compare_i1_state_ab.py             --input data/derived/i2_vnext/i1_state_ab_2024_rows.json             --output data/derived/i2_vnext/i1_state_ab_selection.json             --bootstrap 2000
 
-      - name: Paired statistical comparison
-        run: |
-          python src/research/compare_i1_state_ab.py \
-            --league data/derived/i2_vnext/i1_ab_league.json \
-            --player data/derived/i2_vnext/i1_ab_player.json \
-            --output data/derived/i2_vnext/i1_state_ab_2025.json
-
-      - name: Verify governance
+      - name: Verify A-B governance
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          p=json.loads(Path('data/derived/i2_vnext/i1_state_ab_2025.json').read_text())
-          assert p['market_inputs_used'] is False
-          assert p['games'] >= 2000
-          assert p['verdict'] in {
-              'PLAYER_ASOF_PASS','LEAGUE_AVERAGE_PASS',
-              'PLAYER_ASOF_DIRECTIONAL_ONLY','LEAGUE_AVERAGE_OR_NO_CLEAR_GAIN'
-          }
-          print(json.dumps({
-              'games':p['games'],
-              'league':p['league'],
-              'player_asof':p['player_asof'],
-              'delta':p['delta_player_minus_league'],
-              'bootstrap':p['paired_bootstrap'],
-              'verdict':p['verdict'],
-          },indent=2))
+          x=json.loads(Path('data/derived/i2_vnext/i1_state_ab_selection.json').read_text())
+          assert x['selection_year'] == 2024
+          assert x['market_inputs_used'] is False
+          assert x['governance']['2025_full_i2_holdout_consumed'] is False
+          assert x['governance']['observed_i2_runs_used'] is False
+          assert x['selected'] in ('league','player_asof')
+          assert x['arms']['league']['n'] >= 4000
+          assert x['arms']['player_asof']['n'] == x['arms']['league']['n']
+          print(json.dumps(x,indent=2))
           PY
 
-      - name: Upload A-B checkpoint
+      - name: Upload phase A-B artifact
         uses: actions/upload-artifact@v4
         with:
-          name: i2-vnext-i1-state-ab-2025
+          name: i2-vnext-i1-state-ab-2024
           if-no-files-found: error
           retention-days: 14
           path: |
-            data/derived/i2_vnext/i1_state_ab_2025.json
-            data/derived/i2_vnext/i1_ab_league.json
-            data/derived/i2_vnext/i1_ab_player.json
+            data/derived/i2_vnext/i1_state_ab_2024_inputs.json
+            data/derived/i2_vnext/i1_state_ab_2024_rows.json
+            data/derived/i2_vnext/i1_state_ab_selection.json
 
-      - name: Commit compact A-B result
+      - name: Commit compact A-B decision
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/derived/i2_vnext/i1_state_ab_2025.json
+          git add data/derived/i2_vnext/i1_state_ab_selection.json
           if git diff --cached --quiet; then
-            echo "No A-B result change"
+            echo "No A-B checkpoint change"
           else
             git commit -m "research: checkpoint I1 state generator A-B"
             git pull --rebase origin research/i2-vnext-direct-talent
