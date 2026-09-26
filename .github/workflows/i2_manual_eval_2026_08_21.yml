@@ -21,7 +21,6 @@ jobs:
       - name: Run governing v0.3 workflow and capture diagnostics
         shell: bash
         env:
-          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_DATE: '2026-08-21'
           I2_TRIALS: '50000'
           I2_OUTPUT: data/runtime/i2/2026-08-21_frozen_predictions.json
