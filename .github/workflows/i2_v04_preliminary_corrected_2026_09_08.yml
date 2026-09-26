@@ -1,11 +1,8 @@
 name: Corrected Sep 8 I2 v0.4 preliminary slate
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_v04_preliminary_corrected_2026_09_08.yml'
   workflow_dispatch:
+
 
 permissions:
   contents: write
