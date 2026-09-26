@@ -22,6 +22,7 @@ test('identical MLB inputs produce exact pre-upgrade production/calibration prob
 test('expected RotoWire feeds reach real production runner; source confidence does not change probabilities',()=>{
  const g=run('provisional').games[0];assert.equal(g.modelStatus,'FROZEN_RESEARCH_PROJECTION');
  assert.equal(g.inputAudit.away.lineup.status,'PROVISIONAL_ROTOWIRE');assert.equal(g.lineupConfirmed,false);assert.equal(g.inputAudit.away.lineup.confidence,'LOW');
+ assert.equal(g.inputAudit.away.lineup.resolvedMlbIds.length,9);assert.ok(g.inputAudit.away.starter.resolvedMlbId);
  for(const [key,value] of Object.entries(fixture.probabilities))assert.deepEqual(g[key],value,key);
 });
 test('starter changes during simulation invalidate freeze and suppress ranking',()=>{
