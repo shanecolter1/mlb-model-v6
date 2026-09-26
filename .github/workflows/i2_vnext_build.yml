@@ -322,6 +322,8 @@ jobs:
           assert m['point_in_time_player_refits'] is True
           assert m['i1_state_mode'] == 'player_asof'
           assert m['i1_state_model']['player_specific_i1_talent_used'] is True
+          assert m['i1_state_mode'] == 'player_asof'
+          assert m['i1_state_model']['player_specific_i1_talent_used'] is True
           assert m['walkforward_policy']['point_in_time'] is True
           assert m['n'] >= 2000
           print({
