@@ -43,7 +43,7 @@ jobs:
           key: i2-vnext-statcast-2023-2026-v3
 
       - name: Install bounded data dependencies
-        run: python -m pip install --upgrade pip pandas requests lxml html5lib beautifulsoup4 html5lib beautifulsoup4
+        run: python -m pip install --upgrade pip pandas requests lxml html5lib beautifulsoup4 html5lib beautifulsoup4 html5lib beautifulsoup4
 
       - name: Build inning-2-only Statcast dataset
         run: |
