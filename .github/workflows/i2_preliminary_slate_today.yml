@@ -1,13 +1,6 @@
 name: Run preliminary I2 slate today
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/i2_preliminary_slate_today.yml'
-      - 'src/pipeline/build_preliminary_lineups_from_last_game.mjs'
-      - 'src/pipeline/fetch_i2_run_environment.mjs'
-      - 'src/market/sportsgameodds_data_source.mjs'
   workflow_dispatch:
     inputs:
       date:
@@ -17,6 +10,7 @@ on:
         description: 'Monte Carlo trials per game'
         required: false
         default: '50000'
+
 
 permissions:
   contents: write
