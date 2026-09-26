@@ -27,66 +27,96 @@ const EVENT_TO_TRANSITION={
   triple:'triple',
   home_run:'hr',
 };
+const EVENTS=Object.keys(EVENT_TO_TRANSITION);
+
+// For starting-slot prediction, run totals are irrelevant. Collapse transition
+// rows that lead to the same outs/base state once, globally.
+const transitionCache=new Map();
+function collapsedTransitions(source,outs,mask){
+  const key=`${source}|${outs}|${mask}`;
+  if (transitionCache.has(key)) return transitionCache.get(key);
+  const rows=raw.states[key];
+  if (!Array.isArray(rows) || !rows.length) throw new Error(`Missing transition state ${key}`);
+  const grouped=new Map();
+  for(const t of rows){
+    const newOuts=Math.min(3,outs+Math.max(0,Number(t.outs_added||0)));
+    const postMask=newOuts>=3?0:Number(t.post_mask||0);
+    const k=`${newOuts}|${postMask}`;
+    grouped.set(k,(grouped.get(k)||0)+Number(t.p||0));
+  }
+  const out=[...grouped.entries()].map(([k,p])=>{
+    const [o,m]=k.split('|').map(Number);
+    return {outs:o,mask:m,p};
+  });
+  transitionCache.set(key,out);
+  return out;
+}
+for(const source of new Set(Object.values(EVENT_TO_TRANSITION))){
+  for(let outs=0;outs<3;outs++) for(let mask=0;mask<8;mask++) collapsedTransitions(source,outs,mask);
+}
 
 function rates(item, mode){
   return mode==='player_asof' ? item.i1_event_rates_asof : league;
 }
-
-function eventVector(batter,pitcher,mode){
-  return buildNeutralEventVector({
+function precomputeVectors(lineup,pitcher,mode){
+  return lineup.map(batter=>buildNeutralEventVector({
     batter:rates(batter,mode),
     pitcher:rates(pitcher,mode),
     league,
     weights:{batter:0.5,pitcher:0.5},
-  });
+  }));
 }
+function idx(outs,mask){ return outs*8+mask; }
 
-function stateKey(outs,mask,slot){ return `${outs}|${mask}|${slot}`; }
-
+let leagueDistributionCache=null;
 function exactDistribution(game,side,mode){
+  if(mode==='league' && leagueDistributionCache) return leagueDistributionCache;
+
   const isTop=side==='top';
   const lineup=isTop?game.away_lineup:game.home_lineup;
   const pitcher=isTop?game.home_starter:game.away_starter;
-  let active=new Map([[stateKey(0,0,1),1]]);
-  const absorbed=Array(10).fill(0);
+  const vectors=precomputeVectors(lineup,pitcher,mode);
 
-  for(let pa=0;pa<MAX_PA && active.size;pa++){
-    const next=new Map();
-    for(const [key,stateProb] of active.entries()){
-      const [outsText,maskText,slotText]=key.split('|');
-      const outs=Number(outsText), mask=Number(maskText), slot=Number(slotText);
-      const batter=lineup[slot-1];
-      const vector=eventVector(batter,pitcher,mode);
-      const nextSlot=slot===9?1:slot+1;
+  let active=new Float64Array(24);
+  active[idx(0,0)]=1;
+  const absorbed=new Float64Array(10);
 
-      for(const [event,eventProb] of Object.entries(vector)){
-        if (!(eventProb>0)) continue;
-        const source=EVENT_TO_TRANSITION[event];
-        const transitions=raw.states[`${source}|${outs}|${mask}`];
-        if (!Array.isArray(transitions) || !transitions.length) {
-          throw new Error(`Missing transition state ${source}|${outs}|${mask}`);
-        }
-        for(const t of transitions){
-          const p=stateProb*eventProb*Number(t.p||0);
-          if (!(p>0)) continue;
-          const newOuts=Math.min(3,outs+Math.max(0,Number(t.outs_added||0)));
-          if(newOuts>=3){
-            absorbed[nextSlot]+=p;
-          } else {
-            const nk=stateKey(newOuts,Number(t.post_mask||0),nextSlot);
-            next.set(nk,(next.get(nk)||0)+p);
+  for(let pa=0;pa<MAX_PA;pa++){
+    const next=new Float64Array(24);
+    const slot=(pa%9)+1;
+    const nextSlot=slot===9?1:slot+1;
+    const vector=vectors[slot-1];
+    let activeMass=0;
+
+    for(let outs=0;outs<3;outs++){
+      for(let mask=0;mask<8;mask++){
+        const stateProb=active[idx(outs,mask)];
+        if(!(stateProb>0)) continue;
+        activeMass+=stateProb;
+        for(const event of EVENTS){
+          const eventProb=Number(vector[event]||0);
+          if(!(eventProb>0)) continue;
+          const source=EVENT_TO_TRANSITION[event];
+          for(const t of collapsedTransitions(source,outs,mask)){
+            const p=stateProb*eventProb*t.p;
+            if(!(p>0)) continue;
+            if(t.outs>=3) absorbed[nextSlot]+=p;
+            else next[idx(t.outs,t.mask)]+=p;
           }
         }
       }
     }
     active=next;
+    if(activeMass<1e-14) break;
   }
 
-  const tail=[...active.values()].reduce((a,b)=>a+b,0);
+  const tail=active.reduce((a,b)=>a+b,0);
   if(tail>1e-8) throw new Error(`Exact I1 state tail too large after ${MAX_PA} PA: ${tail}`);
   const total=absorbed.reduce((a,b)=>a+b,0);
   if(!(total>0.999999 && total<=1.000001)) throw new Error(`I1 slot distribution mass=${total}`);
-  return Object.fromEntries(Array.from({length:9},(_,j)=>[String(j+1),absorbed[j+1]/total]));
+  const result=Object.fromEntries(Array.from({length:9},(_,j)=>[String(j+1),absorbed[j+1]/total]));
+  if(mode==='league') leagueDistributionCache=result;
+  return result;
 }
 
 function loss(dist, observed){
@@ -116,12 +146,12 @@ for(const game of input.games){
   }
 }
 const payload={
-  version:'i1-state-ab-evaluation-v2-exact',
+  version:'i1-state-ab-evaluation-v3-exact-optimized',
   generated_at:new Date().toISOString(),
   season:input.season,
   market_inputs_used:false,
   observed_i2_start_slot_used_as_predictor:false,
-  evaluation_method:'exact dynamic propagation through validated empirical event/base-out transition table',
+  evaluation_method:'exact dynamic propagation through validated empirical event/base-out transition table; run-only transition differences collapsed',
   max_pa:MAX_PA,
   n_halves:rows.length,
   rows,
