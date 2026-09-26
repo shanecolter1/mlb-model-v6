@@ -87,11 +87,23 @@ def main() -> None:
     if len(rows) < 500:
         raise RuntimeError(f"Insufficient 2025 replay games: {len(rows)}")
 
+    dates = sorted({str(r.get("date") or "") for r in rows})
+    if len(dates) < 2:
+        raise RuntimeError("2025 replay does not contain enough distinct dates")
+    split_date = dates[len(dates) // 2]
+    fit_rows = [r for r in rows if str(r.get("date") or "") < split_date]
+    val_rows = [r for r in rows if str(r.get("date") or "") >= split_date]
+    if len(fit_rows) < 250 or len(val_rows) < 250:
+        raise RuntimeError(
+            f"Chronological date split too small: fit={len(fit_rows)} validation={len(val_rows)}"
+        )
+
     raw = np.asarray([clip(r["raw_under05"]) for r in rows], dtype=float)
     y = np.asarray([int(r["observed_under05"]) for r in rows], dtype=int)
-    cut = len(rows) // 2
-    raw_fit, raw_val = raw[:cut], raw[cut:]
-    y_fit, y_val = y[:cut], y[cut:]
+    raw_fit = np.asarray([clip(r["raw_under05"]) for r in fit_rows], dtype=float)
+    y_fit = np.asarray([int(r["observed_under05"]) for r in fit_rows], dtype=int)
+    raw_val = np.asarray([clip(r["raw_under05"]) for r in val_rows], dtype=float)
+    y_val = np.asarray([int(r["observed_under05"]) for r in val_rows], dtype=int)
 
     identity_val = metrics(y_val, raw_val)
     candidate = fit_sigmoid(raw_fit, y_fit)
@@ -125,8 +137,11 @@ def main() -> None:
         "source_model_training": replay.get("model_training"),
         "holdout_policy": replay.get("holdout_policy"),
         "calibration_selection": {
-            "fit_segment": "first chronological half of 2025",
-            "validation_segment": "second chronological half of 2025",
+            "fit_segment": f"2025 dates before {split_date}",
+            "validation_segment": f"2025 dates on/after {split_date}",
+            "split_date": split_date,
+            "fit_games": int(len(fit_rows)),
+            "validation_games": int(len(val_rows)),
             "candidate_models": ["identity", "single_sigmoid_logit"],
             "selection_rule": (
                 "sigmoid must improve both Brier and log loss on later-2025 validation; "
