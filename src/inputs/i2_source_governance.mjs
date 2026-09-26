@@ -56,7 +56,10 @@ export function selectLineup(candidates = [], news = [], now = Date.now()) {
   // MLB is final system confirmation; newer explicit external corrections still win.
   confirmed.sort((a,b) => Number(b.provider === 'MLB') - Number(a.provider === 'MLB') || ranks[a.provider] - ranks[b.provider] || Date.parse(b.timestamp || b.retrievedAt) - Date.parse(a.timestamp || a.retrievedAt));
   const rw = rows.find(c => c.provider === 'ROTOWIRE'), rr = rows.find(c => c.provider === 'ROSTERRESOURCE');
-  const chosen = confirmed[0] || rw || rr || rows.find(c => c.provider === 'PREVIOUS_GAME');
+  // One active provisional source: RotoWire. RosterResource remains audit-only.
+  // If RotoWire is unavailable, fall back to the previous completed MLB lineup rather
+  // than substituting a second projected lineup into production.
+  const chosen = confirmed[0] || rw || rows.find(c => c.provider === 'PREVIOUS_GAME');
   if (!chosen) return { status: 'MISSING', inputStatus: 'MISSING', confidence: 'LOW', source: null, timestamp: null, retrievedAt: null, fallback: false, players: [], unresolved: true };
   let players = [...chosen.players];
   const changes = [];
@@ -71,7 +74,7 @@ export function selectLineup(candidates = [], news = [], now = Date.now()) {
     if (['PLATOON_UNCERTAINTY','ROSTER_UNRESOLVED','INJURY_UNCERTAINTY'].includes(n.action)) unresolved = true;
   }
   if (!validOrder(players)) unresolved = true;
-  const status = changes.length ? 'PROVISIONAL_NEWS_OVERRIDE' : chosen.confirmed ? (chosen.provider === 'MLB' ? 'CONFIRMED_MLB' : 'CONFIRMED_EXTERNAL') : chosen.provider === 'ROTOWIRE' ? 'PROVISIONAL_ROTOWIRE' : chosen.provider === 'ROSTERRESOURCE' ? 'PROVISIONAL_ROSTERRESOURCE' : 'FALLBACK_PREVIOUS_GAME';
+  const status = changes.length ? 'PROVISIONAL_NEWS_OVERRIDE' : chosen.confirmed ? (chosen.provider === 'MLB' ? 'CONFIRMED_MLB' : 'CONFIRMED_EXTERNAL') : chosen.provider === 'ROTOWIRE' ? 'PROVISIONAL_ROTOWIRE' : 'FALLBACK_PREVIOUS_GAME';
   const previous = rows.find(c => c.provider === 'PREVIOUS_GAME');
   return { ...metadata(chosen, status, chosen.confirmed && !unresolved && !changes.length ? 'HIGH' : provisionalConfidence(players, rr?.players, unresolved)), players, unresolved, changes,
     confidenceSource: 'DERIVED', top4: players.slice(0,4),
