@@ -78,7 +78,8 @@ export function selectLineup(candidates = [], news = [], now = Date.now()) {
   const previous = rows.find(c => c.provider === 'PREVIOUS_GAME');
   return { ...metadata(chosen, status, chosen.confirmed && !unresolved && !changes.length ? 'HIGH' : provisionalConfidence(players, rr?.players, unresolved)), players, unresolved, changes,
     confidenceSource: 'DERIVED', top4: players.slice(0,4),
-    audit: { candidates: rows, vsPrevious: lineupDelta(previous?.players, players), rotowireVsRosterResource: rw && rr ? lineupDelta(rw.players, rr.players) : null,
+    audit: { provisionalSourcePolicy:'ROTOWIRE_ONLY', rosterResourceRole:'AUDIT_ONLY', candidates: rows,
+      vsPrevious: lineupDelta(previous?.players, players), rotowireVsRosterResource: rw && rr ? lineupDelta(rw.players, rr.players) : null,
       projectedVsConfirmed: chosen.confirmed ? rows.filter(c => !c.confirmed && c.provider !== 'PREVIOUS_GAME').map(c => ({ source: c.source, ...lineupDelta(c.players, players) })) : [] } };
 }
 export function selectStarter(candidates = [], now = Date.now()) {
