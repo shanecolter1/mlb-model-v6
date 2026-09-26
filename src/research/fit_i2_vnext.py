@@ -39,6 +39,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--arsenal-dir", type=Path, default=Path("data/derived/i2_vnext/arsenal"))
     p.add_argument("--output", type=Path, default=Path("data/derived/i2_vnext/i2_vnext_event_model.json"))
     p.add_argument("--live-arsenal-output", type=Path, default=Path("data/derived/i2_vnext/live_arsenal_profile.json"))
+    p.add_argument("--replay-arsenal-output", type=Path, default=Path("data/derived/i2_vnext/arsenal_profile_2024.json"))
     p.add_argument("--half-lives", default="180,365,730,1460")
     p.add_argument("--c-grid", default="0.05,0.2,1.0")
     return p.parse_args()
@@ -370,6 +371,14 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(artifact, separators=(",", ":")), encoding="utf-8")
+
+    # 2024 prior-season arsenal is the leakage-safe feature snapshot for 2025
+    # full-I2 calibration replay. The live profile remains current-season YTD.
+    args.replay_arsenal_output.parent.mkdir(parents=True, exist_ok=True)
+    args.replay_arsenal_output.write_text(
+        json.dumps(live_arsenal_payload(2024, args.arsenal_dir), separators=(",", ":")),
+        encoding="utf-8",
+    )
 
     live_year = int(df["season"].max())
     args.live_arsenal_output.parent.mkdir(parents=True, exist_ok=True)
