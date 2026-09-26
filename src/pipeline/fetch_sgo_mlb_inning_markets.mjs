@@ -208,6 +208,10 @@ const exhaustivePriceRows = [];
 for (const event of exhaustiveTodayRawEvents) {
   const matchup = `${event?.teams?.away?.names?.long || event?.teams?.away?.name || 'Away'} @ ${event?.teams?.home?.names?.long || event?.teams?.home?.name || 'Home'}`;
   for (const [oddID, odd] of Object.entries(event?.odds || {})) {
+    // This table is the standard I2 catalog audit. The unrestricted Event sweep
+    // carries the full odds tree separately; do not serialize unrelated MLB
+    // markets into the support artifact.
+    if (!exhaustiveCatalogByOddID.has(oddID)) continue;
     const def = exhaustiveCatalogByOddID.get(oddID) || odd || {};
     for (const [bookmakerID, book] of Object.entries(odd?.byBookmaker || {})) {
       exhaustivePriceRows.push({
