@@ -14,7 +14,7 @@ const INPUT=arg('--input','data/derived/i2_vnext/replay_2025_inputs.json');
 const MODEL=arg('--model','data/derived/i2_vnext/i2_vnext_event_model.json');
 const ARSENAL=arg('--arsenal','data/derived/i2_vnext/arsenal_profile_2024.json');
 const PARKS=arg('--parks','data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json');
-const PLAY=arg('--play-calibration','data/derived/i2/i2_play_calibration.json');
+const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/replay_2025_predictions.json');
 const TRIALS=Number(arg('--trials','10000'));
 
@@ -23,7 +23,40 @@ if (!Number.isInteger(TRIALS) || TRIALS < 1000) throw new Error('--trials must b
 const replay=JSON.parse(fs.readFileSync(INPUT,'utf8'));
 const model=JSON.parse(fs.readFileSync(MODEL,'utf8'));
 const arsenal=JSON.parse(fs.readFileSync(ARSENAL,'utf8'));
-const playCalibration=JSON.parse(fs.readFileSync(PLAY,'utf8'));
+const rawPlayCalibration=JSON.parse(fs.readFileSync(PLAY,'utf8'));
+function adaptPlayCalibration(payload){
+  if (payload?.base_transitions) return payload;
+  if (!payload?.states) throw new Error('Unsupported transition artifact');
+  const eventMap={
+    strikeout:'out',
+    ball_in_play_out:'out',
+    walk:'bb',
+    hit_by_pitch:'bb',
+    single:'single',
+    double:'double',
+    triple:'triple',
+    home_run:'hr',
+  };
+  const base_transitions={};
+  for (const [event,source] of Object.entries(eventMap)) {
+    for (let outs=0; outs<3; outs+=1) {
+      for (let mask=0; mask<8; mask+=1) {
+        base_transitions[`${event}|${outs}|${mask}`]=payload.states[`${source}|${outs}|${mask}`] || [];
+      }
+    }
+  }
+  return {
+    version:`adapted-${payload.version || 'validated-transitions'}`,
+    base_transitions,
+    pitch_count_pmf:{},
+    governance:{
+      sourceTrainingYears:payload.training_years || null,
+      selectionYear:payload.selection_year || null,
+      lockedValidationYear:payload.locked_validation_year || null,
+    },
+  };
+}
+const playCalibration=adaptPlayCalibration(rawPlayCalibration);
 const parkProfiles=fs.existsSync(PARKS) ? JSON.parse(fs.readFileSync(PARKS,'utf8')) : [];
 
 const RETRO_TEAM_ALIASES = {
@@ -158,6 +191,8 @@ const payload={
   i1_state_model:replay.i1_state_model,
   park_rule:'prior-season Savant 3yr profile; explicit neutral for new/temporary or unmatched venue',
   park_match_rate:n ? parkMatched/n : null,
+  transition_model:playCalibration.version,
+  transition_governance:playCalibration.governance || null,
   n,
   raw_brier:n ? brier/n : null,
   raw_logloss:n ? ll/n : null,
