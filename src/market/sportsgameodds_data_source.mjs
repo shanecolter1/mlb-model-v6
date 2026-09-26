@@ -174,24 +174,52 @@ export async function fetchMlbMarketSupport({ oddIDs, apiKey, signal } = {}) {
 }
 
 export async function fetchMlbSecondInningMarketCatalog({ apiKey, signal, limit = 10000 } = {}) {
-  const rows = [];
-  let cursor = null;
-  do {
-    const payload = await fetchSgoJson('/markets', {
-      leagueID: 'MLB',
-      periodID: '2i',
-      isSupported: true,
-      limit,
-      cursor: cursor || undefined,
-    }, { apiKey, signal });
-    if (Array.isArray(payload?.data)) rows.push(...payload.data);
-    cursor = payload?.nextCursor || null;
-  } while (cursor);
+  const fetchCatalog = async isSupported => {
+    const rows = [];
+    let cursor = null;
+    do {
+      const payload = await fetchSgoJson('/markets', {
+        leagueID: 'MLB',
+        isSupported,
+        limit,
+        cursor: cursor || undefined,
+      }, { apiKey, signal });
+      if (Array.isArray(payload?.data)) rows.push(...payload.data);
+      cursor = payload?.nextCursor || null;
+    } while (cursor);
+    return rows;
+  };
+
+  const [supported, unsupported] = await Promise.all([
+    fetchCatalog(true),
+    fetchCatalog(false),
+  ]);
+  const byOddID = new Map();
+  for (const market of [...unsupported, ...supported]) {
+    if (market?.oddID) byOddID.set(market.oddID, market);
+  }
+  const allMarkets = [...byOddID.values()];
+  const secondInningPattern = /(\b2i\b|2nd\s+inning|second\s+inning|inning\s*2)/i;
+  const isSecondInning = market => {
+    if (String(market?.periodID || '').toLowerCase() === '2i') return true;
+    const searchable = [
+      market?.oddID,
+      market?.marketGroupID,
+      market?.marketGroupName,
+      ...Object.values(market?.marketGroupNameBySport || {}),
+    ].filter(Boolean).join(' ');
+    return secondInningPattern.test(searchable);
+  };
+  const markets = allMarkets.filter(isSecondInning);
   return {
     fetchedAt: new Date().toISOString(),
     leagueID: 'MLB',
-    periodID: '2i',
-    markets: rows,
+    discoveryScope: 'ALL_MLB_MARKETS_SUPPORTED_AND_UNSUPPORTED',
+    allMarketCount: allMarkets.length,
+    supportedMarketCount: supported.length,
+    unsupportedMarketCount: unsupported.length,
+    secondInningCandidateCount: markets.length,
+    markets,
   };
 }
 
