@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-26T13:39:29.334Z",
+  "generatedAt": "2026-09-26T15:08:15.572Z",
   "date": "2026-09-26",
   "bookmakerIDs": [],
   "guaranteedOddIDs": [
@@ -9,6 +9,8 @@
     "points-home-1i-ou-under",
     "points-all-1i-ou-over",
     "points-all-1i-ou-under",
+    "points-all-1i-yn-yes",
+    "points-all-1i-yn-no",
     "points-away-1i-ml3way-away",
     "points-all-1i-ml3way-draw",
     "points-home-1i-ml3way-home",
@@ -18,6 +20,8 @@
     "points-home-2i-ou-under",
     "points-all-2i-ou-over",
     "points-all-2i-ou-under",
+    "points-all-2i-yn-yes",
+    "points-all-2i-yn-no",
     "points-away-2i-ml3way-away",
     "points-all-2i-ml3way-draw",
     "points-home-2i-ml3way-home",
@@ -27,6 +31,8 @@
     "points-home-3i-ou-under",
     "points-all-3i-ou-over",
     "points-all-3i-ou-under",
+    "points-all-3i-yn-yes",
+    "points-all-3i-yn-no",
     "points-away-3i-ml3way-away",
     "points-all-3i-ml3way-draw",
     "points-home-3i-ml3way-home",
@@ -36,6 +42,8 @@
     "points-home-4i-ou-under",
     "points-all-4i-ou-over",
     "points-all-4i-ou-under",
+    "points-all-4i-yn-yes",
+    "points-all-4i-yn-no",
     "points-away-4i-ml3way-away",
     "points-all-4i-ml3way-draw",
     "points-home-4i-ml3way-home",
@@ -45,6 +53,8 @@
     "points-home-5i-ou-under",
     "points-all-5i-ou-over",
     "points-all-5i-ou-under",
+    "points-all-5i-yn-yes",
+    "points-all-5i-yn-no",
     "points-away-5i-ml3way-away",
     "points-all-5i-ml3way-draw",
     "points-home-5i-ml3way-home",
@@ -54,6 +64,8 @@
     "points-home-6i-ou-under",
     "points-all-6i-ou-over",
     "points-all-6i-ou-under",
+    "points-all-6i-yn-yes",
+    "points-all-6i-yn-no",
     "points-away-6i-ml3way-away",
     "points-all-6i-ml3way-draw",
     "points-home-6i-ml3way-home",
@@ -63,6 +75,8 @@
     "points-home-7i-ou-under",
     "points-all-7i-ou-over",
     "points-all-7i-ou-under",
+    "points-all-7i-yn-yes",
+    "points-all-7i-yn-no",
     "points-away-7i-ml3way-away",
     "points-all-7i-ml3way-draw",
     "points-home-7i-ml3way-home",
@@ -72,6 +86,8 @@
     "points-home-8i-ou-under",
     "points-all-8i-ou-over",
     "points-all-8i-ou-under",
+    "points-all-8i-yn-yes",
+    "points-all-8i-yn-no",
     "points-away-8i-ml3way-away",
     "points-all-8i-ml3way-draw",
     "points-home-8i-ml3way-home",
@@ -94,6 +110,8 @@
     "points-home-1i-ou-under",
     "points-all-1i-ou-over",
     "points-all-1i-ou-under",
+    "points-all-1i-yn-yes",
+    "points-all-1i-yn-no",
     "points-away-1i-ml3way-away",
     "points-all-1i-ml3way-draw",
     "points-home-1i-ml3way-home",
@@ -103,6 +121,8 @@
     "points-home-2i-ou-under",
     "points-all-2i-ou-over",
     "points-all-2i-ou-under",
+    "points-all-2i-yn-yes",
+    "points-all-2i-yn-no",
     "points-away-2i-ml3way-away",
     "points-all-2i-ml3way-draw",
     "points-home-2i-ml3way-home",
@@ -112,6 +132,8 @@
     "points-home-3i-ou-under",
     "points-all-3i-ou-over",
     "points-all-3i-ou-under",
+    "points-all-3i-yn-yes",
+    "points-all-3i-yn-no",
     "points-away-3i-ml3way-away",
     "points-all-3i-ml3way-draw",
     "points-home-3i-ml3way-home",
@@ -121,6 +143,8 @@
     "points-home-4i-ou-under",
     "points-all-4i-ou-over",
     "points-all-4i-ou-under",
+    "points-all-4i-yn-yes",
+    "points-all-4i-yn-no",
     "points-away-4i-ml3way-away",
     "points-all-4i-ml3way-draw",
     "points-home-4i-ml3way-home",
@@ -130,6 +154,8 @@
     "points-home-5i-ou-under",
     "points-all-5i-ou-over",
     "points-all-5i-ou-under",
+    "points-all-5i-yn-yes",
+    "points-all-5i-yn-no",
     "points-away-5i-ml3way-away",
     "points-all-5i-ml3way-draw",
     "points-home-5i-ml3way-home",
@@ -139,6 +165,8 @@
     "points-home-6i-ou-under",
     "points-all-6i-ou-over",
     "points-all-6i-ou-under",
+    "points-all-6i-yn-yes",
+    "points-all-6i-yn-no",
     "points-away-6i-ml3way-away",
     "points-all-6i-ml3way-draw",
     "points-home-6i-ml3way-home",
@@ -148,6 +176,8 @@
     "points-home-7i-ou-under",
     "points-all-7i-ou-over",
     "points-all-7i-ou-under",
+    "points-all-7i-yn-yes",
+    "points-all-7i-yn-no",
     "points-away-7i-ml3way-away",
     "points-all-7i-ml3way-draw",
     "points-home-7i-ml3way-home",
@@ -157,6 +187,8 @@
     "points-home-8i-ou-under",
     "points-all-8i-ou-over",
     "points-all-8i-ou-under",
+    "points-all-8i-yn-yes",
+    "points-all-8i-yn-no",
     "points-away-8i-ml3way-away",
     "points-all-8i-ml3way-draw",
     "points-home-8i-ml3way-home",
@@ -169,6 +201,128 @@
     "points-away-9i-ml3way-away",
     "points-all-9i-ml3way-draw",
     "points-home-9i-ml3way-home"
+  ],
+  "i2BookmakerSupport": [
+    {
+      "bookmakerID": "draftkings",
+      "cleanOuUnder": true,
+      "cleanOuOver": true,
+      "cleanYnNo": true,
+      "cleanYnYes": true,
+      "fallbackDraw": true,
+      "preferredUnderPath": "OU_UNDER_0.5",
+      "preferredOverPath": "OU_OVER_0.5"
+    },
+    {
+      "bookmakerID": "fanduel",
+      "cleanOuUnder": true,
+      "cleanOuOver": true,
+      "cleanYnNo": true,
+      "cleanYnYes": true,
+      "fallbackDraw": true,
+      "preferredUnderPath": "OU_UNDER_0.5",
+      "preferredOverPath": "OU_OVER_0.5"
+    },
+    {
+      "bookmakerID": "betmgm",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "caesars",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "bet365",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "fanatics",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "hardrockbet",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "thescorebet",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "kalshi",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    },
+    {
+      "bookmakerID": "pinnacle",
+      "cleanOuUnder": true,
+      "cleanOuOver": true,
+      "cleanYnNo": true,
+      "cleanYnYes": true,
+      "fallbackDraw": true,
+      "preferredUnderPath": "OU_UNDER_0.5",
+      "preferredOverPath": "OU_OVER_0.5"
+    },
+    {
+      "bookmakerID": "fliff",
+      "cleanOuUnder": true,
+      "cleanOuOver": true,
+      "cleanYnNo": true,
+      "cleanYnYes": true,
+      "fallbackDraw": false,
+      "preferredUnderPath": "OU_UNDER_0.5",
+      "preferredOverPath": "OU_OVER_0.5"
+    },
+    {
+      "bookmakerID": "betrivers",
+      "cleanOuUnder": false,
+      "cleanOuOver": false,
+      "cleanYnNo": false,
+      "cleanYnYes": false,
+      "fallbackDraw": false,
+      "preferredUnderPath": null,
+      "preferredOverPath": null
+    }
   ],
   "response": {
     "success": true,
@@ -393,6 +547,158 @@
         "isProp": false
       },
       {
+        "oddID": "points-all-1i-yn-no",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "statEntityID": "all",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-1i-yn",
+        "marketGroupName": "Any 1st Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (1st Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "bet365": {
+              "supported": true
+            },
+            "circa": {
+              "supported": true
+            },
+            "novig": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "betonline": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "hardrockbet": {
+              "supported": true
+            },
+            "prophetexchange": {
+              "supported": true
+            },
+            "unknown": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-1i-yn-yes",
+        "statID": "points",
+        "periodID": "1i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "statEntityID": "all",
+        "activeEvents": 14,
+        "marketGroupID": "points-main-1i-yn",
+        "marketGroupName": "Any 1st Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (1st Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "bet365": {
+              "supported": true
+            },
+            "circa": {
+              "supported": true
+            },
+            "novig": {
+              "supported": true
+            },
+            "pinnacle": {
+              "supported": true
+            },
+            "ballybet": {
+              "supported": true
+            },
+            "betmgm": {
+              "supported": true
+            },
+            "betonline": {
+              "supported": true
+            },
+            "betparx": {
+              "supported": true
+            },
+            "bovada": {
+              "supported": true
+            },
+            "caesars": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "hardrockbet": {
+              "supported": true
+            },
+            "prophetexchange": {
+              "supported": true
+            },
+            "unknown": {
+              "supported": true
+            },
+            "betrivers": {
+              "supported": true
+            },
+            "fanatics": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
         "oddID": "points-all-2i-ml3way-draw",
         "statID": "points",
         "periodID": "2i",
@@ -490,6 +796,74 @@
         "isMainDerivative": true,
         "isSubPeriod": true,
         "isProp": false
+      },
+      {
+        "oddID": "points-all-2i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "2i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-2i-yn",
+        "marketGroupName": "Any 2nd Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (2nd Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-2i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "2i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-2i-yn",
+        "marketGroupName": "Any 2nd Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (2nd Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
       },
       {
         "oddID": "points-all-3i-ml3way-draw",
@@ -591,6 +965,74 @@
         "isProp": false
       },
       {
+        "oddID": "points-all-3i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "3i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-yn",
+        "marketGroupName": "Any 3rd Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (3rd Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-3i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "3i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-3i-yn",
+        "marketGroupName": "Any 3rd Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (3rd Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
         "oddID": "points-all-4i-ml3way-draw",
         "statID": "points",
         "periodID": "4i",
@@ -688,6 +1130,74 @@
         "isMainDerivative": true,
         "isSubPeriod": true,
         "isProp": false
+      },
+      {
+        "oddID": "points-all-4i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "4i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-4i-yn",
+        "marketGroupName": "Any 4th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (4th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-4i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "4i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 13,
+        "marketGroupID": "points-main-4i-yn",
+        "marketGroupName": "Any 4th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (4th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
       },
       {
         "oddID": "points-all-5i-ml3way-draw",
@@ -789,6 +1299,74 @@
         "isProp": false
       },
       {
+        "oddID": "points-all-5i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "5i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-5i-yn",
+        "marketGroupName": "Any 5th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (5th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-5i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "5i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 15,
+        "marketGroupID": "points-main-5i-yn",
+        "marketGroupName": "Any 5th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (5th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
         "oddID": "points-all-6i-ml3way-draw",
         "statID": "points",
         "periodID": "6i",
@@ -886,6 +1464,74 @@
         "isMainDerivative": true,
         "isSubPeriod": true,
         "isProp": false
+      },
+      {
+        "oddID": "points-all-6i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "6i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-6i-yn",
+        "marketGroupName": "Any 6th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (6th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-6i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "6i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-6i-yn",
+        "marketGroupName": "Any 6th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (6th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
       },
       {
         "oddID": "points-all-7i-ml3way-draw",
@@ -987,6 +1633,74 @@
         "isProp": false
       },
       {
+        "oddID": "points-all-7i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "7i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-yn",
+        "marketGroupName": "Any 7th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (7th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-7i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "7i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-7i-yn",
+        "marketGroupName": "Any 7th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (7th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
         "oddID": "points-all-8i-ml3way-draw",
         "statID": "points",
         "periodID": "8i",
@@ -1084,6 +1798,74 @@
         "isMainDerivative": true,
         "isSubPeriod": true,
         "isProp": false
+      },
+      {
+        "oddID": "points-all-8i-yn-no",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "8i",
+        "betTypeID": "yn",
+        "sideID": "no",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-yn",
+        "marketGroupName": "Any 8th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (8th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
+      },
+      {
+        "oddID": "points-all-8i-yn-yes",
+        "statID": "points",
+        "statEntityID": "all",
+        "periodID": "8i",
+        "betTypeID": "yn",
+        "sideID": "yes",
+        "activeEvents": 16,
+        "marketGroupID": "points-main-8i-yn",
+        "marketGroupName": "Any 8th Inning Runs Yes/No",
+        "marketGroupNameAlias": "Anytime Runs (8th Inning)",
+        "isSupported": true,
+        "support": {
+          "MLB": {
+            "pinnacle": {
+              "supported": true
+            },
+            "fliff": {
+              "supported": true
+            },
+            "fanduel": {
+              "supported": true
+            },
+            "draftkings": {
+              "supported": true
+            }
+          }
+        },
+        "isMainMarket": false,
+        "isMainDerivative": false,
+        "isSubPeriod": true,
+        "isProp": true,
+        "propType": "game_prop"
       },
       {
         "oddID": "points-all-9i-ml3way-draw",
