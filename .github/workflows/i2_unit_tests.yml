@@ -19,7 +19,7 @@ on:
       - 'tests/sportsgameodds_data_source.test.mjs'
       - 'src/model/i2_price_dependent_recommendations.mjs'
       - 'src/pipeline/build_i2_market_range_report.mjs'
-      - 'src/pipeline/fetch_sgo_mlb_inning_markets.mjs'
+      - 'src/pipeline/*sgo*'
   workflow_dispatch:
 
 permissions:
