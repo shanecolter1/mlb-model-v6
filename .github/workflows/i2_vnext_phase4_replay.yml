@@ -1,0 +1,167 @@
+name: I2 vNext Phase 4 - 2025 full replay
+
+on:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase4_replay.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase4-replay
+  cancel-in-progress: true
+
+jobs:
+  replay-2025:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded replay dependencies
+        run: python -m pip install --upgrade pip pandas numpy scikit-learn
+
+      - name: Restore frozen baseball data
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-data-phase
+          path: data/derived/i2_vnext
+          run-id: 36273567216
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore frozen PA model
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-frozen-pa-model
+          path: data/derived/i2_vnext
+          run-id: 36273567216
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore pregame 2025 replay inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-replay-inputs
+          path: data/derived/i2_vnext
+          run-id: 36273567216
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download 2025 Retrosheet for point-in-time I1 rates
+        run: |
+          set -euo pipefail
+          mkdir -p data/raw/i2_vnext/retrosheet
+          curl --fail --location --retry 3             "https://www.retrosheet.org/downloads/plays/2025plays.zip"             --output data/raw/i2_vnext/retrosheet/2025plays.zip
+
+      - name: Attach selected player-specific I1 state inputs
+        run: |
+          python src/research/attach_i1_player_asof_rates.py             --input data/derived/i2_vnext/replay_2025_inputs.json             --retrosheet-zip data/raw/i2_vnext/retrosheet/2025plays.zip             --output data/derived/i2_vnext/replay_2025_inputs_player_asof.json
+
+      - name: Build fixed-spec monthly point-in-time I2 models
+        run: |
+          python src/research/build_i2_vnext_walkforward_models.py             --input data/derived/i2_vnext/i2_pa_statcast.csv             --frozen-model data/derived/i2_vnext/i2_vnext_event_model.json             --arsenal-dir data/derived/i2_vnext/arsenal             --output-dir data/derived/i2_vnext/walkforward_2025
+
+      - name: Verify point-in-time isolation before replay
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('data/derived/i2_vnext/walkforward_2025')
+          m=json.loads((root/'manifest.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['cadence']=='monthly'
+          assert len(m['entries'])==6
+          assert m['entries'][0]['model_file']=='model_end_2024_frozen.json'
+          assert len({e['model_file'] for e in m['entries']})==6
+          for e in m['entries']:
+              artifact=json.loads((root/e['model_file']).read_text())
+              assert artifact['market_inputs_used'] is False
+              end=artifact.get('training',{}).get('end')
+              assert end and end < e['training_cutoff_exclusive'], (e,end)
+          r=json.loads(Path('data/derived/i2_vnext/replay_2025_inputs_player_asof.json').read_text())
+          a=r['i1_player_asof_model']
+          assert a['market_inputs_used'] is False
+          assert a['games']==r['games_eligible']
+          print(json.dumps({
+              'walkforward_entries':m['entries'],
+              'i1_player_asof':a,
+          },indent=2))
+          PY
+          node --check src/research/run_i2_vnext_replay.mjs
+
+      - name: Run untouched 2025 full-I2 replay
+        run: |
+          node src/research/run_i2_vnext_replay.mjs             --trials 2500             --i1-mode player_asof             --input data/derived/i2_vnext/replay_2025_inputs_player_asof.json             --model data/derived/i2_vnext/i2_vnext_event_model.json             --walkforward-manifest data/derived/i2_vnext/walkforward_2025/manifest.json             --arsenal data/derived/i2_vnext/arsenal_profile_2024.json             --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json             --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json             --output data/derived/i2_vnext/replay_2025_predictions.json
+
+      - name: Verify 2025 replay governance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
+          assert m['season']==2025
+          assert m['market_inputs_used'] is False
+          assert m['observed_i2_state_used_as_predictor'] is False
+          assert m['point_in_time_player_refits'] is True
+          assert m['walkforward_policy']['point_in_time'] is True
+          assert m['i1_state_mode']=='player_asof'
+          assert m['i1_player_asof_model']['market_inputs_used'] is False
+          assert m['n']>=2000
+          print(json.dumps({
+              'n':m['n'],
+              'raw_brier':m['raw_brier'],
+              'raw_logloss':m['raw_logloss'],
+              'park_match_rate':m['park_match_rate'],
+              'trials_per_game':m['trials_per_game'],
+              'i1_state_mode':m['i1_state_mode'],
+              'walkforward_cadence':m['walkforward_policy']['cadence'],
+          },indent=2))
+          PY
+
+      - name: Upload durable phase 4 replay
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase4-replay-2025
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2025_predictions.json
+            data/derived/i2_vnext/replay_2025_inputs_player_asof.json
+            data/derived/i2_vnext/walkforward_2025/
+
+      - name: Commit compact phase 4 checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
+          checkpoint={
+              'version':'i2-vnext-phase4-replay-checkpoint-v1',
+              'season':2025,
+              'market_inputs_used':False,
+              'n':m['n'],
+              'raw_brier':m['raw_brier'],
+              'raw_logloss':m['raw_logloss'],
+              'park_match_rate':m['park_match_rate'],
+              'trials_per_game':m['trials_per_game'],
+              'i1_state_mode':m['i1_state_mode'],
+              'walkforward_policy':m['walkforward_policy'],
+          }
+          Path('data/derived/i2_vnext/phase4_replay_checkpoint.json').write_text(json.dumps(checkpoint,indent=2))
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/phase4_replay_checkpoint.json
+          if git diff --cached --quiet; then
+            echo "No phase 4 checkpoint change"
+          else
+            git commit -m "research: checkpoint I2 vNext 2025 full replay"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
