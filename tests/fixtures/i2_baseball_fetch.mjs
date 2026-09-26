@@ -29,6 +29,7 @@ globalThis.fetch=async input=>{
  if(u.pathname.includes('/roster'))return Response.json({roster:Object.values(players).map(person=>({person}))});
  if(u.pathname.includes('/stats'))return Response.json({stats:[{splits:[{stat:{plateAppearances:400,atBats:350,hits:100,doubles:20,triples:2,homeRuns:15,baseOnBalls:40,hitByPitch:5,strikeOuts:90,battersFaced:400,inningsPitched:'90.0',gamesStarted:20,era:'3.80',whip:'1.20'}}]}]});
  if(u.hostname==='www.rotowire.com') {
+  if (process.env.I2_TEST_SOURCE_MODE !== 'provisional') return new Response('unavailable',{status:503});
   const list=(side,klass)=>`
     <ul class="lineup__list ${klass}">
       <li class="lineup__status is-expected">Expected Lineup</li>
