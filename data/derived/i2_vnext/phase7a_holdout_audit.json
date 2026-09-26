@@ -1,0 +1,146 @@
+{
+  "version": "i2-vnext-final-holdout-audit-v1",
+  "market_inputs_used": false,
+  "replay_version": "i2-vnext-full-replay-v4-player-asof-i1-sharded",
+  "replay_games": 2430,
+  "trials_per_game": 10000,
+  "point_in_time_player_refits": true,
+  "i1_state_mode": "player_asof",
+  "park_match_rate": 0.9316872427983539,
+  "prior_season_baseline": {
+    "season": 2024,
+    "games": 2429,
+    "under_games": 1356,
+    "under_rate": 0.5582544256895842
+  },
+  "all_2025": {
+    "vnext_raw": {
+      "n": 2430,
+      "realized_under_rate": 0.551440329218107,
+      "predicted_under_mean": 0.5714136625514403,
+      "brier": 0.24705671633744858,
+      "logloss": 0.6872618188154105
+    },
+    "prior_season_constant": {
+      "n": 2430,
+      "realized_under_rate": 0.551440329218107,
+      "predicted_under_mean": 0.558254425689584,
+      "brier": 0.2474003244406554,
+      "logloss": 0.6879396338343051
+    },
+    "delta_vnext_minus_prior": {
+      "brier": -0.0003436081032068272,
+      "logloss": -0.0006778150188946341
+    }
+  },
+  "later_2025_validation": {
+    "split_date": "20250625",
+    "vnext_identity": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5741922643029814,
+      "brier": 0.24970507481063658,
+      "logloss": 0.692651717890755
+    },
+    "prior_season_constant": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.558254425689584,
+      "brier": 0.24874636768271435,
+      "logloss": 0.6906440015748099
+    },
+    "selected_calibration_validation": {
+      "chosen": "identity",
+      "identity": {
+        "n": 1241,
+        "realized_under_rate": 0.5398871877518131,
+        "predicted_under_mean": 0.5741922643029814,
+        "brier": 0.24970507481063658,
+        "logloss": 0.692651717890755
+      },
+      "sigmoid": {
+        "n": 1241,
+        "realized_under_rate": 0.5398871877518131,
+        "predicted_under_mean": 0.5706423214414869,
+        "brier": 0.2498500148422421,
+        "logloss": 0.6929743715134274
+      }
+    }
+  },
+  "discrimination": {
+    "auc": 0.5315117075174586,
+    "raw_probability_outcome_correlation": 0.054604175638860976,
+    "raw_probability_std": 0.03359181562090942,
+    "raw_probability_min": 0.4405,
+    "raw_probability_max": 0.6755,
+    "decile_index_vs_realized_rate_correlation": 0.6310704227451815,
+    "deciles": [
+      {
+        "decile": 1,
+        "n": 243,
+        "predicted_mean": 0.5093823045267489,
+        "realized_under_rate": 0.522633744855967
+      },
+      {
+        "decile": 2,
+        "n": 243,
+        "predicted_mean": 0.5368559670781894,
+        "realized_under_rate": 0.49382716049382713
+      },
+      {
+        "decile": 3,
+        "n": 243,
+        "predicted_mean": 0.5500197530864197,
+        "realized_under_rate": 0.522633744855967
+      },
+      {
+        "decile": 4,
+        "n": 243,
+        "predicted_mean": 0.5594139917695474,
+        "realized_under_rate": 0.551440329218107
+      },
+      {
+        "decile": 5,
+        "n": 243,
+        "predicted_mean": 0.5684218106995883,
+        "realized_under_rate": 0.5349794238683128
+      },
+      {
+        "decile": 6,
+        "n": 243,
+        "predicted_mean": 0.5765263374485597,
+        "realized_under_rate": 0.6008230452674898
+      },
+      {
+        "decile": 7,
+        "n": 243,
+        "predicted_mean": 0.5853884773662551,
+        "realized_under_rate": 0.5802469135802469
+      },
+      {
+        "decile": 8,
+        "n": 243,
+        "predicted_mean": 0.593962962962963,
+        "realized_under_rate": 0.4897119341563786
+      },
+      {
+        "decile": 9,
+        "n": 243,
+        "predicted_mean": 0.6059131687242798,
+        "realized_under_rate": 0.6049382716049383
+      },
+      {
+        "decile": 10,
+        "n": 243,
+        "predicted_mean": 0.6282518518518517,
+        "realized_under_rate": 0.6131687242798354
+      }
+    ]
+  },
+  "governance": {
+    "baseline_available_before_2025": true,
+    "2025_realized_prevalence_not_used_as_baseline_probability": true,
+    "markets_used": false,
+    "model_parameters_changed": false
+  }
+}
