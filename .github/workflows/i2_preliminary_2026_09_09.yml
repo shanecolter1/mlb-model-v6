@@ -64,7 +64,6 @@ jobs:
 
       - name: Run 50,000-trial parent model
         env:
-          MLB_OTHER_MODEL_BASE_URL: https://lambent-brioche-ca05b1.netlify.app
           I2_CUTOFF: '1970-01-01T00:00:00Z'
           I2_TRIALS: '50000'
           I2_OUTPUT: data/runtime/i2/2026-09-09_v04_parent_predictions.json
