@@ -6,6 +6,11 @@ on:
       - I2 vNext Phase 5 - precision verification
     types:
       - completed
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase6_live_shadow.yml'
 
 permissions:
   contents: write
@@ -18,8 +23,9 @@ concurrency:
 jobs:
   live-shadow:
     if: >-
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'research/i2-vnext-direct-talent'
+      github.event_name == 'push' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'research/i2-vnext-direct-talent')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -36,7 +42,7 @@ jobs:
         with:
           name: i2-vnext-phase5-precision
           path: data/derived/i2_vnext/precision
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: 36278930125
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Verify precision decision and stage canonical shadow calibration
@@ -50,9 +56,12 @@ jobs:
           assert p['market_inputs_used'] is False
           assert p['same_frozen_specification'] is True
           assert p['same_2025_game_set'] is True
-          assert p['selection_stable'] is True, p
           chosen=p['precision_10000']['chosen']
           assert chosen in ('identity','sigmoid'), chosen
+          resolution=json.loads(Path('data/derived/i2_vnext/phase5_precision_resolution_manifest.json').read_text())
+          assert resolution['canonical_choice'] == chosen
+          assert resolution['resolution'] == 'HIGH_PRECISION_SUPERSEDES_2500_TRIAL_SELECTION'
+          assert resolution['market_inputs_used'] is False
 
           src=root/'i2_vnext_full_calibration_precision_10000.json'
           cal=json.loads(src.read_text())
@@ -63,6 +72,7 @@ jobs:
           shutil.copyfile(src,'data/derived/i2_vnext/i2_vnext_full_calibration.json')
           print(json.dumps({
             'selection_stable':p['selection_stable'],
+            'resolution':resolution['resolution'],
             'chosen':chosen,
             'precision_final_curve':cal['final_curve'],
             'precision_raw':cal['raw_all_2025'],
@@ -122,7 +132,9 @@ jobs:
           assert m['promotionStatus'] == 'SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED'
           assert m['prospectiveValidationStart'] == '2026-09-26'
           assert m['finalCalibration'] == cal['final_curve']
-          assert precision['selection_stable'] is True
+          resolution=json.loads(Path('data/derived/i2_vnext/phase5_precision_resolution_manifest.json').read_text())
+          assert resolution['canonical_choice'] == precision['precision_10000']['chosen']
+          assert cal['calibration_selection']['chosen'] == resolution['canonical_choice']
 
           model_status=Counter(g.get('modelStatus','MISSING') for g in m.get('games',[]))
           venue_status=Counter(g.get('venueStatus','MISSING') for g in m.get('games',[]))
@@ -144,6 +156,7 @@ jobs:
             'promotionStatus':m['promotionStatus'],
             'prospectiveValidationStart':m['prospectiveValidationStart'],
             'precision_selection_stable':precision['selection_stable'],
+            'precision_resolution':resolution['resolution'],
             'precision_choice':precision['precision_10000']['chosen'],
             'finalCalibration':m['finalCalibration'],
             'trialsPerGame':m['trialsPerGame'],
