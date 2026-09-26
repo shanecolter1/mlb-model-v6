@@ -4,12 +4,17 @@ import {
   ROOKIE_TARGET_BOOKMAKERS,
   buildMlbInningOddIds,
   buildMlbNinthInningCandidateOddIds,
-  fetchMlbInningEvents,
   fetchMlbMarketSupport,
   fetchMlbSecondInningMarketCatalog,
-  fetchMlbRawEventsForOddIds,
   filterEventsByLocalDate,
+  normalizeSgoEvent,
 } from '../market/sportsgameodds_data_source.mjs';
+import {
+  discoverMlbI2EventLevelMarkets,
+  fetchMlbEventsExhaustive,
+  mergeI2DiscoveryRows,
+  summarizeI2DiscoveryByBookmaker,
+} from '../market/sportsgameodds_i2_event_discovery.mjs';
 
 const date = String(process.env.I2_DATE || new Date().toISOString().slice(0, 10));
 const timeZone = String(process.env.I2_TIME_ZONE || 'America/Chicago');
@@ -51,13 +56,35 @@ const ninthInningCandidates = buildMlbNinthInningCandidateOddIds();
 const support = await fetchMlbMarketSupport({ oddIDs: [...guaranteedOddIDs, ...ninthInningCandidates] });
 const exhaustiveCatalog = await fetchMlbSecondInningMarketCatalog();
 const exhaustiveOddIDs = [...new Set((exhaustiveCatalog.markets || []).map(x => x?.oddID).filter(Boolean))];
-const exhaustiveRaw = await fetchMlbRawEventsForOddIds({
+
+// Post-freeze event-level discovery deliberately avoids oddID, periodID, and betTypeID
+// restrictions. This is the only way to see SportsGameOdds Event.type=prop custom
+// markets whose settlement definition lives on the Event object instead of /markets.
+const caesarsPropSweep = await fetchMlbEventsExhaustive({
   freezeContext,
-  oddIDs: exhaustiveOddIDs,
-  bookmakerIDs: [],
+  type: 'prop',
+  bookmakerIDs: ['caesars'],
+  oddsPresent: true,
+  started: false,
   includeOpenCloseOdds,
   includeAltLines,
+  sourceLabel: 'CAESARS_PROP_EVENTS',
 });
+const unrestrictedEventSweep = await fetchMlbEventsExhaustive({
+  freezeContext,
+  bookmakerIDs: [],
+  oddsPresent: true,
+  started: false,
+  includeOpenCloseOdds,
+  includeAltLines,
+  sourceLabel: 'UNRESTRICTED_MLB_EVENTS',
+});
+const caesarsPropRows = discoverMlbI2EventLevelMarkets(caesarsPropSweep.events, { sourceLabel: caesarsPropSweep.sourceLabel });
+const unrestrictedDiscoveryRows = discoverMlbI2EventLevelMarkets(unrestrictedEventSweep.events, { sourceLabel: unrestrictedEventSweep.sourceLabel });
+const eventLevelDiscoveryRows = mergeI2DiscoveryRows([
+  { sourceLabel: caesarsPropSweep.sourceLabel, rows: caesarsPropRows },
+  { sourceLabel: unrestrictedEventSweep.sourceLabel, rows: unrestrictedDiscoveryRows },
+]);
 const supportedOddIDs = new Set((Array.isArray(support?.data) ? support.data : []).filter(x => x?.isSupported !== false).map(x => x?.oddID).filter(Boolean));
 const activeOddIDs = [...new Set([...guaranteedOddIDs, ...ninthInningCandidates.filter(id => supportedOddIDs.has(id))])];
 const i2TargetBookmakers = [
@@ -86,9 +113,27 @@ const i2BookmakerSupport = i2TargetBookmakers.map(bookmakerID => {
     preferredOverPath: cleanOuOver ? 'OU_OVER_0.5' : (cleanYnYes ? 'ANY_RUNS_YES' : null),
   };
 });
-const feed = await fetchMlbInningEvents({ freezeContext, bookmakerIDs, includeOpenCloseOdds, includeAltLines, oddIDs: activeOddIDs });
-
+// Reuse the unrestricted sweep for standard I2 normalization so this audit does
+// not pay for a redundant third /events request.
+const normalizedAllEvents = unrestrictedEventSweep.events.map(event => normalizeSgoEvent(event, { bookmakerIDs }));
+const feed = { provider: 'SPORTSGAMEODDS', events: normalizedAllEvents };
 const events = filterEventsByLocalDate(feed.events, date, timeZone);
+
+const eventLevelDiscoveryToday = eventLevelDiscoveryRows.filter(row => {
+  const startTime = row.startTime;
+  if (!startTime || Number.isNaN(Date.parse(startTime))) return false;
+  const probe = { startTime };
+  return filterEventsByLocalDate([probe], date, timeZone).length === 1;
+});
+const eventLevelBookmakerAudit = summarizeI2DiscoveryByBookmaker(eventLevelDiscoveryToday, {
+  bookmakerIDs: [
+    ...i2TargetBookmakers,
+    ...Object.keys((exhaustiveCatalog.markets || []).reduce((acc, market) => {
+      for (const bookmakerID of Object.keys(market?.support?.MLB || {})) acc[bookmakerID] = true;
+      return acc;
+    }, {})),
+  ],
+});
 const rows = [];
 for (const event of events) {
   const matchup = `${event.away.name || event.away.short || 'Away'} @ ${event.home.name || event.home.short || 'Home'}`;
@@ -140,7 +185,7 @@ const coverage = {
 };
 
 const exhaustiveCatalogByOddID = new Map((exhaustiveCatalog.markets || []).map(x => [x?.oddID, x]));
-const exhaustiveRawEventsWithStartTime = (exhaustiveRaw.events || []).map(event => ({
+const exhaustiveRawEventsWithStartTime = (unrestrictedEventSweep.events || []).map(event => ({
   ...event,
   startTime: event?.startTime || event?.status?.startsAt || event?.commenceTime || null,
 }));
@@ -224,10 +269,20 @@ const output = {
     supportedMarketCount: exhaustiveCatalog.supportedMarketCount ?? null,
     unsupportedMarketCount: exhaustiveCatalog.unsupportedMarketCount ?? null,
     oddIDCount: exhaustiveOddIDs.length,
-    rawEventCount: exhaustiveRaw.events.length,
+    rawEventCount: unrestrictedEventSweep.events.length,
     todayRawEventCount: exhaustiveTodayRawEvents.length,
     exhaustivePriceRowCount: exhaustivePriceRows.length,
     supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
+    eventLevel: {
+      caesarsPropPages: caesarsPropSweep.pageCount,
+      caesarsPropEvents: caesarsPropSweep.eventCount,
+      unrestrictedPages: unrestrictedEventSweep.pageCount,
+      unrestrictedEvents: unrestrictedEventSweep.eventCount,
+      cursorExhausted: caesarsPropSweep.cursorExhausted && unrestrictedEventSweep.cursorExhausted,
+      candidateRows: eventLevelDiscoveryToday.length,
+      bookmakerAudit: eventLevelBookmakerAudit,
+      rows: eventLevelDiscoveryToday,
+    },
   },
   i2BookmakerSupport,
   coverage,
@@ -263,11 +318,24 @@ await fs.writeFile(supportPath, JSON.stringify({
     supportedMarketCount: exhaustiveCatalog.supportedMarketCount ?? null,
     unsupportedMarketCount: exhaustiveCatalog.unsupportedMarketCount ?? null,
     oddIDCount: exhaustiveOddIDs.length,
-    rawEventCount: exhaustiveRaw.events.length,
+    rawEventCount: unrestrictedEventSweep.events.length,
     todayRawEventCount: exhaustiveTodayRawEvents.length,
     exhaustivePriceRowCount: exhaustivePriceRows.length,
     supportByBookmaker: exhaustiveSupportByBook,
     priceRows: exhaustivePriceRows,
+    eventLevel: {
+      caesarsPropQuery: caesarsPropSweep.query,
+      caesarsPropPages: caesarsPropSweep.pageCount,
+      caesarsPropEvents: caesarsPropSweep.eventCount,
+      caesarsPropCursorExhausted: caesarsPropSweep.cursorExhausted,
+      unrestrictedQuery: unrestrictedEventSweep.query,
+      unrestrictedPages: unrestrictedEventSweep.pageCount,
+      unrestrictedEvents: unrestrictedEventSweep.eventCount,
+      unrestrictedCursorExhausted: unrestrictedEventSweep.cursorExhausted,
+      candidateRows: eventLevelDiscoveryToday.length,
+      bookmakerAudit: eventLevelBookmakerAudit,
+      rows: eventLevelDiscoveryToday,
+    },
   },
   response: support,
 }, null, 2) + '\n');
@@ -292,8 +360,12 @@ console.log(JSON.stringify({
     supportedMarketCount: exhaustiveCatalog.supportedMarketCount ?? null,
     unsupportedMarketCount: exhaustiveCatalog.unsupportedMarketCount ?? null,
     oddIDCount: exhaustiveOddIDs.length,
-    rawEventCount: exhaustiveRaw.events.length,
+    rawEventCount: unrestrictedEventSweep.events.length,
     supportedBookmakers: Object.keys(exhaustiveSupportByBook).sort(),
+    eventLevelCandidateRows: eventLevelDiscoveryToday.length,
+    caesarsPropPages: caesarsPropSweep.pageCount,
+    unrestrictedPages: unrestrictedEventSweep.pageCount,
+    eventLevelBookmakerAudit,
   },
   i2BookmakerSupport,
 }, null, 2));
