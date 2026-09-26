@@ -1,11 +1,13 @@
 name: I2 vNext Phase 5 - final calibration
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - research/i2-vnext-direct-talent
     paths:
       - 'data/derived/i2_vnext/phase4b_replay_manifest.json'
+      - '.github/workflows/i2_vnext_phase5_calibration.yml'
 
 permissions:
   contents: write
