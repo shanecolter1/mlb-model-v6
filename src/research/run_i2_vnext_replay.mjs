@@ -66,7 +66,7 @@ function adaptPlayCalibration(payload){
   for (const [event,source] of Object.entries(eventMap)) {
     for (let outs=0; outs<3; outs+=1) {
       for (let mask=0; mask<8; mask+=1) {
-        base_transitions[`${event}|${outs}|${mask}`]=payload.states[`${source}|${outs}|${mask}`] || [];
+        base_transitions[`${event}|${outs}|${mask}`]=payload.states[`${event}|${outs}|${mask}`] || payload.states[`${source}|${outs}|${mask}`] || [];
       }
     }
   }

@@ -1,0 +1,39 @@
+{
+  "version": "i2-distinct-out-transition-audit-v1",
+  "market_inputs_used": false,
+  "research_only": true,
+  "frozen_strengths": {
+    "k_exact_to_event_outs": 5,
+    "k_event_outs_to_event": 1280,
+    "logloss_2024": 0.2323195837322956
+  },
+  "heldout_2025_conditional_transition_scores": {
+    "strikeout": {
+      "n": 40645,
+      "pooled_logloss": 0.13029292114685426,
+      "distinct_logloss": 0.0549732885419938,
+      "distinct_minus_pooled": -0.07531963260486045
+    },
+    "ball_in_play_out": {
+      "n": 83299,
+      "pooled_logloss": 0.2861737225467869,
+      "distinct_logloss": 0.27315741321927167,
+      "distinct_minus_pooled": -0.013016309327515229
+    }
+  },
+  "runner_first_zero_out_example": {
+    "strikeout": {
+      "n_2021_2024": 7972,
+      "observed_multiple_out_rate": 0.01806322127446061,
+      "fitted_multiple_out_probability": 0.018053595473890707
+    },
+    "ball_in_play_out": {
+      "n_2021_2024": 18178,
+      "observed_multiple_out_rate": 0.23539443283089448,
+      "fitted_multiple_out_probability": 0.2353437875271422
+    }
+  },
+  "full_inning_probability_impact": "NOT_YET_REPLAYED",
+  "production_promoted": false,
+  "next_step": "Paired full-I2 replay using identical frozen player models, parks, I1 state and seeds; change transition artifact only."
+}
