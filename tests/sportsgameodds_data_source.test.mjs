@@ -1,5 +1,11 @@
 import { strict as assert } from 'node:assert';
 import {
+  discoverMlbI2EventLevelMarkets,
+  mergeI2DiscoveryRows,
+  summarizeI2DiscoveryByBookmaker,
+} from '../src/market/sportsgameodds_i2_event_discovery.mjs';
+
+import {
   assertPostFreezeContext,
   assertPreFreezeIsolation,
   extractMlbDraftKingsFullGameTotalPoints,
@@ -80,6 +86,65 @@ assert.equal(caesarsNo.prices[0].americanOdds, -137);
 
 const dated = filterEventsByLocalDate([normalized], '2026-09-25', 'America/Chicago');
 assert.equal(dated.length, 1);
+
+
+const customPropEvent = {
+  eventID: 'prop-caesars-i2-zero',
+  type: 'prop',
+  leagueID: 'MLB',
+  startTime: '2026-09-26T23:07:00Z',
+  name: 'CIN @ TOR - 2nd Inning Runs',
+  description: 'Exactly 0 runs in the 2nd inning?',
+  side1: { name: 'Yes - 0 runs' },
+  side2: { name: 'No - 1+ runs' },
+  odds: {
+    'custom-caesars-i2-zero-prop-side1': {
+      oddID: 'custom-caesars-i2-zero-prop-side1',
+      statID: 'custom',
+      statEntityID: 'side1',
+      periodID: 'game',
+      betTypeID: 'prop',
+      sideID: 'side1',
+      marketGroupID: 'caesars-i2-runs',
+      marketGroupName: '2nd Inning Runs',
+      byBookmaker: {
+        caesars: { odds: '-137', available: true, lastUpdatedAt: '2026-09-26T15:20:00Z', deeplink: 'https://example.invalid/caesars' },
+      },
+    },
+    'custom-caesars-i2-zero-prop-side2': {
+      oddID: 'custom-caesars-i2-zero-prop-side2',
+      statID: 'custom',
+      statEntityID: 'side2',
+      periodID: 'game',
+      betTypeID: 'prop',
+      sideID: 'side2',
+      marketGroupID: 'caesars-i2-runs',
+      marketGroupName: '2nd Inning Runs',
+      byBookmaker: {
+        caesars: { odds: '+108', available: true, lastUpdatedAt: '2026-09-26T15:20:00Z' },
+      },
+    },
+  },
+};
+const customRows = discoverMlbI2EventLevelMarkets([customPropEvent], { sourceLabel: 'CAESARS_PROP_EVENTS' });
+assert.equal(customRows.length, 2);
+const customUnder = customRows.find(x => x.sideID === 'side1');
+const customOver = customRows.find(x => x.sideID === 'side2');
+assert.equal(customUnder.classification, 'A');
+assert.equal(customUnder.semantic, 'EXACT_UNDER_EQUIVALENT');
+assert.equal(customUnder.americanOdds, -137);
+assert.equal(customOver.classification, 'B');
+assert.equal(customOver.semantic, 'EXACT_OVER_EQUIVALENT');
+
+const mergedDiscovery = mergeI2DiscoveryRows([
+  { sourceLabel: 'CAESARS_PROP_EVENTS', rows: customRows },
+  { sourceLabel: 'UNRESTRICTED_MLB_EVENTS', rows: customRows },
+]);
+assert.equal(mergedDiscovery.length, 2);
+assert.deepEqual(mergedDiscovery[0].discoverySources.sort(), ['CAESARS_PROP_EVENTS','UNRESTRICTED_MLB_EVENTS']);
+const discoveryAudit = summarizeI2DiscoveryByBookmaker(mergedDiscovery, { bookmakerIDs: ['caesars','betmgm'] });
+assert.equal(discoveryAudit.find(x => x.bookmakerID === 'caesars').status, 'EXACT_EQUIVALENT_AVAILABLE');
+assert.equal(discoveryAudit.find(x => x.bookmakerID === 'betmgm').status, 'NO_I2_EVENT_ROWS');
 
 console.log('SportsGameOdds data source tests passed.');
 
