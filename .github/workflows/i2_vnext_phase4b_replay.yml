@@ -6,6 +6,7 @@ on:
       - research/i2-vnext-direct-talent
     paths:
       - 'data/derived/i2_vnext/phase4a_prep_manifest.json'
+      - '.github/workflows/i2_vnext_phase4b_replay.yml'
 
 permissions:
   contents: write
@@ -16,9 +17,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  replay:
+  shard:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
+    strategy:
+      fail-fast: true
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
     steps:
       - uses: actions/checkout@v4
 
@@ -57,31 +62,84 @@ jobs:
           assert m['i1_selection_year'] == 2024
           assert m['replay_season'] == 2025
           assert m['2025_outcomes_used_for_model_selection'] is False
-          assert m['replay_games'] >= 2000
-          print(json.dumps(m,indent=2))
+          assert m['replay_games'] == 2430
           PY
 
-      - name: Run untouched 2025 full-I2 replay
+      - name: Run replay shard
         run: |
+          mkdir -p data/derived/i2_vnext/replay_shards
           node src/research/run_i2_vnext_replay.mjs \
             --trials 2500 \
             --i1-mode player_asof \
+            --shard-count 6 \
+            --shard-index ${{ matrix.shard }} \
             --input data/derived/i2_vnext/replay_2025_inputs.json \
             --model data/derived/i2_vnext/i2_vnext_event_model.json \
             --walkforward-manifest data/derived/i2_vnext/walkforward_2025/manifest.json \
             --arsenal data/derived/i2_vnext/arsenal_profile_2024.json \
             --parks data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json \
             --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json \
+            --output data/derived/i2_vnext/replay_shards/replay_2025_shard_${{ matrix.shard }}.json
+
+      - name: Verify replay shard
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          shard=int(os.environ['SHARD'])
+          p=Path(f'data/derived/i2_vnext/replay_shards/replay_2025_shard_{shard}.json')
+          m=json.loads(p.read_text())
+          assert m['market_inputs_used'] is False
+          assert m['observed_i2_state_used_as_predictor'] is False
+          assert m['point_in_time_player_refits'] is True
+          assert m['walkforward_policy']['point_in_time'] is True
+          assert m['i1_state_mode'] == 'player_asof'
+          assert m['i1_state_model']['player_specific_i1_talent_used'] is True
+          assert m['replay_games_total'] == 2430
+          assert m['shard_count'] == 6
+          assert m['shard_index'] == shard
+          assert m['n'] == 405
+          print({'shard':shard,'n':m['n'],'brier':m['raw_brier'],'logloss':m['raw_logloss']})
+          PY
+        env:
+          SHARD: ${{ matrix.shard }}
+
+      - name: Upload replay shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase4b-shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/replay_shards/replay_2025_shard_${{ matrix.shard }}.json
+
+  merge:
+    needs: shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore replay shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase4b-shard-*
+          path: data/derived/i2_vnext/replay_shards
+          merge-multiple: true
+
+      - name: Merge deterministic replay shards
+        run: |
+          python src/research/merge_i2_vnext_replay_shards.py \
+            --input-dir data/derived/i2_vnext/replay_shards \
+            --expected-shards 6 \
+            --expected-games 2430 \
             --output data/derived/i2_vnext/replay_2025_predictions.json
 
-      - name: Verify replay governance and checkpoint metrics
+      - name: Verify merged replay and checkpoint metrics
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-
-          p=Path('data/derived/i2_vnext/replay_2025_predictions.json')
-          m=json.loads(p.read_text())
+          m=json.loads(Path('data/derived/i2_vnext/replay_2025_predictions.json').read_text())
           assert m['market_inputs_used'] is False
           assert m['observed_i2_state_used_as_predictor'] is False
           assert m['point_in_time_player_refits'] is True
@@ -90,7 +148,10 @@ jobs:
           assert m['i1_state_model']['player_specific_i1_talent_used'] is True
           assert m['i1_player_asof_model']['hitter_prior_strength_pa'] == 100
           assert m['i1_player_asof_model']['pitcher_prior_strength_bf'] == 180
-          assert m['n'] >= 2000
+          assert m['n'] == 2430
+          assert m['trials_per_game'] == 2500
+          assert m['shard_merge']['shards'] == 6
+          assert m['shard_merge']['per_game_seed_unchanged'] is True
           assert 0 < m['raw_brier'] < 1
           assert 0 < m['raw_logloss'] < 2
 
@@ -107,6 +168,7 @@ jobs:
             'point_in_time_player_refits':m['point_in_time_player_refits'],
             'walkforward_cadence':m['walkforward_policy']['cadence'],
             'observed_i2_state_used_as_predictor':m['observed_i2_state_used_as_predictor'],
+            'shards':m['shard_merge']['shards'],
             'calibration_applied':False,
           }
           Path('data/derived/i2_vnext/phase4b_replay_manifest.json').write_text(json.dumps(checkpoint,indent=2))
@@ -132,6 +194,7 @@ jobs:
             echo "No Phase 4B checkpoint change"
           else
             git commit -m "research: checkpoint I2 vNext Phase 4B replay"
+            git stash --include-untracked
             git pull --rebase origin research/i2-vnext-direct-talent
             git push origin HEAD:research/i2-vnext-direct-talent
           fi
