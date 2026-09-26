@@ -1,0 +1,26 @@
+{
+  "version": "i2-vnext-phase5-precision-resolution-v1",
+  "market_inputs_used": false,
+  "same_frozen_specification": true,
+  "same_2025_game_set": true,
+  "baseline_2500_choice": "sigmoid",
+  "precision_10000_choice": "identity",
+  "selection_stable": false,
+  "resolution": "HIGH_PRECISION_SUPERSEDES_2500_TRIAL_SELECTION",
+  "canonical_choice": "identity",
+  "canonical_final_curve": {
+    "type": "none",
+    "intercept": 0.0,
+    "slope": 1.0
+  },
+  "precision_validation": {
+    "identity_brier": 0.24970507481063658,
+    "identity_logloss": 0.692651717890755,
+    "sigmoid_brier": 0.2498500148422421,
+    "sigmoid_logloss": 0.6929743715134274,
+    "sigmoid_minus_identity_brier": 0.00014494003160550606,
+    "sigmoid_minus_identity_logloss": 0.0003226536226724752
+  },
+  "rationale": "The 10000-trial replay uses the same frozen specification and 2025 game set with lower Monte Carlo variance. Under the precommitted rule, sigmoid must improve both later-2025 Brier and log loss. It worsened both, so identity is canonical.",
+  "prospective_validation_required": true
+}
