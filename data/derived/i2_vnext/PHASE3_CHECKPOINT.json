@@ -1,6 +1,6 @@
 {
   "phase": "phase3-direct-i2-model-fit",
-  "status": "COMPLETE",
+  "status": "SUPERSEDED_NONCONVERGED",
   "model_branch": "research/i2-vnext-direct-talent",
   "source_commit": "9f5284c19228c32019d46197a5710185abe85c90",
   "workflow_run_id": 36273188235,
@@ -33,5 +33,12 @@
     "fit_uses_2025": false,
     "fit_uses_2026": false
   },
-  "market_inputs_used": false
+  "market_inputs_used": false,
+  "superseded_reason": "Previous selected model came from fits that emitted max_iter convergence warnings. Strict rerun on commit 4171ad227f93fb7add5c215bbc495c050a5df9ed failed closed on C=0.2, half_life=180 at 2500 iterations. Do not use this artifact.",
+  "strict_rerun": {
+    "source_commit": "4171ad227f93fb7add5c215bbc495c050a5df9ed",
+    "workflow_run_id": 36273399279,
+    "fit_job_id": 108491586412,
+    "result": "FAILED_NONCONVERGENCE"
+  }
 }
