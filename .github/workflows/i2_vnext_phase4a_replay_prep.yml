@@ -1,0 +1,174 @@
+name: I2 vNext Phase 4A - replay prep
+
+on:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase4a_replay_prep.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase4a-replay-prep
+  cancel-in-progress: true
+
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --upgrade pip pandas numpy scikit-learn
+
+      - name: Restore frozen baseball data
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-data-phase
+          path: data/derived/i2_vnext
+          run-id: 36273567216
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore frozen PA model
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-frozen-pa-model
+          path: data/derived/i2_vnext
+          run-id: 36273567216
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download bounded public replay sources
+        run: |
+          set -euo pipefail
+          mkdir -p data/raw/i2_vnext/retrosheet data/raw/i2_vnext/chadwick
+          for year in 2024 2025; do
+            curl --fail --location --retry 3 \
+              "https://www.retrosheet.org/downloads/plays/${year}plays.zip" \
+              --output "data/raw/i2_vnext/retrosheet/${year}plays.zip"
+          done
+          for suffix in 0 1 2 3 4 5 6 7 8 9 a b c d e f; do
+            curl --fail --location --retry 3 \
+              "https://raw.githubusercontent.com/chadwickbureau/register/master/data/people-${suffix}.csv" \
+              --output "data/raw/i2_vnext/chadwick/people-${suffix}.csv"
+          done
+
+      - name: Build leakage-safe 2025 replay inputs
+        run: |
+          python src/research/build_i2_vnext_replay_inputs.py \
+            --season 2025 \
+            --retrosheet-zip data/raw/i2_vnext/retrosheet/2025plays.zip \
+            --prior-retrosheet-zip data/raw/i2_vnext/retrosheet/2024plays.zip \
+            --chadwick-dir data/raw/i2_vnext/chadwick \
+            --output data/derived/i2_vnext/replay_2025_inputs.json
+
+      - name: Verify selected I1 method and replay inputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          selection=json.loads(Path('data/derived/i2_vnext/i1_state_ab_selection.json').read_text())
+          replay=json.loads(Path('data/derived/i2_vnext/replay_2025_inputs.json').read_text())
+
+          assert selection['selected'] == 'player_asof'
+          assert selection['selection_year'] == 2024
+          assert selection['governance']['2025_full_i2_holdout_consumed'] is False
+
+          assert replay['market_inputs_used'] is False
+          assert replay['season'] == 2025
+          assert replay['games_eligible'] >= 2000
+          assert replay['i1_state_model']['player_specific_i1_talent_used'] is True
+          assert replay['i1_player_asof_model']['hitter_prior_strength_pa'] == 100
+          assert replay['i1_player_asof_model']['pitcher_prior_strength_bf'] == 180
+          assert replay['i1_player_asof_model']['current_season_stats'] == 'strictly before each game'
+
+          missing=0
+          for g in replay['games']:
+            for p in g['away_lineup'] + g['home_lineup']:
+              missing += int('i1_event_rates_asof' not in p)
+            missing += int('i1_event_rates_asof' not in g['away_starter'])
+            missing += int('i1_event_rates_asof' not in g['home_starter'])
+          assert missing == 0
+
+          print({
+            'selected_i1':selection['selected'],
+            'games_eligible':replay['games_eligible'],
+            'games_excluded':replay['games_excluded'],
+            'missing_player_asof_vectors':missing,
+          })
+          PY
+
+      - name: Build corrected point-in-time 2025 models
+        run: |
+          python src/research/build_i2_vnext_walkforward_models.py \
+            --input data/derived/i2_vnext/i2_pa_statcast.csv \
+            --frozen-model data/derived/i2_vnext/i2_vnext_event_model.json \
+            --arsenal-dir data/derived/i2_vnext/arsenal \
+            --output-dir data/derived/i2_vnext/walkforward_2025
+
+      - name: Verify walk-forward governance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root=Path('data/derived/i2_vnext/walkforward_2025')
+          m=json.loads((root/'manifest.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['cadence'] == 'monthly'
+          assert len(m['entries']) == 6
+          names=[e['model_file'] for e in m['entries']]
+          assert len(names) == len(set(names)), names
+
+          for e in m['entries']:
+            artifact=json.loads((root/e['model_file']).read_text())
+            assert artifact['market_inputs_used'] is False
+            training_end=artifact.get('training',{}).get('end')
+            assert training_end and training_end < e['training_cutoff_exclusive'], (e, training_end)
+
+          checkpoint={
+            'version':'i2-vnext-phase4a-prep-v1',
+            'market_inputs_used':False,
+            'i1_state_selected':'player_asof',
+            'i1_selection_year':2024,
+            'replay_season':2025,
+            'replay_games':json.loads(Path('data/derived/i2_vnext/replay_2025_inputs.json').read_text())['games_eligible'],
+            'walkforward_cadence':m['cadence'],
+            'walkforward_entries':m['entries'],
+            '2025_outcomes_used_for_model_selection':False,
+          }
+          Path('data/derived/i2_vnext/phase4a_prep_manifest.json').write_text(json.dumps(checkpoint,indent=2))
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload durable Phase 4A prep
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase4a-replay-prep
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2025_inputs.json
+            data/derived/i2_vnext/walkforward_2025/
+            data/derived/i2_vnext/phase4a_prep_manifest.json
+
+      - name: Commit compact Phase 4A checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/phase4a_prep_manifest.json
+          if git diff --cached --quiet; then
+            echo "No Phase 4A checkpoint change"
+          else
+            git commit -m "research: checkpoint I2 vNext Phase 4A replay prep"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
