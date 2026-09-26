@@ -36,10 +36,16 @@ test('no API key required; one page request serves lineups and starters; key rem
  globalThis.fetch=async u=>{if(String(u).includes('api.rotowire.com')){apis++;throw new Error('API must not be used');}if(String(u).includes('rotowire.com')){pages++;return new Response(page());}return new Response('<rss/>');};
  try {for(const env of [{},{ROTOWIRE_API_KEY:'unused'}]){const x=await collectSources(date,env);assert.equal(x.lineups.status,'AVAILABLE');assert.equal(x.starters.status,'AVAILABLE');assert.equal(x.lineups.value[0].teams[0].lineup.transport,'PUBLIC_HTML');}assert.equal(pages,2);assert.equal(apis,0);}finally{globalThis.fetch=original;}
 });
-test('public access failures gracefully fall back to optional API',async()=>{
- const original=globalThis.fetch;
- globalThis.fetch=async u=>String(u).includes('api.rotowire.com')?Response.json({Date:date,Games:[{DateTime:stamp,Teams:[]}]}):new Response('unavailable',{status:403});
- try{const x=await collectSources(date,{ROTOWIRE_API_KEY:'fixture'});assert.equal(x.lineups.status,'AVAILABLE');assert.equal(x.lineups.publicPage.status,'ROTOWIRE_PUBLIC_UNAVAILABLE');}finally{globalThis.fetch=original;}
+test('public access failure never falls back to a paid RotoWire API',async()=>{
+ const original=globalThis.fetch;let apiCalls=0;
+ globalThis.fetch=async u=>{if(String(u).includes('api.rotowire.com')){apiCalls++;throw new Error('paid RotoWire API must not be called');}return new Response('unavailable',{status:403});};
+ try{
+  const x=await collectSources(date,{ROTOWIRE_API_KEY:'ignored'});
+  assert.equal(x.lineups.status,'ROTOWIRE_UNAVAILABLE');
+  assert.equal(x.starters.status,'ROTOWIRE_STARTERS_UNAVAILABLE');
+  assert.equal(x.lineups.publicPage.status,'ROTOWIRE_PUBLIC_UNAVAILABLE');
+  assert.equal(apiCalls,0);
+ }finally{globalThis.fetch=original;}
 });
 test('GitHub runner public access without credentials',{skip:process.env.I2_TEST_LIVE_ROTOWIRE!=='1'},async()=>{
  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
