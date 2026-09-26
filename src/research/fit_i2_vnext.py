@@ -338,18 +338,34 @@ def main() -> None:
         "C": best[2],
         "selection_metric": "chronological weighted multiclass log loss",
     }
-    prep, model = fit_one(df, best[2], best[1])
+    # Freeze the raw PA model before consuming the full-model calibration/validation periods.
+    # 2023 is estimation; 2024 selects hyperparameters and is then included in the frozen
+    # raw model fit. 2025 is reserved for the full-I2 calibration curve and 2026 for
+    # untouched full-model validation. Do not fit player effects on either holdout here.
+    fit_df = df[df["season"] <= 2024].copy()
+    if fit_df.empty or 2024 not in set(fit_df["season"]):
+        raise RuntimeError("Frozen PA fit requires 2023-2024 data with 2024 present")
+
+    prep, model = fit_one(fit_df, best[2], best[1])
     artifact = serialize_model(prep, model, selected, trials)
+    artifact["holdout_policy"] = {
+        "raw_pa_estimation_years": sorted(int(x) for x in fit_df["season"].unique()),
+        "hyperparameter_selection_year": 2024,
+        "full_i2_calibration_year": 2025,
+        "full_i2_validation_year": 2026,
+        "fit_uses_2025": False,
+        "fit_uses_2026": False,
+    }
     artifact["training"] = {
-        "start": df["game_date"].min().date().isoformat(),
-        "end": df["game_date"].max().date().isoformat(),
-        "n": int(len(df)),
-        "seasons": sorted(int(x) for x in df["season"].unique()),
+        "start": fit_df["game_date"].min().date().isoformat(),
+        "end": fit_df["game_date"].max().date().isoformat(),
+        "n": int(len(fit_df)),
+        "seasons": sorted(int(x) for x in fit_df["season"].unique()),
         "event_counts": {
-            str(k): int(v) for k, v in df["event_class"].value_counts().to_dict().items()
+            str(k): int(v) for k, v in fit_df["event_class"].value_counts().to_dict().items()
         },
-        "batters": int(df["batter"].nunique()),
-        "pitchers": int(df["pitcher"].nunique()),
+        "batters": int(fit_df["batter"].nunique()),
+        "pitchers": int(fit_df["pitcher"].nunique()),
     }
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
