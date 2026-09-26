@@ -9,13 +9,18 @@ on:
       - '.github/workflows/i2_vnext_build.yml'
       - 'src/research/build_i2_vnext_statcast.py'
       - 'src/research/fit_i2_vnext.py'
+      - 'src/research/calibrate_i2_vnext_full.py'
       - 'src/model/i2_vnext_event_model.js'
       - 'src/model/i2_inning_model.js'
       - 'src/event_probability_engine.js'
       - 'docs/I2_VNEXT_DIRECT_TALENT_SPEC.md'
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: i2-vnext-direct-talent-build
+  cancel-in-progress: true
 
 jobs:
   build-data:
@@ -27,6 +32,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Restore bounded Statcast cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache/i2_vnext/statcast
+          key: i2-vnext-statcast-2023-2026-v2
 
       - name: Install bounded data dependencies
         run: python -m pip install --upgrade pip pandas requests
@@ -106,6 +117,7 @@ jobs:
           PY
           node --check src/model/i2_vnext_event_model.js
           node --check src/model/i2_inning_model.js
+          node --check src/event_probability_engine.js
 
       - name: Persist phase 2 frozen model artifacts
         uses: actions/upload-artifact@v4
@@ -116,3 +128,81 @@ jobs:
           path: |
             data/derived/i2_vnext/i2_vnext_event_model.json
             data/derived/i2_vnext/live_arsenal_profile.json
+
+  calibrate-full:
+    needs: [build-data, fit-model]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install calibration dependencies
+        run: python -m pip install --upgrade pip pandas numpy scikit-learn
+
+      - name: Restore phase 1 data
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-data-phase
+          path: data/derived/i2_vnext
+
+      - name: Restore frozen PA model
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-frozen-pa-model
+          path: data/derived/i2_vnext
+
+      - name: Fit one final full-I2 curve and validate on 2026
+        run: python src/research/calibrate_i2_vnext_full.py
+
+      - name: Verify one-layer final calibration
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('data/derived/i2_vnext/i2_vnext_full_calibration.json').read_text())
+          assert m['market_inputs_used'] is False
+          assert m['chronology']['hyperparameter_selection'] == 2024
+          assert m['chronology']['calibration_fit'] == 2025
+          assert m['chronology']['calibration_validation'] == 2026
+          assert m['selected']['method'] in ('identity','sigmoid_logit')
+          print(json.dumps({
+            'selected':m['selected'],
+            'validation':m['validation'],
+            'fit_games':m['calibration_fit_games'],
+            'validation_games':m['validation_games']
+          }, indent=2))
+          PY
+
+      - name: Commit compact fitted artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/derived/i2_vnext/dataset_manifest.json \
+            data/derived/i2_vnext/i2_vnext_event_model.json \
+            data/derived/i2_vnext/live_arsenal_profile.json \
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+          if git diff --cached --quiet; then
+            echo "No fitted artifact changes"
+          else
+            git commit -m "research: fit bounded I2 vNext artifacts"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
+
+      - name: Upload compact final artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: i2-vnext-final-artifacts
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/dataset_manifest.json
+            data/derived/i2_vnext/i2_vnext_event_model.json
+            data/derived/i2_vnext/live_arsenal_profile.json
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
