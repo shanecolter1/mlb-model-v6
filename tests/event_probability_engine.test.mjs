@@ -41,8 +41,29 @@ const adjusted = applyEnvironmentalEventVector({
   batterSide: "L",
 });
 assert.equal(adjusted.audit.aggregateRunFactorApplied, false);
+assert.equal(adjusted.audit.parkFactorApplication, "handedness_absolute_else_overall_once");
+// Savant handedness splits and all-batter factors are both absolute 100-centered
+// factors. The handedness factor must replace, not multiply, the overall factor.
+assert.equal(adjusted.audit.factors.single, 1.01);
+assert.equal(adjusted.audit.factors.double, 1.02);
+assert.equal(adjusted.audit.factors.triple, 1.00);
+assert.equal(adjusted.audit.factors.home_run, 1.05);
+assert.notEqual(adjusted.audit.factors.home_run, 1.12 * 1.05);
 assert.ok(adjusted.probabilities.home_run > neutral.home_run);
 assert.equal(validateEventVector(adjusted.probabilities), true);
+
+const overallFallback = applyEnvironmentalEventVector({
+  neutralVector: neutral,
+  environmentalContext: {
+    multipliers: { single: 1.02, double: 1.10, triple: 0.90, hr: 1.12 },
+  },
+  batterSide: "L",
+});
+assert.equal(overallFallback.audit.factors.single, 1.02);
+assert.equal(overallFallback.audit.factors.double, 1.10);
+assert.equal(overallFallback.audit.factors.triple, 0.90);
+assert.equal(overallFallback.audit.factors.home_run, 1.12);
+assert.equal(validateEventVector(overallFallback.probabilities), true);
 
 const lineup = lineupWeightedEventVector([
   { projectedPlateAppearanceShare: 0.6, probabilities: neutral },
