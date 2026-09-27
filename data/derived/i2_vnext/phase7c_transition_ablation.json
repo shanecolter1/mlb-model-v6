@@ -1,0 +1,349 @@
+{
+  "version": "i2-transition-only-ablation-v1",
+  "market_inputs_used": false,
+  "promotion_status": "SHADOW_ONLY",
+  "games": 2430,
+  "full_season": {
+    "n": 2430,
+    "interval_method": "5000 paired calendar-date cluster percentile draws; conditional on frozen predictions; descriptive after selection",
+    "distinct_transitions": {
+      "n": 2430,
+      "realized_under_rate": 0.551440329218107,
+      "predicted_under_mean": 0.5721191358024691,
+      "brier": 0.24697664443209874,
+      "logloss": 0.6871068793674648
+    },
+    "pooled_transitions": {
+      "n": 2430,
+      "realized_under_rate": 0.551440329218107,
+      "predicted_under_mean": 0.5714136625514403,
+      "brier": 0.24705671633744858,
+      "logloss": 0.6872618188154105
+    },
+    "distinct_minus_pooled": {
+      "brier": {
+        "estimate": -8.007190534979448e-05,
+        "ci95": [
+          -0.00027510885733142524,
+          0.00011621906920206588
+        ]
+      },
+      "logloss": {
+        "estimate": -0.00015493944794553208,
+        "ci95": [
+          -0.0005555533807417102,
+          0.0002488548722619598
+        ]
+      }
+    }
+  },
+  "later_validation": {
+    "n": 1241,
+    "interval_method": "5000 paired calendar-date cluster percentile draws; conditional on frozen predictions; descriptive after selection",
+    "distinct_transitions": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5748642224012892,
+      "brier": 0.249588242731668,
+      "logloss": 0.6924241288929502
+    },
+    "pooled_transitions": {
+      "n": 1241,
+      "realized_under_rate": 0.5398871877518131,
+      "predicted_under_mean": 0.5741922643029814,
+      "brier": 0.24970507481063658,
+      "logloss": 0.692651717890755
+    },
+    "distinct_minus_pooled": {
+      "brier": {
+        "estimate": -0.00011683207896857495,
+        "ci95": [
+          -0.0003797071328650855,
+          0.0001525010381316689
+        ]
+      },
+      "logloss": {
+        "estimate": -0.00022758899780456345,
+        "ci95": [
+          -0.0007663202097887878,
+          0.0003262592448632764
+        ]
+      }
+    }
+  },
+  "half_innings": {
+    "top": {
+      "n": 2430,
+      "interval_method": "5000 paired calendar-date cluster percentile draws; conditional on frozen predictions; descriptive after selection",
+      "distinct_transitions": {
+        "n": 2430,
+        "realized_under_rate": 0.762962962962963,
+        "predicted_under_mean": 0.7566071193415638,
+        "brier": 0.18041268973251026,
+        "logloss": 0.5463325495036501
+      },
+      "pooled_transitions": {
+        "n": 2430,
+        "realized_under_rate": 0.762962962962963,
+        "predicted_under_mean": 0.7560060082304526,
+        "brier": 0.18056104798353909,
+        "logloss": 0.5467066154889487
+      },
+      "distinct_minus_pooled": {
+        "brier": {
+          "estimate": -0.00014835825102880646,
+          "ci95": [
+            -0.0003232815539469639,
+            2.8631355293196804e-05
+          ]
+        },
+        "logloss": {
+          "estimate": -0.0003740659852987379,
+          "ci95": [
+            -0.0008563807400305242,
+            0.00011943736500974003
+          ]
+        }
+      }
+    },
+    "bottom": {
+      "n": 2430,
+      "interval_method": "5000 paired calendar-date cluster percentile draws; conditional on frozen predictions; descriptive after selection",
+      "distinct_transitions": {
+        "n": 2430,
+        "realized_under_rate": 0.7312757201646091,
+        "predicted_under_mean": 0.7559656378600823,
+        "brier": 0.19696162628395064,
+        "logloss": 0.5833362854528562
+      },
+      "pooled_transitions": {
+        "n": 2430,
+        "realized_under_rate": 0.7312757201646091,
+        "predicted_under_mean": 0.7555545679012347,
+        "brier": 0.19685512114403292,
+        "logloss": 0.583068610540167
+      },
+      "distinct_minus_pooled": {
+        "brier": {
+          "estimate": 0.00010650513991769439,
+          "ci95": [
+            -8.675764500158663e-05,
+            0.0002998020997367253
+          ]
+        },
+        "logloss": {
+          "estimate": 0.0002676749126892308,
+          "ci95": [
+            -0.0002617470895112469,
+            0.0007853641477026747
+          ]
+        }
+      }
+    }
+  },
+  "subgroups": {
+    "park": {
+      "EXPLICIT_2025_SITE_NEUTRAL": {
+        "distinct": {
+          "n": 166,
+          "realized_under_rate": 0.4578313253012048,
+          "predicted_under_mean": 0.5733060240963855,
+          "brier": 0.260101198313253,
+          "logloss": 0.7137076008713819,
+          "under_overprediction": 0.11547469879518074,
+          "excess_expected_unders": 19.1688
+        },
+        "pooled": {
+          "n": 166,
+          "realized_under_rate": 0.4578313253012048,
+          "predicted_under_mean": 0.5732987951807228,
+          "brier": 0.25949400325301203,
+          "logloss": 0.7124471610097651,
+          "under_overprediction": 0.115467469879518,
+          "excess_expected_unders": 19.1676
+        }
+      },
+      "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT": {
+        "distinct": {
+          "n": 2264,
+          "realized_under_rate": 0.558303886925795,
+          "predicted_under_mean": 0.5720321113074205,
+          "brier": 0.24601433173586573,
+          "logloss": 0.6851564731087855,
+          "under_overprediction": 0.013728224381625465,
+          "excess_expected_unders": 31.0807
+        },
+        "pooled": {
+          "n": 2264,
+          "realized_under_rate": 0.558303886925795,
+          "predicted_under_mean": 0.5712754416961131,
+          "brier": 0.24614479512367493,
+          "logloss": 0.6854151903682978,
+          "under_overprediction": 0.012971554770318083,
+          "excess_expected_unders": 29.367600000000003
+        }
+      }
+    },
+    "month": {
+      "202503": {
+        "distinct": {
+          "n": 67,
+          "realized_under_rate": 0.43283582089552236,
+          "predicted_under_mean": 0.5729074626865671,
+          "brier": 0.2652524349253732,
+          "logloss": 0.7239688702212099,
+          "under_overprediction": 0.14007164179104475,
+          "excess_expected_unders": 9.3848
+        },
+        "pooled": {
+          "n": 67,
+          "realized_under_rate": 0.43283582089552236,
+          "predicted_under_mean": 0.5727238805970148,
+          "brier": 0.2648610685074627,
+          "logloss": 0.7231423645434861,
+          "under_overprediction": 0.13988805970149248,
+          "excess_expected_unders": 9.372499999999999
+        }
+      },
+      "202504": {
+        "distinct": {
+          "n": 391,
+          "realized_under_rate": 0.5396419437340153,
+          "predicted_under_mean": 0.5676815856777493,
+          "brier": 0.2485779528644501,
+          "logloss": 0.690386944868848,
+          "under_overprediction": 0.028039641943733984,
+          "excess_expected_unders": 10.9635
+        },
+        "pooled": {
+          "n": 391,
+          "realized_under_rate": 0.5396419437340153,
+          "predicted_under_mean": 0.5672020460358057,
+          "brier": 0.2482677801534527,
+          "logloss": 0.6897433251169622,
+          "under_overprediction": 0.0275601023017904,
+          "excess_expected_unders": 10.776
+        }
+      },
+      "202505": {
+        "distinct": {
+          "n": 411,
+          "realized_under_rate": 0.6155717761557178,
+          "predicted_under_mean": 0.5673980535279806,
+          "brier": 0.23704950939172748,
+          "logloss": 0.6669567475277172,
+          "under_overprediction": -0.048173722627737225,
+          "excess_expected_unders": -19.7994
+        },
+        "pooled": {
+          "n": 411,
+          "realized_under_rate": 0.6155717761557178,
+          "predicted_under_mean": 0.5664627737226277,
+          "brier": 0.23762889698296835,
+          "logloss": 0.6681307345307768,
+          "under_overprediction": -0.04910900243309013,
+          "excess_expected_unders": -20.183799999999998
+        }
+      },
+      "202506": {
+        "distinct": {
+          "n": 397,
+          "realized_under_rate": 0.5541561712846348,
+          "predicted_under_mean": 0.5729068010075566,
+          "brier": 0.2433731092695214,
+          "logloss": 0.6797408853537666,
+          "under_overprediction": 0.018750629722921852,
+          "excess_expected_unders": 7.443999999999999
+        },
+        "pooled": {
+          "n": 397,
+          "realized_under_rate": 0.5541561712846348,
+          "predicted_under_mean": 0.5719931989924433,
+          "brier": 0.243375527581864,
+          "logloss": 0.6797514809789331,
+          "under_overprediction": 0.017837027707808484,
+          "excess_expected_unders": 7.081300000000001
+        }
+      },
+      "202507": {
+        "distinct": {
+          "n": 369,
+          "realized_under_rate": 0.5501355013550135,
+          "predicted_under_mean": 0.5757663956639567,
+          "brier": 0.24848297360433605,
+          "logloss": 0.6901132094453658,
+          "under_overprediction": 0.025630894308943164,
+          "excess_expected_unders": 9.4578
+        },
+        "pooled": {
+          "n": 369,
+          "realized_under_rate": 0.5501355013550135,
+          "predicted_under_mean": 0.5747626016260162,
+          "brier": 0.24865696953929542,
+          "logloss": 0.6904603920592594,
+          "under_overprediction": 0.024627100271002678,
+          "excess_expected_unders": 9.0874
+        }
+      },
+      "202508": {
+        "distinct": {
+          "n": 421,
+          "realized_under_rate": 0.5486935866983373,
+          "predicted_under_mean": 0.57433919239905,
+          "brier": 0.2496526279334917,
+          "logloss": 0.6926349438969422,
+          "under_overprediction": 0.025645605700712615,
+          "excess_expected_unders": 10.7968
+        },
+        "pooled": {
+          "n": 421,
+          "realized_under_rate": 0.5486935866983373,
+          "predicted_under_mean": 0.5740197149643705,
+          "brier": 0.2498072711401425,
+          "logloss": 0.6929382015464098,
+          "under_overprediction": 0.0253261282660332,
+          "excess_expected_unders": 10.6623
+        }
+      },
+      "202509": {
+        "distinct": {
+          "n": 374,
+          "realized_under_rate": 0.516042780748663,
+          "predicted_under_mean": 0.5748716577540106,
+          "brier": 0.25226445695187166,
+          "logloss": 0.6978477720029659,
+          "under_overprediction": 0.05882887700534756,
+          "excess_expected_unders": 22.002
+        },
+        "pooled": {
+          "n": 374,
+          "realized_under_rate": 0.516042780748663,
+          "predicted_under_mean": 0.5741697860962566,
+          "brier": 0.2521940723262032,
+          "logloss": 0.6976901171513654,
+          "under_overprediction": 0.05812700534759352,
+          "excess_expected_unders": 21.7395
+        }
+      }
+    }
+  },
+  "probability_change": {
+    "mean": 0.0007054732510288057,
+    "min": -0.018199999999999994,
+    "max": 0.019999999999999907,
+    "mean_absolute": 0.0043619341563786015
+  },
+  "governance": {
+    "only_intended_change": "K/BIP transition separation using frozen 2021-2024 counts and existing shrinkage strengths",
+    "calibration_refit": false,
+    "player_models_refit": false,
+    "same_game_seeds": true,
+    "independent_post_selection_test": false,
+    "paired_bootstrap_draws": 5000,
+    "limitations": [
+      "Same 2025 sample already inspected; descriptive ablation only.",
+      "Monte Carlo paths diverge when transitions differ; 10000 trials do not eliminate simulation error.",
+      "Conditional bootstrap excludes model training and multi-day dependence uncertainty."
+    ]
+  }
+}
