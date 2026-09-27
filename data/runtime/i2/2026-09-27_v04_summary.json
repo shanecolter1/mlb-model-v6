@@ -1,7 +1,7 @@
 {
   "date": "2026-09-27",
   "model": "MLB I2 Under/Over v0.4 Local-CV Production",
-  "generatedAt": "2026-09-27T15:11:05.186Z",
+  "generatedAt": "2026-09-27T15:17:00.287Z",
   "underGateStatus": "CANDIDATE_PENDING_FULL_RETEST",
   "underThresholdPct": 61.5,
   "qualifiedUnders": [
@@ -163,6 +163,20 @@
     },
     {
       "rank": 9,
+      "gamePk": 822679,
+      "matchup": "New York Mets @ Washington Nationals",
+      "total": 8,
+      "under05Pct": 55.61,
+      "over05Pct": 44.39,
+      "fairUnder": -125,
+      "fairOver": 125,
+      "localCvBin": 6,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": false
+    },
+    {
+      "rank": 10,
       "gamePk": 824705,
       "matchup": "Chicago Cubs @ Boston Red Sox",
       "total": 7.5,
@@ -176,7 +190,7 @@
       "underQualified": false
     },
     {
-      "rank": 10,
+      "rank": 11,
       "gamePk": 823814,
       "matchup": "Atlanta Braves @ Miami Marlins",
       "total": 8.5,
@@ -190,7 +204,7 @@
       "underQualified": false
     },
     {
-      "rank": 11,
+      "rank": 12,
       "gamePk": 823164,
       "matchup": "Los Angeles Dodgers @ San Francisco Giants",
       "total": 8.5,
@@ -204,7 +218,7 @@
       "underQualified": false
     },
     {
-      "rank": 12,
+      "rank": 13,
       "gamePk": 822761,
       "matchup": "Cincinnati Reds @ Toronto Blue Jays",
       "total": 8.5,
@@ -218,7 +232,7 @@
       "underQualified": false
     },
     {
-      "rank": 13,
+      "rank": 14,
       "gamePk": 824542,
       "matchup": "Colorado Rockies @ Chicago White Sox",
       "total": 8.5,
@@ -232,7 +246,7 @@
       "underQualified": false
     },
     {
-      "rank": 14,
+      "rank": 15,
       "gamePk": 824948,
       "matchup": "Houston Astros @ Athletics",
       "total": 10,
