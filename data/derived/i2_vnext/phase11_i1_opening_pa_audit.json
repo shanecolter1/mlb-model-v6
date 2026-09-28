@@ -1,0 +1,368 @@
+{
+  "version": "i1-opening-pa-side-audit-v1",
+  "status": "SHADOW_ONLY_DESCRIPTIVE",
+  "market_inputs_used": false,
+  "observed_pa_outcomes_used_as_predictors": false,
+  "scope": "Opening three first-inning PAs per half; Retrosheet model-compatible event taxonomy",
+  "observed_by_season": {
+    "2021": {
+      "top": {
+        "n_opening_pa": 7287,
+        "event_rates": {
+          "single": 0.14258268148758063,
+          "double": 0.04707012487992315,
+          "triple": 0.0031563057499656923,
+          "home_run": 0.03403320982571703,
+          "walk": 0.07712364484698779,
+          "hit_by_pitch": 0.011115685467270481,
+          "strikeout": 0.23054755043227665,
+          "ball_in_play_out": 0.4543707973102786
+        },
+        "modeled_reach_rate": 0.3150816522574448,
+        "strikeout_rate": 0.23054755043227665,
+        "mean_outs_added_per_opening_pa": 0.6987786469054481,
+        "conditional_outs_added_by_event": {
+          "single": 0.009624639076034648,
+          "double": 0.0058309037900874635,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.0047619047619047,
+          "ball_in_play_out": 1.0244639081848383
+        },
+        "non_pa_outs_per_i1_half": 0.023054755043227664
+      },
+      "bottom": {
+        "n_opening_pa": 7287,
+        "event_rates": {
+          "single": 0.14175929737889392,
+          "double": 0.05091258405379443,
+          "triple": 0.005077535336901331,
+          "home_run": 0.04007135995608618,
+          "walk": 0.09057225195553725,
+          "hit_by_pitch": 0.010155070673802662,
+          "strikeout": 0.2106491011390147,
+          "ball_in_play_out": 0.4508027995059695
+        },
+        "modeled_reach_rate": 0.3385480993550158,
+        "strikeout_rate": 0.2106491011390147,
+        "mean_outs_added_per_opening_pa": 0.6788801976121861,
+        "conditional_outs_added_by_event": {
+          "single": 0.011616650532429816,
+          "double": 0.016172506738544475,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.003257328990228,
+          "ball_in_play_out": 1.0316590563165906
+        },
+        "non_pa_outs_per_i1_half": 0.02387813915191437
+      },
+      "paired_bottom_minus_top": {
+        "n_games": 2429,
+        "reach_rate_gap": 0.023466447097571015,
+        "reach_gap_ci95": [
+          0.009062856937765826,
+          0.03700971654004726
+        ],
+        "strikeout_rate_gap": -0.019898449293261972,
+        "strikeout_gap_ci95": [
+          -0.032609388170959965,
+          -0.0069843161306541975
+        ]
+      },
+      "outs_gap_decomposition": {
+        "bottom_minus_top_outs_per_pa": -0.01989844929326201,
+        "event_mix_component": -0.023612826829555743,
+        "conditional_outs_component": 0.0037143775362938323,
+        "interpretation": "Descriptive symmetric identity, not causal; conditional term includes base-state differences"
+      }
+    },
+    "2022": {
+      "top": {
+        "n_opening_pa": 7290,
+        "event_rates": {
+          "single": 0.14046639231824418,
+          "double": 0.0411522633744856,
+          "triple": 0.002880658436213992,
+          "home_run": 0.030452674897119343,
+          "walk": 0.07489711934156379,
+          "hit_by_pitch": 0.009602194787379973,
+          "strikeout": 0.2392318244170096,
+          "ball_in_play_out": 0.4613168724279835
+        },
+        "modeled_reach_rate": 0.29945130315500684,
+        "strikeout_rate": 0.2392318244170096,
+        "mean_outs_added_per_opening_pa": 0.714951989026063,
+        "conditional_outs_added_by_event": {
+          "single": 0.009765625,
+          "double": 0.016666666666666666,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.007454128440367,
+          "ball_in_play_out": 1.0228962236098722
+        },
+        "non_pa_outs_per_i1_half": 0.02551440329218107
+      },
+      "bottom": {
+        "n_opening_pa": 7290,
+        "event_rates": {
+          "single": 0.15102880658436213,
+          "double": 0.04718792866941015,
+          "triple": 0.004252400548696845,
+          "home_run": 0.035116598079561044,
+          "walk": 0.0869684499314129,
+          "hit_by_pitch": 0.012757201646090535,
+          "strikeout": 0.20480109739368998,
+          "ball_in_play_out": 0.4578875171467764
+        },
+        "modeled_reach_rate": 0.3373113854595336,
+        "strikeout_rate": 0.20480109739368998,
+        "mean_outs_added_per_opening_pa": 0.6743484224965707,
+        "conditional_outs_added_by_event": {
+          "single": 0.013623978201634877,
+          "double": 0.005813953488372093,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.000669792364367,
+          "ball_in_play_out": 1.0200718993409228
+        },
+        "non_pa_outs_per_i1_half": 0.026748971193415638
+      },
+      "paired_bottom_minus_top": {
+        "n_games": 2430,
+        "reach_rate_gap": 0.03786008230452675,
+        "reach_gap_ci95": [
+          0.02351951111257901,
+          0.05280554732918721
+        ],
+        "strikeout_rate_gap": -0.03443072702331961,
+        "strikeout_gap_ci95": [
+          -0.047677794248269734,
+          -0.020566028237084102
+        ]
+      },
+      "outs_gap_decomposition": {
+        "bottom_minus_top_outs_per_pa": -0.040603566529492374,
+        "event_mix_component": -0.037882246945295656,
+        "conditional_outs_component": -0.0027213195841968244,
+        "interpretation": "Descriptive symmetric identity, not causal; conditional term includes base-state differences"
+      }
+    },
+    "2023": {
+      "top": {
+        "n_opening_pa": 7290,
+        "event_rates": {
+          "single": 0.14183813443072701,
+          "double": 0.0411522633744856,
+          "triple": 0.003017832647462277,
+          "home_run": 0.033196159122085046,
+          "walk": 0.08285322359396434,
+          "hit_by_pitch": 0.0102880658436214,
+          "strikeout": 0.24814814814814815,
+          "ball_in_play_out": 0.43950617283950616
+        },
+        "modeled_reach_rate": 0.31234567901234567,
+        "strikeout_rate": 0.24814814814814815,
+        "mean_outs_added_per_opening_pa": 0.7045267489711934,
+        "conditional_outs_added_by_event": {
+          "single": 0.014506769825918761,
+          "double": 0.0,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0016556291390728477,
+          "hit_by_pitch": 0.0,
+          "strikeout": 0.9988944168048646,
+          "ball_in_play_out": 1.034019975031211
+        },
+        "non_pa_outs_per_i1_half": 0.029218106995884775
+      },
+      "bottom": {
+        "n_opening_pa": 7290,
+        "event_rates": {
+          "single": 0.15308641975308643,
+          "double": 0.047736625514403296,
+          "triple": 0.004526748971193415,
+          "home_run": 0.0392318244170096,
+          "walk": 0.0906721536351166,
+          "hit_by_pitch": 0.008779149519890261,
+          "strikeout": 0.2102880658436214,
+          "ball_in_play_out": 0.445679012345679
+        },
+        "modeled_reach_rate": 0.3440329218106996,
+        "strikeout_rate": 0.2102880658436214,
+        "mean_outs_added_per_opening_pa": 0.6709190672153635,
+        "conditional_outs_added_by_event": {
+          "single": 0.008064516129032258,
+          "double": 0.0028735632183908046,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.0039138943248533,
+          "ball_in_play_out": 1.028624192059095
+        },
+        "non_pa_outs_per_i1_half": 0.02551440329218107
+      },
+      "paired_bottom_minus_top": {
+        "n_games": 2430,
+        "reach_rate_gap": 0.03168724279835391,
+        "reach_gap_ci95": [
+          0.01472760156285188,
+          0.04833743295784687
+        ],
+        "strikeout_rate_gap": -0.03786008230452675,
+        "strikeout_gap_ci95": [
+          -0.052512965471956566,
+          -0.02282411580709504
+        ]
+      },
+      "outs_gap_decomposition": {
+        "bottom_minus_top_outs_per_pa": -0.033607681755829844,
+        "event_mix_component": -0.03140418100199054,
+        "conditional_outs_component": -0.0022035007538393,
+        "interpretation": "Descriptive symmetric identity, not causal; conditional term includes base-state differences"
+      }
+    },
+    "2024": {
+      "top": {
+        "n_opening_pa": 7287,
+        "event_rates": {
+          "single": 0.1373679154658982,
+          "double": 0.0393852065321806,
+          "triple": 0.0038424591738712775,
+          "home_run": 0.03430767119527926,
+          "walk": 0.07863318237958007,
+          "hit_by_pitch": 0.013585837793330589,
+          "strikeout": 0.24399615754082613,
+          "ball_in_play_out": 0.4488815699190339
+        },
+        "modeled_reach_rate": 0.30712227254013996,
+        "strikeout_rate": 0.24399615754082613,
+        "mean_outs_added_per_opening_pa": 0.7056401811445039,
+        "conditional_outs_added_by_event": {
+          "single": 0.012987012987012988,
+          "double": 0.020905923344947737,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.0028121484814398,
+          "ball_in_play_out": 1.0210944665239987
+        },
+        "non_pa_outs_per_i1_half": 0.02799505969534788
+      },
+      "bottom": {
+        "n_opening_pa": 7287,
+        "event_rates": {
+          "single": 0.14615067929188966,
+          "double": 0.04432551118430081,
+          "triple": 0.00466584328255798,
+          "home_run": 0.03718951557568272,
+          "walk": 0.08727871552079045,
+          "hit_by_pitch": 0.010155070673802662,
+          "strikeout": 0.21229586935638808,
+          "ball_in_play_out": 0.4579387951145876
+        },
+        "modeled_reach_rate": 0.3297653355290243,
+        "strikeout_rate": 0.21229586935638808,
+        "mean_outs_added_per_opening_pa": 0.6824481954164952,
+        "conditional_outs_added_by_event": {
+          "single": 0.008450704225352112,
+          "double": 0.018575851393188854,
+          "triple": 0.0,
+          "home_run": 0.0,
+          "walk": 0.0,
+          "hit_by_pitch": 0.0,
+          "strikeout": 1.004524886877828,
+          "ball_in_play_out": 1.0200779142942762
+        },
+        "non_pa_outs_per_i1_half": 0.026348291477974475
+      },
+      "paired_bottom_minus_top": {
+        "n_games": 2429,
+        "reach_rate_gap": 0.022643062988884313,
+        "reach_gap_ci95": [
+          0.007680988162424932,
+          0.03811611110326999
+        ],
+        "strikeout_rate_gap": -0.03170028818443804,
+        "strikeout_gap_ci95": [
+          -0.044592771180584814,
+          -0.018577093107438207
+        ]
+      },
+      "outs_gap_decomposition": {
+        "bottom_minus_top_outs_per_pa": -0.023191985728008735,
+        "event_mix_component": -0.02238123509275561,
+        "conditional_outs_component": -0.0008107506352531894,
+        "interpretation": "Descriptive symmetric identity, not causal; conditional term includes base-state differences"
+      }
+    }
+  },
+  "pregame_2024_opening_vectors": {
+    "n_games": 2424,
+    "n_opening_pa": 14544,
+    "exclusions": {
+      "OPENING_IDENTITY_CHANGED": 5
+    },
+    "top": {
+      "modeled_reach": {
+        "predicted": 0.31874731023689507,
+        "actual": 0.3070682068206821,
+        "pred_minus_actual": 0.011679103416212977
+      },
+      "strikeout": {
+        "predicted": 0.21879593259092608,
+        "actual": 0.24408690869086908,
+        "pred_minus_actual": -0.02529097609994299
+      },
+      "ball_in_play_out": {
+        "predicted": 0.4624567571721789,
+        "actual": 0.44884488448844884,
+        "pred_minus_actual": 0.013611872683730042
+      }
+    },
+    "bottom": {
+      "modeled_reach": {
+        "predicted": 0.3182924380937765,
+        "actual": 0.3294829482948295,
+        "pred_minus_actual": -0.011190510201052994
+      },
+      "strikeout": {
+        "predicted": 0.2186119252775671,
+        "actual": 0.2125962596259626,
+        "pred_minus_actual": 0.006015665651604496
+      },
+      "ball_in_play_out": {
+        "predicted": 0.46309563662865644,
+        "actual": 0.45792079207920794,
+        "pred_minus_actual": 0.0051748445494484985
+      }
+    },
+    "bottom_minus_top_reach_error_gap": -0.022869613617265996,
+    "reach_error_gap_ci95": [
+      -0.037383448673122315,
+      -0.007966095019119993
+    ]
+  },
+  "governance": {
+    "source": "Retrosheet parsed regular-season play-by-play, 2021-2024",
+    "source_archive_sha256": {
+      "2021": "6c1503885a22f4fdd4f2195e78905839883406bf7bff5a7e1c11069a6bbde765",
+      "2022": "0bdcee514475b6d1031437145eeb9e034a3e70eafd4befddc6ea0e304b1764d3",
+      "2023": "0129befd7944f60a858e5fdc265a44ed20afaa568679b37fca1083e3c083b20e",
+      "2024": "a3e8c08876ddf70e1ffb0b20486c2873cf4aae19e0acc8002096e9056107615b"
+    },
+    "2024_hypothesis_post_selection": true,
+    "candidate_fit": false,
+    "paired_calendar_date_bootstrap_draws": 2000,
+    "full_i2_replay": false
+  }
+}

@@ -5,6 +5,11 @@ or staking change. This phase checked the Phase 9 first-inning state residual
 against the archived 2024 pregame A/B artifact, earlier observed seasons, and
 two fixed 2025 component ablations.
 
+Phase 11 followed up with PA-level first-inning evidence. Its opening-three
+batters show an event-rate residual by half in 2024, while a descriptive
+event-mix decomposition accounts for most of the observed early outs gap.
+See `docs/I2_VNEXT_PHASE11_OPENING_PA_CHECKPOINT.md`.
+
 ## Earlier first-inning pattern
 
 "Late" means the second inning starts at batting slot 7, 8, or 9, usually
