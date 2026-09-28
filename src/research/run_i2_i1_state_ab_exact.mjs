@@ -27,6 +27,7 @@ const PARKS=arg('--parks','data/derived/i2_vnext/park/savant_venue_profiles_2024
 const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/i1_state_ab_exact_predictions.json');
 const DIRECT_PA_MODEL=arg('--direct-i1-pa-model');
+const OBSERVED_SLOTS=arg('--observed-slots');
 
 const replay=JSON.parse(fs.readFileSync(INPUT,'utf8'));
 const model=JSON.parse(fs.readFileSync(MODEL,'utf8'));
@@ -66,6 +67,28 @@ if (directModel) {
       !directModel.training_years.every(y=>y<replay.season) ||
       JSON.stringify(directModel.event_order)!==JSON.stringify(EVENTS)) {
     throw new Error('Direct I1 PA model is not governed for this replay');
+  }
+}
+// Target-only diagnostic: read observed I2 slots after the pregame model inputs
+// are loaded. They are used only after all pregame slot and I2 scoreless
+// distributions for a game have been computed.
+const observedSlots=new Map();
+if (OBSERVED_SLOTS) {
+  const [header,...lines]=fs.readFileSync(OBSERVED_SLOTS,'utf8').trim().split(/\r?\n/);
+  const fields=header.split(',');
+  for(const field of ['gid','half','i2_start_slot']) {
+    if(!fields.includes(field)) throw new Error(`Observed slot CSV missing ${field}`);
+  }
+  for(const line of lines){
+    const values=line.split(',');
+    const row=Object.fromEntries(fields.map((field,i)=>[field,values[i]]));
+    if(!['top','bottom'].includes(row.half)) continue;
+    const key=`${row.gid}|${row.half}`;
+    const slot=Number(row.i2_start_slot);
+    if(observedSlots.has(key) || !Number.isInteger(slot) || slot<1 || slot>9) {
+      throw new Error(`Duplicate or invalid observed slot: ${key}`);
+    }
+    observedSlots.set(key,slot);
   }
 }
 
@@ -306,6 +329,18 @@ for (const game of replay.games) {
     row.away_direct_slot_tv=meanAbsDiff(awayPlayer,awayDirect);
     row.home_direct_slot_tv=meanAbsDiff(homePlayer,homeDirect);
   }
+  if (OBSERVED_SLOTS) {
+    const topSlot=observedSlots.get(`${game.gid}|top`);
+    const bottomSlot=observedSlots.get(`${game.gid}|bottom`);
+    if(!topSlot || !bottomSlot) throw new Error(`Missing observed slots for ${game.gid}`);
+    row.oracle_slot_under05=awayP0[topSlot]*homeP0[bottomSlot];
+    row.oracle_top0=awayP0[topSlot];
+    row.oracle_bottom0=homeP0[bottomSlot];
+    row.player_top0=playerTop0;
+    row.player_bottom0=playerBot0;
+    row.observed_top_slot=topSlot;
+    row.observed_bottom_slot=bottomSlot;
+  }
   predictions.push(row);
 }
 
@@ -324,6 +359,8 @@ const payload={
   },
   i1_environment:'neutral in both arms to isolate player-rate incremental value',
   direct_i1_pa_model:directModel?.version || null,
+  observed_i2_start_slot_used_as_predictor:false,
+  observed_slot_target_only_diagnostic:Boolean(OBSERVED_SLOTS),
   park_rule_i2:'prior-season Savant event-vector park profile applied exactly once',
   park_match_rate:predictions.length ? parkMatched/predictions.length : null,
   predictions,

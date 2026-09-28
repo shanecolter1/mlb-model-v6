@@ -3,6 +3,10 @@
 Status: **RESEARCH ONLY / SHADOW**. No live model, full-I2 calibration,
 market workflow, staking, or betting threshold changed.
 
+Phase 14 substituted actual I2 batting-order starting slots as a target-only
+diagnostic. The mean Under bias persisted. See
+`docs/I2_VNEXT_PHASE14_OBSERVED_SLOT_DIAGNOSTIC.md`.
+
 ## Paired 2025 full-I2 replay
 
 The frozen 2022–23 direct first-inning PA model from Phase 12 replaces only
