@@ -83,12 +83,12 @@ jobs:
           python src/build_savant_venue_profiles.py             --year 2026             --rolling 3             --output-dir data/runtime/i2
           test -s data/runtime/i2/savant_venue_profiles_2026_3yr.json
 
-      - name: Run 2026-09-28 baseball-only shadow
+      - name: Run 2026-09-29 next-slate baseball-only shadow
         env:
-          I2_DATE: '2026-09-28'
+          I2_DATE: '2026-09-29'
           I2_CUTOFF: '2026-09-28T00:00:00-05:00'
           I2_TRIALS: '10000'
-          I2_OUTPUT: 'data/runtime/i2/2026-09-28_vnext_phase20.json'
+          I2_OUTPUT: 'data/runtime/i2/2026-09-29_vnext_phase20.json'
           I2_VENUE_PROFILES: 'data/runtime/i2/savant_venue_profiles_2026_3yr.json'
           I2_VNEXT_HALF_CONTRAST: 'data/derived/i2_vnext/i2_vnext_half_contrast.json'
         run: node src/pipeline/run_i2_vnext_today.mjs
@@ -100,7 +100,7 @@ jobs:
           from collections import Counter
           from pathlib import Path
 
-          path=Path('data/runtime/i2/2026-09-28_vnext_phase20.json')
+          path=Path('data/runtime/i2/2026-09-29_vnext_phase20.json')
           m=json.loads(path.read_text())
           art=json.loads(Path('data/derived/i2_vnext/i2_vnext_half_contrast.json').read_text())
           h=art['zero_sum_half_contrast_h']
@@ -194,7 +194,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
           path: |
-            data/runtime/i2/2026-09-28_vnext_phase20.json
+            data/runtime/i2/2026-09-29_vnext_phase20.json
             data/runtime/i2/savant_venue_profiles_2026_3yr.json
             data/derived/i2_vnext/PHASE20_CHECKPOINT.json
 
