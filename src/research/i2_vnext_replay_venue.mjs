@@ -10,19 +10,22 @@ const RETRO_SITE_TO_SAVANT_TEAM = {
 };
 
 // The actual 2025 venue has no valid 2024 Savant profile at these sites.
-const EXPLICIT_NEUTRAL_2025_SITES = new Set([
+const EXPLICIT_NEUTRAL_SITES_BY_SEASON = {
+  2025: new Set([
   'SAC01', // Athletics at Sutter Health Park
   'TAM02', // Rays at George M. Steinbrenner Field
   'TOK01', // Tokyo Dome
   'BST01', // Bristol Motor Speedway
   'WIL02', // Williamsport special-event site
-]);
+]),
+};
 const norm = x => String(x ?? '').trim().toUpperCase();
 
-export function venueForReplayGame(game, parkProfiles) {
+export function venueForReplayGame(game, parkProfiles, season=2025) {
   const site = norm(game.site);
-  if (EXPLICIT_NEUTRAL_2025_SITES.has(site)) {
-    return {profile:null,status:'EXPLICIT_2025_SITE_NEUTRAL'};
+  const explicit = EXPLICIT_NEUTRAL_SITES_BY_SEASON[Number(season)] || new Set();
+  if (explicit.has(site)) {
+    return {profile:null,status:`EXPLICIT_${Number(season)}_SITE_NEUTRAL`};
   }
   const savantTeam = RETRO_SITE_TO_SAVANT_TEAM[site];
   if (!savantTeam) return {profile:null,status:'UNMAPPED_RETROSHEET_SITE_NEUTRAL'};
