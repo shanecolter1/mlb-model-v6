@@ -1,0 +1,262 @@
+{
+  "version": "i2-bottom-half-residual-localization-v1",
+  "status": "SHADOW_DIAGNOSTIC_ONLY",
+  "market_inputs_used": false,
+  "canonical_replay": "i2-vnext-walkforward-2025-v1",
+  "full_slate": {
+    "n_games": 2430,
+    "n_dates": 184,
+    "bottom_predicted_scoreless": 0.7555545679012347,
+    "bottom_observed_scoreless": 0.7312757201646091,
+    "bottom_bias": 0.02427884773662551,
+    "bottom_bias_date_ci95": [
+      0.00558313839126451,
+      0.042635295439113666
+    ],
+    "top_bias": -0.006956954732510288,
+    "bottom_minus_top_bias": 0.031235802469135803,
+    "bottom_minus_top_date_ci95": [
+      0.005160549867139967,
+      0.0588457116718314
+    ]
+  },
+  "matched_park": {
+    "n_games": 2264,
+    "n_dates": 182,
+    "bottom_predicted_scoreless": 0.755310070671378,
+    "bottom_observed_scoreless": 0.7301236749116607,
+    "bottom_bias": 0.025186395759717317,
+    "bottom_bias_date_ci95": [
+      0.00666786333956116,
+      0.0444826939860857
+    ],
+    "top_bias": -0.015573056537102472,
+    "bottom_minus_top_bias": 0.040759452296819786,
+    "bottom_minus_top_date_ci95": [
+      0.014292822928256453,
+      0.06807368929196898
+    ]
+  },
+  "neutral_venue": {
+    "n_games": 166,
+    "n_dates": 129,
+    "bottom_predicted_scoreless": 0.7588891566265059,
+    "bottom_observed_scoreless": 0.7469879518072289,
+    "bottom_bias": 0.011901204819277108,
+    "bottom_bias_date_ci95": [
+      -0.052406905131222384,
+      0.07261259675107487
+    ],
+    "top_bias": 0.11055421686746986,
+    "bottom_minus_top_bias": -0.09865301204819277,
+    "bottom_minus_top_date_ci95": [
+      -0.20545478055077446,
+      -0.00011592400832792212
+    ]
+  },
+  "matched_park_starter_continuation_observed_only": {
+    "same_starter": {
+      "n_games": 2234,
+      "n_dates": 182,
+      "bottom_predicted_scoreless": 0.755374127126231,
+      "bottom_observed_scoreless": 0.7300805729632945,
+      "bottom_bias": 0.025293554162936438,
+      "bottom_bias_date_ci95": [
+        0.006216707308035947,
+        0.044279419515669494
+      ],
+      "top_bias": -0.016078558639212176,
+      "bottom_minus_top_bias": 0.04137211280214862,
+      "bottom_minus_top_date_ci95": [
+        0.014698040310696787,
+        0.06786972219259518
+      ]
+    },
+    "changed": {
+      "n_games": 30,
+      "n_dates": 28,
+      "bottom_predicted_scoreless": 0.7505399999999998,
+      "bottom_observed_scoreless": 0.7333333333333333,
+      "bottom_bias": 0.01720666666666668,
+      "bottom_bias_date_ci95": [
+        -0.125378921875,
+        0.18528342857142857
+      ],
+      "top_bias": 0.022069999999999996,
+      "bottom_minus_top_bias": -0.004863333333333342,
+      "bottom_minus_top_date_ci95": [
+        -0.23042467473118278,
+        0.221044580645161
+      ]
+    }
+  },
+  "matched_park_predicted_bottom_scoreless_quintiles": {
+    "1": {
+      "probability_range": [
+        0.6577,
+        0.7323
+      ],
+      "n_games": 452,
+      "n_dates": 170,
+      "bottom_predicted_scoreless": 0.7144690265486726,
+      "bottom_observed_scoreless": 0.7123893805309734,
+      "bottom_bias": 0.002079646017699115,
+      "bottom_bias_date_ci95": [
+        -0.04073437068200428,
+        0.045502535333125385
+      ],
+      "top_bias": -0.00763761061946902,
+      "bottom_minus_top_bias": 0.009717256637168147,
+      "bottom_minus_top_date_ci95": [
+        -0.05148252837857995,
+        0.07125952577866165
+      ]
+    },
+    "2": {
+      "probability_range": [
+        0.7323,
+        0.7498
+      ],
+      "n_games": 453,
+      "n_dates": 172,
+      "bottom_predicted_scoreless": 0.7418962472406181,
+      "bottom_observed_scoreless": 0.717439293598234,
+      "bottom_bias": 0.024456953642384108,
+      "bottom_bias_date_ci95": [
+        -0.017563279109334598,
+        0.06838838924458662
+      ],
+      "top_bias": -0.029020750551876386,
+      "bottom_minus_top_bias": 0.0534777041942605,
+      "bottom_minus_top_date_ci95": [
+        -0.006804945151424499,
+        0.11327249942103969
+      ]
+    },
+    "3": {
+      "probability_range": [
+        0.7498,
+        0.763
+      ],
+      "n_games": 451,
+      "n_dates": 170,
+      "bottom_predicted_scoreless": 0.7563782705099777,
+      "bottom_observed_scoreless": 0.729490022172949,
+      "bottom_bias": 0.026888248337028825,
+      "bottom_bias_date_ci95": [
+        -0.011971126857749481,
+        0.06903184362731878
+      ],
+      "top_bias": 0.026406208425720622,
+      "bottom_minus_top_bias": 0.00048203991130820704,
+      "bottom_minus_top_date_ci95": [
+        -0.058348063251634635,
+        0.05883414010416667
+      ]
+    },
+    "4": {
+      "probability_range": [
+        0.763,
+        0.7785799999999999
+      ],
+      "n_games": 455,
+      "n_dates": 170,
+      "bottom_predicted_scoreless": 0.7699914285714285,
+      "bottom_observed_scoreless": 0.7318681318681318,
+      "bottom_bias": 0.03812329670329672,
+      "bottom_bias_date_ci95": [
+        -0.001518715437788019,
+        0.07613783166603352
+      ],
+      "top_bias": -0.039915164835164836,
+      "bottom_minus_top_bias": 0.07803846153846153,
+      "bottom_minus_top_date_ci95": [
+        0.023714044372294373,
+        0.13194810851469627
+      ]
+    },
+    "5": {
+      "probability_range": [
+        0.7785799999999999,
+        0.8466
+      ],
+      "n_games": 453,
+      "n_dates": 162,
+      "bottom_predicted_scoreless": 0.7936651214128035,
+      "bottom_observed_scoreless": 0.7593818984547461,
+      "bottom_bias": 0.034283222958057386,
+      "bottom_bias_date_ci95": [
+        -0.006030012274155534,
+        0.07586419141475517
+      ],
+      "top_bias": -0.027387637969094925,
+      "bottom_minus_top_bias": 0.061670860927152314,
+      "bottom_minus_top_date_ci95": [
+        -0.0012922250916016288,
+        0.12278532988975543
+      ]
+    }
+  },
+  "matched_park_calendar_segments": {
+    "mar_apr": {
+      "n_games": 420,
+      "n_dates": 35,
+      "bottom_predicted_scoreless": 0.7532150000000002,
+      "bottom_observed_scoreless": 0.6880952380952381,
+      "bottom_bias": 0.0651197619047619,
+      "bottom_bias_date_ci95": [
+        0.017070817755025818,
+        0.11560154224666962
+      ],
+      "top_bias": -0.017423095238095234,
+      "bottom_minus_top_bias": 0.08254285714285714,
+      "bottom_minus_top_date_ci95": [
+        0.01897907572516471,
+        0.14623082142857138
+      ]
+    },
+    "may_jun": {
+      "n_games": 751,
+      "n_dates": 61,
+      "bottom_predicted_scoreless": 0.7544880159786951,
+      "bottom_observed_scoreless": 0.7829560585885486,
+      "bottom_bias": -0.028468042609853524,
+      "bottom_bias_date_ci95": [
+        -0.059000293624130076,
+        0.002363873567086475
+      ],
+      "top_bias": -0.013645272969374168,
+      "bottom_minus_top_bias": -0.014822769640479357,
+      "bottom_minus_top_date_ci95": [
+        -0.0584636933422467,
+        0.030022430535148723
+      ]
+    },
+    "jul_sep": {
+      "n_games": 1093,
+      "n_dates": 86,
+      "bottom_predicted_scoreless": 0.7566799634034767,
+      "bottom_observed_scoreless": 0.7099725526075022,
+      "bottom_bias": 0.04670741079597439,
+      "bottom_bias_date_ci95": [
+        0.023532904501933176,
+        0.07157247833167783
+      ],
+      "top_bias": -0.016186733760292775,
+      "bottom_minus_top_bias": 0.06289414455626716,
+      "bottom_minus_top_date_ci95": [
+        0.026841528602344584,
+        0.09809053851096364
+      ]
+    }
+  },
+  "governance": {
+    "2025_previously_inspected": true,
+    "actual_starter_continuation_used_as_predictor": false,
+    "quintiles_defined_by_pregame_probability_only": true,
+    "calendar_segments_descriptive_not_fit": true,
+    "bias_intervals_conditional_on_frozen_predictions": true,
+    "live_model_changed": false,
+    "bottom_cause_identified": false
+  }
+}
