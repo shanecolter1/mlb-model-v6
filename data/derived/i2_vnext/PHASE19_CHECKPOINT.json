@@ -1,0 +1,67 @@
+{
+  "version": "i2-vnext-phase19-zero-sum-half-contrast-v1",
+  "market_inputs_used": false,
+  "calendar_month_used": false,
+  "train_season": 2024,
+  "test_season": 2025,
+  "candidate": {
+    "top_offset": -0.08281305372851491,
+    "bottom_offset": 0.06859758183563788,
+    "common_component_removed": -0.007107735946438515,
+    "zero_sum_half_contrast_h": 0.0757053177820764,
+    "applied_top_logit_delta": -0.0757053177820764,
+    "applied_bottom_logit_delta": 0.0757053177820764
+  },
+  "test_results": {
+    "top_raw_actual_minus_predicted": -0.015573056537102472,
+    "top_adjusted_actual_minus_predicted": -0.0019496249161168526,
+    "bottom_raw_actual_minus_predicted": 0.025186395759717317,
+    "bottom_adjusted_actual_minus_predicted": 0.010989857317045493,
+    "half_brier": {
+      "delta_adjusted_minus_raw": -0.00037731861236841506,
+      "ci95_date_cluster": [
+        -0.0007507186058799655,
+        -7.368022567122027e-07
+      ]
+    },
+    "half_logloss": {
+      "delta_adjusted_minus_raw": -0.001016298460479914,
+      "ci95_date_cluster": [
+        -0.00202300385319096,
+        1.4407546470909857e-07
+      ]
+    },
+    "full_i2_brier": {
+      "delta_adjusted_minus_raw": -0.00015188861816550192,
+      "ci95_date_cluster": [
+        -0.00025006360444736675,
+        -5.045236028079789e-05
+      ]
+    },
+    "full_i2_logloss": {
+      "delta_adjusted_minus_raw": -0.000309870730616661,
+      "ci95_date_cluster": [
+        -0.0005118293743834958,
+        -0.00010132118595303592
+      ]
+    },
+    "full_i2_under_mean": {
+      "raw_mean_prediction": 0.5712754416961131,
+      "adjusted_mean_prediction": 0.57056884690091,
+      "observed": 0.558303886925795
+    }
+  },
+  "decision": {
+    "half_adjustment_form": "ZERO_SUM_LOGIT_CONTRAST",
+    "top": "subtract h from top-I2 scoring logit",
+    "bottom": "add h to bottom-I2 scoring logit",
+    "h_source": "2024 matched-home-venue half-offset contrast only",
+    "common_component": "do not apply here; reserve for final full-I2 calibration layer",
+    "status": "VALIDATED_HISTORICAL_CANDIDATE_NOT_YET_PRODUCTION"
+  },
+  "governance": {
+    "2025_used_to_fit_h": false,
+    "2024_hyperparameter_overlap_warning": true,
+    "production_changed": false
+  }
+}
