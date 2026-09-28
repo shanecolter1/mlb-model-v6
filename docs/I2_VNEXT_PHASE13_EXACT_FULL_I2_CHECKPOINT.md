@@ -3,6 +3,12 @@
 Status: **RESEARCH ONLY / SHADOW**. No live model, full-I2 calibration,
 market workflow, staking, or betting threshold changed.
 
+**Comparison scope:** the canonical 2025 walk-forward precision replay
+predicted 57.1414% Under against 55.1440% realized. This phase's 56.6292%
+baseline uses a static 2024-trained I2 model with exact evaluation on the
+same games. Its scores are paired only within that static research setup;
+they do not supersede the canonical walk-forward score.
+
 Phase 14 substituted actual I2 batting-order starting slots as a target-only
 diagnostic. The mean Under bias persisted. See
 `docs/I2_VNEXT_PHASE14_OBSERVED_SLOT_DIAGNOSTIC.md`.

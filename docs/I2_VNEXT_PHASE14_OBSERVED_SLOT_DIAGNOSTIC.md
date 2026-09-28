@@ -4,6 +4,16 @@ Status: **RESEARCH ONLY / TARGET-ONLY DIAGNOSTIC**. No live forecast,
 production formula, full-I2 calibration, market workflow, or betting rule
 changed.
 
+**Comparison scope:** the canonical 2025 point-in-time walk-forward precision
+replay predicted **57.1414% Under**, versus **55.1440% realized** (+1.9973
+percentage points). The 56.6292% figure below is a *different* static
+2024-trained exact research evaluator on the same 2,430 games. Its baseline
+is 0.5121 percentage points below the canonical replay. The difference
+combines downstream model cadence and exact versus 10,000-trial evaluation;
+it has not been separately attributed. The observed-slot diagnostic is
+paired only with its own exact static baseline and does not replace the
+canonical replay score.
+
 ## Question and controlled calculation
 
 Phase 13 showed that the fitted direct I1 PA candidate barely affects full-I2
@@ -38,7 +48,9 @@ in log loss. Both include zero.
 The bottom-half scoreless forecast moves **farther** above realization after
 the actual batting slot is supplied. The current I1 starting-slot error is
 therefore not a plausible standalone fix for this specific Under residual
-within the frozen downstream model. Knowing an observed slot is also not a
+within the frozen static downstream model. This does not directly quantify
+the same diagnostic under the canonical walk-forward replay. Knowing an
+observed slot is also not a
 formal upper bound on achievable pregame performance: it can carry game
 context unavailable before first pitch, while the downstream event and
 transition assumptions stay fixed. Do not turn the diagnostic into a
