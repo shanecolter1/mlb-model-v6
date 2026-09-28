@@ -1,0 +1,99 @@
+{
+  "version": "i2-vnext-phase18-half-calibration-replication-v1",
+  "market_inputs_used": false,
+  "calendar_month_used": false,
+  "2024": {
+    "season": 2024,
+    "games": 2421,
+    "top_actual_minus_predicted": -0.01536055349029327,
+    "bottom_actual_minus_predicted": 0.013203387030152827,
+    "bottom_only_logit_offset": 0.06859758183563794,
+    "bottom_only_p_date_cluster": 0.13350881860310862,
+    "bottom_minus_top_offset": 0.1514106355641528,
+    "bottom_minus_top_p_date_cluster": 0.016183888232021833
+  },
+  "2025_recheck": {
+    "season": 2025,
+    "games": 2264,
+    "top_actual_minus_predicted": -0.015573056537102472,
+    "bottom_actual_minus_predicted": 0.025186395759717317,
+    "bottom_only_logit_offset": 0.1324770899512679,
+    "bottom_only_p_date_cluster": 0.0075527097519344786,
+    "bottom_minus_top_offset": 0.21926753728458256,
+    "bottom_minus_top_p_date_cluster": 0.002975218907769692
+  },
+  "cross_season_2024_fit_to_2025": {
+    "version": "i2-half-adjustment-cross-season-validation-v1",
+    "market_inputs_used": false,
+    "train_season": 2024,
+    "test_season": 2025,
+    "training_source": "matched-home-venue bottom-only logit offset",
+    "trained_bottom_logit_offset": 0.06859758183563794,
+    "test_matched_games": 2264,
+    "bottom": {
+      "raw": {
+        "n": 2264,
+        "mean_prediction": 0.24468992932862194,
+        "observed": 0.2698763250883392,
+        "actual_minus_predicted": 0.025186395759717317,
+        "brier": 0.19735193901060072,
+        "logloss": 0.5840917760488283
+      },
+      "adjusted": {
+        "n": 2264,
+        "mean_prediction": 0.25753116353957883,
+        "observed": 0.2698763250883392,
+        "actual_minus_predicted": 0.012345161548760367,
+        "brier": 0.19688742446886076,
+        "logloss": 0.58280200406471
+      },
+      "adjusted_minus_raw": {
+        "brier": -0.00046451454173995765,
+        "logloss": -0.001289771984118282,
+        "ci95_date_cluster": {
+          "brier_delta": [
+            -0.0009454064371980665,
+            2.8978847185367092e-05
+          ],
+          "logloss_delta": [
+            -0.0025644807040127817,
+            2.2345467557766725e-05
+          ]
+        }
+      },
+      "absolute_bias_reduction": 0.01284123421095695
+    },
+    "full_i2_under_from_half_adjustment": {
+      "raw_brier": 0.24614479512367493,
+      "adjusted_brier": 0.24586164101105787,
+      "brier_delta": -0.0002831541126170836,
+      "raw_logloss": 0.6854151903682978,
+      "adjusted_logloss": 0.6848328863826837,
+      "logloss_delta": -0.0005823039856141588,
+      "delta_ci95_date_cluster": {
+        "brier": [
+          -0.0006853293021764772,
+          0.00012156044827268157
+        ],
+        "logloss": [
+          -0.001407611008440326,
+          0.00024312395317518164
+        ]
+      }
+    },
+    "governance": {
+      "test_season_used_to_fit_offset": false,
+      "calendar_month_used": false,
+      "top_half_adjusted": false,
+      "production_changed": false,
+      "historical_hyperparameter_overlap_warning": true,
+      "eligible_for_direct_promotion": false
+    }
+  },
+  "governance": {
+    "2024_hyperparameter_overlap": "C=0.05 and half-life=730 were originally selected using 2024H2; 2024 is replication evidence, not a pristine model holdout.",
+    "half_adjustment_fit_uses_2025": false,
+    "production_changed": false,
+    "eligible_for_direct_promotion": false
+  }
+}
