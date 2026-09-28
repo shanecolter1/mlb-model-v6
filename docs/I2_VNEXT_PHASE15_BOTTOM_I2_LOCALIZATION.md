@@ -1,4 +1,4 @@
-# I2 vNext Phase 15 — localize bottom-I2 miss
+# I2 vNext Phase 15 — paired top/bottom I2 residuals
 
 Status: **SHADOW DIAGNOSTIC ONLY**. No prediction parameter, price workflow,
 calibration, or betting decision changed.
@@ -22,6 +22,14 @@ interval [+1.43, +6.81]. The 30 matched games where the away starter
 did not begin I2 are too few to estimate a reliable separate effect;
 observed continuation is never supplied to the pregame model.
 
+The top half has a distinct pattern that a full-slate average obscures:
+at matched parks it predicts **1.56 points too little** scoreless (95%
+date-cluster interval [-3.34, +0.19]), while at the 166 neutral venues it
+predicts **11.06 points too much** scoreless ([+3.81, +18.53]). The
+full-slate top error is -0.70 points ([-2.43, +1.04]) because the two
+venue groups partially offset. Both halves must be audited; a bottom-only
+correction would miss the largest top venue error.
+
 ## Risk and calendar localization
 
 Bottom forecasts at matched parks ranged from about 65.8% to 84.7%
@@ -31,6 +39,11 @@ lowest to highest predicted scoreless. Individual quintile intervals are
 wide and mostly include zero. The direction suggests checking the
 highest-scoreless forecasts; it is not evidence for an arbitrary threshold
 or calibration curve.
+
+When quintiles are formed instead from **top** pregame scoreless forecasts
+at matched parks, top errors are -3.62, -3.05, +0.14, -1.03 and -0.21
+points from lowest to highest predicted scoreless. These are exploratory
+subgroups, not a monotonic calibration result.
 
 | Matched-park period | Games | Bottom error | Date-cluster 95% interval |
 | --- | ---: | ---: | ---: |
@@ -52,9 +65,9 @@ join the frozen monthly event-model version and pregame player/lineup state
 to official 2025 I2 play events, then retain the prediction before comparing
 the realized event:
 
-1. Score the first three PAs of each I2 half by event class and modeled
-   reach. This avoids selecting only longer innings. Separate top and bottom,
-   valid parks, and known pregame opener plans.
+1. Score the first three PAs of **both** I2 halves by event class and modeled
+   reach. This avoids selecting only longer innings. Compare matched and
+   neutral venues separately, and distinguish known pregame opener plans.
 2. Decompose expected scoreless changes into the PA event mix versus
    conditional base/out-to-run transitions. The latter must be checked by
    observed state and event, without using those observations as predictors.

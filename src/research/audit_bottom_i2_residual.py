@@ -27,7 +27,7 @@ def summarize(rows, draws, seed):
     dates = defaultdict(list)
     for i, row in enumerate(rows):
         dates[row["date"]].append(i)
-    clustered = np.asarray([[bottom[ix].sum(), (bottom-top)[ix].sum(), len(ix)] for ix in dates.values()])
+    clustered = np.asarray([[bottom[ix].sum(), (bottom-top)[ix].sum(), top[ix].sum(), len(ix)] for ix in dates.values()])
     rng = np.random.default_rng(seed)
     sample = clustered[rng.integers(0, len(clustered), size=(draws, len(clustered)))].sum(axis=1)
     return {
@@ -35,10 +35,11 @@ def summarize(rows, draws, seed):
         "bottom_predicted_scoreless": float(np.mean([r["bottom_p"] for r in rows])),
         "bottom_observed_scoreless": float(np.mean([r["bottom_y"] for r in rows])),
         "bottom_bias": float(bottom.mean()),
-        "bottom_bias_date_ci95": [float(v) for v in np.quantile(sample[:, 0]/sample[:, 2], [.025, .975])],
+        "bottom_bias_date_ci95": [float(v) for v in np.quantile(sample[:, 0]/sample[:, 3], [.025, .975])],
         "top_bias": float(top.mean()),
+        "top_bias_date_ci95": [float(v) for v in np.quantile(sample[:, 2]/sample[:, 3], [.025, .975])],
         "bottom_minus_top_bias": float((bottom-top).mean()),
-        "bottom_minus_top_date_ci95": [float(v) for v in np.quantile(sample[:, 1]/sample[:, 2], [.025, .975])],
+        "bottom_minus_top_date_ci95": [float(v) for v in np.quantile(sample[:, 1]/sample[:, 3], [.025, .975])],
     }
 
 
@@ -74,13 +75,16 @@ def main():
     neutral = [r for r in rows if r["park"] == "EXPLICIT_2025_SITE_NEUTRAL"]
     if len(matched) != 2264 or len(neutral) != 166:
         raise ValueError("Park coverage mismatch")
-    cuts = np.quantile([r["bottom_p"] for r in matched], [0, .2, .4, .6, .8, 1])
-    buckets = {}
-    for i in range(5):
-        group = [r for r in matched if (cuts[i] <= r["bottom_p"] < cuts[i+1] if i < 4
-                                        else cuts[i] <= r["bottom_p"] <= cuts[i+1])]
-        buckets[str(i+1)] = {"probability_range": [float(cuts[i]), float(cuts[i+1])],
-                           **summarize(group, a.bootstrap, 1500+i)}
+    def risk_buckets(side, seed):
+        field = f"{side}_p"
+        cuts = np.quantile([r[field] for r in matched], [0, .2, .4, .6, .8, 1])
+        buckets = {}
+        for i in range(5):
+            group = [r for r in matched if (cuts[i] <= r[field] < cuts[i+1] if i < 4
+                                            else cuts[i] <= r[field] <= cuts[i+1])]
+            buckets[str(i+1)] = {"probability_range": [float(cuts[i]), float(cuts[i+1])],
+                               **summarize(group, a.bootstrap, seed+i)}
+        return buckets
     periods = {
         "mar_apr": [r for r in matched if r["date"] < "20250501"],
         "may_jun": [r for r in matched if "20250501" <= r["date"] < "20250701"],
@@ -98,7 +102,8 @@ def main():
             "same_starter": summarize([r for r in matched if r["away_starter_began_i2"]], a.bootstrap, 153),
             "changed": summarize([r for r in matched if not r["away_starter_began_i2"]], a.bootstrap, 154),
         },
-        "matched_park_predicted_bottom_scoreless_quintiles": buckets,
+        "matched_park_predicted_bottom_scoreless_quintiles": risk_buckets("bottom", 1500),
+        "matched_park_predicted_top_scoreless_quintiles": risk_buckets("top", 1510),
         "matched_park_calendar_segments": {name: summarize(group, a.bootstrap, 160+i)
                                             for i, (name, group) in enumerate(periods.items())},
         "governance": {
