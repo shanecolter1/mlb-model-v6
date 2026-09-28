@@ -26,6 +26,7 @@ def parse_args():
     p.add_argument("--season",type=int,required=True)
     p.add_argument("--half-life",type=float,default=730.0)
     p.add_argument("--c",type=float,default=0.05)
+    p.add_argument("--max-iter",type=int,default=2500)
     p.add_argument("--output-dir",type=Path,required=True)
     p.add_argument("--arsenal-output",type=Path,required=True)
     return p.parse_args()
@@ -90,6 +91,9 @@ def artifact_for(train,c,half_life,target_season,cutoff):
 
 def main():
     a=parse_args()
+    if a.max_iter < 2500:
+        raise ValueError("--max-iter must be at least the governed 2500-iteration ceiling")
+    base.MAX_MODEL_ITER=int(a.max_iter)
     df=prepare(a.input,a.arsenal_dir)
     if a.season not in set(df["season"]):
         raise ValueError("Target season absent from I2 PA dataset")
@@ -125,7 +129,7 @@ def main():
         "season":a.season,
         "cadence":"preseason then monthly May-September",
         "policy":"Fixed specification/hyperparameters; expanding coefficients use only I2 PAs strictly before each cutoff.",
-        "hyperparameters":{"half_life_days":a.half_life,"C":a.c},
+        "hyperparameters":{"half_life_days":a.half_life,"C":a.c,"solver_max_iter":a.max_iter},
         "entries":entries,
         "governance":{
             "target_season_outcomes_used_for_feature_selection":False,
