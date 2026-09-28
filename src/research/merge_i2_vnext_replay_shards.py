@@ -24,7 +24,7 @@ def logloss(y,p):
 
 def main():
     args=parse_args()
-    files=sorted(args.input_dir.glob("replay_2025_shard_*.json"))
+    files=sorted(args.input_dir.glob("replay_*_shard_*.json"))
     if len(files)!=args.expected_shards:
         raise RuntimeError(f"Expected {args.expected_shards} shard files, found {len(files)}")
 
