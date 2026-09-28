@@ -1,0 +1,771 @@
+{
+  "version": "phase16-opening-pa-walkforward-audit-v1",
+  "method": "Pregame model vectors for all 9 hitters per side; actual start slot, game identity, first three PAs and starter continuity joined as targets only.",
+  "selection": "Only games with six exact opening hitter identities and halves with three starter PAs and mapped terminal events.",
+  "coverage": {
+    "matched_games": 2422,
+    "top_eligible_halves": 2373,
+    "bottom_eligible_halves": 2377,
+    "top_pitcher_changed_halves": 49,
+    "bottom_pitcher_changed_halves": 45,
+    "unmatched_or_ambiguous_games": 8
+  },
+  "unmatched_games": [
+    {
+      "gid": "BOS202504070",
+      "candidate_count": 0
+    },
+    {
+      "gid": "SLN202505210",
+      "candidate_count": 0
+    },
+    {
+      "gid": "PIT202506060",
+      "candidate_count": 0
+    },
+    {
+      "gid": "ANA202506070",
+      "candidate_count": 0
+    },
+    {
+      "gid": "ATH202507080",
+      "candidate_count": 0
+    },
+    {
+      "gid": "DET202508200",
+      "candidate_count": 0
+    },
+    {
+      "gid": "LAN202509080",
+      "candidate_count": 0
+    },
+    {
+      "gid": "MIA202509120",
+      "candidate_count": 0
+    }
+  ],
+  "side": {
+    "top": {
+      "n": 7119,
+      "logloss": 1.4564866303344235,
+      "multiclass_brier": 0.697473126298348,
+      "reach": {
+        "predicted": 0.30761329739938925,
+        "observed": 0.29287821323219554
+      },
+      "event_rates": {
+        "single": {
+          "predicted": 0.1461561636172512,
+          "observed": 0.13836212951257199
+        },
+        "double": {
+          "predicted": 0.04239679907516208,
+          "observed": 0.03694339092569181
+        },
+        "triple": {
+          "predicted": 0.0038011027257332376,
+          "observed": 0.004073605843517348
+        },
+        "home_run": {
+          "predicted": 0.029301815017378288,
+          "observed": 0.03062227840988903
+        },
+        "walk": {
+          "predicted": 0.07624039774081583,
+          "observed": 0.07290349768225875
+        },
+        "hit_by_pitch": {
+          "predicted": 0.009717019223048629,
+          "observed": 0.00997331085826661
+        },
+        "strikeout": {
+          "predicted": 0.23740476969344976,
+          "observed": 0.24919230228964742
+        },
+        "ball_in_play_out": {
+          "predicted": 0.454981932907161,
+          "observed": 0.45792948447815707
+        }
+      }
+    },
+    "bottom": {
+      "n": 7131,
+      "logloss": 1.473142753667388,
+      "multiclass_brier": 0.7041700089046743,
+      "reach": {
+        "predicted": 0.30748437123030486,
+        "observed": 0.31538353667087365
+      },
+      "event_rates": {
+        "single": {
+          "predicted": 0.14605161799979102,
+          "observed": 0.15271350441733278
+        },
+        "double": {
+          "predicted": 0.0423832972852943,
+          "observed": 0.04221006871406535
+        },
+        "triple": {
+          "predicted": 0.003777097660935375,
+          "observed": 0.003085121301360258
+        },
+        "home_run": {
+          "predicted": 0.029327296996892016,
+          "observed": 0.027906324498667787
+        },
+        "walk": {
+          "predicted": 0.07621503249687951,
+          "observed": 0.07881082597111205
+        },
+        "hit_by_pitch": {
+          "predicted": 0.009730028790512634,
+          "observed": 0.010657691768335437
+        },
+        "strikeout": {
+          "predicted": 0.23680527826992612,
+          "observed": 0.23320712382555042
+        },
+        "ball_in_play_out": {
+          "predicted": 0.45571035049976905,
+          "observed": 0.4514093395035759
+        }
+      }
+    }
+  },
+  "by_venue_status": {
+    "matched_venue": {
+      "top": {
+        "n": 6633,
+        "logloss": 1.4482649214076149,
+        "multiclass_brier": 0.6942410182716913,
+        "reach": {
+          "predicted": 0.3075691479320043,
+          "observed": 0.2873511231720187
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.1463778982142638,
+            "observed": 0.13568521031207598
+          },
+          "double": {
+            "predicted": 0.04243221940510773,
+            "observed": 0.036031961405095736
+          },
+          "triple": {
+            "predicted": 0.0037995275309543387,
+            "observed": 0.003919794964571084
+          },
+          "home_run": {
+            "predicted": 0.02924616806057248,
+            "observed": 0.0304537916478215
+          },
+          "walk": {
+            "predicted": 0.07603021545885641,
+            "observed": 0.07131011608623548
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009683119262249526,
+            "observed": 0.009950248756218905
+          },
+          "strikeout": {
+            "predicted": 0.2376560603064014,
+            "observed": 0.2507161163877582
+          },
+          "ball_in_play_out": {
+            "predicted": 0.4547747917615943,
+            "observed": 0.46193276044022313
+          }
+        }
+      },
+      "bottom": {
+        "n": 6651,
+        "logloss": 1.4731485870260423,
+        "multiclass_brier": 0.703576294322701,
+        "reach": {
+          "predicted": 0.3075029375254193,
+          "observed": 0.3149902270335288
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14603750966033585,
+            "observed": 0.15200721695985567
+          },
+          "double": {
+            "predicted": 0.04241468792436612,
+            "observed": 0.042399639152007215
+          },
+          "triple": {
+            "predicted": 0.003773057728729773,
+            "observed": 0.003307773267177868
+          },
+          "home_run": {
+            "predicted": 0.02939054765160837,
+            "observed": 0.02751465944970681
+          },
+          "walk": {
+            "predicted": 0.07616132096400216,
+            "observed": 0.07863479176063749
+          },
+          "hit_by_pitch": {
+            "predicted": 0.00972581359637704,
+            "observed": 0.011126146444143737
+          },
+          "strikeout": {
+            "predicted": 0.23645738254086432,
+            "observed": 0.2321455420237558
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45603967993371636,
+            "observed": 0.4528642309427154
+          }
+        }
+      }
+    },
+    "neutral_venue": {
+      "top": {
+        "n": 486,
+        "logloss": 1.5686977317984592,
+        "multiclass_brier": 0.741585415476978,
+        "reach": {
+          "predicted": 0.3082158558709211,
+          "observed": 0.3683127572016461
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14312989698765305,
+            "observed": 0.1748971193415638
+          },
+          "double": {
+            "predicted": 0.041913377164607524,
+            "observed": 0.04938271604938271
+          },
+          "triple": {
+            "predicted": 0.003822601217437839,
+            "observed": 0.006172839506172839
+          },
+          "home_run": {
+            "predicted": 0.030061292927857558,
+            "observed": 0.03292181069958848
+          },
+          "walk": {
+            "predicted": 0.07910899666311393,
+            "observed": 0.09465020576131687
+          },
+          "hit_by_pitch": {
+            "predicted": 0.010179690910251189,
+            "observed": 0.0102880658436214
+          },
+          "strikeout": {
+            "predicted": 0.23397511817964697,
+            "observed": 0.22839506172839505
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45780902594943196,
+            "observed": 0.40329218106995884
+          }
+        }
+      },
+      "bottom": {
+        "n": 480,
+        "logloss": 1.473061925191533,
+        "multiclass_brier": 0.7123966665811428,
+        "reach": {
+          "predicted": 0.30722711200362546,
+          "observed": 0.32083333333333336
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14624710667836674,
+            "observed": 0.1625
+          },
+          "double": {
+            "predicted": 0.04194834074265551,
+            "observed": 0.03958333333333333
+          },
+          "triple": {
+            "predicted": 0.003833075971559253,
+            "observed": 0.0
+          },
+          "home_run": {
+            "predicted": 0.028450880112478535,
+            "observed": 0.03333333333333333
+          },
+          "walk": {
+            "predicted": 0.0769592729243114,
+            "observed": 0.08125
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009788435574253984,
+            "observed": 0.004166666666666667
+          },
+          "strikeout": {
+            "predicted": 0.24162580846573833,
+            "observed": 0.24791666666666667
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45114707953063626,
+            "observed": 0.43125
+          }
+        }
+      }
+    }
+  },
+  "by_season_segment": {
+    "through_june": {
+      "top": {
+        "n": 3714,
+        "logloss": 1.4514424314376473,
+        "multiclass_brier": 0.6947380107017195,
+        "reach": {
+          "predicted": 0.3085994036709515,
+          "observed": 0.2956381260096931
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.1467584983630769,
+            "observed": 0.14028002154011848
+          },
+          "double": {
+            "predicted": 0.04279897411500807,
+            "observed": 0.03527194399569197
+          },
+          "triple": {
+            "predicted": 0.0038438747464993235,
+            "observed": 0.0035002692514808833
+          },
+          "home_run": {
+            "predicted": 0.029288388869268274,
+            "observed": 0.03231017770597738
+          },
+          "walk": {
+            "predicted": 0.0761476097312398,
+            "observed": 0.07539041464728057
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009762057845859144,
+            "observed": 0.008885298869143781
+          },
+          "strikeout": {
+            "predicted": 0.236422308165868,
+            "observed": 0.2382875605815832
+          },
+          "ball_in_play_out": {
+            "predicted": 0.4549782881631805,
+            "observed": 0.46607431340872374
+          }
+        }
+      },
+      "bottom": {
+        "n": 3708,
+        "logloss": 1.4636341809208018,
+        "multiclass_brier": 0.6997535844769173,
+        "reach": {
+          "predicted": 0.30872947929233596,
+          "observed": 0.30852211434735705
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14721103051284282,
+            "observed": 0.1483279395900755
+          },
+          "double": {
+            "predicted": 0.04268835305732449,
+            "observed": 0.04288025889967637
+          },
+          "triple": {
+            "predicted": 0.0038231870633104416,
+            "observed": 0.0029665587918015104
+          },
+          "home_run": {
+            "predicted": 0.029341236159002183,
+            "observed": 0.023462783171521034
+          },
+          "walk": {
+            "predicted": 0.07591113928262774,
+            "observed": 0.07820927723840346
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009754533217228285,
+            "observed": 0.01267529665587918
+          },
+          "strikeout": {
+            "predicted": 0.23471730099193225,
+            "observed": 0.23112189859762675
+          },
+          "ball_in_play_out": {
+            "predicted": 0.4565532197157318,
+            "observed": 0.4603559870550162
+          }
+        }
+      }
+    },
+    "july_onward": {
+      "top": {
+        "n": 3405,
+        "logloss": 1.461988584725797,
+        "multiclass_brier": 0.7004564506231287,
+        "reach": {
+          "predicted": 0.30653770306970285,
+          "observed": 0.28986784140969163
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.1454991676566061,
+            "observed": 0.13627019089574155
+          },
+          "double": {
+            "predicted": 0.041958127093374126,
+            "observed": 0.038766519823788544
+          },
+          "triple": {
+            "predicted": 0.0037544491911883793,
+            "observed": 0.004698972099853157
+          },
+          "home_run": {
+            "predicted": 0.029316459573642782,
+            "observed": 0.028781204111600588
+          },
+          "walk": {
+            "predicted": 0.07634160616007145,
+            "observed": 0.07019089574155653
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009667893394820066,
+            "observed": 0.011160058737151249
+          },
+          "strikeout": {
+            "predicted": 0.23847638852265346,
+            "observed": 0.26108663729809106
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45498590840764364,
+            "observed": 0.4490455212922173
+          }
+        }
+      },
+      "bottom": {
+        "n": 3423,
+        "logloss": 1.4834430130142595,
+        "multiclass_brier": 0.7089541461463112,
+        "reach": {
+          "predicted": 0.3061355951000065,
+          "observed": 0.32281624306164186
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14479567245541589,
+            "observed": 0.1574642126789366
+          },
+          "double": {
+            "predicted": 0.042052842478783076,
+            "observed": 0.04148407829389424
+          },
+          "triple": {
+            "predicted": 0.003727170841184646,
+            "observed": 0.0032135553607946245
+          },
+          "home_run": {
+            "predicted": 0.029312197255990907,
+            "observed": 0.032719836400818
+          },
+          "walk": {
+            "predicted": 0.07654422795070527,
+            "observed": 0.079462459830558
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009703484117926708,
+            "observed": 0.008472100496640374
+          },
+          "strikeout": {
+            "predicted": 0.23906710115827004,
+            "observed": 0.23546596552731522
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45479730374172345,
+            "observed": 0.44171779141104295
+          }
+        }
+      }
+    }
+  },
+  "paired": {
+    "n_games": 2329,
+    "bottom_minus_top_reach_residual": 0.022493165619160572,
+    "normal_95pct_ci": [
+      0.006922320440244075,
+      0.03806401079807707
+    ]
+  },
+  "temporal_reach_offset_probe": {
+    "fit_period": "2025 through June, matched prior-season venue",
+    "holdout_period": "2025 July onward, matched prior-season venue",
+    "reach_logit_offsets": {
+      "top": -0.08478641021579908,
+      "bottom": -0.006746701957165891
+    },
+    "baseline": {
+      "top": {
+        "n": 3201,
+        "logloss": 1.4542301352537783,
+        "multiclass_brier": 0.6973138672589737,
+        "reach": {
+          "predicted": 0.3065618173192408,
+          "observed": 0.2836613558263043
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14582979361932097,
+            "observed": 0.13089659481412058
+          },
+          "double": {
+            "predicted": 0.04199116203715362,
+            "observed": 0.03905029678225554
+          },
+          "triple": {
+            "predicted": 0.003752191445839434,
+            "observed": 0.0043736332396126214
+          },
+          "home_run": {
+            "predicted": 0.029287929056629625,
+            "observed": 0.028428616057482037
+          },
+          "walk": {
+            "predicted": 0.07605628702738808,
+            "observed": 0.0696657294595439
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009644454132909057,
+            "observed": 0.011246485473289597
+          },
+          "strikeout": {
+            "predicted": 0.23859147686439236,
+            "observed": 0.26304279912527334
+          },
+          "ball_in_play_out": {
+            "predicted": 0.4548467058163668,
+            "observed": 0.45329584504842235
+          }
+        }
+      },
+      "bottom": {
+        "n": 3216,
+        "logloss": 1.484980912836062,
+        "multiclass_brier": 0.7090517336476984,
+        "reach": {
+          "predicted": 0.3066809945973748,
+          "observed": 0.32369402985074625
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14503933164770844,
+            "observed": 0.15827114427860697
+          },
+          "double": {
+            "predicted": 0.042139190476090264,
+            "observed": 0.04197761194029851
+          },
+          "triple": {
+            "predicted": 0.0037300974237982113,
+            "observed": 0.003420398009950249
+          },
+          "home_run": {
+            "predicted": 0.029402725135240594,
+            "observed": 0.0320273631840796
+          },
+          "walk": {
+            "predicted": 0.07665263912177749,
+            "observed": 0.07898009950248756
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009717010792759818,
+            "observed": 0.009017412935323384
+          },
+          "strikeout": {
+            "predicted": 0.23877368938095653,
+            "observed": 0.23351990049751245
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45454531602166864,
+            "observed": 0.4427860696517413
+          }
+        }
+      }
+    },
+    "adjusted": {
+      "top": {
+        "n": 3201,
+        "logloss": 1.4530406401572995,
+        "multiclass_brier": 0.6970010778553867,
+        "reach": {
+          "predicted": 0.28891945952035913,
+          "observed": 0.2836613558263043
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.13743734672907823,
+            "observed": 0.13089659481412058
+          },
+          "double": {
+            "predicted": 0.0395731878294864,
+            "observed": 0.03905029678225554
+          },
+          "triple": {
+            "predicted": 0.0035366815102071156,
+            "observed": 0.0043736332396126214
+          },
+          "home_run": {
+            "predicted": 0.027601248815759167,
+            "observed": 0.028428616057482037
+          },
+          "walk": {
+            "predicted": 0.07168400828512167,
+            "observed": 0.0696657294595439
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009086986350706578,
+            "observed": 0.011246485473289597
+          },
+          "strikeout": {
+            "predicted": 0.24466649580674063,
+            "observed": 0.26304279912527334
+          },
+          "ball_in_play_out": {
+            "predicted": 0.4664140446729002,
+            "observed": 0.45329584504842235
+          }
+        }
+      },
+      "bottom": {
+        "n": 3216,
+        "logloss": 1.4851005105816557,
+        "multiclass_brier": 0.7090977749276521,
+        "reach": {
+          "predicted": 0.3052539911965759,
+          "observed": 0.32369402985074625
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14436440328428696,
+            "observed": 0.15827114427860697
+          },
+          "double": {
+            "predicted": 0.04194293411749824,
+            "observed": 0.04197761194029851
+          },
+          "triple": {
+            "predicted": 0.0037127330032788327,
+            "observed": 0.003420398009950249
+          },
+          "home_run": {
+            "predicted": 0.029265872529967294,
+            "observed": 0.0320273631840796
+          },
+          "walk": {
+            "predicted": 0.0762964157488899,
+            "observed": 0.07898009950248756
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009671632512654692,
+            "observed": 0.009017412935323384
+          },
+          "strikeout": {
+            "predicted": 0.23926559943084794,
+            "observed": 0.23351990049751245
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45548040937257617,
+            "observed": 0.4427860696517413
+          }
+        }
+      }
+    },
+    "combined": {
+      "baseline": {
+        "n": 6417,
+        "logloss": 1.4696414646451799,
+        "multiclass_brier": 0.7031965193247581,
+        "reach": {
+          "predicted": 0.3066215452491892,
+          "observed": 0.303724481845099
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.1454336387649177,
+            "observed": 0.14461586411095528
+          },
+          "double": {
+            "predicted": 0.042065349267887645,
+            "observed": 0.04051737572074178
+          },
+          "triple": {
+            "predicted": 0.003741118611978662,
+            "observed": 0.0038959015116097864
+          },
+          "home_run": {
+            "predicted": 0.029345461266199965,
+            "observed": 0.03023219573009194
+          },
+          "walk": {
+            "predicted": 0.07635516007329057,
+            "observed": 0.07433380084151472
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009680817264914675,
+            "observed": 0.010129343930185445
+          },
+          "strikeout": {
+            "predicted": 0.23868279608728005,
+            "observed": 0.2482468443197756
+          },
+          "ball_in_play_out": {
+            "predicted": 0.45469565866353073,
+            "observed": 0.44802867383512546
+          }
+        }
+      },
+      "adjusted": {
+        "n": 6417,
+        "logloss": 1.469108045998772,
+        "multiclass_brier": 0.7030635646536422,
+        "reach": {
+          "predicted": 0.2971058166764622,
+          "observed": 0.303724481845099
+        },
+        "event_rates": {
+          "single": {
+            "predicted": 0.14090897114571393,
+            "observed": 0.14461586411095528
+          },
+          "double": {
+            "predicted": 0.040760830662936,
+            "observed": 0.04051737572074178
+          },
+          "triple": {
+            "predicted": 0.003624913020526368,
+            "observed": 0.0038959015116097864
+          },
+          "home_run": {
+            "predicted": 0.028435506235876564,
+            "observed": 0.03023219573009194
+          },
+          "walk": {
+            "predicted": 0.07399560286256886,
+            "observed": 0.07433380084151472
+          },
+          "hit_by_pitch": {
+            "predicted": 0.009379992748840462,
+            "observed": 0.010129343930185445
+          },
+          "strikeout": {
+            "predicted": 0.2419597352106878,
+            "observed": 0.2482468443197756
+          },
+          "ball_in_play_out": {
+            "predicted": 0.46093444811285,
+            "observed": 0.44802867383512546
+          }
+        }
+      }
+    }
+  }
+}
