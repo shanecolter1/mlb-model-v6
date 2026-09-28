@@ -356,7 +356,9 @@ jobs:
               'validation_years':[2022,2023,2024,2025,2026],
               'sample':'season-specific PRIMARY_HOME_VENUE games',
               'seasonal':seasonal,
-              'zero_sum_candidate':x['pooled_zero_sum_candidate'],
+              'zero_sum_development_candidate_2022_2025':x['development_zero_sum_candidate_2022_2025'],
+              'forward_2026_holdout':x['forward_2026_holdout'],
+              'zero_sum_refit_2022_2026_for_future':x['pooled_zero_sum_refit_2022_2026_for_future'],
               'zero_sum_probability_map':x['pooled_zero_sum_probability_map'],
               'zero_sum_shrinkage':x['shrinkage_selection']['zero_sum_half_contrast'],
               'shape_comparison':{
@@ -376,6 +378,8 @@ jobs:
                   'year_2020':'arsenal only; no 2020 Retrosheet or PA target history',
                   'year_2021':'training/transition foundation; not a validation year',
                   'historical_specification_caveat':x['governance']['historical_fixed_specification_caveat'],
+                  'holdout_2026_used_for_shrinkage_selection':False,
+                  'holdout_2026_used_for_development_h_fit':False,
               },
               'status':'MULTIYEAR_EVIDENCE_READY_PRODUCTION_UNCHANGED',
           }
