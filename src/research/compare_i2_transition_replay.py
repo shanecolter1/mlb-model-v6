@@ -20,6 +20,7 @@ def compare(corrected, original, inputs):
         assert r['market_inputs_used'] is False
     for key in ['trials_per_game','i1_state_mode','point_in_time_player_refits','observed_i2_state_used_as_predictor','base_model_version','model_training','walkforward_policy','park_rule']:
         assert corrected[key]==original[key],key
+    assert corrected.get('i1_environment','neutral')==original.get('i1_environment','neutral')
     assert corrected['i2_model']=='vnext'
     assert original.get('i2_model','vnext')=='vnext'
     assert corrected['trials_per_game']==10000

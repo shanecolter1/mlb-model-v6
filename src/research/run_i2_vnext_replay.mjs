@@ -5,6 +5,7 @@ import { simulateFullSecondInning } from '../model/i2_inning_model.js';
 import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
 import { applyEnvironmentalEventVector, buildNeutralEventVector } from '../event_probability_engine.js';
 import { createSeededRandom, seedFromGameId } from '../model/seeded_random.js';
+import { venueForReplayGame } from './i2_vnext_replay_venue.mjs';
 
 function arg(name, fallback=null) {
   const i=process.argv.indexOf(name);
@@ -21,6 +22,8 @@ const TRIALS=Number(arg('--trials','10000'));
 const I2_MODEL=arg('--i2-model','vnext');
 if (!['vnext','production_formula'].includes(I2_MODEL)) throw new Error('Unknown --i2-model');
 const I1_MODE=arg('--i1-mode','league');
+const I1_ENVIRONMENT=arg('--i1-environment','neutral');
+if (!['neutral','prior_season_park'].includes(I1_ENVIRONMENT)) throw new Error('Unknown --i1-environment');
 const SHARD_COUNT=Number(arg('--shard-count','1'));
 const SHARD_INDEX=Number(arg('--shard-index','0'));
 if (!['league','player_asof'].includes(I1_MODE)) throw new Error('--i1-mode must be league or player_asof');
@@ -83,48 +86,9 @@ function adaptPlayCalibration(payload){
 }
 const playCalibration=adaptPlayCalibration(rawPlayCalibration);
 const parkProfiles=fs.existsSync(PARKS) ? JSON.parse(fs.readFileSync(PARKS,'utf8')) : [];
-
-const RETRO_SITE_TO_SAVANT_TEAM = {
-  ANA01:'ANGELS',
-  PHO01:'D-BACKS',
-  ATL03:'BRAVES',
-  BAL12:'ORIOLES',
-  BOS07:'RED SOX',
-  CHI12:'WHITE SOX',
-  CHI11:'CUBS',
-  CIN09:'REDS',
-  CLE08:'GUARDIANS',
-  DEN02:'ROCKIES',
-  DET05:'TIGERS',
-  HOU03:'ASTROS',
-  KAN06:'ROYALS',
-  LOS03:'DODGERS',
-  MIA02:'MARLINS',
-  MIL06:'BREWERS',
-  MIN04:'TWINS',
-  NYC21:'YANKEES',
-  NYC20:'METS',
-  PHI13:'PHILLIES',
-  PIT08:'PIRATES',
-  SAN02:'PADRES',
-  SEA03:'MARINERS',
-  SFO03:'GIANTS',
-  STL10:'CARDINALS',
-  ARL03:'RANGERS',
-  TOR02:'BLUE JAYS',
-  WAS11:'NATIONALS',
-};
-
-// These 2025 Retrosheet sites have no valid 2024 Savant profile for the
-// actual venue used in the replay. Fail transparent to neutral rather than
-// borrowing the nominal home club's ordinary park.
-const EXPLICIT_NEUTRAL_2025_SITES = new Set([
-  'SAC01', // Athletics at Sutter Health Park
-  'TAM02', // Rays at George M. Steinbrenner Field
-  'TOK01', // Tokyo Dome
-  'BST01', // Bristol Motor Speedway
-  'WIL02', // Williamsport special-event site
-]);
+if (I1_ENVIRONMENT==='prior_season_park' && (!Array.isArray(parkProfiles) || !parkProfiles.length)) {
+  throw new Error('Park-aware I1 replay requires prior-season park profiles');
+}
 
 function norm(x){ return String(x??'').trim().toUpperCase(); }
 function compactDate(x){ return String(x??'').replace(/[^0-9]/g,'').slice(0,8); }
@@ -145,21 +109,6 @@ function modelForGame(game){
     throw new Error(`Point-in-time leakage: model training end ${artifact.training.end} >= game ${game.date}`);
   }
   return {artifact,entry:chosen};
-}
-
-function venueFor(game){
-  const site=norm(game.site);
-  if (EXPLICIT_NEUTRAL_2025_SITES.has(site)) {
-    return {profile:null,status:'EXPLICIT_2025_SITE_NEUTRAL'};
-  }
-  const savantTeam=RETRO_SITE_TO_SAVANT_TEAM[site];
-  if (!savantTeam) {
-    return {profile:null,status:'UNMAPPED_RETROSHEET_SITE_NEUTRAL'};
-  }
-  const profile=parkProfiles.find(p=>norm(p.team)===savantTeam);
-  return profile
-    ? {profile,status:'RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT'}
-    : {profile:null,status:'MAPPED_SITE_SAVANT_PROFILE_MISSING_NEUTRAL'};
 }
 
 function stand(bats, throws){
@@ -185,7 +134,7 @@ function makeLineup(rows, leagueRates){
   return rows.map((x,i)=>({
     id:Number(x.mlbam),
     bats:x.bats,
-    side:x.bats,
+    side:norm(x.bats)==='B' ? 'S' : x.bats,
     eventRates:I1_MODE === 'player_asof'
       ? requireAsOfRates(x,`hitter ${x.mlbam || i}`)
       : leagueRates,
@@ -221,7 +170,7 @@ const predictions=[];
 let brier=0, ll=0, parkMatched=0;
 for (const game of replayGames) {
   const {artifact:activeModel,entry:modelEntry}=modelForGame(game);
-  const venue=venueFor(game);
+  const venue=venueForReplayGame(game,parkProfiles);
   if (venue.profile) parkMatched += 1;
   const away={
     lineup:makeLineup(game.away_lineup,leagueRates),
@@ -259,7 +208,8 @@ for (const game of replayGames) {
 
   const random=createSeededRandom(seedFromGameId(game.gid,2025));
   const result=simulateFullSecondInning({
-    away,home,league:leagueRates,environmentalContext:null,
+    away,home,league:leagueRates,
+    environmentalContext:I1_ENVIRONMENT==='prior_season_park' ? venue.profile : null,
     weights:{batter:0.5,pitcher:0.5},
     trials:TRIALS,random,playCalibration,
     i2EventVectorProvider:provider,
@@ -316,6 +266,7 @@ const payload={
   i2_model:I2_MODEL,
   comparison_scope:I2_MODEL === 'production_formula' ? 'Controlled production event formula; shared pregame as-of rates, prior-season baseline, I1 state and transitions. Not exact deployed production.' : null,
   i1_state_mode:I1_MODE,
+  i1_environment:I1_ENVIRONMENT,
   i1_state_model:replay.i1_state_model,
   i1_player_asof_model:I1_MODE === 'player_asof' ? (replay.i1_player_asof_model || null) : null,
   park_rule:'prior-season Savant 3yr profile; explicit neutral for new/temporary or unmatched venue',
@@ -335,4 +286,5 @@ console.log(JSON.stringify({
   replay_games_total:payload.replay_games_total,shard_count:SHARD_COUNT,shard_index:SHARD_INDEX,
   point_in_time_player_refits:payload.point_in_time_player_refits,
   i1_state_mode:payload.i1_state_mode,
+  i1_environment:payload.i1_environment,
 },null,2));

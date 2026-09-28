@@ -3,6 +3,12 @@
 Status: **SHADOW ONLY**. The production model, live vNext formula, full-I2
 calibration, betting workflow and thresholds are unchanged.
 
+Follow-up: the archived replay used neutral I1 park conditions whereas the
+live shadow runner supplies venue context to I1. The Phase 10 component
+check finds that adding the prior-season park profile changes the 2025
+predicted late-slot share by only +0.074 percentage points; the observed
+I1 residual remains. See `docs/I2_VNEXT_PHASE10_I1_SIDE_CHECKPOINT.md`.
+
 ## Question and method
 
 The 2025 vNext precision replay predicts too many full-second-inning Unders.

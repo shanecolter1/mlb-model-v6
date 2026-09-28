@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { buildNeutralEventVector } from '../event_probability_engine.js';
+import { buildNeutralEventVector, applyEnvironmentalEventVector } from '../event_probability_engine.js';
+import { venueForReplayGame } from './i2_vnext_replay_venue.mjs';
 
 function arg(name, fallback=null) {
   const i=process.argv.indexOf(name);
@@ -11,6 +12,7 @@ const INPUT=arg('--input','data/derived/i2_vnext/i1_state_ab_2024_inputs.json');
 const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/i1_state_ab_2024_rows.json');
 const OBSERVED_SLOTS=arg('--observed-slots');
+const PARKS=arg('--parks');
 const MAX_PA=Number(arg('--max-pa','40'));
 
 const input=JSON.parse(fs.readFileSync(INPUT,'utf8'));
@@ -19,6 +21,10 @@ const league=input.league_event_rates ?? input.i1_state_model?.event_rates;
 if (!league) throw new Error('Input missing pregame league event rates');
 if (!raw?.states) throw new Error('Expected seasonal transition artifact with states');
 if (input.market_inputs_used !== false) throw new Error('Input is not market-isolated');
+const parkProfiles=PARKS ? JSON.parse(fs.readFileSync(PARKS,'utf8')) : [];
+if (PARKS && (!Array.isArray(parkProfiles) || !parkProfiles.length || input.season!==2025)) {
+  throw new Error('Park-aware I1 audit requires 2025 replay inputs and prior-season park profiles');
+}
 
 // The compact Retrosheet file is used strictly after computing each game's
 // pregame slot distribution. It supplies targets, never model features.
@@ -51,6 +57,8 @@ const EVENT_TO_TRANSITION={
   home_run:'hr',
 };
 const EVENTS=Object.keys(EVENT_TO_TRANSITION);
+const sourceForEvent=(event,outs,mask)=>
+  raw.states[`${event}|${outs}|${mask}`] ? event : EVENT_TO_TRANSITION[event];
 
 // For starting-slot prediction, run totals are irrelevant. Collapse transition
 // rows that lead to the same outs/base state once, globally.
@@ -74,31 +82,42 @@ function collapsedTransitions(source,outs,mask){
   transitionCache.set(key,out);
   return out;
 }
-for(const source of new Set(Object.values(EVENT_TO_TRANSITION))){
+for(const source of new Set([...Object.values(EVENT_TO_TRANSITION),
+  ...EVENTS.filter(event=>raw.states[`${event}|0|0`])])){
   for(let outs=0;outs<3;outs++) for(let mask=0;mask<8;mask++) collapsedTransitions(source,outs,mask);
 }
 
 function rates(item, mode){
   return mode==='player_asof' ? item.i1_event_rates_asof : league;
 }
-function precomputeVectors(lineup,pitcher,mode){
-  return lineup.map(batter=>buildNeutralEventVector({
-    batter:rates(batter,mode),
-    pitcher:rates(pitcher,mode),
-    league,
-    weights:{batter:0.5,pitcher:0.5},
-  }));
+function precomputeVectors(lineup,pitcher,mode,environmentalContext){
+  return lineup.map(batter=>{
+    const neutralVector=buildNeutralEventVector({
+      batter:rates(batter,mode),
+      pitcher:rates(pitcher,mode),
+      league,
+      weights:{batter:0.5,pitcher:0.5},
+    });
+    if (!environmentalContext) return neutralVector;
+    const bats=String(batter.bats??'').toUpperCase();
+    const throws=String(pitcher.throws??'').toUpperCase();
+    const batterSide=bats==='B' || bats==='S' ? (throws==='L' ? 'R' : 'L') : bats;
+    return applyEnvironmentalEventVector({
+      neutralVector,environmentalContext,batterSide,
+    }).probabilities;
+  });
 }
 function idx(outs,mask){ return outs*8+mask; }
 
 let leagueDistributionCache=null;
 function exactDistribution(game,side,mode){
-  if(mode==='league' && leagueDistributionCache) return leagueDistributionCache;
+  if(mode==='league' && !PARKS && leagueDistributionCache) return leagueDistributionCache;
 
   const isTop=side==='top';
   const lineup=isTop?game.away_lineup:game.home_lineup;
   const pitcher=isTop?game.home_starter:game.away_starter;
-  const vectors=precomputeVectors(lineup,pitcher,mode);
+  const venue=PARKS ? venueForReplayGame(game,parkProfiles) : {profile:null};
+  const vectors=precomputeVectors(lineup,pitcher,mode,venue.profile);
 
   let active=new Float64Array(24);
   active[idx(0,0)]=1;
@@ -119,7 +138,7 @@ function exactDistribution(game,side,mode){
         for(const event of EVENTS){
           const eventProb=Number(vector[event]||0);
           if(!(eventProb>0)) continue;
-          const source=EVENT_TO_TRANSITION[event];
+          const source=sourceForEvent(event,outs,mask);
           for(const t of collapsedTransitions(source,outs,mask)){
             const p=stateProb*eventProb*t.p;
             if(!(p>0)) continue;
@@ -138,7 +157,7 @@ function exactDistribution(game,side,mode){
   const total=absorbed.reduce((a,b)=>a+b,0);
   if(!(total>0.999999 && total<=1.000001)) throw new Error(`I1 slot distribution mass=${total}`);
   const result=Object.fromEntries(Array.from({length:9},(_,j)=>[String(j+1),absorbed[j+1]/total]));
-  if(mode==='league') leagueDistributionCache=result;
+  if(mode==='league' && !PARKS) leagueDistributionCache=result;
   return result;
 }
 
@@ -180,6 +199,7 @@ const payload={
   market_inputs_used:false,
   observed_i2_start_slot_used_as_predictor:false,
   observed_slot_source:OBSERVED_SLOTS ? 'joined Retrosheet compact CSV target only' : 'input target only',
+  i1_environment:PARKS ? 'prior_season_park' : 'neutral',
   evaluation_method:'exact dynamic propagation through validated empirical event/base-out transition table; run-only transition differences collapsed',
   max_pa:MAX_PA,
   n_halves:rows.length,

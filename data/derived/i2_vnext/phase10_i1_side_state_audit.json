@@ -1,0 +1,237 @@
+{
+  "version": "i2-vnext-i1-side-state-audit-v1",
+  "status": "SHADOW_ONLY_COMPONENT_RESEARCH",
+  "market_inputs_used": false,
+  "observed_slots_used_as_predictors": false,
+  "historical_observed": {
+    "2021": {
+      "n_games": 2428,
+      "top_late_rate": 0.1470345963756178,
+      "bottom_late_rate": 0.17174629324546953,
+      "bottom_minus_top_late": 0.02471169686985173,
+      "bottom_minus_top_late_ci95": [
+        0.002915062143439283,
+        0.04661584922629556
+      ],
+      "top_mean_i1_pa": 4.240939044481054,
+      "bottom_mean_i1_pa": 4.366144975288303
+    },
+    "2022": {
+      "n_games": 2430,
+      "top_late_rate": 0.1440329218106996,
+      "bottom_late_rate": 0.16748971193415638,
+      "bottom_minus_top_late": 0.02345679012345679,
+      "bottom_minus_top_late_ci95": [
+        0.004960217000345999,
+        0.04272549834533237
+      ],
+      "top_mean_i1_pa": 4.158847736625514,
+      "bottom_mean_i1_pa": 4.35761316872428
+    },
+    "2023": {
+      "n_games": 2430,
+      "top_late_rate": 0.14320987654320988,
+      "bottom_late_rate": 0.1831275720164609,
+      "bottom_minus_top_late": 0.03991769547325103,
+      "bottom_minus_top_late_ci95": [
+        0.01951947652829506,
+        0.06137497837744335
+      ],
+      "top_mean_i1_pa": 4.211522633744856,
+      "bottom_mean_i1_pa": 4.37201646090535
+    },
+    "2024": {
+      "n_games": 2428,
+      "top_late_rate": 0.13591433278418452,
+      "bottom_late_rate": 0.171334431630972,
+      "bottom_minus_top_late": 0.03542009884678748,
+      "bottom_minus_top_late_ci95": [
+        0.014040496728666328,
+        0.05652896176540547
+      ],
+      "top_mean_i1_pa": 4.173805601317957,
+      "bottom_mean_i1_pa": 4.302718286655684
+    },
+    "2025": {
+      "n_games": 2430,
+      "top_late_rate": 0.15679012345679014,
+      "bottom_late_rate": 0.16584362139917697,
+      "bottom_minus_top_late": 0.00905349794238683,
+      "bottom_minus_top_late_ci95": [
+        -0.010094185500107482,
+        0.02875426390533184
+      ],
+      "top_mean_i1_pa": 4.223045267489712,
+      "bottom_mean_i1_pa": 4.3353909465020575
+    }
+  },
+  "historical_2021_to_2023": {
+    "n_games": 7288,
+    "top_late_rate": 0.14475850713501648,
+    "bottom_late_rate": 0.17412184412733261,
+    "bottom_minus_top_late": 0.029363336992316136,
+    "bottom_minus_top_late_ci95": [
+      0.017697503429873144,
+      0.04225884094623889
+    ],
+    "top_mean_i1_pa": 4.203759604829857,
+    "bottom_mean_i1_pa": 4.365257958287596
+  },
+  "exact_pregame_i1_state": {
+    "2024_selection_sample": {
+      "top": {
+        "n_halves": 2429,
+        "predicted_late": 0.14496255291863025,
+        "observed_late": 0.13585837793330588,
+        "late_pred_minus_actual": 0.009104174985324363,
+        "late_error_ci95": [
+          -0.004041534589681341,
+          0.02252579406924375
+        ],
+        "slot_logloss": 1.4710911575738372,
+        "slot_brier": 0.7227943522246764
+      },
+      "bottom": {
+        "n_halves": 2428,
+        "predicted_late": 0.1445989627773561,
+        "observed_late": 0.171334431630972,
+        "late_pred_minus_actual": -0.02673546885361592,
+        "late_error_ci95": [
+          -0.042640382827086334,
+          -0.011003686510380431
+        ],
+        "slot_logloss": 1.5374971245471172,
+        "slot_brier": 0.7447987122280405
+      },
+      "paired_bottom_minus_top": {
+        "n_games": 2428,
+        "predicted_late_gap": -0.0003627737027270366,
+        "observed_late_gap": 0.03542009884678748,
+        "gap_error": -0.03578287254951452,
+        "gap_error_ci95": [
+          -0.055756325223704516,
+          -0.014024413109204152
+        ]
+      }
+    },
+    "2025_inspected_sample": {
+      "top": {
+        "n_halves": 2430,
+        "predicted_late": 0.1425752886286103,
+        "observed_late": 0.15679012345679014,
+        "late_pred_minus_actual": -0.01421483482817983,
+        "late_error_ci95": [
+          -0.027647799813862405,
+          -0.0013007693004911322
+        ],
+        "slot_logloss": 1.4981771769426107,
+        "slot_brier": 0.7323813628265643
+      },
+      "bottom": {
+        "n_halves": 2430,
+        "predicted_late": 0.14240510020820796,
+        "observed_late": 0.16584362139917697,
+        "late_pred_minus_actual": -0.023438521190968998,
+        "late_error_ci95": [
+          -0.03716492349474019,
+          -0.008727558554540498
+        ],
+        "slot_logloss": 1.5604605381113652,
+        "slot_brier": 0.748864689407933
+      },
+      "paired_bottom_minus_top": {
+        "n_games": 2430,
+        "predicted_late_gap": -0.00017018842040233633,
+        "observed_late_gap": 0.00905349794238683,
+        "gap_error": -0.009223686362789169,
+        "gap_error_ci95": [
+          -0.02796419884905126,
+          0.010642482488964725
+        ]
+      }
+    }
+  },
+  "2025_fixed_mechanism_ablations": {
+    "distinct_strikeout_bip_transitions_minus_pooled": {
+      "all": {
+        "n_halves": 4860,
+        "delta_predicted_late": 0.00020823969758904643,
+        "delta_slot_logloss": -3.527787466289492e-06,
+        "delta_slot_brier": -3.879922429050715e-06,
+        "delta_logloss_ci95": [
+          -0.0001340427189890223,
+          0.0001202040176538152
+        ]
+      },
+      "top": {
+        "n_halves": 2430,
+        "delta_predicted_late": 0.0002010389625266151,
+        "delta_slot_logloss": -3.848071429507279e-05,
+        "delta_slot_brier": -2.3486192353334905e-05,
+        "delta_logloss_ci95": [
+          -0.00022347100196509228,
+          0.00013199355234065537
+        ]
+      },
+      "bottom": {
+        "n_halves": 2430,
+        "delta_predicted_late": 0.00021544043265147772,
+        "delta_slot_logloss": 3.1425139362493806e-05,
+        "delta_slot_brier": 1.5726347495233473e-05,
+        "delta_logloss_ci95": [
+          -0.000135589928797423,
+          0.00019166047232973993
+        ]
+      }
+    },
+    "prior_season_park_in_i1_minus_neutral": {
+      "all": {
+        "n_halves": 4860,
+        "delta_predicted_late": 0.0007422615029213931,
+        "delta_slot_logloss": -9.909997481228834e-05,
+        "delta_slot_brier": -0.00014556023801752348,
+        "delta_logloss_ci95": [
+          -0.0010454239290289612,
+          0.0008989873120909009
+        ]
+      },
+      "top": {
+        "n_halves": 2430,
+        "delta_predicted_late": 0.0005239560995269187,
+        "delta_slot_logloss": -0.0002439617208511394,
+        "delta_slot_brier": -0.00016296904947563635,
+        "delta_logloss_ci95": [
+          -0.001359863755377535,
+          0.0009545166519691
+        ]
+      },
+      "bottom": {
+        "n_halves": 2430,
+        "delta_predicted_late": 0.0009605669063158676,
+        "delta_slot_logloss": 4.576177122656271e-05,
+        "delta_slot_brier": -0.0001281514265594106,
+        "delta_logloss_ci95": [
+          -0.0013251071348175795,
+          0.0014047613583103777
+        ]
+      }
+    }
+  },
+  "governance": {
+    "2024_transition_table_training_years": [
+      2021,
+      2022,
+      2023
+    ],
+    "distinct_transition_fit_years": [
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "park_profile_source_year": 2024,
+    "2025_outcomes_previously_inspected": true,
+    "paired_calendar_date_bootstrap_draws": 2000,
+    "causal_attribution": "NONE; park and K/BIP ablations test only two fixed mechanisms"
+  }
+}
