@@ -1,0 +1,9 @@
+{
+  "date": "2026-09-28",
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "generatedAt": "2026-09-28T14:19:08.402Z",
+  "underGateStatus": "CANDIDATE_PENDING_FULL_RETEST",
+  "underThresholdPct": 61.5,
+  "qualifiedUnders": [],
+  "ranking": []
+}
