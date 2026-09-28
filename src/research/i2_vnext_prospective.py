@@ -36,6 +36,22 @@ def validated_snapshot(data: dict) -> datetime:
     return generated
 
 
+def validation_cohort(data: dict) -> dict:
+    half = data.get("halfCalibration") or {}
+    final = data.get("finalCalibration") or {}
+    return {
+        "prospective_validation_start": data.get("prospectiveValidationStart"),
+        "half_calibration_version": half.get("version"),
+        "half_calibration_type": half.get("type"),
+        "half_contrast_h": half.get("h"),
+        "final_calibration_type": final.get("type") or final.get("method") or "identity",
+    }
+
+
+def cohort_key(cohort: dict) -> str:
+    return json.dumps(cohort, sort_keys=True, separators=(",", ":"))
+
+
 def archive(snapshot: Path, directory: Path) -> dict:
     contents = snapshot.read_bytes()
     data = json.loads(contents)
@@ -47,12 +63,25 @@ def archive(snapshot: Path, directory: Path) -> dict:
     datetime.fromisoformat(date)
     if not isinstance(data.get("games"), list):
         raise ValueError("Missing game rows")
+    half = data.get("halfCalibration") or None
     for game in data["games"]:
         if game.get("modelStatus") == "FROZEN_VNEXT_SHADOW_PROJECTION":
             if not generated < timestamp(game["gameDate"]):
                 raise ValueError(f"Forecast generated after first pitch: {game['gamePk']}")
             if game.get("bettingEligibility", {}).get("eligible") is not False:
                 raise ValueError("Shadow forecast unexpectedly betting eligible")
+            if half:
+                matched = bool((game.get("dataAudit") or {}).get("venueProfileMatched"))
+                applied = bool(game.get("halfContrastApplied"))
+                if half.get("matchedHomeVenueOnly") is True and applied != matched:
+                    raise ValueError(f"Half-contrast venue scope mismatch: {game['gamePk']}")
+                for field in (
+                    "rawTop2ScoreProbability", "rawBottom2ScoreProbability",
+                    "top2ScoreProbability", "bottom2ScoreProbability",
+                    "halfAdjustedUnder05",
+                ):
+                    if field not in game:
+                        raise ValueError(f"Missing half-contrast audit field {field}: {game['gamePk']}")
     filename = f"{generated.strftime('%Y%m%dT%H%M%S%fZ')}_{digest}.json"
     target = directory / date / filename
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -74,6 +103,8 @@ def candidates(directory: Path) -> tuple[dict[int, list[dict]], int]:
         generated = validated_snapshot(data)
         digest = hashlib.sha256(contents).hexdigest()
         snapshots += 1
+        cohort = validation_cohort(data)
+        cohort_id = cohort_key(cohort)
         for game in data.get("games", []):
             if game.get("modelStatus") != "FROZEN_VNEXT_SHADOW_PROJECTION":
                 continue
@@ -97,8 +128,28 @@ def candidates(directory: Path) -> tuple[dict[int, list[dict]], int]:
                 if not math.isfinite(score_pct) or not 0 <= score_pct <= 100:
                     raise ValueError(f"Invalid {field} in {file}")
                 return min(1 - 1e-9, max(1e-9, 1 - score_pct / 100))
+
+            def exact_half_under(probability_field: str, pct_field: str, fallback: float) -> float:
+                if game.get(probability_field) is not None:
+                    score_p = float(game[probability_field])
+                    if not math.isfinite(score_p) or not 0 < score_p < 1:
+                        raise ValueError(f"Invalid {probability_field} in {file}")
+                    return 1 - score_p
+                if game.get(pct_field) is not None:
+                    return half_under(pct_field)
+                return fallback
+
             if data.get("prospectiveValidationStart") and generated.date() < timestamp(data["prospectiveValidationStart"] + "T00:00:00Z").date():
                 continue
+            adjusted_top_under = exact_half_under("top2ScoreProbability", "top2ScorePct", half_under("top2ScorePct"))
+            adjusted_bottom_under = exact_half_under("bottom2ScoreProbability", "bottom2ScorePct", half_under("bottom2ScorePct"))
+            raw_top_under = exact_half_under("rawTop2ScoreProbability", "rawTop2ScorePct", adjusted_top_under)
+            raw_bottom_under = exact_half_under("rawBottom2ScoreProbability", "rawBottom2ScorePct", adjusted_bottom_under)
+            raw_under = float(game.get("rawUnder05", p))
+            half_adjusted_under = float(game.get("halfAdjustedUnder05", p))
+            for label, value in (("rawUnder05", raw_under), ("halfAdjustedUnder05", half_adjusted_under)):
+                if not math.isfinite(value) or not 0 < value < 1:
+                    raise ValueError(f"Invalid {label} in {file}")
             choices[int(game["gamePk"])].append({
                 "game_pk": int(game["gamePk"]),
                 "game_date": game["gameDate"],
@@ -108,8 +159,16 @@ def candidates(directory: Path) -> tuple[dict[int, list[dict]], int]:
                 "prediction_class": game.get("predictionClass"),
                 "venue_status": game.get("venueStatus"),
                 "p_under": p,
-                "p_top_under": half_under("top2ScorePct"),
-                "p_bottom_under": half_under("bottom2ScorePct"),
+                "p_raw_under": raw_under,
+                "p_half_adjusted_under": half_adjusted_under,
+                "p_top_under": adjusted_top_under,
+                "p_bottom_under": adjusted_bottom_under,
+                "p_raw_top_under": raw_top_under,
+                "p_raw_bottom_under": raw_bottom_under,
+                "half_contrast_applied": bool(game.get("halfContrastApplied")),
+                "half_contrast_h": game.get("halfContrastH"),
+                "validation_cohort": cohort,
+                "validation_cohort_key": cohort_id,
                 "snapshot_sha256": digest,
             })
     return choices, snapshots
@@ -219,6 +278,63 @@ def metrics(rows: list[dict], key: str, target: str) -> dict:
     }
 
 
+def paired_raw_adjusted_delta(
+    rows: list[dict],
+    adjusted_keys: tuple[str, ...],
+    raw_keys: tuple[str, ...],
+    targets: tuple[str, ...],
+    draws: int,
+) -> dict:
+    if not rows:
+        return {"n": 0, "brier": None, "logloss": None, "ci95_date_cluster": None}
+    if not (len(adjusted_keys) == len(raw_keys) == len(targets)):
+        raise ValueError("Paired metric key mismatch")
+    brier_delta = 0.0
+    logloss_delta = 0.0
+    observations = 0
+    days = defaultdict(lambda: [0, 0.0, 0.0])
+    for row in rows:
+        for adjusted_key, raw_key, target in zip(adjusted_keys, raw_keys, targets):
+            a = float(row[adjusted_key])
+            r = float(row[raw_key])
+            y = int(row[target])
+            db = (a-y)**2 - (r-y)**2
+            dl = (
+                -y*math.log(a) - (1-y)*math.log1p(-a)
+                +y*math.log(r) + (1-y)*math.log1p(-r)
+            )
+            brier_delta += db
+            logloss_delta += dl
+            observations += 1
+            cluster = days[row["date"]]
+            cluster[0] += 1
+            cluster[1] += db
+            cluster[2] += dl
+    interval = None
+    if len(days) >= 20:
+        values = list(days.values())
+        rng = random.Random(20260928)
+        boot = []
+        for _ in range(draws):
+            picks = rng.choices(values, k=len(values))
+            count = sum(x[0] for x in picks)
+            boot.append((
+                sum(x[1] for x in picks)/count,
+                sum(x[2] for x in picks)/count,
+            ))
+        briers = sorted(x[0] for x in boot)
+        logs = sorted(x[1] for x in boot)
+        lo = int(0.025*(draws-1))
+        hi = int(0.975*(draws-1))
+        interval = {"brier": [briers[lo], briers[hi]], "logloss": [logs[lo], logs[hi]]}
+    return {
+        "n": observations,
+        "brier": brier_delta/observations,
+        "logloss": logloss_delta/observations,
+        "ci95_date_cluster": interval,
+    }
+
+
 def score(archive_dir: Path, outcome_dir: Path, baseline_file: Path, draws: int = 5000) -> dict:
     groups, snapshot_count = candidates(archive_dir)
     selected = []
@@ -229,6 +345,18 @@ def score(archive_dir: Path, outcome_dir: Path, baseline_file: Path, draws: int 
         selected.append(max(rows, key=lambda r: (r["generated_timestamp"], r["snapshot_sha256"])))
     if not selected:
         raise ValueError("No eligible pregame vNext shadow forecasts")
+    all_selected = selected
+    starts = [r["validation_cohort"].get("prospective_validation_start") or "0000-00-00" for r in all_selected]
+    current_start = max(starts)
+    selected = [
+        r for r in all_selected
+        if (r["validation_cohort"].get("prospective_validation_start") or "0000-00-00") == current_start
+    ]
+    current_cohorts = {r["validation_cohort_key"] for r in selected}
+    if len(current_cohorts) != 1:
+        raise ValueError("Multiple current prospective validation cohorts share the latest start date")
+    current_cohort = selected[0]["validation_cohort"]
+    excluded_prior_cohort = len(all_selected) - len(selected)
     seasons = {int(r["date"][:4]) for r in selected}
     if len(seasons) != 1:
         raise ValueError("Score one prospective season per report")
@@ -282,12 +410,29 @@ def score(archive_dir: Path, outcome_dir: Path, baseline_file: Path, draws: int 
         brier_ci = [deltas[int(0.025*(draws-1))][0], deltas[int(0.975*(draws-1))][0]]
         log_ci = sorted(pair[1] for pair in deltas)
         interval = {"brier": brier_ci, "logloss": [log_ci[int(0.025*(draws-1))], log_ci[int(0.975*(draws-1))]]}
+    half_delta = paired_raw_adjusted_delta(
+        scored,
+        ("p_top_under", "p_bottom_under"),
+        ("p_raw_top_under", "p_raw_bottom_under"),
+        ("observed_top_under", "observed_bottom_under"),
+        draws,
+    )
+    full_half_delta = paired_raw_adjusted_delta(
+        scored,
+        ("p_half_adjusted_under",),
+        ("p_raw_under",),
+        ("observed_under",),
+        draws,
+    )
     return {
-        "version": "i2-vnext-prospective-score-v1",
+        "version": "i2-vnext-prospective-score-v2",
         "market_inputs_used": False,
         "promotion_status": "SHADOW_ONLY",
-        "selection_policy": "Latest valid pregame forecast regardless of lineup class; exclude source-invalidated snapshots before outcomes.",
+        "selection_policy": "Latest valid pregame forecast per game, then restrict scoring to the single latest declared prospective-validation cohort; exclude source-invalidated snapshots before outcomes.",
         "archive_snapshots": snapshot_count,
+        "all_selected_games_before_cohort_filter": len(all_selected),
+        "excluded_prior_cohort_games": excluded_prior_cohort,
+        "validation_cohort": current_cohort,
         "selected_games": len(selected),
         "scored_games": len(scored),
         "pending": pending,
@@ -304,11 +449,20 @@ def score(archive_dir: Path, outcome_dir: Path, baseline_file: Path, draws: int 
             "top": metrics(scored, "p_top_under", "observed_top_under"),
             "bottom": metrics(scored, "p_bottom_under", "observed_bottom_under"),
         },
+        "half_innings_raw": {
+            "top": metrics(scored, "p_raw_top_under", "observed_top_under"),
+            "bottom": metrics(scored, "p_raw_bottom_under", "observed_bottom_under"),
+        },
+        "half_contrast_adjusted_minus_raw": half_delta,
+        "full_i2_half_adjusted": metrics(scored, "p_half_adjusted_under", "observed_under"),
+        "full_i2_raw_before_half_adjustment": metrics(scored, "p_raw_under", "observed_under"),
+        "full_i2_half_adjusted_minus_raw": full_half_delta,
         "scored_rows": scored,
         "limitations": [
             "No inference interval is reported with fewer than 20 scored calendar dates.",
             "The baseline is a prior-season constant, not the deployed production model at the same cutoff.",
             "No prices, EV, or staking metrics are calculated; this is baseball-only forecast validation.",
+            "Prior validation cohorts are reported as excluded rather than pooled with the current half-calibration cohort.",
         ],
     }
 
