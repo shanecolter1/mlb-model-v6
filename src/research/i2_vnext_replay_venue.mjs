@@ -1,4 +1,4 @@
-/** Prior-season park matching for the 2025 Retrosheet research replay. */
+/** Prior-season park matching for historical Retrosheet research replays. */
 const RETRO_SITE_TO_SAVANT_TEAM = {
   ANA01:'ANGELS', PHO01:'D-BACKS', ATL03:'BRAVES', BAL12:'ORIOLES',
   BOS07:'RED SOX', CHI12:'WHITE SOX', CHI11:'CUBS', CIN09:'REDS',
@@ -7,9 +7,10 @@ const RETRO_SITE_TO_SAVANT_TEAM = {
   MIN04:'TWINS', NYC21:'YANKEES', NYC20:'METS', PHI13:'PHILLIES',
   PIT08:'PIRATES', SAN02:'PADRES', SEA03:'MARINERS', SFO03:'GIANTS',
   STL10:'CARDINALS', ARL03:'RANGERS', TOR02:'BLUE JAYS', WAS11:'NATIONALS',
+  OAK01:'ATHLETICS', STP01:'RAYS',
 };
 
-// The actual 2025 venue has no valid 2024 Savant profile at these sites.
+// Season-specific sites without a valid prior-season Savant home-venue profile.
 const EXPLICIT_NEUTRAL_SITES_BY_SEASON = {
   2025: new Set([
   'SAC01', // Athletics at Sutter Health Park
