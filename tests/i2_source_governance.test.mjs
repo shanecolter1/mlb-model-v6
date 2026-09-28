@@ -45,7 +45,12 @@ test('credible starter conflict blocks recommendations, even if preferred source
 test('starter change invalidates previously frozen projection; clean fresh inputs can rerun',()=>{
  const previous={away:side(),home:side()},away=side();away.starter=selectStarter([pitcher('ROTOWIRE','Starter B')]);
  const gate=projectionGate({away,home:side(),previous});assert.ok(gate.invalidations.includes('PROJECTION_INVALIDATED_STARTER_CHANGE'));assert.equal(gate.eligible,false);
- assert.equal(projectionGate({away,home:side()}).eligible,true);
+ const freshProvisional=projectionGate({away,home:side()});
+ assert.equal(freshProvisional.requiresCleanRerun,false);
+ assert.equal(freshProvisional.eligible,false);
+ assert.ok(freshProvisional.reasons.includes('LINEUP_NOT_CONFIRMED'));
+ const confirmed=(starterName)=>({lineup:selectLineup([lineup('MLB',{confirmed:true})]),starter:selectStarter([pitcher('MLB',starterName,{confirmed:true})]),news:[]});
+ assert.equal(projectionGate({away:confirmed('Starter B'),home:confirmed('Starter A')}).eligible,true);
 });
 test('confirmed lineup change invalidates frozen provisional order',()=>{
  const previous={away:side(),home:side()},away=side();away.lineup=selectLineup([lineup('MLB',{confirmed:true,players:[...players].reverse()})]);

@@ -236,15 +236,16 @@ def multiclass_brier(y: pd.Series, prob: np.ndarray, classes: list[str]) -> floa
     return float(np.mean(np.sum((prob - truth) ** 2, axis=1)))
 
 
-def fit_one(train: pd.DataFrame, c: float, half_life: float):
+def fit_one(train: pd.DataFrame, c: float, half_life: float, categorical_features=None):
+    categorical_features = CAT if categorical_features is None else categorical_features
     prep = ColumnTransformer(
         [
-            ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=True, dtype=np.float64), CAT),
+            ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=True, dtype=np.float64), categorical_features),
             ("num", StandardScaler(with_mean=False), NUM),
         ],
         sparse_threshold=1.0,
     )
-    x = prep.fit_transform(train[CAT + NUM])
+    x = prep.fit_transform(train[categorical_features + NUM])
     model = LogisticRegression(
         C=c,
         solver="saga",
@@ -266,8 +267,9 @@ def fit_one(train: pd.DataFrame, c: float, half_life: float):
     return prep, model
 
 
-def score(prep, model, test: pd.DataFrame) -> dict:
-    x = prep.transform(test[CAT + NUM])
+def score(prep, model, test: pd.DataFrame, categorical_features=None) -> dict:
+    categorical_features = CAT if categorical_features is None else categorical_features
+    x = prep.transform(test[categorical_features + NUM])
     p = model.predict_proba(x)
     classes = [str(x) for x in model.classes_]
     return {

@@ -4,6 +4,7 @@ import { collectSources, resolveGameInputs, applyResolvedInputs } from '../input
 import { projectionGate, compactAudit, lineupDelta } from '../inputs/i2_source_governance.mjs';
 import { simulateFullSecondInning, fairAmericanOdds } from '../model/i2_inning_model.js';
 import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
+import { selectI2VenueProfile } from '../model/i2_venue_profile.js';
 import { applyEnvironmentalEventVector } from '../event_probability_engine.js';
 import { createSeededRandom, seedFromGameId } from '../model/seeded_random.js';
 
@@ -121,19 +122,8 @@ if (fs.existsSync(VENUE_PATH)) {
   try { venueProfiles = loadJson(VENUE_PATH); } catch {}
 }
 
-function norm(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim(); }
 function venueProfileFor(game) {
-  if (!venueProfiles.length) return null;
-  const venueName = norm(game.venue?.name);
-  let p = venueProfiles.find(x => norm(x.venue_name) === venueName);
-  if (p) return p;
-  const homeName = norm(game.teams?.home?.team?.name || game.teams?.home?.team?.clubName);
-  const homeAbbr = norm(game.teams?.home?.team?.abbreviation);
-  p = venueProfiles.find(x => {
-    const t = norm(x.team);
-    return t && (homeName.endsWith(t) || t.endsWith(homeName) || (homeAbbr && t === homeAbbr));
-  });
-  return p || null;
+  return selectI2VenueProfile(game, venueProfiles);
 }
 
 function venueStatusFor(profile) {
@@ -483,6 +473,7 @@ async function runGame(game) {
       awayStarterStatsError:awayStarter?.rawStatsError ?? null,
       homeStarterStatsError:homeStarter?.rawStatsError ?? null,
       venueProfileMatched:Boolean(venueProfile),
+      venueMatchRule:'EXACT_NORMALIZED_VENUE_NAME_ONLY',
       venueStatus,
       venueFallbackApplied:!venueProfile,
       awayI2PitchingPlan:awayPitchingPlan?.status || null,
@@ -631,6 +622,7 @@ async function main(){
     finalCalibration:vnextFullCalibration?.final_curve || vnextFullCalibration?.selected || null,
     leagueBaselineSource:'Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json',
     parkSource:venueProfiles.length?'Baseball Savant 3-year Statcast park factors':'neutral fallback',
+    venueMatchRule:'EXACT_NORMALIZED_VENUE_NAME_ONLY',
     currentPlayerSource:'I2: fitted direct Statcast I2 player effects + Savant arsenal; I1 only: MLB Stats API season-to-date rates',
     starterStatsPersisted:true,
     starterStatsFields:['wins','losses','record','era','whip','inningsPitched','strikeOuts','walks','homeRunsAllowed','battersFaced','gamesStarted'],

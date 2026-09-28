@@ -1,0 +1,69 @@
+{
+  "version": "i2-home-side-pa-ablation-v1",
+  "market_inputs_used": false,
+  "promotion_status": "SHADOW_COMPONENT_RESEARCH_ONLY",
+  "training": {
+    "seasons": [
+      2023,
+      2024
+    ],
+    "n": 40812,
+    "end": "2024-09-30"
+  },
+  "test": {
+    "season": 2025,
+    "n": 20188,
+    "already_inspected": true
+  },
+  "fixed_hyperparameters": {
+    "C": 0.05,
+    "half_life_days": 730,
+    "source": "2024 chronological selection; no refit based on this ablation"
+  },
+  "only_feature_difference": "Top/Bottom home batting-side categorical term inside the same joint multinomial PA model",
+  "metrics": {
+    "all": {
+      "n": 20188,
+      "control_logloss": 1.4663530845153854,
+      "home_side_logloss": 1.4662177043805114,
+      "home_side_minus_control_logloss": -0.00013538013487381654,
+      "control_brier": 0.7009491126858602,
+      "home_side_brier": 0.7009059241890976,
+      "home_side_minus_control_brier": -4.318849676271392e-05,
+      "paired_date_cluster_ci95": {
+        "logloss": [
+          -0.0003928248887338294,
+          0.00012584519142518354
+        ],
+        "brier": [
+          -0.00014991834873419506,
+          6.294722201700236e-05
+        ]
+      }
+    },
+    "home": {
+      "n": 10243,
+      "control_logloss": 1.47851134552169,
+      "home_side_logloss": 1.4784270403501651,
+      "home_side_minus_control_logloss": -8.430517152482643e-05,
+      "control_brier": 0.7052259433532966,
+      "home_side_brier": 0.7051244450124202,
+      "home_side_minus_control_brier": -0.00010149834087627208
+    },
+    "away": {
+      "n": 9945,
+      "control_logloss": 1.4538305035714356,
+      "home_side_logloss": 1.4536425180218224,
+      "home_side_minus_control_logloss": -0.00018798554961325405,
+      "control_brier": 0.6965441276153174,
+      "home_side_brier": 0.6965609962058603,
+      "home_side_minus_control_brier": 1.686859054298505e-05
+    }
+  },
+  "limitations": [
+    "2025 outcomes were already inspected before this candidate was proposed; this is not an independent validation.",
+    "PA event scoring does not establish full-I2 probability improvement or address park coverage.",
+    "Frozen pre-2025 model tests the PA component; the deployed shadow runner uses monthly walk-forward refits.",
+    "No calibration, thresholds, betting strategy or production model changed."
+  ]
+}

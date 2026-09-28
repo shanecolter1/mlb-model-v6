@@ -1,0 +1,113 @@
+{
+  "version": "i2-half-asymmetry-audit-v1",
+  "market_inputs_used": false,
+  "model_fitted": false,
+  "promotion_status": "SHADOW_ONLY",
+  "excluded_games": [
+    {
+      "season": 2021,
+      "gid": "NYN202104110",
+      "reason": "HALVES_PLAYED_ON_DIFFERENT_DATES"
+    },
+    {
+      "season": 2024,
+      "gid": "CHA202408270",
+      "reason": "HALVES_PLAYED_ON_DIFFERENT_DATES"
+    }
+  ],
+  "hypothesis_source": "Retrospective after observing 2025 bottom-half bias; 2021\u20132024 is historical context, not an independent preregistered test.",
+  "prior_2021_2024": {
+    "games": 9716,
+    "top_under_rate": 0.7593659942363112,
+    "bottom_under_rate": 0.7399135446685879,
+    "bottom_minus_top_under": -0.019452449567723344,
+    "discordant_top_only_under": 1933,
+    "discordant_bottom_only_under": 1744,
+    "bottom_minus_top_ci95_date_cluster": [
+      -0.03160595177013853,
+      -0.007273099774636345
+    ],
+    "seasons": {
+      "2021": {
+        "games": 2428,
+        "top_under_rate": 0.764827018121911,
+        "bottom_under_rate": 0.7364085667215815,
+        "bottom_minus_top_under": -0.02841845140032949,
+        "discordant_top_only_under": 505,
+        "discordant_bottom_only_under": 436
+      },
+      "2022": {
+        "games": 2430,
+        "top_under_rate": 0.7802469135802469,
+        "bottom_under_rate": 0.7473251028806585,
+        "bottom_minus_top_under": -0.03292181069958848,
+        "discordant_top_only_under": 485,
+        "discordant_bottom_only_under": 405
+      },
+      "2023": {
+        "games": 2430,
+        "top_under_rate": 0.7325102880658436,
+        "bottom_under_rate": 0.7448559670781894,
+        "bottom_minus_top_under": 0.012345679012345678,
+        "discordant_top_only_under": 453,
+        "discordant_bottom_only_under": 483
+      },
+      "2024": {
+        "games": 2428,
+        "top_under_rate": 0.7598846787479407,
+        "bottom_under_rate": 0.7310543657331137,
+        "bottom_minus_top_under": -0.028830313014827018,
+        "discordant_top_only_under": 490,
+        "discordant_bottom_only_under": 420
+      }
+    },
+    "descriptive_subgroups": {
+      "both_starters_began_i2": {
+        "games": 9327,
+        "top_under_rate": 0.7594081698295272,
+        "bottom_under_rate": 0.7396804974804332,
+        "bottom_minus_top_under": -0.01972767234909403,
+        "discordant_top_only_under": 1862,
+        "discordant_bottom_only_under": 1678
+      },
+      "at_least_one_starter_changed": {
+        "games": 389,
+        "top_under_rate": 0.7583547557840618,
+        "bottom_under_rate": 0.7455012853470437,
+        "bottom_minus_top_under": -0.012853470437017995,
+        "discordant_top_only_under": 71,
+        "discordant_bottom_only_under": 66
+      },
+      "same_i2_start_slot": {
+        "games": 2544,
+        "top_under_rate": 0.762185534591195,
+        "bottom_under_rate": 0.735062893081761,
+        "bottom_minus_top_under": -0.027122641509433963,
+        "discordant_top_only_under": 517,
+        "discordant_bottom_only_under": 448
+      },
+      "different_i2_start_slots": {
+        "games": 7172,
+        "top_under_rate": 0.7583658672615727,
+        "bottom_under_rate": 0.7416341327384273,
+        "bottom_minus_top_under": -0.016731734523145567,
+        "discordant_top_only_under": 1416,
+        "discordant_bottom_only_under": 1296
+      }
+    }
+  },
+  "inspected_2025_context_only": {
+    "games": 2430,
+    "top_under_rate": 0.762962962962963,
+    "bottom_under_rate": 0.7312757201646091,
+    "bottom_minus_top_under": -0.03168724279835391,
+    "discordant_top_only_under": 514,
+    "discordant_bottom_only_under": 437
+  },
+  "limitations": [
+    "This audits outcomes, not matched game-level model residuals in 2021\u20132024.",
+    "Starter continuation and I2 start slot are observed after first pitch; subgroup results cannot enter pregame prediction.",
+    "The paired comparison shares a park per game, but does not isolate home batting context from team strength, pitcher quality, or lineup state.",
+    "Calendar-date bootstrap conditions on observed seasons and does not account for model training or hypothesis selection."
+  ]
+}
