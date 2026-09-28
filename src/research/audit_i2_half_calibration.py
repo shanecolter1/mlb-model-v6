@@ -18,7 +18,11 @@ import statsmodels.api as sm
 from scipy.special import expit, logit
 
 
-MATCHED = "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT"
+PARK_MATCHED_STATUSES = {
+    "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT",
+    "MLB_VENUE_NAME_TO_PRIOR_SEASON_SAVANT",
+    "MLB_HOME_TEAM_TO_PRIOR_SEASON_SAVANT",
+}
 PARK_MATCHED = {
     "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT",
     "MLB_VENUE_NAME_TO_PRIOR_SEASON_SAVANT",
@@ -34,6 +38,7 @@ def parse_args():
     p.add_argument("--cv-repeats", type=int, default=20)
     p.add_argument("--cv-folds", type=int, default=10)
     p.add_argument("--bootstrap", type=int, default=5000)
+    p.add_argument("--home-venue-spec", type=Path)
     return p.parse_args()
 
 
@@ -46,6 +51,7 @@ def build_rows(replay, inputs, home_venue_spec=None):
     if season <= 0 or int(inputs.get("season") or 0) != season:
         raise ValueError("Replay/input season mismatch")
     games = {g["gid"]: g for g in inputs["games"]}
+    home_games = (home_venue_spec or {}).get("games", {})
     if replay.get("n") != len(games):
         raise ValueError("Replay/input game coverage mismatch")
     venue_games = {}
@@ -75,6 +81,7 @@ def build_rows(replay, inputs, home_venue_spec=None):
                 "p": p,
                 "y": int(game["observed"][okey] > 0),
                 "park_status": pred["park_status"],
+                "home_venue_status": home_games.get(str(pred["gid"]), {}).get("status"),
                 "home_venue_status": (
                     venue_row.get("status") if venue_row
                     else ("PRIMARY_HOME_VENUE" if pred["park_status"] == MATCHED else "UNCLASSIFIED")
