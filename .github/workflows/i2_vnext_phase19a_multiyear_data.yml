@@ -1,0 +1,207 @@
+name: I2 vNext Phase 19A - multiyear replay data
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase19a_multiyear_data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i2-vnext-phase19a-multiyear-data
+  cancel-in-progress: true
+
+jobs:
+  historical-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --upgrade pip pandas requests lxml
+
+      - name: Restore extended Statcast cache
+        uses: actions/cache@v4
+        with:
+          path: data/cache/i2_vnext/statcast
+          key: i2-vnext-statcast-2021-2026-v1
+
+      - name: Download existing Retrosheet seasons and Chadwick register
+        run: |
+          set -euo pipefail
+          mkdir -p data/raw/i2_vnext/retrosheet data/raw/i2_vnext/chadwick
+          for year in 2021 2022 2023 2024 2025; do
+            curl --fail --location --retry 3               "https://www.retrosheet.org/downloads/plays/${year}plays.zip"               --output "data/raw/i2_vnext/retrosheet/${year}plays.zip"
+          done
+          for suffix in 0 1 2 3 4 5 6 7 8 9 a b c d e f; do
+            curl --fail --location --retry 3               "https://raw.githubusercontent.com/chadwickbureau/register/master/data/people-${suffix}.csv"               --output "data/raw/i2_vnext/chadwick/people-${suffix}.csv"
+          done
+
+      - name: Build extended I2 Statcast history and arsenal snapshots
+        run: |
+          python src/research/build_i2_vnext_statcast.py             --start 2021-04-01             --end 2026-09-27             --sleep 0.15
+
+      - name: Build 2022-2025 replay inputs and home-venue specs
+        run: |
+          set -euo pipefail
+          for season in 2022 2023 2024 2025; do
+            prior=$((season-1))
+            python src/research/build_i2_vnext_replay_inputs.py               --season "${season}"               --retrosheet-zip "data/raw/i2_vnext/retrosheet/${season}plays.zip"               --prior-retrosheet-zip "data/raw/i2_vnext/retrosheet/${prior}plays.zip"               --chadwick-dir data/raw/i2_vnext/chadwick               --output "data/derived/i2_vnext/replay_${season}_inputs.json"
+            python src/research/build_i2_home_venue_spec.py               --inputs "data/derived/i2_vnext/replay_${season}_inputs.json"               --output "data/derived/i2_vnext/home_venue_${season}.json"
+          done
+
+      - name: Verify approved historical boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          import pandas as pd
+
+          root=Path('data/derived/i2_vnext')
+          df=pd.read_csv(root/'i2_pa_statcast.csv')
+          seasons=sorted(int(x) for x in df['season'].unique())
+          assert seasons == [2021,2022,2023,2024,2025,2026], seasons
+          assert int(df['season'].min()) == 2021
+          assert not (df['season'] == 2020).any()
+
+          manifest=json.loads((root/'dataset_manifest.json').read_text())
+          assert manifest['market_inputs_used'] is False
+          assert manifest['start']=='2021-04-01'
+          assert manifest['end']=='2026-09-27'
+
+          arsenal=root/'arsenal'
+          for year in range(2020,2027):
+              for role in ('batter','pitcher'):
+                  p=arsenal/f'{role}_{year}.csv'
+                  assert p.exists() and p.stat().st_size > 0, p
+
+          checks={}
+          for season in range(2022,2026):
+              replay=json.loads((root/f'replay_{season}_inputs.json').read_text())
+              venue=json.loads((root/f'home_venue_{season}.json').read_text())
+              assert replay['market_inputs_used'] is False
+              assert replay['season']==season
+              assert replay['games_eligible'] > 2200, (season,replay['games_eligible'])
+              assert venue['market_inputs_used'] is False
+              assert venue['season']==season
+              assert venue['summary']['primary_home_venue_games'] > 2200
+              checks[str(season)]={
+                  'games':replay['games_eligible'],
+                  'primary_home_games':venue['summary']['primary_home_venue_games'],
+                  'primary_share':venue['summary']['primary_home_venue_share'],
+              }
+
+          checkpoint={
+              'version':'i2-vnext-phase19a-history-v1',
+              'market_inputs_used':False,
+              'validation_years':[2022,2023,2024,2025],
+              'pa_history_years':seasons,
+              'retrosheet_history_years':[2021,2022,2023,2024,2025],
+              'year_2020_usage':'arsenal snapshots only; no 2020 PA or Retrosheet outcomes',
+              'arsenal_years':list(range(2020,2027)),
+              'season_checks':checks,
+          }
+          (root/'PHASE19A_HISTORY_CHECKPOINT.json').write_text(json.dumps(checkpoint,indent=2)+'\n')
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload Phase 19A historical data
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19a-history
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/i2_pa_statcast.csv
+            data/derived/i2_vnext/dataset_manifest.json
+            data/derived/i2_vnext/arsenal/
+            data/derived/i2_vnext/replay_2022_inputs.json
+            data/derived/i2_vnext/replay_2023_inputs.json
+            data/derived/i2_vnext/replay_2024_inputs.json
+            data/derived/i2_vnext/replay_2025_inputs.json
+            data/derived/i2_vnext/home_venue_2022.json
+            data/derived/i2_vnext/home_venue_2023.json
+            data/derived/i2_vnext/home_venue_2024.json
+            data/derived/i2_vnext/home_venue_2025.json
+            data/derived/i2_vnext/PHASE19A_HISTORY_CHECKPOINT.json
+
+  current-2026-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --upgrade pip requests
+
+      - name: Download 2025 Retrosheet prior only
+        run: |
+          mkdir -p data/raw/i2_vnext/retrosheet
+          curl --fail --location --retry 3             "https://www.retrosheet.org/downloads/plays/2025plays.zip"             --output data/raw/i2_vnext/retrosheet/2025plays.zip
+
+      - name: Build 2025 league prior
+        run: |
+          python src/research/build_i2_prior_league_rates.py             --zip data/raw/i2_vnext/retrosheet/2025plays.zip             --season 2025             --output data/derived/i2_vnext/prior_league_rates_2025.json
+
+      - name: Fetch completed 2026 regular-season feeds
+        run: |
+          python src/ingestion/fetch_mlb_statsapi_season.py             --start-date 2026-03-01             --end-date 2026-09-27             --output-dir data/raw/i2_vnext/mlbstats_2026             --workers 24
+
+      - name: Build 2026 YTD replay inputs and home-venue spec
+        run: |
+          python src/research/build_i2_vnext_replay_inputs_mlb.py             --raw-dir data/raw/i2_vnext/mlbstats_2026             --prior-league-rates data/derived/i2_vnext/prior_league_rates_2025.json             --season 2026             --output data/derived/i2_vnext/replay_2026_inputs.json
+          python src/research/build_i2_home_venue_spec.py             --inputs data/derived/i2_vnext/replay_2026_inputs.json             --output data/derived/i2_vnext/home_venue_2026.json
+
+      - name: Verify 2026 YTD inputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/i2_vnext')
+          replay=json.loads((p/'replay_2026_inputs.json').read_text())
+          venue=json.loads((p/'home_venue_2026.json').read_text())
+          assert replay['season']==2026
+          assert replay['market_inputs_used'] is False
+          assert replay['games_eligible'] > 2200, replay['games_eligible']
+          assert venue['season']==2026
+          assert venue['market_inputs_used'] is False
+          assert venue['summary']['primary_home_venue_games'] > 2200
+          checkpoint={
+              'version':'i2-vnext-phase19a-2026-ytd-v1',
+              'market_inputs_used':False,
+              'cutoff':'2026-09-27',
+              'games':replay['games_eligible'],
+              'excluded':replay['games_excluded'],
+              'primary_home_games':venue['summary']['primary_home_venue_games'],
+              'primary_home_share':venue['summary']['primary_home_venue_share'],
+              'outcome_source':'MLB Stats API completed regular-season game feeds',
+              'prior_league_source':'2025 Retrosheet',
+          }
+          (p/'PHASE19A_2026_CHECKPOINT.json').write_text(json.dumps(checkpoint,indent=2)+'\n')
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload Phase 19A 2026 YTD data
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19a-2026
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2026_inputs.json
+            data/derived/i2_vnext/home_venue_2026.json
+            data/derived/i2_vnext/prior_league_rates_2025.json
+            data/derived/i2_vnext/PHASE19A_2026_CHECKPOINT.json
