@@ -10,12 +10,35 @@ function arg(name, fallback=null) {
 const INPUT=arg('--input','data/derived/i2_vnext/i1_state_ab_2024_inputs.json');
 const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/i1_state_ab_2024_rows.json');
+const OBSERVED_SLOTS=arg('--observed-slots');
 const MAX_PA=Number(arg('--max-pa','40'));
 
 const input=JSON.parse(fs.readFileSync(INPUT,'utf8'));
 const raw=JSON.parse(fs.readFileSync(PLAY,'utf8'));
-const league=input.league_event_rates;
+const league=input.league_event_rates ?? input.i1_state_model?.event_rates;
+if (!league) throw new Error('Input missing pregame league event rates');
 if (!raw?.states) throw new Error('Expected seasonal transition artifact with states');
+if (input.market_inputs_used !== false) throw new Error('Input is not market-isolated');
+
+// The compact Retrosheet file is used strictly after computing each game's
+// pregame slot distribution. It supplies targets, never model features.
+const observedByGame=new Map();
+if (OBSERVED_SLOTS) {
+  const [header,...lines]=fs.readFileSync(OBSERVED_SLOTS,'utf8').trim().split(/\r?\n/);
+  const fields=header.split(',');
+  for (const key of ['gid','half','i2_start_slot']) {
+    if (!fields.includes(key)) throw new Error(`Observed slot CSV missing ${key}`);
+  }
+  for (const line of lines) {
+    const values=line.split(',');
+    const row=Object.fromEntries(fields.map((key,index)=>[key,values[index]]));
+    const side=row.half;
+    if (!['top','bottom'].includes(side)) continue;
+    const key=`${row.gid}|${side}`;
+    if (observedByGame.has(key)) throw new Error(`Duplicate observed slot: ${key}`);
+    observedByGame.set(key,Number(row.i2_start_slot));
+  }
+}
 
 const EVENT_TO_TRANSITION={
   strikeout:'out',
@@ -134,8 +157,13 @@ function loss(dist, observed){
 const rows=[];
 for(const game of input.games){
   for(const side of ['top','bottom']){
-    const observed=Number(game.observed[side==='top'?'top2_start_slot':'bottom2_start_slot']);
-    if(!(observed>=1 && observed<=9)) continue;
+    const observed=OBSERVED_SLOTS
+      ? observedByGame.get(`${game.gid}|${side}`)
+      : Number(game.observed?.[side==='top'?'top2_start_slot':'bottom2_start_slot']);
+    if(!(Number.isInteger(observed) && observed>=1 && observed<=9)) {
+      if (OBSERVED_SLOTS) throw new Error(`Missing observed slot for ${game.gid}|${side}`);
+      continue;
+    }
     const leagueDist=exactDistribution(game,side,'league');
     const playerDist=exactDistribution(game,side,'player_asof');
     rows.push({
@@ -151,6 +179,7 @@ const payload={
   season:input.season,
   market_inputs_used:false,
   observed_i2_start_slot_used_as_predictor:false,
+  observed_slot_source:OBSERVED_SLOTS ? 'joined Retrosheet compact CSV target only' : 'input target only',
   evaluation_method:'exact dynamic propagation through validated empirical event/base-out transition table; run-only transition differences collapsed',
   max_pa:MAX_PA,
   n_halves:rows.length,
