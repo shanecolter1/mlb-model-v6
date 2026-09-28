@@ -1,5 +1,6 @@
 # source-refresh: historical max-iter deduped
 name: I2 vNext Phase 19B - multiyear half adjustment
+# historical solver ceiling: 7500; objective/spec unchanged
 
 on:
   workflow_dispatch:
