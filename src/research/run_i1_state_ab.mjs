@@ -13,6 +13,7 @@ const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/pro
 const OUTPUT=arg('--output','data/derived/i2_vnext/i1_state_ab_2024_rows.json');
 const OBSERVED_SLOTS=arg('--observed-slots');
 const PARKS=arg('--parks');
+const DIRECT_PA_MODEL=arg('--direct-i1-pa-model');
 const MAX_PA=Number(arg('--max-pa','40'));
 
 const input=JSON.parse(fs.readFileSync(INPUT,'utf8'));
@@ -24,6 +25,14 @@ if (input.market_inputs_used !== false) throw new Error('Input is not market-iso
 const parkProfiles=PARKS ? JSON.parse(fs.readFileSync(PARKS,'utf8')) : [];
 if (PARKS && (!Array.isArray(parkProfiles) || !parkProfiles.length || input.season!==2025)) {
   throw new Error('Park-aware I1 audit requires 2025 replay inputs and prior-season park profiles');
+}
+const directModel=DIRECT_PA_MODEL ? JSON.parse(fs.readFileSync(DIRECT_PA_MODEL,'utf8')) : null;
+if (directModel) {
+  if (directModel.market_inputs_used!==false || directModel.observed_2024_outcomes_used_for_fit!==false ||
+      directModel.status!=='RESEARCH_ONLY_NOT_PROMOTED' ||
+      !directModel.training_years?.every(y=>y<input.season)) {
+    throw new Error('Direct PA research model is not governed for this season');
+  }
 }
 
 // The compact Retrosheet file is used strictly after computing each game's
@@ -57,6 +66,9 @@ const EVENT_TO_TRANSITION={
   home_run:'hr',
 };
 const EVENTS=Object.keys(EVENT_TO_TRANSITION);
+if (directModel && JSON.stringify([...directModel.event_order].sort())!==JSON.stringify([...EVENTS].sort())) {
+  throw new Error('Direct PA event order mismatch');
+}
 const sourceForEvent=(event,outs,mask)=>
   raw.states[`${event}|${outs}|${mask}`] ? event : EVENT_TO_TRANSITION[event];
 
@@ -90,9 +102,26 @@ for(const source of new Set([...Object.values(EVENT_TO_TRANSITION),
 function rates(item, mode){
   return mode==='player_asof' ? item.i1_event_rates_asof : league;
 }
-function precomputeVectors(lineup,pitcher,mode,environmentalContext){
+function directEventVector(batterRates,pitcherRates,side){
+  const p=directModel.parameters;
+  const logit=x=>Math.log(x/(1-x));
+  const logits=EVENTS.map(event=>
+    Math.log(league[event]) +
+    p.batter_weight*(logit(batterRates[event])-logit(league[event])) +
+    p.pitcher_weight*(logit(pitcherRates[event])-logit(league[event])) +
+    (p.event_intercepts[event] ?? 0) +
+    (side==='bottom' ? (p.home_event_terms[event] ?? 0) : 0)
+  );
+  const maximum=Math.max(...logits);
+  const weights=logits.map(value=>Math.exp(value-maximum));
+  const total=weights.reduce((sum,value)=>sum+value,0);
+  return Object.fromEntries(EVENTS.map((event,index)=>[event,weights[index]/total]));
+}
+function precomputeVectors(lineup,pitcher,mode,environmentalContext,side){
   return lineup.map(batter=>{
-    const neutralVector=buildNeutralEventVector({
+    const neutralVector=directModel && mode==='player_asof'
+      ? directEventVector(rates(batter,mode),rates(pitcher,mode),side)
+      : buildNeutralEventVector({
       batter:rates(batter,mode),
       pitcher:rates(pitcher,mode),
       league,
@@ -117,7 +146,7 @@ function exactDistribution(game,side,mode){
   const lineup=isTop?game.away_lineup:game.home_lineup;
   const pitcher=isTop?game.home_starter:game.away_starter;
   const venue=PARKS ? venueForReplayGame(game,parkProfiles) : {profile:null};
-  const vectors=precomputeVectors(lineup,pitcher,mode,venue.profile);
+  const vectors=precomputeVectors(lineup,pitcher,mode,venue.profile,side);
 
   let active=new Float64Array(24);
   active[idx(0,0)]=1;
@@ -200,6 +229,7 @@ const payload={
   observed_i2_start_slot_used_as_predictor:false,
   observed_slot_source:OBSERVED_SLOTS ? 'joined Retrosheet compact CSV target only' : 'input target only',
   i1_environment:PARKS ? 'prior_season_park' : 'neutral',
+  i1_pa_model:directModel?.version || 'existing_50_50_formula',
   evaluation_method:'exact dynamic propagation through validated empirical event/base-out transition table; run-only transition differences collapsed',
   max_pa:MAX_PA,
   n_halves:rows.length,

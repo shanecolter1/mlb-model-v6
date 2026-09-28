@@ -1,0 +1,177 @@
+{
+  "version": "i1-direct-pa-exact-slot-comparison-v1",
+  "status": "SHADOW_ONLY_NOT_PROMOTED",
+  "market_inputs_used": false,
+  "observed_i2_slots_used_as_predictors": false,
+  "candidate_model_version": "i1-direct-pa-home-research-2022-2023-v1",
+  "2024_inspected": {
+    "all": {
+      "n_halves": 4857,
+      "observed_late": 0.15359275272802142,
+      "arms": {
+        "baseline": {
+          "predicted_late": 0.1447807952774909,
+          "late_pred_minus_actual": -0.008811957450530487,
+          "slot_logloss": 1.5042873049510501,
+          "slot_brier": 0.7337942670050281
+        },
+        "candidate": {
+          "predicted_late": 0.14612367467097376,
+          "late_pred_minus_actual": -0.007469078057047655,
+          "slot_logloss": 1.5035911393680317,
+          "slot_brier": 0.7333195048200192
+        }
+      },
+      "candidate_minus_baseline": {
+        "slot_logloss": -0.0006961655830185755,
+        "slot_brier": -0.0004747621850089401,
+        "slot_logloss_ci95": [
+          -0.0029195831490108977,
+          0.0015850915364169118
+        ]
+      }
+    },
+    "top": {
+      "n_halves": 2429,
+      "observed_late": 0.13585837793330588,
+      "arms": {
+        "baseline": {
+          "predicted_late": 0.14496255291863025,
+          "late_pred_minus_actual": 0.009104174985324363,
+          "slot_logloss": 1.4710911575738372,
+          "slot_brier": 0.7227943522246764
+        },
+        "candidate": {
+          "predicted_late": 0.1284088768224336,
+          "late_pred_minus_actual": -0.007449501110872293,
+          "slot_logloss": 1.4698602963273186,
+          "slot_brier": 0.7219098856678369
+        }
+      },
+      "candidate_minus_baseline": {
+        "slot_logloss": -0.0012308612465185098,
+        "slot_brier": -0.0008844665568395432,
+        "slot_logloss_ci95": [
+          -0.004261556502973827,
+          0.0016998649176211207
+        ]
+      }
+    },
+    "bottom": {
+      "n_halves": 2428,
+      "observed_late": 0.171334431630972,
+      "arms": {
+        "baseline": {
+          "predicted_late": 0.1445989627773561,
+          "late_pred_minus_actual": -0.02673546885361592,
+          "slot_logloss": 1.5374971245471172,
+          "slot_brier": 0.7447987122280405
+        },
+        "candidate": {
+          "predicted_late": 0.1638457685647563,
+          "late_pred_minus_actual": -0.007488663066215677,
+          "slot_logloss": 1.5373358748482178,
+          "slot_brier": 0.7447338231563663
+        }
+      },
+      "candidate_minus_baseline": {
+        "slot_logloss": -0.00016124969889940715,
+        "slot_brier": -6.488907167428818e-05,
+        "slot_logloss_ci95": [
+          -0.0036547071694645384,
+          0.003208611156152152
+        ]
+      }
+    }
+  },
+  "2025_inspected": {
+    "all": {
+      "n_halves": 4860,
+      "observed_late": 0.16131687242798354,
+      "arms": {
+        "baseline": {
+          "predicted_late": 0.14249019441840913,
+          "late_pred_minus_actual": -0.01882667800957441,
+          "slot_logloss": 1.529318857526988,
+          "slot_brier": 0.7406230261172486
+        },
+        "candidate": {
+          "predicted_late": 0.1486156220207059,
+          "late_pred_minus_actual": -0.01270125040727761,
+          "slot_logloss": 1.5290030872234959,
+          "slot_brier": 0.7404915303403188
+        }
+      },
+      "candidate_minus_baseline": {
+        "slot_logloss": -0.0003157703034921536,
+        "slot_brier": -0.00013149577692982682,
+        "slot_logloss_ci95": [
+          -0.002586660888200749,
+          0.0017936605523415727
+        ]
+      }
+    },
+    "top": {
+      "n_halves": 2430,
+      "observed_late": 0.15679012345679014,
+      "arms": {
+        "baseline": {
+          "predicted_late": 0.1425752886286103,
+          "late_pred_minus_actual": -0.01421483482817983,
+          "slot_logloss": 1.4981771769426107,
+          "slot_brier": 0.7323813628265643
+        },
+        "candidate": {
+          "predicted_late": 0.1306120304396585,
+          "late_pred_minus_actual": -0.026178093017131622,
+          "slot_logloss": 1.499908912825835,
+          "slot_brier": 0.7327071063943341
+        }
+      },
+      "candidate_minus_baseline": {
+        "slot_logloss": 0.001731735883224248,
+        "slot_brier": 0.00032574356776987536,
+        "slot_logloss_ci95": [
+          -0.0007608664553401852,
+          0.004021576803800417
+        ]
+      }
+    },
+    "bottom": {
+      "n_halves": 2430,
+      "observed_late": 0.16584362139917697,
+      "arms": {
+        "baseline": {
+          "predicted_late": 0.14240510020820796,
+          "late_pred_minus_actual": -0.023438521190968998,
+          "slot_logloss": 1.5604605381113652,
+          "slot_brier": 0.748864689407933
+        },
+        "candidate": {
+          "predicted_late": 0.16661921360175336,
+          "late_pred_minus_actual": 0.0007755922025764008,
+          "slot_logloss": 1.5580972616211568,
+          "slot_brier": 0.7482759542863034
+        }
+      },
+      "candidate_minus_baseline": {
+        "slot_logloss": -0.002363276490208555,
+        "slot_brier": -0.0005887351216295291,
+        "slot_logloss_ci95": [
+          -0.006308887553726583,
+          0.0013132402997354043
+        ]
+      }
+    }
+  },
+  "governance": {
+    "candidate_fit_years": [
+      2022,
+      2023
+    ],
+    "2024_and_2025_outcomes_previously_inspected": true,
+    "full_i2_probability_scored": false,
+    "live_runner_changed": false,
+    "interval_method": "2000 paired calendar-date cluster draws conditional on fitted parameters"
+  }
+}

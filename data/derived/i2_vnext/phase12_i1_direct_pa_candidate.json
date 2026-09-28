@@ -1,0 +1,260 @@
+{
+  "version": "i1-direct-pa-home-candidate-v1",
+  "status": "RESEARCH_ONLY_NOT_PROMOTED",
+  "market_inputs_used": false,
+  "observed_pa_outcomes_used_as_predictors": false,
+  "model": "single multinomial softmax; log prior-season league event rate offset, fitted shared batter and pitcher logit deltas, event intercepts, optional home-side event terms; no additional shrinkage or PA calibration",
+  "event_order": [
+    "single",
+    "double",
+    "triple",
+    "home_run",
+    "walk",
+    "hit_by_pitch",
+    "strikeout",
+    "ball_in_play_out"
+  ],
+  "reference_event": "ball_in_play_out",
+  "chronological_2023_check": {
+    "train_n_pa": 14544,
+    "test_n_pa": 14568,
+    "training_logloss": {
+      "no_home": 1.4800661110721227,
+      "with_home": 1.4787301006357265
+    },
+    "test": {
+      "existing_formula": {
+        "n_pa": 14568,
+        "multiclass_logloss": 1.5052209909974776,
+        "multiclass_brier": 0.714599926722929,
+        "modeled_reach_brier": 0.21999415611298356,
+        "by_half": {
+          "top": {
+            "n": 7284,
+            "predicted_reach": 0.3189573339331003,
+            "actual_reach": 0.3120538165842943
+          },
+          "bottom": {
+            "n": 7284,
+            "predicted_reach": 0.3189194602191832,
+            "actual_reach": 0.3440417353102691
+          }
+        }
+      },
+      "direct_no_home": {
+        "n_pa": 14568,
+        "multiclass_logloss": 1.501286724455661,
+        "multiclass_brier": 0.712444956225599,
+        "modeled_reach_brier": 0.22000346034719048,
+        "by_half": {
+          "top": {
+            "n": 7284,
+            "predicted_reach": 0.32887369077256423,
+            "actual_reach": 0.3120538165842943
+          },
+          "bottom": {
+            "n": 7284,
+            "predicted_reach": 0.3288303237447639,
+            "actual_reach": 0.3440417353102691
+          }
+        }
+      },
+      "direct_with_home": {
+        "n_pa": 14568,
+        "multiclass_logloss": 1.5001986027877172,
+        "multiclass_brier": 0.7120344239263086,
+        "modeled_reach_brier": 0.21976324367584169,
+        "by_half": {
+          "top": {
+            "n": 7284,
+            "predicted_reach": 0.3093354396340464,
+            "actual_reach": 0.3120538165842943
+          },
+          "bottom": {
+            "n": 7284,
+            "predicted_reach": 0.34834197937422057,
+            "actual_reach": 0.3440417353102691
+          }
+        }
+      }
+    },
+    "paired_date_cluster_logloss_ci95": {
+      "with_home_minus_existing": [
+        -0.0067128210282406415,
+        -0.0031978222937706466
+      ],
+      "with_home_minus_no_home": [
+        -0.002009343702103416,
+        -0.00012046930211763465
+      ]
+    },
+    "model_parameters": {
+      "no_home": {
+        "batter_weight": 0.6782315952060105,
+        "pitcher_weight": 0.711585009943186,
+        "event_intercepts": {
+          "single": 0.039217261302160834,
+          "double": 0.009900976664753584,
+          "triple": 0.09062103056593704,
+          "home_run": 0.10079383839279667,
+          "walk": -0.0010153747325673855,
+          "hit_by_pitch": 0.09418187068884025,
+          "strikeout": 0.09059898142512876
+        }
+      },
+      "with_home": {
+        "batter_weight": 0.6774678147288288,
+        "pitcher_weight": 0.7114579781640699,
+        "event_intercepts": {
+          "single": -0.0025030347302987077,
+          "double": -0.06736551398082785,
+          "triple": -0.12677327063429916,
+          "home_run": 0.023629214375865824,
+          "walk": -0.0821944707152331,
+          "hit_by_pitch": -0.05969775372908378,
+          "strikeout": 0.16011561809949817
+        },
+        "home_event_terms": {
+          "single": 0.0822678437563742,
+          "double": 0.14967192115414243,
+          "triple": 0.3972887640022549,
+          "home_run": 0.14893834868350644,
+          "walk": 0.15677380834206153,
+          "hit_by_pitch": 0.2876725332638503,
+          "strikeout": -0.14533808147602334
+        }
+      }
+    }
+  },
+  "descriptive_2024_check": {
+    "train_n_pa": 29112,
+    "test_n_pa": 14544,
+    "training_logloss": {
+      "no_home": 1.4906262840760969,
+      "with_home": 1.4893454536030897
+    },
+    "test": {
+      "existing_formula": {
+        "n_pa": 14544,
+        "multiclass_logloss": 1.493688090104038,
+        "multiclass_brier": 0.7074937048697671,
+        "modeled_reach_brier": 0.21640042984668154,
+        "by_half": {
+          "top": {
+            "n": 7272,
+            "predicted_reach": 0.31874731023689507,
+            "actual_reach": 0.3070682068206821
+          },
+          "bottom": {
+            "n": 7272,
+            "predicted_reach": 0.31829243809377644,
+            "actual_reach": 0.3294829482948295
+          }
+        }
+      },
+      "direct_no_home": {
+        "n_pa": 14544,
+        "multiclass_logloss": 1.4896978535611045,
+        "multiclass_brier": 0.705756938134417,
+        "modeled_reach_brier": 0.21641328934424126,
+        "by_half": {
+          "top": {
+            "n": 7272,
+            "predicted_reach": 0.3208208997691209,
+            "actual_reach": 0.3070682068206821
+          },
+          "bottom": {
+            "n": 7272,
+            "predicted_reach": 0.3199958527950007,
+            "actual_reach": 0.3294829482948295
+          }
+        }
+      },
+      "direct_with_home": {
+        "n_pa": 14544,
+        "multiclass_logloss": 1.4889891255740382,
+        "multiclass_brier": 0.705436503040866,
+        "modeled_reach_brier": 0.21631465176552883,
+        "by_half": {
+          "top": {
+            "n": 7272,
+            "predicted_reach": 0.3033345802362412,
+            "actual_reach": 0.3070682068206821
+          },
+          "bottom": {
+            "n": 7272,
+            "predicted_reach": 0.33742472377388816,
+            "actual_reach": 0.3294829482948295
+          }
+        }
+      }
+    },
+    "paired_date_cluster_logloss_ci95": {
+      "with_home_minus_existing": [
+        -0.00622517718094332,
+        -0.00309872355422942
+      ],
+      "with_home_minus_no_home": [
+        -0.0015157161604924213,
+        7.277517283851941e-05
+      ]
+    },
+    "model_parameters": {
+      "no_home": {
+        "batter_weight": 0.6852891929504261,
+        "pitcher_weight": 0.6696088535620529,
+        "event_intercepts": {
+          "single": 0.033504104873464606,
+          "double": -0.009541739902024822,
+          "triple": 0.09614296927903848,
+          "home_run": 0.12210682651786099,
+          "walk": 0.004986802279169274,
+          "hit_by_pitch": 0.032739151994285016,
+          "strikeout": 0.08988089013424906
+        }
+      },
+      "with_home": {
+        "batter_weight": 0.6850817035372058,
+        "pitcher_weight": 0.6710459298827732,
+        "event_intercepts": {
+          "single": -0.0024894344255682226,
+          "double": -0.08355362600876007,
+          "triple": -0.12099105641731812,
+          "home_run": 0.04193252300561796,
+          "walk": -0.05597911245163573,
+          "hit_by_pitch": -0.005223627513428903,
+          "strikeout": 0.16887434047003777
+        },
+        "home_event_terms": {
+          "single": 0.07069905273781753,
+          "double": 0.14284378707830658,
+          "triple": 0.3949489400191687,
+          "home_run": 0.1542383569203753,
+          "walk": 0.11850370945345638,
+          "hit_by_pitch": 0.07459699843115355,
+          "strikeout": -0.16441213227455143
+        }
+      }
+    }
+  },
+  "excluded_games": {
+    "2022": {
+      "OPENING_IDENTITY_CHANGED": 6
+    },
+    "2023": {
+      "OPENING_IDENTITY_CHANGED": 2
+    },
+    "2024": {
+      "OPENING_IDENTITY_CHANGED": 5
+    }
+  },
+  "governance": {
+    "first_three_i1_pa_only": true,
+    "2024_previously_inspected": true,
+    "full_i1_slot_evaluation": false,
+    "full_i2_evaluation": false,
+    "live_model_changed": false,
+    "candidate_selection": "NONE; diagnostic arms retained for comparison",
+    "bootstrap_scope": "paired calendar date conditional on fitted model, no fit uncertainty"
+  }
+}

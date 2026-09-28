@@ -1,0 +1,44 @@
+{
+  "version": "i1-direct-pa-home-research-2022-2023-v1",
+  "status": "RESEARCH_ONLY_NOT_PROMOTED",
+  "market_inputs_used": false,
+  "observed_2024_outcomes_used_for_fit": false,
+  "training_years": [
+    2022,
+    2023
+  ],
+  "training_pa": 29112,
+  "event_order": [
+    "single",
+    "double",
+    "triple",
+    "home_run",
+    "walk",
+    "hit_by_pitch",
+    "strikeout",
+    "ball_in_play_out"
+  ],
+  "reference_event": "ball_in_play_out",
+  "parameters": {
+    "batter_weight": 0.6850817035372058,
+    "pitcher_weight": 0.6710459298827732,
+    "event_intercepts": {
+      "single": -0.0024894344255682226,
+      "double": -0.08355362600876007,
+      "triple": -0.12099105641731812,
+      "home_run": 0.04193252300561796,
+      "walk": -0.05597911245163573,
+      "hit_by_pitch": -0.005223627513428903,
+      "strikeout": 0.16887434047003777
+    },
+    "home_event_terms": {
+      "single": 0.07069905273781753,
+      "double": 0.14284378707830658,
+      "triple": 0.3949489400191687,
+      "home_run": 0.1542383569203753,
+      "walk": 0.11850370945345638,
+      "hit_by_pitch": 0.07459699843115355,
+      "strikeout": -0.16441213227455143
+    }
+  }
+}

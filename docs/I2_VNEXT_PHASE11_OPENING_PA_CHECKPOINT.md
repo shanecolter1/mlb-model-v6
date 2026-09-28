@@ -5,6 +5,10 @@ staking, or betting threshold change. This phase examined the first three
 plate appearances in each first-inning half. These batters appear before
 longer-innings selection can distort the PA event mix.
 
+Phase 12 fitted a single research-only I1 PA model with the home-side feature
+and scored it chronologically at the PA level and descriptively on I1 slots.
+See `docs/I2_VNEXT_PHASE12_DIRECT_I1_PA_CHECKPOINT.md`.
+
 ## Observed event mix in earlier seasons
 
 "Modeled reach" is 1B, 2B, 3B, HR, walk, or HBP in the I1 simulator's
