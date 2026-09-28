@@ -1,0 +1,81 @@
+name: I2 vNext Phase 21 - prospective cohort isolation
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase21_prospective_cohort.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i2-vnext-phase21-prospective-cohort
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile prospective scorer
+        run: python -m py_compile src/research/i2_vnext_prospective.py tests/test_i2_vnext_prospective.py
+
+      - name: Run prospective validation unit tests
+        run: python -m unittest -v tests.test_i2_vnext_prospective
+
+      - name: Verify current half-calibration cohort metadata
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          half=json.loads(Path('data/derived/i2_vnext/i2_vnext_half_contrast.json').read_text())
+          phase19=json.loads(Path('data/derived/i2_vnext/PHASE19_CHECKPOINT.json').read_text())
+          phase20=json.loads(Path('data/derived/i2_vnext/PHASE20_CHECKPOINT.json').read_text())
+
+          assert half['market_inputs_used'] is False
+          assert half['version']=='i2-vnext-half-contrast-v1'
+          assert half['prospective_validation_start']=='2026-09-28'
+          assert half['zero_sum_half_contrast_h']==phase19['candidate']['zero_sum_half_contrast_h']
+          assert phase20['prospectiveValidationStart']=='2026-09-28'
+          assert phase20['halfCalibration']['version']==half['version']
+          assert phase20['jsReplayVerification']['phase19_exact_match'] is True
+
+          result={
+              'version':'i2-vnext-phase21-prospective-cohort-isolation-v1',
+              'market_inputs_used':False,
+              'half_calibration_version':half['version'],
+              'prospective_validation_start':half['prospective_validation_start'],
+              'half_contrast_h':half['zero_sum_half_contrast_h'],
+              'scorer_version':'i2-vnext-prospective-score-v2',
+              'selection_rule':'latest valid pregame snapshot per game, then only the single latest declared prospective-validation cohort',
+              'raw_vs_adjusted_half_metrics_enabled':True,
+              'prior_cohort_pooling_allowed':False,
+              'same_start_multiple_versions':'ERROR_FAIL_CLOSED',
+              'production_changed':False,
+          }
+          Path('data/derived/i2_vnext/PHASE21_CHECKPOINT.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Commit Phase 21 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE21_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 21 checkpoint change"
+          else
+            git commit -m "research: isolate prospective half calibration cohort"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
