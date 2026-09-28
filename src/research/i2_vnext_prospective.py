@@ -192,6 +192,17 @@ def prior_season_under(csv_path: Path, target_season: int) -> tuple[float, int]:
 
 
 def official_outcome(feed: dict, game_pk: int) -> tuple[int, int] | None:
+    if feed.get("version") == "i2-official-outcome-v1":
+        if int(feed.get("gamePk") or 0) != game_pk:
+            raise ValueError(f"Outcome feed game ID mismatch: {game_pk}")
+        if feed.get("abstractGameState") != "Final":
+            return None
+        top = feed.get("top2_runs")
+        bottom = feed.get("bottom2_runs")
+        if not all(isinstance(v, int) and not isinstance(v, bool) and v >= 0 for v in (top, bottom)):
+            raise ValueError(f"Invalid compact final second-inning runs: {game_pk}")
+        return top, bottom
+
     feed_pk = feed.get("gamePk") or feed.get("gameData", {}).get("game", {}).get("pk")
     if int(feed_pk or 0) != game_pk:
         raise ValueError(f"Outcome feed game ID mismatch: {game_pk}")
@@ -226,11 +237,22 @@ def fetch_final_feeds(archive_dir: Path, outcome_dir: Path, open_url=urlopen) ->
         with open_url(request, timeout=30) as response:
             payload = response.read()
         feed = json.loads(payload)
-        if official_outcome(feed, game_pk) is None:
+        observed = official_outcome(feed, game_pk)
+        if observed is None:
             pending.append(game_pk)
             continue
-        with target.open("xb") as stream:
-            stream.write(payload)
+        top, bottom = observed
+        compact = {
+            "version": "i2-official-outcome-v1",
+            "source": "MLB Stats API final game feed",
+            "gamePk": game_pk,
+            "abstractGameState": "Final",
+            "top2_runs": top,
+            "bottom2_runs": bottom,
+        }
+        with target.open("x", encoding="utf-8") as stream:
+            json.dump(compact, stream, separators=(",", ":"))
+            stream.write("\n")
         fetched.append(game_pk)
     return {"source": "MLB Stats API final game feed", "fetched_final": fetched, "pending_not_final": pending, "already_saved": existing}
 
