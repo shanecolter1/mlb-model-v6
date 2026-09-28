@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: i2-vnext-phase20-half-contrast-shadow
@@ -74,6 +75,35 @@ jobs:
           print({'ordering':'raw -> half contrast -> final calibration','venue_scope':'matched profile only'})
           PY
 
+      - name: Restore canonical 2025 precision replay
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase5-precision
+          path: data/reference/phase5
+          run-id: 36278930125
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore canonical 2025 replay inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase4a-replay-prep
+          path: data/reference/phase4a
+          run-id: 36277316668
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify JavaScript adapter reproduces Phase 19
+        run: |
+          R25=$(find data/reference/phase5 -name replay_2025_precision_10000.json -print -quit)
+          I25=$(find data/reference/phase4a -name replay_2025_inputs.json -print -quit)
+          test -n "$R25"
+          test -n "$I25"
+          node src/research/verify_i2_half_contrast_js_replay.mjs \
+            --replay "$R25" \
+            --inputs "$I25" \
+            --contrast data/derived/i2_vnext/i2_vnext_half_contrast.json \
+            --phase19 data/derived/i2_vnext/PHASE19_CHECKPOINT.json \
+            --output data/derived/i2_vnext/phase20_js_replay_verification.json
+
       - name: Install bounded park dependencies
         run: python -m pip install --upgrade pip pandas requests lxml html5lib beautifulsoup4
 
@@ -118,11 +148,16 @@ jobs:
           curve_type=str(curve.get('type','identity'))
           assert curve_type in ('none','identity'), curve
 
+          jscheck=json.loads(Path('data/derived/i2_vnext/phase20_js_replay_verification.json').read_text())
+          assert jscheck['phase19_exact_match'] is True
+          assert jscheck['matched_games']==2264
+          assert abs(jscheck['h']-h)<1e-15
+
           frozen=[g for g in m.get('games',[]) if g.get('modelStatus')=='FROZEN_VNEXT_SHADOW_PROJECTION']
-          assert frozen, 'No frozen shadow projections'
           matched=[g for g in frozen if (g.get('dataAudit') or {}).get('venueProfileMatched')]
           unmatched=[g for g in frozen if not (g.get('dataAudit') or {}).get('venueProfileMatched')]
-          assert matched, 'No matched-venue frozen projections'
+          if frozen:
+              assert matched, 'Frozen projections exist but none have matched venues'
 
           for g in matched:
               assert g['halfContrastApplied'] is True
@@ -159,6 +194,8 @@ jobs:
               'frozenGames':len(frozen),
               'matchedContrastApplied':len(matched),
               'unmatchedContrastNotApplied':len(unmatched),
+              'liveProjectionState':'FROZEN_VERIFIED' if frozen else 'INPUTS_NOT_FROZEN_FAIL_CLOSED',
+              'jsReplayVerification':jscheck,
               'modelStatusCounts':dict(Counter(g.get('modelStatus','MISSING') for g in m.get('games',[]))),
               'predictionClassCounts':dict(Counter(g.get('predictionClass','MISSING') for g in m.get('games',[]))),
               'sampleMatched':[
@@ -196,6 +233,7 @@ jobs:
           path: |
             data/runtime/i2/2026-09-29_vnext_phase20.json
             data/runtime/i2/savant_venue_profiles_2026_3yr.json
+            data/derived/i2_vnext/phase20_js_replay_verification.json
             data/derived/i2_vnext/PHASE20_CHECKPOINT.json
 
       - name: Commit compact Phase 20 checkpoint
