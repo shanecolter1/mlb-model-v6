@@ -1,0 +1,13 @@
+{
+  "version": "i2-vnext-phase21-prospective-cohort-isolation-v1",
+  "market_inputs_used": false,
+  "half_calibration_version": "i2-vnext-half-contrast-v1",
+  "prospective_validation_start": "2026-09-28",
+  "half_contrast_h": 0.0757053177820764,
+  "scorer_version": "i2-vnext-prospective-score-v2",
+  "selection_rule": "latest valid pregame snapshot per game, then only the single latest declared prospective-validation cohort",
+  "raw_vs_adjusted_half_metrics_enabled": true,
+  "prior_cohort_pooling_allowed": false,
+  "same_start_multiple_versions": "ERROR_FAIL_CLOSED",
+  "production_changed": false
+}
