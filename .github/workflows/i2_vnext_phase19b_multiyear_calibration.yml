@@ -42,9 +42,9 @@ jobs:
           for attempt in $(seq 1 60); do
             rm -rf data/reference/history
             mkdir -p data/reference/history
-            if gh run download 36483879018 \
+            if gh run download 36485385934 \
               --repo shanecolter1/mlb-model-v6 \
-              --name i2-vnext-phase19a-history \
+              --name i2-vnext-phase19a-history-optimized \
               --dir data/reference/history; then
               break
             fi
