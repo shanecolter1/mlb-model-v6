@@ -21,8 +21,23 @@ const EXPLICIT_NEUTRAL_SITES_BY_SEASON = {
 ]),
 };
 const norm = x => String(x ?? '').trim().toUpperCase();
+const venueNameKey = x => norm(x)
+  .replace(/[^A-Z0-9]+/g,' ')
+  .replace(/\b(STADIUM|BALLPARK|PARK|FIELD)\b/g,' ')
+  .replace(/\s+/g,' ')
+  .trim();
+
+function matchByVenueName(game, parkProfiles) {
+  const target = venueNameKey(game?.venue_name);
+  if (!target) return null;
+  return parkProfiles.find(p => venueNameKey(p?.venue_name) === target) || null;
+}
 
 export function venueForReplayGame(game, parkProfiles, season=2025) {
+  const byName = matchByVenueName(game, parkProfiles);
+  if (byName) {
+    return {profile:byName,status:'MLB_VENUE_NAME_TO_PRIOR_SEASON_SAVANT'};
+  }
   const site = norm(game.site);
   const explicit = EXPLICIT_NEUTRAL_SITES_BY_SEASON[Number(season)] || new Set();
   if (explicit.has(site)) {
