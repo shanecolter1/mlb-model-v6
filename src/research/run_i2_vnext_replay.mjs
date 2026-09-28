@@ -35,6 +35,7 @@ if (!Number.isInteger(SHARD_INDEX) || SHARD_INDEX < 0 || SHARD_INDEX >= SHARD_CO
 }
 
 const replay=JSON.parse(fs.readFileSync(INPUT,'utf8'));
+const REPLAY_SEASON=Number(replay?.season);
 const model=JSON.parse(fs.readFileSync(MODEL,'utf8'));
 const walkforward=fs.existsSync(WALKFORWARD)
   ? JSON.parse(fs.readFileSync(WALKFORWARD,'utf8'))
@@ -170,7 +171,7 @@ const predictions=[];
 let brier=0, ll=0, parkMatched=0;
 for (const game of replayGames) {
   const {artifact:activeModel,entry:modelEntry}=modelForGame(game);
-  const venue=venueForReplayGame(game,parkProfiles);
+  const venue=venueForReplayGame(game,parkProfiles,REPLAY_SEASON);
   if (venue.profile) parkMatched += 1;
   const away={
     lineup:makeLineup(game.away_lineup,leagueRates),
@@ -206,7 +207,7 @@ for (const game of replayGames) {
     }).probabilities;
   };
 
-  const random=createSeededRandom(seedFromGameId(game.gid,2025));
+  const random=createSeededRandom(seedFromGameId(game.gid,REPLAY_SEASON));
   const result=simulateFullSecondInning({
     away,home,league:leagueRates,
     environmentalContext:I1_ENVIRONMENT==='prior_season_park' ? venue.profile : null,
@@ -239,7 +240,7 @@ const n=predictions.length;
 const payload={
   version:'i2-vnext-full-replay-v3-player-asof-i1',
   generated_at:new Date().toISOString(),
-  season:2025,
+  season:REPLAY_SEASON,
   model_version:walkforward?.version || model.version,
   base_model_version:model.version,
   model_training:model.training,
