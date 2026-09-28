@@ -112,6 +112,24 @@ def fit_affine(frame):
     return float(res.params[0]),float(res.params[1])
 
 
+def fit_zero_sum_h(frame):
+    """Fit relative bottom-vs-top contrast, then remove the common component."""
+    x=logit(frame["p"].clip(1e-6,1-1e-6).to_numpy())
+    bottom=frame["side"].eq("bottom").astype(int).to_numpy()
+    X=np.column_stack((np.ones(len(frame)),bottom))
+    res=sm.GLM(frame["y"].to_numpy(),X,family=sm.families.Binomial(),offset=x).fit()
+    top=float(res.params[0])
+    bottom_offset=float(res.params[0]+res.params[1])
+    common=(top+bottom_offset)/2.0
+    h=(bottom_offset-top)/2.0
+    return {
+        "top_offset":top,
+        "bottom_offset":bottom_offset,
+        "common_component":common,
+        "h":h,
+    }
+
+
 def apply_offset(p,c):
     p=np.asarray(p,float)
     return expit(logit(np.clip(p,1e-6,1-1e-6))+c)
@@ -120,6 +138,11 @@ def apply_offset(p,c):
 def apply_affine(p,a,b):
     p=np.asarray(p,float)
     return expit(a+b*logit(np.clip(p,1e-6,1-1e-6)))
+
+
+def apply_zero_sum(p,side,h,lam=1.0):
+    delta=(-1.0 if side=="top" else 1.0)*float(h)*float(lam)
+    return apply_offset(p,delta)
 
 
 def adjusted_game_under(games,half_pred):
@@ -165,8 +188,19 @@ def loso_predictions(halves,games,shape,shrink=None):
         train=halves[halves["season"]!=year]
         test=halves[halves["season"]==year]
         gtest=games[games["season"]==year]
-        coefs=fit_train_coefficients(train,shape)
-        pred=predict_halves(test,coefs,shape,shrink)
+        if shape=="zero_sum":
+            z=fit_zero_sum_h(train)
+            lam=1.0 if shrink is None else float(shrink)
+            pred=test.copy()
+            pred["q"]=np.where(
+                pred["side"].eq("top"),
+                apply_zero_sum(pred["p"],"top",z["h"],lam),
+                apply_zero_sum(pred["p"],"bottom",z["h"],lam),
+            )
+            coefs={**z,"shrinkage_multiplier":lam}
+        else:
+            coefs=fit_train_coefficients(train,shape)
+            pred=predict_halves(test,coefs,shape,shrink)
         hp.append(pred)
         adj_under=adjusted_game_under(gtest,pred)
         temp=gtest.copy(); temp["q_under"]=adj_under
@@ -185,6 +219,35 @@ def cv_shrink_objective(halves,side,lam):
         _,ll=losses(test["y"],q)
         total+=float(ll.sum()); n+=len(test)
     return total/n
+
+
+def zero_sum_cv_objective(halves,lam):
+    total=0.0; n=0
+    for year in YEARS:
+        train=halves[halves["season"]!=year]
+        test=halves[halves["season"]==year]
+        h=fit_zero_sum_h(train)["h"]
+        q=np.where(
+            test["side"].eq("top"),
+            apply_zero_sum(test["p"],"top",h,lam),
+            apply_zero_sum(test["p"],"bottom",h,lam),
+        )
+        _,ll=losses(test["y"],q)
+        total+=float(ll.sum()); n+=len(test)
+    return total/n
+
+
+def select_zero_sum_shrinkage(halves):
+    opt=minimize_scalar(
+        lambda lam:zero_sum_cv_objective(halves,float(lam)),
+        bounds=(0.0,1.0),method="bounded",options={"xatol":1e-5},
+    )
+    return {
+        "multiplier":float(opt.x),
+        "loso_logloss":float(opt.fun),
+        "unshrunk_loso_logloss":float(zero_sum_cv_objective(halves,1.0)),
+        "no_adjustment_loso_logloss":float(zero_sum_cv_objective(halves,0.0)),
+    }
 
 
 def select_shrinkage(halves):
@@ -220,7 +283,12 @@ def season_summary(halves):
                     for p in (0.15,0.20,0.25,0.30,0.35)
                 },
             }
-        out[str(year)]={"n_games":int(y["gid"].nunique()),"sides":side}
+        z=fit_zero_sum_h(y)
+        out[str(year)]={
+            "n_games":int(y["gid"].nunique()),
+            "sides":side,
+            "half_decomposition":z,
+        }
     return out
 
 
@@ -272,13 +340,26 @@ def main():
     seasonal=season_summary(halves)
     shrink=select_shrinkage(halves)
     shrink_map={s:shrink[s]["multiplier"] for s in ("top","bottom")}
+    zero_sum_shrink=select_zero_sum_shrinkage(halves)
 
+    zero_h,zero_g,zero_folds=loso_predictions(halves,games,"zero_sum",zero_sum_shrink["multiplier"])
+    zero_raw_h,zero_raw_g,zero_raw_folds=loso_predictions(halves,games,"zero_sum",None)
     offset_h,offset_g,offset_folds=loso_predictions(halves,games,"offset",None)
     shrunk_h,shrunk_g,shrunk_folds=loso_predictions(halves,games,"offset",shrink_map)
     affine_h,affine_g,affine_folds=loso_predictions(halves,games,"affine",None)
 
     pooled={}
     final_map={}
+    pooled_zero=fit_zero_sum_h(halves)
+    pooled_zero["shrinkage_multiplier"]=zero_sum_shrink["multiplier"]
+    pooled_zero["final_h"]=pooled_zero["h"]*zero_sum_shrink["multiplier"]
+    zero_map={
+        side:[
+            {"raw":p,"adjusted":float(apply_zero_sum([p],side,pooled_zero["h"],zero_sum_shrink["multiplier"])[0])}
+            for p in (0.15,0.20,0.25,0.30,0.35)
+        ]
+        for side in ("top","bottom")
+    }
     for side in ("top","bottom"):
         s=halves[halves["side"]==side]
         c=fit_offset(s)
@@ -296,6 +377,8 @@ def main():
     games_sorted=games.sort_values(["season","gid"]).reset_index(drop=True)
     def sorted_pred(h,g):
         return h.sort_values(sort_cols).reset_index(drop=True),g.sort_values(["season","gid"]).reset_index(drop=True)
+    zero_h,zero_g=sorted_pred(zero_h,zero_g)
+    zero_raw_h,zero_raw_g=sorted_pred(zero_raw_h,zero_raw_g)
     offset_h,offset_g=sorted_pred(offset_h,offset_g)
     shrunk_h,shrunk_g=sorted_pred(shrunk_h,shrunk_g)
     affine_h,affine_g=sorted_pred(affine_h,affine_g)
@@ -308,24 +391,38 @@ def main():
         "sample":"season-specific PRIMARY_HOME_VENUE games only",
         "seasonal":seasonal,
         "candidate_shape_comparison":{
+            "zero_sum_offset_cv_shrunk":compare_predictions(raw_sorted,games_sorted,zero_h,zero_g),
+            "zero_sum_offset_unshrunk":compare_predictions(raw_sorted,games_sorted,zero_raw_h,zero_raw_g),
             "offset_unshrunk":compare_predictions(raw_sorted,games_sorted,offset_h,offset_g),
             "offset_cv_shrunk":compare_predictions(raw_sorted,games_sorted,shrunk_h,shrunk_g),
             "affine_logit":compare_predictions(raw_sorted,games_sorted,affine_h,affine_g),
         },
         "shrinkage_selection":{
-            "method":"leave-one-season-out log-loss minimization, independently by half; multiplier constrained to [0,1]",
-            "top":shrink["top"],
-            "bottom":shrink["bottom"],
+            "zero_sum_half_contrast":{
+                "method":"leave-one-season-out half-level log-loss minimization for one common multiplier on h; multiplier constrained to [0,1]",
+                **zero_sum_shrink,
+            },
+            "independent_offsets_diagnostic":{
+                "method":"leave-one-season-out log-loss minimization, independently by half; multiplier constrained to [0,1]",
+                "top":shrink["top"],
+                "bottom":shrink["bottom"],
+            },
         },
+        "pooled_zero_sum_candidate":pooled_zero,
+        "pooled_zero_sum_probability_map":zero_map,
         "pooled_final_offset_candidate":pooled,
         "pooled_final_probability_map":final_map,
         "loso_fold_coefficients":{
+            "zero_sum_offset_cv_shrunk":zero_folds,
+            "zero_sum_offset_unshrunk":zero_raw_folds,
             "offset_unshrunk":offset_folds,
             "offset_cv_shrunk":shrunk_folds,
             "affine_logit":affine_folds,
         },
         "uncertainty":{
-            "shrunk_offset_half_logloss_delta_ci95_season_date_cluster":
+            "zero_sum_shrunk_half_logloss_delta_ci95_season_date_cluster":
+                cluster_bootstrap_delta(raw_sorted,zero_h,a.bootstrap),
+            "independent_shrunk_offset_half_logloss_delta_ci95_season_date_cluster":
                 cluster_bootstrap_delta(raw_sorted,shrunk_h,a.bootstrap)
         },
         "full_i2_diagnostic_rule":(
@@ -349,7 +446,8 @@ def main():
         "seasonal":seasonal,
         "shape_comparison":result["candidate_shape_comparison"],
         "shrinkage":result["shrinkage_selection"],
-        "final":pooled,
+        "zero_sum_final":pooled_zero,
+        "independent_offset_diagnostic":pooled,
         "ci":result["uncertainty"],
     },indent=2))
 
