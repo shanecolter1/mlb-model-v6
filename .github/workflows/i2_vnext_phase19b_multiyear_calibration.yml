@@ -1,12 +1,7 @@
-name: I2 vNext Phase 19B - 2022-2026 multiyear half calibration
+name: I2 vNext Phase 19B - neutral-I1 sensitivity (manual only)
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - research/i2-vnext-direct-talent
-    paths:
-      - '.github/workflows/i2_vnext_phase19b_multiyear_calibration.yml'
 
 permissions:
   contents: write
