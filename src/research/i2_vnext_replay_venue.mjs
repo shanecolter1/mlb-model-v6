@@ -30,7 +30,15 @@ const venueNameKey = x => norm(x)
 function matchByVenueName(game, parkProfiles) {
   const target = venueNameKey(game?.venue_name);
   if (!target) return null;
-  return parkProfiles.find(p => venueNameKey(p?.venue_name) === target) || null;
+  const exact=parkProfiles.find(p => venueNameKey(p?.venue_name) === target);
+  if (exact) return exact;
+  // Allow a sponsor/name prefix on the same physical park, e.g. "BRAND ... DODGER".
+  // Do not use team identity as a fallback; that could cross a relocation.
+  const suffix=parkProfiles.filter(p => {
+    const key=venueNameKey(p?.venue_name);
+    return key.length >= 6 && (target.endsWith(key) || key.endsWith(target));
+  });
+  return suffix.length === 1 ? suffix[0] : null;
 }
 
 export function venueForReplayGame(game, parkProfiles, season=2025) {
