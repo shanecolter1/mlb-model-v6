@@ -27,7 +27,6 @@ def parse_args():
     p.add_argument("--half-life",type=float,default=730.0)
     p.add_argument("--c",type=float,default=0.05)
     p.add_argument("--max-iter",type=int,default=2500)
-    p.add_argument("--max-iter",type=int,default=2500)
     p.add_argument("--output-dir",type=Path,required=True)
     p.add_argument("--arsenal-output",type=Path,required=True)
     return p.parse_args()
