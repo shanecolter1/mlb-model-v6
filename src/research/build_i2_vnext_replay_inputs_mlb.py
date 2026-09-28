@@ -92,6 +92,28 @@ def throw_code(meta):
     return str(meta.get("pitchHand", {}).get("code") or "").strip().upper()
 
 
+def matchup_bat_side(feed, player_id):
+    for play in feed.get("liveData", {}).get("plays", {}).get("allPlays", []):
+        matchup = play.get("matchup", {})
+        if int(matchup.get("batter", {}).get("id") or -1) != int(player_id):
+            continue
+        code = str(matchup.get("batSide", {}).get("code") or "").strip().upper()
+        if code in {"L", "R"}:
+            return code
+    return ""
+
+
+def matchup_pitch_hand(feed, player_id):
+    for play in feed.get("liveData", {}).get("plays", {}).get("allPlays", []):
+        matchup = play.get("matchup", {})
+        if int(matchup.get("pitcher", {}).get("id") or -1) != int(player_id):
+            continue
+        code = str(matchup.get("pitchHand", {}).get("code") or "").strip().upper()
+        if code in {"L", "R"}:
+            return code
+    return ""
+
+
 def starting_lineup(feed, side):
     team = feed.get("liveData", {}).get("boxscore", {}).get("teams", {}).get(side, {})
     players = team.get("players", {})
@@ -182,6 +204,10 @@ def build_player(pid, feed, hitter_counts, hitter_pa, league):
     meta = player_meta(feed, pid)
     bats = side_code(meta)
     if bats not in {"L", "R", "B"}:
+        # Final-feed fallback recovers the effective batting side actually used
+        # against the game's pitching. This is a matchup attribute, not an outcome.
+        bats = matchup_bat_side(feed, pid)
+    if bats not in {"L", "R", "B"}:
         return None
     return {
         "mlbam": int(pid),
@@ -198,6 +224,8 @@ def build_pitcher(pid, feed, pitcher_counts, pitcher_bf, league):
         return None
     meta = player_meta(feed, pid)
     throws = throw_code(meta)
+    if throws not in {"L", "R"}:
+        throws = matchup_pitch_hand(feed, pid)
     if throws not in {"L", "R"}:
         return None
     return {
