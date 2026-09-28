@@ -19,6 +19,10 @@ from scipy.special import expit, logit
 
 
 MATCHED = "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT"
+PARK_MATCHED = {
+    "RETROSHEET_SITE_TO_PRIOR_SEASON_SAVANT",
+    "MLB_VENUE_NAME_TO_PRIOR_SEASON_SAVANT",
+}
 
 
 def parse_args():
@@ -285,7 +289,7 @@ def main():
     home_venue_spec = json.loads(args.home_venue_spec.read_text()) if args.home_venue_spec else None
     frame = build_rows(replay, inputs, home_venue_spec)
     primary_home = frame[frame["home_venue_status"] == "PRIMARY_HOME_VENUE"].reset_index(drop=True)
-    matched = frame[frame["park_status"] == MATCHED].reset_index(drop=True)
+    matched = frame[frame["park_status"].isin(PARK_MATCHED)].reset_index(drop=True)
     season = int(replay["season"])
     status = (
         "RESEARCH_ONLY_PREVIOUSLY_INSPECTED_2025"
