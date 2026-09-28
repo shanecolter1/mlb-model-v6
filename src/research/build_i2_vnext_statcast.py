@@ -241,7 +241,7 @@ def main() -> None:
         rows.drop(columns=["season"]).to_csv(path, index=False)
         side_usage_files.append(str(path))
 
-    years = range(start.year - 1, end.year + 1)
+    years = range(max(2022, start.year - 1), end.year + 1)
     arsenal_files = []
     for year in years:
         for role in ("batter", "pitcher"):
