@@ -1,0 +1,84 @@
+{
+  "version": "i2-direct-i1-exact-paired-2025-v1",
+  "status": "RESEARCH_ONLY_NOT_PROMOTED",
+  "games": 2430,
+  "market_inputs_used": false,
+  "observed_i2_outcomes_used_as_predictors": false,
+  "observed_under_rate": 0.551440329218107,
+  "baseline": {
+    "predicted_under": 0.566292451809188,
+    "brier": 0.24608740026884865,
+    "logloss": 0.6852753425561864
+  },
+  "direct_i1": {
+    "predicted_under": 0.5663333178752777,
+    "brier": 0.2460806697200985,
+    "logloss": 0.6852613611342832
+  },
+  "direct_minus_baseline": {
+    "predicted_under": 4.0866066089928673e-05,
+    "brier": -6.730548750129346e-06,
+    "logloss": -1.3981421903109973e-05,
+    "paired_calendar_date_ci95": {
+      "brier": [
+        -2.3578752245016227e-05,
+        9.773165202107542e-06
+      ],
+      "logloss": [
+        -4.83271972984107e-05,
+        1.9344910163974952e-05
+      ],
+      "predicted_under": [
+        2.6842491701663545e-05,
+        5.561060854076843e-05
+      ]
+    }
+  },
+  "by_half": {
+    "top": {
+      "baseline_scoreless_mean": 0.752705957409083,
+      "direct_scoreless_mean": 0.752661199097729
+    },
+    "bottom": {
+      "baseline_scoreless_mean": 0.7521387533496859,
+      "direct_scoreless_mean": 0.7522383736728931
+    }
+  },
+  "mean_i1_slot_total_variation": 0.02961058129280997,
+  "governance": {
+    "i1_fit_years": [
+      2022,
+      2023
+    ],
+    "downstream_i2_model": "i2-vnext-direct-talent-v1",
+    "downstream_i2_training": {
+      "start": "2023-03-30",
+      "end": "2024-09-30",
+      "n": 40812,
+      "seasons": [
+        2023,
+        2024
+      ],
+      "event_counts": {
+        "ball_in_play_out": 18363,
+        "strikeout": 9675,
+        "single": 6068,
+        "walk": 3115,
+        "double": 1802,
+        "home_run": 1228,
+        "hit_by_pitch": 400,
+        "triple": 161
+      },
+      "batters": 763,
+      "pitchers": 546
+    },
+    "downstream_i2_2025_walkforward_refits_used": false,
+    "i1_environment": "neutral in both arms to isolate player-rate incremental value",
+    "park_rule_i2": "prior-season Savant event-vector park profile applied exactly once",
+    "2025_outcomes_previously_inspected": true,
+    "same_exact_i2_model_and_transitions_in_both_arms": true,
+    "full_i2_calibration_applied": false,
+    "live_runner_changed": false,
+    "bootstrap_scope": "paired dates conditional on frozen model; no model-fit uncertainty"
+  }
+}

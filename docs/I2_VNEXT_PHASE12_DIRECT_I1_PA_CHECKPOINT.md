@@ -3,6 +3,10 @@
 Status: **RESEARCH ONLY / SHADOW**. No production or live vNext model,
 full-I2 calibration, price workflow, or betting rule changed.
 
+Phase 13 ran this candidate through a paired exact full-I2 Under replay.
+Its gain was negligible and uncertain. See
+`docs/I2_VNEXT_PHASE13_EXACT_FULL_I2_CHECKPOINT.md`.
+
 ## Candidate and chronological design
 
 Phase 11 found a repeatable top/bottom event-mix residual in the opening

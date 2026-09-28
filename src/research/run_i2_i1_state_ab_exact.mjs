@@ -14,6 +14,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { buildNeutralEventVector, applyEnvironmentalEventVector, validateEventVector } from '../event_probability_engine.js';
 import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
+import { venueForReplayGame } from './i2_vnext_replay_venue.mjs';
 
 function arg(name, fallback=null) {
   const i=process.argv.indexOf(name);
@@ -25,6 +26,7 @@ const ARSENAL=arg('--arsenal','data/derived/i2_vnext/arsenal_profile_2024.json')
 const PARKS=arg('--parks','data/derived/i2_vnext/park/savant_venue_profiles_2024_3yr.json');
 const PLAY=arg('--play-calibration','data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json');
 const OUTPUT=arg('--output','data/derived/i2_vnext/i1_state_ab_exact_predictions.json');
+const DIRECT_PA_MODEL=arg('--direct-i1-pa-model');
 
 const replay=JSON.parse(fs.readFileSync(INPUT,'utf8'));
 const model=JSON.parse(fs.readFileSync(MODEL,'utf8'));
@@ -52,31 +54,22 @@ function adaptPlayCalibration(payload){
 const play=adaptPlayCalibration(rawPlay);
 const league=replay?.i1_state_model?.event_rates;
 if (!league) throw new Error('Missing league I1 event rates');
-
-const RETRO_TEAM_ALIASES = {
-  ARI:['ARI','ARIZONA DIAMONDBACKS'], ATL:['ATL','ATLANTA BRAVES'],
-  BAL:['BAL','BALTIMORE ORIOLES'], BOS:['BOS','BOSTON RED SOX'],
-  CHA:['CHW','CWS','CHICAGO WHITE SOX'], CHN:['CHC','CHICAGO CUBS'],
-  CIN:['CIN','CINCINNATI REDS'], CLE:['CLE','CLEVELAND GUARDIANS'],
-  COL:['COL','COLORADO ROCKIES'], DET:['DET','DETROIT TIGERS'],
-  HOU:['HOU','HOUSTON ASTROS'], KCA:['KC','KCR','KANSAS CITY ROYALS'],
-  LAA:['LAA','LOS ANGELES ANGELS'], LAN:['LAD','LOS ANGELES DODGERS'],
-  MIA:['MIA','MIAMI MARLINS'], MIL:['MIL','MILWAUKEE BREWERS'],
-  MIN:['MIN','MINNESOTA TWINS'], NYA:['NYY','NEW YORK YANKEES'],
-  NYN:['NYM','NEW YORK METS'], PHI:['PHI','PHILADELPHIA PHILLIES'],
-  PIT:['PIT','PITTSBURGH PIRATES'], SDN:['SD','SDP','SAN DIEGO PADRES'],
-  SEA:['SEA','SEATTLE MARINERS'], SFN:['SF','SFG','SAN FRANCISCO GIANTS'],
-  SLN:['STL','ST. LOUIS CARDINALS','ST LOUIS CARDINALS'],
-  TEX:['TEX','TEXAS RANGERS'], TOR:['TOR','TORONTO BLUE JAYS'],
-  WAS:['WSH','WAS','WASHINGTON NATIONALS'], TBA:['TB','TBR','TAMPA BAY RAYS'],
-  ATH:['ATH','OAK','ATHLETICS'],
-};
-function norm(x){ return String(x??'').trim().toUpperCase(); }
-function venueFor(game){
-  if (['ATH','OAK','TBA'].includes(norm(game.home_team_retro))) return null;
-  const aliases=RETRO_TEAM_ALIASES[norm(game.home_team_retro)] || [];
-  return parkProfiles.find(p=>aliases.includes(norm(p.team))) || null;
+if (replay.market_inputs_used!==false || model.market_inputs_used!==false) {
+  throw new Error('Full-I2 inputs or model are not market-isolated');
 }
+const directModel=DIRECT_PA_MODEL ? JSON.parse(fs.readFileSync(DIRECT_PA_MODEL,'utf8')) : null;
+const EVENTS=['single','double','triple','home_run','walk','hit_by_pitch','strikeout','ball_in_play_out'];
+if (directModel) {
+  if (directModel.market_inputs_used!==false || directModel.observed_2024_outcomes_used_for_fit!==false ||
+      directModel.status!=='RESEARCH_ONLY_NOT_PROMOTED' ||
+      JSON.stringify(directModel.training_years)!==JSON.stringify([2022,2023]) ||
+      !directModel.training_years.every(y=>y<replay.season) ||
+      JSON.stringify(directModel.event_order)!==JSON.stringify(EVENTS)) {
+    throw new Error('Direct I1 PA model is not governed for this replay');
+  }
+}
+
+function norm(x){ return String(x??'').trim().toUpperCase(); }
 function stand(bats, throws){
   const b=norm(bats), t=norm(throws);
   if (b==='B') return t==='L' ? 'R' : 'L';
@@ -164,9 +157,23 @@ function exactScorelessProbability({lineup,startSlot,pitcher,eventVectorForPA}){
 function makeLineup(rows){ return rows.map(x=>({id:Number(x.mlbam),bats:x.bats,retro:x.retro,i1:x.i1_event_rates_asof})); }
 function makePitcher(x){ return {id:Number(x.mlbam),throws:x.throws,retro:x.retro,i1:x.i1_event_rates_asof}; }
 
-function i1Vector(mode,{batter,pitcher}){
+function i1Vector(mode,{batter,pitcher},side){
   const br=mode==='player_asof' ? (batter.i1 || league) : league;
   const pr=mode==='player_asof' ? (pitcher.i1 || league) : league;
+  if (mode==='direct') {
+    if (!batter.i1 || !pitcher.i1) throw new Error('Direct I1 model requires player-as-of rates');
+    const p=directModel.parameters;
+    const logit=x=>Math.log(x/(1-x));
+    const logits=EVENTS.map(event=>Math.log(league[event]) +
+      p.batter_weight*(logit(batter.i1[event])-logit(league[event])) +
+      p.pitcher_weight*(logit(pitcher.i1[event])-logit(league[event])) +
+      (p.event_intercepts[event] ?? 0) +
+      (side==='bottom' ? (p.home_event_terms[event] ?? 0) : 0));
+    const max=Math.max(...logits);
+    const weights=logits.map(v=>Math.exp(v-max));
+    const total=weights.reduce((a,b)=>a+b,0);
+    return Object.fromEntries(EVENTS.map((e,i)=>[e,weights[i]/total]));
+  }
   return buildNeutralEventVector({batter:br,pitcher:pr,league,weights:{batter:0.5,pitcher:0.5}});
 }
 function i2Provider(environmentalContext){
@@ -248,7 +255,7 @@ function meanAbsDiff(a,b){
 const predictions=[];
 let parkMatched=0;
 for (const game of replay.games) {
-  const env=venueFor(game);
+  const env=venueForReplayGame(game,parkProfiles).profile;
   if (env) parkMatched+=1;
   const awayLineup=makeLineup(game.away_lineup);
   const homeLineup=makeLineup(game.home_lineup);
@@ -268,6 +275,12 @@ for (const game of replay.games) {
   const homePlayer=exactNextSlotDistribution({
     lineup:homeLineup,pitcher:awayPitcher,eventVectorForPA:x=>i1Vector('player_asof',x),
   });
+  const awayDirect=directModel ? exactNextSlotDistribution({
+    lineup:awayLineup,pitcher:homePitcher,eventVectorForPA:x=>i1Vector('direct',x,'top'),
+  }) : null;
+  const homeDirect=directModel ? exactNextSlotDistribution({
+    lineup:homeLineup,pitcher:awayPitcher,eventVectorForPA:x=>i1Vector('direct',x,'bottom'),
+  }) : null;
 
   const provider=i2Provider(env);
   const awayP0=exactScorelessByStartSlot({lineup:awayLineup,pitcher:homePitcher,eventVectorForPA:provider});
@@ -277,13 +290,23 @@ for (const game of replay.games) {
   const leagueBot0=weightedP0(homeLeague,homeP0);
   const playerTop0=weightedP0(awayPlayer,awayP0);
   const playerBot0=weightedP0(homePlayer,homeP0);
-  predictions.push({
+  const row={
     gid:game.gid,date:game.date,observed_under05:Number(game.observed.under05),
     league_under05:leagueTop0*leagueBot0,
     player_asof_under05:playerTop0*playerBot0,
     away_start_slot_tv:meanAbsDiff(awayLeague,awayPlayer),
     home_start_slot_tv:meanAbsDiff(homeLeague,homePlayer),
-  });
+  };
+  if (directModel) {
+    row.direct_under05=weightedP0(awayDirect,awayP0)*weightedP0(homeDirect,homeP0);
+    row.direct_top0=weightedP0(awayDirect,awayP0);
+    row.direct_bottom0=weightedP0(homeDirect,homeP0);
+    row.player_top0=playerTop0;
+    row.player_bottom0=playerBot0;
+    row.away_direct_slot_tv=meanAbsDiff(awayPlayer,awayDirect);
+    row.home_direct_slot_tv=meanAbsDiff(homePlayer,homeDirect);
+  }
+  predictions.push(row);
 }
 
 const payload={
@@ -300,6 +323,7 @@ const payload={
     player_asof:'season-to-date player event rates strictly before game date, 100 PA hitter prior and 180 BF pitcher prior',
   },
   i1_environment:'neutral in both arms to isolate player-rate incremental value',
+  direct_i1_pa_model:directModel?.version || null,
   park_rule_i2:'prior-season Savant event-vector park profile applied exactly once',
   park_match_rate:predictions.length ? parkMatched/predictions.length : null,
   predictions,
