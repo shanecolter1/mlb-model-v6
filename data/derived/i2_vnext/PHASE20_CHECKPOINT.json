@@ -1,0 +1,72 @@
+{
+  "version": "i2-vnext-phase20-half-contrast-shadow-v1",
+  "date": "2026-09-29",
+  "cutoff": "2026-09-28T00:00:00-05:00",
+  "generatedAt": "2026-09-28T14:43:18.231Z",
+  "marketDataUsed": false,
+  "promotionStatus": "SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED",
+  "prospectiveValidationStart": "2026-09-28",
+  "halfCalibration": {
+    "version": "i2-vnext-half-contrast-v1",
+    "type": "zero_sum_logit_contrast",
+    "h": 0.0757053177820764,
+    "status": "SHADOW_ONLY_VALIDATED_HISTORICAL_CANDIDATE",
+    "matchedHomeVenueOnly": true,
+    "prospectiveValidationStart": "2026-09-28"
+  },
+  "finalCalibration": {
+    "type": "none",
+    "intercept": 0,
+    "slope": 1
+  },
+  "remainingGamesAtCutoff": 4,
+  "projectedGames": 0,
+  "pendingOrErroredGames": 4,
+  "frozenGames": 0,
+  "matchedContrastApplied": 0,
+  "unmatchedContrastNotApplied": 0,
+  "liveProjectionState": "INPUTS_NOT_FROZEN_FAIL_CLOSED",
+  "jsReplayVerification": {
+    "version": "i2-half-contrast-js-replay-verification-v1",
+    "market_inputs_used": false,
+    "season": 2025,
+    "matched_games": 2264,
+    "contrast_version": "i2-vnext-half-contrast-v1",
+    "h": 0.0757053177820764,
+    "residuals": {
+      "top_raw_actual_minus_predicted": -0.015573056537102479,
+      "top_adjusted_actual_minus_predicted": -0.0019496249161168482,
+      "bottom_raw_actual_minus_predicted": 0.025186395759717307,
+      "bottom_adjusted_actual_minus_predicted": 0.01098985731704551
+    },
+    "scores": {
+      "half_raw_brier": 0.18676693196113062,
+      "half_adjusted_brier": 0.18638961334876203,
+      "half_brier_delta": -0.0003773186123685879,
+      "half_raw_logloss": 0.5605335187049594,
+      "half_adjusted_logloss": 0.5595172202444828,
+      "half_logloss_delta": -0.0010162984604765724,
+      "full_i2_raw_brier": 0.2461447951236754,
+      "full_i2_adjusted_brier": 0.24599290650550928,
+      "full_i2_brier_delta": -0.00015188861816611832,
+      "full_i2_raw_logloss": 0.6854151903682975,
+      "full_i2_adjusted_logloss": 0.6851053196376805,
+      "full_i2_logloss_delta": -0.0003098707306169457
+    },
+    "phase19_exact_match": true
+  },
+  "modelStatusCounts": {
+    "PENDING_PROBABLE_STARTER": 3,
+    "PENDING_CONFIRMED_LINEUP": 1
+  },
+  "predictionClassCounts": {
+    "PROVISIONAL_EXPECTED_INPUTS": 4
+  },
+  "sampleMatched": [],
+  "governance": {
+    "productionChanged": false,
+    "bettingEligibleOutputs": 0,
+    "commonCalibrationAppliedInHalfLayer": false,
+    "halfContrastMatchedVenueOnly": true
+  }
+}
