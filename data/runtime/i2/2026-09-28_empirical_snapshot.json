@@ -1,6 +1,6 @@
 {
   "date": "2026-09-28",
-  "generatedAt": "2026-09-28T14:19:08.320Z",
+  "generatedAt": "2026-09-28T14:19:46.352Z",
   "method": {
     "locked05": "Half-inning scoreless = 65% starting-pitcher season I2 scoreless rate + 35% opponent offense last-25 I2 scoreless rate. Full I2 Under 0.5 = top scoreless x bottom scoreless.",
     "distributionExtension": "For alternate run totals only, the same 65/35 weights are applied bucket-by-bucket to observed I2 run distributions (0,1,2,3,4+); full-inning distribution is the convolution of top and bottom distributions. This extension does not alter the locked 0.5 formula.",
