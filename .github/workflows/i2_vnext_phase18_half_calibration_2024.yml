@@ -1,0 +1,287 @@
+name: I2 vNext Phase 18 - 2024 half calibration replication
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase18_half_calibration_2024.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase18-half-calibration-2024
+  cancel-in-progress: true
+
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      games: ${{ steps.meta.outputs.games }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --upgrade pip pandas numpy scikit-learn requests lxml
+
+      - name: Restore governed baseball-only data
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-data-phase
+          path: data/derived/i2_vnext
+          run-id: 36273188235
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download bounded public 2023-2024 replay sources
+        run: |
+          set -euo pipefail
+          mkdir -p data/raw/i2_vnext/retrosheet data/raw/i2_vnext/chadwick
+          for year in 2023 2024; do
+            curl --fail --location --retry 3               "https://www.retrosheet.org/downloads/plays/${year}plays.zip"               --output "data/raw/i2_vnext/retrosheet/${year}plays.zip"
+          done
+          for suffix in 0 1 2 3 4 5 6 7 8 9 a b c d e f; do
+            curl --fail --location --retry 3               "https://raw.githubusercontent.com/chadwickbureau/register/master/data/people-${suffix}.csv"               --output "data/raw/i2_vnext/chadwick/people-${suffix}.csv"
+          done
+
+      - name: Build leakage-safe 2024 replay inputs
+        run: |
+          python src/research/build_i2_vnext_replay_inputs.py             --season 2024             --retrosheet-zip data/raw/i2_vnext/retrosheet/2024plays.zip             --prior-retrosheet-zip data/raw/i2_vnext/retrosheet/2023plays.zip             --chadwick-dir data/raw/i2_vnext/chadwick             --output data/derived/i2_vnext/replay_2024_inputs.json
+
+      - name: Build 2024 point-in-time models from pregame data only
+        run: |
+          python src/research/build_i2_vnext_historical_walkforward.py             --input data/derived/i2_vnext/i2_pa_statcast.csv             --arsenal-dir data/derived/i2_vnext/arsenal             --season 2024             --half-life 730             --c 0.05             --output-dir data/derived/i2_vnext/walkforward_2024             --arsenal-output data/derived/i2_vnext/arsenal_profile_2023.json
+
+      - name: Build prior-season park profile
+        run: |
+          mkdir -p data/derived/i2_vnext/park
+          python src/build_savant_venue_profiles.py             --year 2023             --rolling 3             --output-dir data/derived/i2_vnext/park
+
+      - name: Verify prep governance and export game count
+        id: meta
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          inp=json.loads(Path('data/derived/i2_vnext/replay_2024_inputs.json').read_text())
+          man=json.loads(Path('data/derived/i2_vnext/walkforward_2024/manifest.json').read_text())
+          parks=json.loads(Path('data/derived/i2_vnext/park/savant_venue_profiles_2023_3yr.json').read_text())
+          assert inp['market_inputs_used'] is False
+          assert inp['season']==2024
+          assert inp['games_eligible'] >= 2400
+          assert man['market_inputs_used'] is False
+          assert man['season']==2024
+          assert len(man['entries'])==6
+          assert len(parks) >= 29
+          for e in man['entries']:
+              assert e['training_end'] < e['training_cutoff_exclusive'], e
+          print({
+              'games':inp['games_eligible'],
+              'excluded':inp['games_excluded'],
+              'models':len(man['entries']),
+              'park_profiles':len(parks),
+          })
+          with open('/tmp/games.txt','w') as f:
+              f.write(str(inp['games_eligible']))
+          PY
+          echo "games=$(cat /tmp/games.txt)" >> "$GITHUB_OUTPUT"
+          node --check src/research/run_i2_vnext_replay.mjs
+          node --check src/research/i2_vnext_replay_venue.mjs
+          python -m py_compile             src/research/build_i2_vnext_historical_walkforward.py             src/research/audit_i2_half_calibration.py             src/research/validate_i2_half_adjustment_across_seasons.py
+
+      - name: Upload 2024 replay prep
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase18-2024-prep
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2024_inputs.json
+            data/derived/i2_vnext/walkforward_2024/
+            data/derived/i2_vnext/arsenal_profile_2023.json
+            data/derived/i2_vnext/park/savant_venue_profiles_2023_3yr.json
+
+  shard:
+    needs: prep
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: true
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore 2024 replay prep
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase18-2024-prep
+          path: data/derived/i2_vnext
+
+      - name: Run canonical 10000-trial 2024 replay shard
+        run: |
+          mkdir -p data/derived/i2_vnext/phase18_shards
+          node src/research/run_i2_vnext_replay.mjs             --trials 10000             --i1-mode player_asof             --shard-count 12             --shard-index ${{ matrix.shard }}             --input data/derived/i2_vnext/replay_2024_inputs.json             --model data/derived/i2_vnext/walkforward_2024/model_preseason.json             --walkforward-manifest data/derived/i2_vnext/walkforward_2024/manifest.json             --arsenal data/derived/i2_vnext/arsenal_profile_2023.json             --parks data/derived/i2_vnext/park/savant_venue_profiles_2023_3yr.json             --play-calibration data/derived/model_calibration/seasonal/production_pa_transition_table_shrunk.json             --output data/derived/i2_vnext/phase18_shards/replay_2024_shard_${{ matrix.shard }}.json
+
+      - name: Verify shard
+        run: |
+          python - <<'PY'
+          import json, glob
+          files=glob.glob('data/derived/i2_vnext/phase18_shards/*.json')
+          assert len(files)==1
+          x=json.load(open(files[0]))
+          assert x['market_inputs_used'] is False
+          assert x['season']==2024
+          assert x['trials_per_game']==10000
+          assert x['i1_state_mode']=='player_asof'
+          assert x['replay_games_total']==int('${{ needs.prep.outputs.games }}')
+          assert x['n'] > 0
+          print({'shard':x['shard_index'],'n':x['n'],'park_match_rate':x['park_match_rate']})
+          PY
+
+      - name: Upload replay shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase18-2024-shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/phase18_shards/replay_2024_shard_${{ matrix.shard }}.json
+
+  merge-audit:
+    needs: [prep, shard]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install audit dependencies
+        run: python -m pip install --upgrade pip numpy pandas scipy statsmodels
+
+      - name: Restore 2024 prep
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase18-2024-prep
+          path: data/derived/i2_vnext
+
+      - name: Restore 2024 precision shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase18-2024-shard-*
+          path: data/derived/i2_vnext/phase18_shards
+          merge-multiple: true
+
+      - name: Merge 2024 replay
+        run: |
+          python src/research/merge_i2_vnext_replay_shards.py             --input-dir data/derived/i2_vnext/phase18_shards             --expected-shards 12             --expected-games ${{ needs.prep.outputs.games }}             --output data/derived/i2_vnext/replay_2024_precision_10000.json
+
+      - name: Audit 2024 full-season half calibration
+        run: |
+          python src/research/audit_i2_half_calibration.py             --replay data/derived/i2_vnext/replay_2024_precision_10000.json             --inputs data/derived/i2_vnext/replay_2024_inputs.json             --output data/derived/i2_vnext/phase18_half_calibration_2024.json             --cv-repeats 20             --cv-folds 10             --bootstrap 5000
+
+      - name: Restore canonical 2025 precision replay
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase5-precision
+          path: data/reference/phase5
+          run-id: 36278930125
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore canonical 2025 replay inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase4a-replay-prep
+          path: data/reference/phase4a
+          run-id: 36277316668
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Re-run identical half audit on canonical 2025
+        run: |
+          REPLAY_2025=$(find data/reference/phase5 -name replay_2025_precision_10000.json -print -quit)
+          INPUTS_2025=$(find data/reference/phase4a -name replay_2025_inputs.json -print -quit)
+          test -n "$REPLAY_2025"
+          test -n "$INPUTS_2025"
+          python src/research/audit_i2_half_calibration.py             --replay "$REPLAY_2025"             --inputs "$INPUTS_2025"             --output data/derived/i2_vnext/phase18_half_calibration_2025_recheck.json             --cv-repeats 20             --cv-folds 10             --bootstrap 5000
+
+      - name: Apply 2024-fitted bottom adjustment unchanged to 2025
+        run: |
+          REPLAY_2025=$(find data/reference/phase5 -name replay_2025_precision_10000.json -print -quit)
+          INPUTS_2025=$(find data/reference/phase4a -name replay_2025_inputs.json -print -quit)
+          python src/research/validate_i2_half_adjustment_across_seasons.py             --train-audit data/derived/i2_vnext/phase18_half_calibration_2024.json             --test-replay "$REPLAY_2025"             --test-inputs "$INPUTS_2025"             --output data/derived/i2_vnext/phase18_cross_season_half_adjustment.json             --bootstrap 5000
+
+      - name: Build compact Phase 18 decision
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/i2_vnext')
+          a24=json.loads((p/'phase18_half_calibration_2024.json').read_text())
+          a25=json.loads((p/'phase18_half_calibration_2025_recheck.json').read_text())
+          cross=json.loads((p/'phase18_cross_season_half_adjustment.json').read_text())
+          def compact(a):
+              m=a['matched_home_venue']
+              bo=m['fits']['bottom_only']['coefficients']['bottom_offset']
+              hd=m['fits']['half_offset']['coefficients']['bottom_minus_top_offset']
+              return {
+                  'season':a['season'],
+                  'games':m['n_games'],
+                  'top_actual_minus_predicted':-m['raw']['top']['bias_pred_minus_actual'],
+                  'bottom_actual_minus_predicted':-m['raw']['bottom']['bias_pred_minus_actual'],
+                  'bottom_only_logit_offset':bo['coef'],
+                  'bottom_only_p_date_cluster':bo['p'],
+                  'bottom_minus_top_offset':hd['coef'],
+                  'bottom_minus_top_p_date_cluster':hd['p'],
+              }
+          result={
+              'version':'i2-vnext-phase18-half-calibration-replication-v1',
+              'market_inputs_used':False,
+              'calendar_month_used':False,
+              '2024':compact(a24),
+              '2025_recheck':compact(a25),
+              'cross_season_2024_fit_to_2025':cross,
+              'governance':{
+                  '2024_hyperparameter_overlap':'C=0.05 and half-life=730 were originally selected using 2024H2; 2024 is replication evidence, not a pristine model holdout.',
+                  'half_adjustment_fit_uses_2025':False,
+                  'production_changed':False,
+                  'eligible_for_direct_promotion':False,
+              },
+          }
+          (p/'PHASE18_CHECKPOINT.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Upload Phase 18 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase18-half-calibration-replication
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/replay_2024_precision_10000.json
+            data/derived/i2_vnext/phase18_half_calibration_2024.json
+            data/derived/i2_vnext/phase18_half_calibration_2025_recheck.json
+            data/derived/i2_vnext/phase18_cross_season_half_adjustment.json
+            data/derived/i2_vnext/PHASE18_CHECKPOINT.json
+
+      - name: Commit compact Phase 18 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE18_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 18 checkpoint change"
+          else
+            git commit -m "research: replicate I2 half calibration across seasons"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
