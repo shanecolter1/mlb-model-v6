@@ -1,5 +1,11 @@
 # I2 vNext Phase 17 — full-season half-inning calibration audit
 
+> **SUPERSEDED CANDIDATE INTERPRETATION — DO NOT IMPLEMENT THE PHASE 17 BOTTOM-ONLY OFFSET.**
+>
+> Phase 18 replicated the half-specific residual in the 2024 full-season replay and showed that the repeatable structure is a **relative top-vs-bottom contrast**, not a stable bottom-only offset. Phase 19 then fit that contrast on 2024 only and validated it unchanged on 2025. The governing shadow candidate is now the zero-sum logit contrast in `data/derived/i2_vnext/i2_vnext_half_contrast.json`: subtract `h = 0.0757053177820764` from the top-I2 scoring logit and add the same `h` to the bottom-I2 scoring logit. The common component is intentionally left to the final full-I2 calibration layer.
+>
+> The Phase 17 numerical diagnostics below remain valid descriptions of the inspected 2025 replay. Only the **bottom-only candidate interpretation** is superseded.
+
 Status: **RESEARCH ONLY / PREVIOUSLY INSPECTED 2025**. No live model, production calibration, market workflow, thresholds, EV, or staking logic changed.
 
 ## Question
