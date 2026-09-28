@@ -1,0 +1,128 @@
+name: I2 vNext Phase 19 - zero-sum half contrast
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase19_half_contrast.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --upgrade pip numpy scipy
+
+      - name: Restore Phase 18 audit evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase18-half-calibration-replication
+          path: data/reference/phase18
+          run-id: 36434492060
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore canonical 2025 replay
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase5-precision
+          path: data/reference/phase5
+          run-id: 36278930125
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Restore canonical 2025 inputs
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase4a-replay-prep
+          path: data/reference/phase4a
+          run-id: 36277316668
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate 2024-trained zero-sum half contrast on 2025
+        run: |
+          A24=$(find data/reference/phase18 -name phase18_half_calibration_2024.json -print -quit)
+          R25=$(find data/reference/phase5 -name replay_2025_precision_10000.json -print -quit)
+          I25=$(find data/reference/phase4a -name replay_2025_inputs.json -print -quit)
+          test -n "$A24"
+          test -n "$R25"
+          test -n "$I25"
+          python src/research/validate_i2_half_contrast_across_seasons.py             --train-audit "$A24"             --test-replay "$R25"             --test-inputs "$I25"             --output data/derived/i2_vnext/phase19_half_contrast_2024_to_2025.json             --bootstrap 10000
+
+      - name: Build Phase 19 checkpoint and decision
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/i2_vnext')
+          x=json.loads((p/'phase19_half_contrast_2024_to_2025.json').read_text())
+          d=x['combined']['deltas']
+          result={
+              'version':'i2-vnext-phase19-zero-sum-half-contrast-v1',
+              'market_inputs_used':False,
+              'calendar_month_used':False,
+              'train_season':x['train_season'],
+              'test_season':x['test_season'],
+              'candidate':x['trained_offsets'],
+              'test_results':{
+                  'top_raw_actual_minus_predicted':x['top']['raw']['actual_minus_predicted'],
+                  'top_adjusted_actual_minus_predicted':x['top']['adjusted']['actual_minus_predicted'],
+                  'bottom_raw_actual_minus_predicted':x['bottom']['raw']['actual_minus_predicted'],
+                  'bottom_adjusted_actual_minus_predicted':x['bottom']['adjusted']['actual_minus_predicted'],
+                  'half_brier':d['half_brier'],
+                  'half_logloss':d['half_logloss'],
+                  'full_i2_brier':d['full_i2_brier'],
+                  'full_i2_logloss':d['full_i2_logloss'],
+                  'full_i2_under_mean':x['combined']['full_i2_under'],
+              },
+              'decision':{
+                  'half_adjustment_form':'ZERO_SUM_LOGIT_CONTRAST',
+                  'top':'subtract h from top-I2 scoring logit',
+                  'bottom':'add h to bottom-I2 scoring logit',
+                  'h_source':'2024 matched-home-venue half-offset contrast only',
+                  'common_component':'do not apply here; reserve for final full-I2 calibration layer',
+                  'status':'VALIDATED_HISTORICAL_CANDIDATE_NOT_YET_PRODUCTION',
+              },
+              'governance':{
+                  '2025_used_to_fit_h':False,
+                  '2024_hyperparameter_overlap_warning':True,
+                  'production_changed':False,
+              },
+          }
+          (p/'PHASE19_CHECKPOINT.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Upload Phase 19 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19-zero-sum-half-contrast
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/phase19_half_contrast_2024_to_2025.json
+            data/derived/i2_vnext/PHASE19_CHECKPOINT.json
+
+      - name: Commit compact Phase 19 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE19_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 19 checkpoint change"
+          else
+            git commit -m "research: validate zero-sum I2 half contrast"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
