@@ -27,6 +27,8 @@ from scipy.special import expit, logit
 
 
 YEARS=(2022,2023,2024,2025,2026)
+DEVELOPMENT_YEARS=(2022,2023,2024,2025)
+HOLDOUT_YEAR=2026
 EPS=1e-9
 
 
@@ -221,11 +223,13 @@ def cv_shrink_objective(halves,side,lam):
     return total/n
 
 
-def zero_sum_cv_objective(halves,lam):
+def zero_sum_cv_objective(halves,lam,years=YEARS):
+    years=tuple(years)
+    scope=halves[halves["season"].isin(years)]
     total=0.0; n=0
-    for year in YEARS:
-        train=halves[halves["season"]!=year]
-        test=halves[halves["season"]==year]
+    for year in years:
+        train=scope[scope["season"]!=year]
+        test=scope[scope["season"]==year]
         h=fit_zero_sum_h(train)["h"]
         q=np.where(
             test["side"].eq("top"),
@@ -237,16 +241,18 @@ def zero_sum_cv_objective(halves,lam):
     return total/n
 
 
-def select_zero_sum_shrinkage(halves):
+def select_zero_sum_shrinkage(halves,years=YEARS):
+    years=tuple(years)
     opt=minimize_scalar(
-        lambda lam:zero_sum_cv_objective(halves,float(lam)),
+        lambda lam:zero_sum_cv_objective(halves,float(lam),years),
         bounds=(0.0,1.0),method="bounded",options={"xatol":1e-5},
     )
     return {
         "multiplier":float(opt.x),
         "loso_logloss":float(opt.fun),
-        "unshrunk_loso_logloss":float(zero_sum_cv_objective(halves,1.0)),
-        "no_adjustment_loso_logloss":float(zero_sum_cv_objective(halves,0.0)),
+        "years":list(years),
+        "unshrunk_loso_logloss":float(zero_sum_cv_objective(halves,1.0,years)),
+        "no_adjustment_loso_logloss":float(zero_sum_cv_objective(halves,0.0,years)),
     }
 
 
@@ -328,6 +334,37 @@ def cluster_bootstrap_delta(raw_halves,hpred,draws):
     return [float(x) for x in np.quantile(vals,[0.025,0.975])]
 
 
+def forward_2026_holdout(halves,games,zero_sum_shrink):
+    dev=halves[halves["season"].isin(DEVELOPMENT_YEARS)].copy()
+    test=halves[halves["season"]==HOLDOUT_YEAR].copy()
+    gtest=games[games["season"]==HOLDOUT_YEAR].copy()
+    z=fit_zero_sum_h(dev)
+    lam=float(zero_sum_shrink["multiplier"])
+    pred=test.copy()
+    pred["q"]=np.where(
+        pred["side"].eq("top"),
+        apply_zero_sum(pred["p"],"top",z["h"],lam),
+        apply_zero_sum(pred["p"],"bottom",z["h"],lam),
+    )
+    gpred=gtest.copy()
+    gpred["q_under"]=adjusted_game_under(gtest,pred)
+
+    test=test.sort_values(["season","gid","side"]).reset_index(drop=True)
+    pred=pred.sort_values(["season","gid","side"]).reset_index(drop=True)
+    gtest=gtest.sort_values(["season","gid"]).reset_index(drop=True)
+    gpred=gpred.sort_values(["season","gid"]).reset_index(drop=True)
+
+    result=compare_predictions(test,gtest,pred,gpred)
+    result["training"]={
+        "seasons":list(DEVELOPMENT_YEARS),
+        "fitted":z,
+        "shrinkage_multiplier":lam,
+        "applied_h":z["h"]*lam,
+    }
+    result["holdout_year"]=HOLDOUT_YEAR
+    return result
+
+
 def main():
     a=parse_args()
     half_parts=[]; game_parts=[]
@@ -340,7 +377,8 @@ def main():
     seasonal=season_summary(halves)
     shrink=select_shrinkage(halves)
     shrink_map={s:shrink[s]["multiplier"] for s in ("top","bottom")}
-    zero_sum_shrink=select_zero_sum_shrinkage(halves)
+    zero_sum_shrink=select_zero_sum_shrinkage(halves,DEVELOPMENT_YEARS)
+    forward_2026=forward_2026_holdout(halves,games,zero_sum_shrink)
 
     zero_h,zero_g,zero_folds=loso_predictions(halves,games,"zero_sum",zero_sum_shrink["multiplier"])
     zero_raw_h,zero_raw_g,zero_raw_folds=loso_predictions(halves,games,"zero_sum",None)
@@ -350,9 +388,12 @@ def main():
 
     pooled={}
     final_map={}
+    development_zero=fit_zero_sum_h(halves[halves["season"].isin(DEVELOPMENT_YEARS)])
+    development_zero["shrinkage_multiplier"]=zero_sum_shrink["multiplier"]
+    development_zero["applied_h"]=development_zero["h"]*zero_sum_shrink["multiplier"]
     pooled_zero=fit_zero_sum_h(halves)
-    pooled_zero["shrinkage_multiplier"]=zero_sum_shrink["multiplier"]
-    pooled_zero["final_h"]=pooled_zero["h"]*zero_sum_shrink["multiplier"]
+    pooled_zero["shrinkage_multiplier_fixed_from_2022_2025"]=zero_sum_shrink["multiplier"]
+    pooled_zero["future_refit_h"]=pooled_zero["h"]*zero_sum_shrink["multiplier"]
     zero_map={
         side:[
             {"raw":p,"adjusted":float(apply_zero_sum([p],side,pooled_zero["h"],zero_sum_shrink["multiplier"])[0])}
@@ -399,7 +440,7 @@ def main():
         },
         "shrinkage_selection":{
             "zero_sum_half_contrast":{
-                "method":"leave-one-season-out half-level log-loss minimization for one common multiplier on h; multiplier constrained to [0,1]",
+                "method":"2022-2025 leave-one-season-out half-level log-loss minimization for one common multiplier on h; 2026 excluded; multiplier constrained to [0,1]",
                 **zero_sum_shrink,
             },
             "independent_offsets_diagnostic":{
@@ -408,7 +449,9 @@ def main():
                 "bottom":shrink["bottom"],
             },
         },
-        "pooled_zero_sum_candidate":pooled_zero,
+        "development_zero_sum_candidate_2022_2025":development_zero,
+        "forward_2026_holdout":forward_2026,
+        "pooled_zero_sum_refit_2022_2026_for_future":pooled_zero,
         "pooled_zero_sum_probability_map":zero_map,
         "pooled_final_offset_candidate":pooled,
         "pooled_final_probability_map":final_map,
@@ -431,6 +474,8 @@ def main():
         ),
         "governance":{
             "production_changed":False,
+            "holdout_2026_used_for_shrinkage_selection":False,
+            "holdout_2026_used_for_development_h_fit":False,
             "market_inputs_used":False,
             "calendar_month_feature_or_control":False,
             "historical_fixed_specification_caveat":(
@@ -446,7 +491,9 @@ def main():
         "seasonal":seasonal,
         "shape_comparison":result["candidate_shape_comparison"],
         "shrinkage":result["shrinkage_selection"],
-        "zero_sum_final":pooled_zero,
+        "development_zero_sum":development_zero,
+        "forward_2026_holdout":forward_2026,
+        "future_refit_after_holdout":pooled_zero,
         "independent_offset_diagnostic":pooled,
         "ci":result["uncertainty"],
     },indent=2))
