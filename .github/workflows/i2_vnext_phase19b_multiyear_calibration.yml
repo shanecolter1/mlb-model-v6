@@ -1,0 +1,407 @@
+name: I2 vNext Phase 19B - 2022-2026 multiyear half calibration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase19b_multiyear_calibration.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase19b-multiyear-calibration
+  cancel-in-progress: true
+
+jobs:
+  prep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: true
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded dependencies
+        run: python -m pip install --upgrade pip pandas numpy scikit-learn requests lxml
+
+      - name: Restore Phase 19A historical data when ready
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 60); do
+            rm -rf data/reference/history
+            mkdir -p data/reference/history
+            if gh run download 36483879018 \
+              --repo shanecolter1/mlb-model-v6 \
+              --name i2-vnext-phase19a-history \
+              --dir data/reference/history; then
+              break
+            fi
+            if [ "$attempt" -eq 60 ]; then
+              echo "Historical Phase 19A artifact did not become available"
+              exit 1
+            fi
+            sleep 30
+          done
+
+      - name: Restore completed 2026 replay inputs
+        if: matrix.season == 2026
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p data/reference/current
+          gh run download 36484383516 \
+            --repo shanecolter1/mlb-model-v6 \
+            --name i2-vnext-phase19a-2026 \
+            --dir data/reference/current
+
+      - name: Assemble season inputs
+        env:
+          SEASON: ${{ matrix.season }}
+        run: |
+          set -euo pipefail
+          ROOT="data/derived/i2_vnext/phase19b_${SEASON}"
+          mkdir -p "$ROOT"
+
+          DATASET=$(find data/reference/history -name i2_pa_statcast.csv -print -quit)
+          BATTER2020=$(find data/reference/history -name batter_2020.csv -print -quit)
+          test -n "$DATASET"
+          test -n "$BATTER2020"
+          ARSENAL_DIR=$(dirname "$BATTER2020")
+
+          if [ "$SEASON" = "2026" ]; then
+            REPLAY=$(find data/reference/current -name replay_2026_inputs.json -print -quit)
+            VENUE=$(find data/reference/current -name home_venue_2026.json -print -quit)
+          else
+            REPLAY=$(find data/reference/history -name "replay_${SEASON}_inputs.json" -print -quit)
+            VENUE=$(find data/reference/history -name "home_venue_${SEASON}.json" -print -quit)
+          fi
+          test -n "$REPLAY"
+          test -n "$VENUE"
+          cp "$REPLAY" "$ROOT/replay_${SEASON}_inputs.json"
+          cp "$VENUE" "$ROOT/home_venue_${SEASON}.json"
+
+          python src/research/build_i2_vnext_historical_walkforward.py \
+            --input "$DATASET" \
+            --arsenal-dir "$ARSENAL_DIR" \
+            --season "$SEASON" \
+            --half-life 730 \
+            --c 0.05 \
+            --output-dir "$ROOT/walkforward_${SEASON}" \
+            --arsenal-output "$ROOT/arsenal_profile_$((SEASON-1)).json"
+
+          python src/research/build_i2_prior_transition_table.py \
+            --source-dir data/derived/model_calibration/seasonal \
+            --target-season "$SEASON" \
+            --first-season 2021 \
+            --k-exact 5 \
+            --k-parent 1280 \
+            --output "$ROOT/transitions_before_${SEASON}.json"
+
+          mkdir -p "$ROOT/park"
+          python src/build_savant_venue_profiles.py \
+            --year "$((SEASON-1))" \
+            --rolling 3 \
+            --output-dir "$ROOT/park"
+
+      - name: Verify season prep governance
+        env:
+          SEASON: ${{ matrix.season }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          season=int(os.environ['SEASON'])
+          root=Path(f'data/derived/i2_vnext/phase19b_{season}')
+          replay=json.loads((root/f'replay_{season}_inputs.json').read_text())
+          venue=json.loads((root/f'home_venue_{season}.json').read_text())
+          trans=json.loads((root/f'transitions_before_{season}.json').read_text())
+          man=json.loads((root/f'walkforward_{season}/manifest.json').read_text())
+
+          assert replay['season']==season and replay['market_inputs_used'] is False
+          assert venue['season']==season and venue['market_inputs_used'] is False
+          assert trans['target_season']==season and trans['market_inputs_used'] is False
+          assert max(trans['training_years']) < season
+          assert man['season']==season and man['market_inputs_used'] is False
+          assert man['hyperparameters']=={'half_life_days':730.0,'C':0.05}
+          for e in man['entries']:
+              assert e['training_end'] < e['training_cutoff_exclusive'], e
+
+          parks=list((root/'park').glob(f'savant_venue_profiles_{season-1}_3yr.json'))
+          assert len(parks)==1 and parks[0].stat().st_size>0
+          assert replay['games_eligible'] > 2200
+          assert venue['summary']['primary_home_venue_games'] > 2200
+          print({
+              'season':season,
+              'games':replay['games_eligible'],
+              'primary_home_games':venue['summary']['primary_home_venue_games'],
+              'transition_training_years':trans['training_years'],
+              'walkforward_models':len(man['entries']),
+          })
+          PY
+          python -m py_compile \
+            src/research/build_i2_prior_transition_table.py \
+            src/research/build_i2_vnext_historical_walkforward.py \
+            src/research/validate_i2_half_adjustment_multiyear.py
+          node --check src/research/run_i2_vnext_replay.mjs
+          node --check src/research/i2_vnext_replay_venue.mjs
+
+      - name: Upload season prep
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19b-prep-${{ matrix.season }}
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/phase19b_${{ matrix.season }}/
+
+  shard:
+    needs: prep
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: true
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore season prep
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase19b-prep-${{ matrix.season }}
+          path: data/derived/i2_vnext/phase19b_${{ matrix.season }}
+
+      - name: Run canonical 10000-trial shard
+        env:
+          SEASON: ${{ matrix.season }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          ROOT="data/derived/i2_vnext/phase19b_${SEASON}"
+          INPUT=$(find "$ROOT" -name "replay_${SEASON}_inputs.json" -print -quit)
+          MODEL=$(find "$ROOT" -name model_preseason.json -print -quit)
+          MANIFEST=$(find "$ROOT" -name manifest.json -path "*walkforward_${SEASON}*" -print -quit)
+          ARSENAL=$(find "$ROOT" -name "arsenal_profile_$((SEASON-1)).json" -print -quit)
+          PARKS=$(find "$ROOT" -name "savant_venue_profiles_$((SEASON-1))_3yr.json" -print -quit)
+          TRANS=$(find "$ROOT" -name "transitions_before_${SEASON}.json" -print -quit)
+          for f in "$INPUT" "$MODEL" "$MANIFEST" "$ARSENAL" "$PARKS" "$TRANS"; do test -n "$f"; done
+          mkdir -p data/derived/i2_vnext/phase19b_shards
+          node src/research/run_i2_vnext_replay.mjs \
+            --trials 10000 \
+            --i1-mode player_asof \
+            --shard-count 12 \
+            --shard-index "$SHARD" \
+            --input "$INPUT" \
+            --model "$MODEL" \
+            --walkforward-manifest "$MANIFEST" \
+            --arsenal "$ARSENAL" \
+            --parks "$PARKS" \
+            --play-calibration "$TRANS" \
+            --output "data/derived/i2_vnext/phase19b_shards/replay_${SEASON}_shard_${SHARD}.json"
+
+      - name: Verify replay shard
+        env:
+          SEASON: ${{ matrix.season }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          y=int(os.environ['SEASON']); s=int(os.environ['SHARD'])
+          p=Path(f'data/derived/i2_vnext/phase19b_shards/replay_{y}_shard_{s}.json')
+          x=json.loads(p.read_text())
+          assert x['season']==y
+          assert x['trials_per_game']==10000
+          assert x['market_inputs_used'] is False
+          assert x['i1_state_mode']=='player_asof'
+          assert x['n'] > 0
+          print({'season':y,'shard':s,'n':x['n'],'park_match_rate':x['park_match_rate']})
+          PY
+
+      - name: Upload replay shard
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19b-${{ matrix.season }}-shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/phase19b_shards/replay_${{ matrix.season }}_shard_${{ matrix.shard }}.json
+
+  merge:
+    needs: [prep, shard]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: true
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore season prep
+        uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase19b-prep-${{ matrix.season }}
+          path: data/derived/i2_vnext/phase19b_${{ matrix.season }}
+
+      - name: Restore replay shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase19b-${{ matrix.season }}-shard-*
+          path: data/derived/i2_vnext/phase19b_shards
+          merge-multiple: true
+
+      - name: Merge deterministic precision replay
+        env:
+          SEASON: ${{ matrix.season }}
+        run: |
+          set -euo pipefail
+          ROOT="data/derived/i2_vnext/phase19b_${SEASON}"
+          INPUT=$(find "$ROOT" -name "replay_${SEASON}_inputs.json" -print -quit)
+          GAMES=$(python -c "import json; print(json.load(open('$INPUT'))['games_eligible'])")
+          python src/research/merge_i2_vnext_replay_shards.py \
+            --input-dir data/derived/i2_vnext/phase19b_shards \
+            --expected-shards 12 \
+            --expected-games "$GAMES" \
+            --output "$ROOT/replay_${SEASON}_precision_10000.json"
+
+      - name: Upload season precision bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19b-season-${{ matrix.season }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/phase19b_${{ matrix.season }}/replay_${{ matrix.season }}_precision_10000.json
+            data/derived/i2_vnext/phase19b_${{ matrix.season }}/replay_${{ matrix.season }}_inputs.json
+            data/derived/i2_vnext/phase19b_${{ matrix.season }}/home_venue_${{ matrix.season }}.json
+
+  calibrate:
+    needs: merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install calibration dependencies
+        run: python -m pip install --upgrade pip numpy pandas scipy statsmodels
+
+      - name: Restore all season bundles
+        uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase19b-season-*
+          path: data/bundle
+          merge-multiple: true
+
+      - name: Normalize bundle layout
+        run: |
+          set -euo pipefail
+          mkdir -p data/phase19b_bundle
+          for year in 2022 2023 2024 2025 2026; do
+            for name in "replay_${year}_precision_10000.json" "replay_${year}_inputs.json" "home_venue_${year}.json"; do
+              src=$(find data/bundle -name "$name" -print -quit)
+              test -n "$src"
+              cp "$src" "data/phase19b_bundle/$name"
+            done
+          done
+
+      - name: Run multiyear half-calibration validation
+        run: |
+          python src/research/validate_i2_half_adjustment_multiyear.py \
+            --bundle-dir data/phase19b_bundle \
+            --output data/derived/i2_vnext/phase19b_multiyear_half_calibration.json \
+            --bootstrap 10000
+
+      - name: Build compact Phase 19B checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/i2_vnext')
+          x=json.loads((p/'phase19b_multiyear_half_calibration.json').read_text())
+
+          seasonal={}
+          for year,row in x['seasonal'].items():
+              z=row['half_decomposition']
+              seasonal[year]={
+                  'games':row['n_games'],
+                  'top_actual_minus_predicted':row['sides']['top']['raw']['actual_minus_predicted'],
+                  'bottom_actual_minus_predicted':row['sides']['bottom']['raw']['actual_minus_predicted'],
+                  'top_logit_offset':z['top_offset'],
+                  'bottom_logit_offset':z['bottom_offset'],
+                  'common_component':z['common_component'],
+                  'zero_sum_h':z['h'],
+              }
+
+          shapes=x['candidate_shape_comparison']
+          checkpoint={
+              'version':'i2-vnext-phase19b-multiyear-half-calibration-v1',
+              'market_inputs_used':False,
+              'calendar_month_used':False,
+              'validation_years':[2022,2023,2024,2025,2026],
+              'sample':'season-specific PRIMARY_HOME_VENUE games',
+              'seasonal':seasonal,
+              'zero_sum_candidate':x['pooled_zero_sum_candidate'],
+              'zero_sum_probability_map':x['pooled_zero_sum_probability_map'],
+              'zero_sum_shrinkage':x['shrinkage_selection']['zero_sum_half_contrast'],
+              'shape_comparison':{
+                  k:{
+                      'top_half_logloss_delta':v['halves']['top']['adjusted_minus_raw']['logloss'],
+                      'bottom_half_logloss_delta':v['halves']['bottom']['adjusted_minus_raw']['logloss'],
+                      'full_i2_logloss_delta':v['full_i2_dependence_preserved']['adjusted_minus_raw']['logloss'],
+                      'full_i2_brier_delta':v['full_i2_dependence_preserved']['adjusted_minus_raw']['brier'],
+                  }
+                  for k,v in shapes.items()
+              },
+              'uncertainty':x['uncertainty'],
+              'governance':{
+                  'production_changed':False,
+                  'market_inputs_used':False,
+                  'calendar_month_feature_or_control':False,
+                  'year_2020':'arsenal only; no 2020 Retrosheet or PA target history',
+                  'year_2021':'training/transition foundation; not a validation year',
+                  'historical_specification_caveat':x['governance']['historical_fixed_specification_caveat'],
+              },
+              'status':'MULTIYEAR_EVIDENCE_READY_PRODUCTION_UNCHANGED',
+          }
+          (p/'PHASE19B_CHECKPOINT.json').write_text(json.dumps(checkpoint,indent=2)+'\n')
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload Phase 19B evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19b-multiyear-calibration
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/phase19b_multiyear_half_calibration.json
+            data/derived/i2_vnext/PHASE19B_CHECKPOINT.json
+
+      - name: Commit compact Phase 19B checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE19B_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 19B checkpoint change"
+          else
+            git commit -m "research: validate I2 half calibration across 2022-2026"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
