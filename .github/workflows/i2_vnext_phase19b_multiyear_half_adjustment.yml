@@ -59,7 +59,7 @@ jobs:
         run: |
           season=${{ matrix.season }}
           prior=$((season-1))
-          python src/research/build_i2_vnext_historical_walkforward.py             --input data/derived/i2_vnext/i2_pa_statcast.csv             --arsenal-dir data/derived/i2_vnext/arsenal             --season "$season"             --half-life 730             --c 0.05             --output-dir "data/derived/i2_vnext/walkforward_${season}"             --arsenal-output "data/derived/i2_vnext/arsenal_profile_${prior}.json"
+          python src/research/build_i2_vnext_historical_walkforward.py             --input data/derived/i2_vnext/i2_pa_statcast.csv             --arsenal-dir data/derived/i2_vnext/arsenal             --season "$season"             --half-life 730             --c 0.05             --max-iter 7500             --output-dir "data/derived/i2_vnext/walkforward_${season}"             --arsenal-output "data/derived/i2_vnext/arsenal_profile_${prior}.json"
 
       - name: Build prior-season physical park profile
         run: |
@@ -90,6 +90,9 @@ jobs:
           assert replay['season']==season
           assert venue['market_inputs_used'] is False and venue['season']==season
           assert walk['market_inputs_used'] is False and walk['season']==season
+          assert walk['hyperparameters']['half_life_days']==730.0
+          assert walk['hyperparameters']['C']==0.05
+          assert walk['hyperparameters']['solver_max_iter']==7500
           assert len(walk['entries'])==6
           for e in walk['entries']:
               assert e['training_end'] < e['training_cutoff_exclusive'],e
