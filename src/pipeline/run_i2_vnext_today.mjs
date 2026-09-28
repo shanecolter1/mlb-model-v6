@@ -7,6 +7,7 @@ import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
 import { selectI2VenueProfile } from '../model/i2_venue_profile.js';
 import { applyEnvironmentalEventVector } from '../event_probability_engine.js';
 import { createSeededRandom, seedFromGameId } from '../model/seeded_random.js';
+import { applyHalfScoreContrast, validateHalfContrastArtifact } from '../model/i2_half_contrast.js';
 
 const DATE = process.env.I2_DATE || new Date().toISOString().slice(0, 10);
 const CUTOFF = process.env.I2_CUTOFF || new Date().toISOString();
@@ -19,6 +20,7 @@ const VENUE_PATH = process.env.I2_VENUE_PROFILES || `data/runtime/i2/savant_venu
 const VNEXT_MODEL_PATH = process.env.I2_VNEXT_MODEL || 'data/derived/i2_vnext/i2_vnext_event_model_live.json';
 const VNEXT_ARSENAL_PATH = process.env.I2_VNEXT_ARSENAL || 'data/derived/i2_vnext/live_arsenal_profile.json';
 const VNEXT_CALIBRATION_PATH = process.env.I2_VNEXT_CALIBRATION || 'data/derived/i2_vnext/i2_vnext_full_calibration.json';
+const VNEXT_HALF_CONTRAST_PATH = process.env.I2_VNEXT_HALF_CONTRAST || 'data/derived/i2_vnext/i2_vnext_half_contrast.json';
 
 let baseballSources;
 const priorFrozen = fs.existsSync(OUTPUT) ? JSON.parse(fs.readFileSync(OUTPUT, 'utf8')) : null;
@@ -86,6 +88,13 @@ const playCalibration = adaptPlayCalibration(
 const vnextEventModel = loadJson(VNEXT_MODEL_PATH);
 const vnextArsenal = loadJson(VNEXT_ARSENAL_PATH);
 const vnextFullCalibration = loadJson(VNEXT_CALIBRATION_PATH);
+const vnextHalfContrast = fs.existsSync(VNEXT_HALF_CONTRAST_PATH)
+  ? validateHalfContrastArtifact(loadJson(VNEXT_HALF_CONTRAST_PATH))
+  : null;
+const prospectiveValidationStart = [
+  vnextFullCalibration?.holdout_policy?.prospective_validation_start,
+  vnextHalfContrast?.prospective_validation_start,
+].filter(Boolean).sort().at(-1) || null;
 
 function clamp01(x) { return Math.max(1e-9, Math.min(1 - 1e-9, Number(x))); }
 function applyFinalCalibration(rawProbability) {
@@ -531,6 +540,23 @@ async function runGame(game) {
     i2EventVectorProvider,
   });
   const rawUnder05 = result.under05;
+  const rawTopScoreProbability = result.top2.cumulative['1+'];
+  const rawBottomScoreProbability = result.bottom2.cumulative['1+'];
+  const halfContrast = vnextHalfContrast
+    ? applyHalfScoreContrast({
+        topScoreProbability:rawTopScoreProbability,
+        bottomScoreProbability:rawBottomScoreProbability,
+        artifact:vnextHalfContrast,
+      })
+    : {
+        rawTopScoreProbability,
+        rawBottomScoreProbability,
+        adjustedTopScoreProbability:rawTopScoreProbability,
+        adjustedBottomScoreProbability:rawBottomScoreProbability,
+        adjustedUnder05:rawUnder05,
+        h:0,
+      };
+  const halfAdjustedUnder05 = vnextHalfContrast ? halfContrast.adjustedUnder05 : rawUnder05;
   if (!venueProfile) {
     base.bettingEligibility = {
       eligible:false,
@@ -538,7 +564,7 @@ async function runGame(game) {
       reasons:['SAVANT_VENUE_PROFILE_MISSING_NEUTRAL_FALLBACK'],
     };
   }
-  const finalUnder05 = applyFinalCalibration(rawUnder05);
+  const finalUnder05 = applyFinalCalibration(halfAdjustedUnder05);
   const finalOver05 = 1 - finalUnder05;
   const finalFairUnder = fairAmericanOdds(finalUnder05);
   const finalFairOver = fairAmericanOdds(finalOver05);
@@ -562,7 +588,7 @@ async function runGame(game) {
       reasons:['VNEXT_PROSPECTIVE_VALIDATION_REQUIRED'],
     };
   }
-  return {...base,modelStatus:'FROZEN_VNEXT_SHADOW_PROJECTION',trials:TRIALS,rawUnder05,rawOver05:1-rawUnder05,under05:finalUnder05,over05:finalOver05,under05Pct:pct(finalUnder05),over05Pct:pct(finalOver05),rawUnder05Pct:pct(rawUnder05),fairUnder:odds(finalFairUnder),fairOver:odds(finalFairOver),rawFullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),rawFullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),rawTop2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),rawTop2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),rawBottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),rawBottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),top2ScorePct:pct(result.top2.cumulative['1+']),bottom2ScorePct:pct(result.bottom2.cumulative['1+']),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
+  return {...base,modelStatus:'FROZEN_VNEXT_SHADOW_PROJECTION',trials:TRIALS,rawUnder05,rawOver05:1-rawUnder05,halfAdjustedUnder05,halfAdjustedOver05:1-halfAdjustedUnder05,halfContrastH:halfContrast.h,under05:finalUnder05,over05:finalOver05,under05Pct:pct(finalUnder05),over05Pct:pct(finalOver05),rawUnder05Pct:pct(rawUnder05),halfAdjustedUnder05Pct:pct(halfAdjustedUnder05),fairUnder:odds(finalFairUnder),fairOver:odds(finalFairOver),rawFullI2Exact:Object.fromEntries(Object.entries(result.fullI2.exact).map(([k,v])=>[k,pct(v)])),rawFullI2Cumulative:Object.fromEntries(Object.entries(result.fullI2.cumulative).map(([k,v])=>[k,pct(v)])),rawTop2Exact:Object.fromEntries(Object.entries(result.top2.exact).map(([k,v])=>[k,pct(v)])),rawTop2Cumulative:Object.fromEntries(Object.entries(result.top2.cumulative).map(([k,v])=>[k,pct(v)])),rawBottom2Exact:Object.fromEntries(Object.entries(result.bottom2.exact).map(([k,v])=>[k,pct(v)])),rawBottom2Cumulative:Object.fromEntries(Object.entries(result.bottom2.cumulative).map(([k,v])=>[k,pct(v)])),rawTop2ScorePct:pct(rawTopScoreProbability),rawBottom2ScorePct:pct(rawBottomScoreProbability),top2ScorePct:pct(halfContrast.adjustedTopScoreProbability),bottom2ScorePct:pct(halfContrast.adjustedBottomScoreProbability),awayI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.awayI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),homeI2StartSlotPct:Object.fromEntries(Object.entries(result.stateDiagnostics.homeI2StartSlotProbability).map(([k,v])=>[k,pct(v)])),awayMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.awayMeanPitchesEnteringI2*100)/100,homeMeanPitchesEnteringI2:Math.round(result.stateDiagnostics.homeMeanPitchesEnteringI2*100)/100};
 }
 
 async function main(){
@@ -604,7 +630,7 @@ async function main(){
   const payload={
     model:'MLB I2 vNext Direct Talent Shadow',
     promotionStatus:'SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED',
-    prospectiveValidationStart:vnextFullCalibration?.holdout_policy?.prospective_validation_start || null,
+    prospectiveValidationStart,
     baseballDataArchitecture:'SELF_CONTAINED_REPOSITORY_PIPELINE',
     primaryBaseballSource:'MLB Stats API direct',
     provisionalLineupSource:'RotoWire public daily-lineups HTML',
@@ -619,6 +645,7 @@ async function main(){
     transitionGovernance:playCalibration.governance || null,
     i1StateEngine:'existing V6 season-rate engine used only to simulate I1 lineup progression',
     i2TalentEngine:'direct I2 Statcast PA model; jointly regularized batter/pitcher/platoon/arsenal',
+    halfCalibration:vnextHalfContrast ? {version:vnextHalfContrast.version,type:vnextHalfContrast.type,h:vnextHalfContrast.zero_sum_half_contrast_h,status:vnextHalfContrast.status,prospectiveValidationStart:vnextHalfContrast.prospective_validation_start} : null,
     finalCalibration:vnextFullCalibration?.final_curve || vnextFullCalibration?.selected || null,
     leagueBaselineSource:'Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json',
     parkSource:venueProfiles.length?'Baseball Savant 3-year Statcast park factors':'neutral fallback',
@@ -630,6 +657,7 @@ async function main(){
       'Weather/roof is not yet applied.',
       'Missing Savant venue profiles use an explicit neutral fallback and are fail-closed for betting eligibility.',
       'Normal starters default to the probable starter for I2; confirmed opener/bulk identities must be supplied by the input workflow.',
+      'The zero-sum top/bottom half contrast is historically validated but remains shadow-only pending prospective confirmation.',
       'Full-I2 calibration is validated on the normal-starter path; nonstandard pitching plans are not silently assigned the same calibration evidence.',
       'MLB season-to-date rates remain in I1 only to generate the I2 starting-position distribution; they are not I2 talent inputs.'
     ],
