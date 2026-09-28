@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   run-v04:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
     runs-on: ubuntu-latest
     env:
       I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
