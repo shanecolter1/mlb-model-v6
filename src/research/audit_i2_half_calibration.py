@@ -37,9 +37,12 @@ def build_rows(replay, inputs):
         raise ValueError("Market contamination")
     if replay.get("trials_per_game") != 10000:
         raise ValueError("Expected canonical 10,000-trial replay")
-    if replay.get("n") != 2430 or replay.get("season") != 2025:
-        raise ValueError("Expected complete 2025 replay")
+    season = int(replay.get("season") or 0)
+    if season <= 0 or int(inputs.get("season") or 0) != season:
+        raise ValueError("Replay/input season mismatch")
     games = {g["gid"]: g for g in inputs["games"]}
+    if replay.get("n") != len(games):
+        raise ValueError("Replay/input game coverage mismatch")
     rows = []
     for pred in replay["predictions"]:
         game = games[pred["gid"]]
@@ -267,11 +270,17 @@ def main():
     inputs = json.loads(args.inputs.read_text())
     frame = build_rows(replay, inputs)
     matched = frame[frame["park_status"] == MATCHED].reset_index(drop=True)
+    season = int(replay["season"])
+    status = (
+        "RESEARCH_ONLY_PREVIOUSLY_INSPECTED_2025"
+        if season == 2025
+        else "HISTORICAL_REPLICATION_NOT_PRISTINE_HOLDOUT"
+    )
     result = {
-        "version": "i2-half-calibration-full-season-2025-v1",
-        "status": "RESEARCH_ONLY_PREVIOUSLY_INSPECTED_2025",
+        "version": f"i2-half-calibration-full-season-{season}-v1",
+        "status": status,
         "market_inputs_used": False,
-        "season": 2025,
+        "season": season,
         "canonical_replay": replay["model_version"],
         "trials_per_game": replay["trials_per_game"],
         "calendar_month_used": False,
@@ -287,7 +296,8 @@ def main():
             "live_model_changed": False,
             "production_calibration_changed": False,
             "market_workflow_changed": False,
-            "2025_previously_inspected": True,
+            "2025_previously_inspected": season == 2025,
+            "historical_hyperparameter_selection_overlap": season == 2024,
             "eligible_for_direct_promotion": False,
         },
     }
