@@ -1,0 +1,77 @@
+{
+  "version": "i2-half-calibration-phase17-v1",
+  "status": "RESEARCH_ONLY_PREVIOUSLY_INSPECTED_2025",
+  "market_inputs_used": false,
+  "calendar_month_used": false,
+  "canonical_replay": "i2-vnext-walkforward-2025-v1",
+  "trials_per_game": 10000,
+  "matched_home_venue": {
+    "games": 2264,
+    "dates": 182,
+    "top": {
+      "predicted_score_probability": 0.24392994699646642,
+      "observed_score_probability": 0.22835689045936397,
+      "actual_minus_predicted_pp": -1.5573056537102472
+    },
+    "bottom": {
+      "predicted_score_probability": 0.24468992932862194,
+      "observed_score_probability": 0.2698763250883392,
+      "actual_minus_predicted_pp": 2.5186395759717317
+    },
+    "half_offset_model": {
+      "top_logit_offset": -0.08679044733331465,
+      "top_offset_p_date_cluster": 0.09258433257530724,
+      "bottom_minus_top_logit_offset": 0.21926753728458262,
+      "half_difference_p_date_cluster": 0.0029752189077696858,
+      "derived_bottom_logit_offset": 0.13247708995126797
+    },
+    "bottom_only_candidate": {
+      "logit_offset": 0.1324770899512679,
+      "se_date_cluster": 0.04959018560536027,
+      "p_date_cluster": 0.0075527097519344786,
+      "probability_map": [
+        {"raw_score_probability": 0.15, "adjusted_score_probability": 0.16768484600957237},
+        {"raw_score_probability": 0.20, "adjusted_score_probability": 0.2220400504368614},
+        {"raw_score_probability": 0.25, "adjusted_score_probability": 0.27565150893360996},
+        {"raw_score_probability": 0.30, "adjusted_score_probability": 0.32853450252658273},
+        {"raw_score_probability": 0.35, "adjusted_score_probability": 0.3807041835136004}
+      ],
+      "repeated_20x10fold_date_group_cv": {
+        "half_brier_delta_vs_raw": -0.00020472601583480655,
+        "half_logloss_delta_vs_raw": -0.0006027390878334951,
+        "half_brier_delta_ci95_date_cluster": [-0.0006838863688744153, 0.00026020536162144953],
+        "half_logloss_delta_ci95_date_cluster": [-0.0018468139195406542, 0.0006057847633055138],
+        "full_i2_brier_delta_vs_raw": -0.00015612264883234348,
+        "full_i2_logloss_delta_vs_raw": -0.00032761850397826456,
+        "full_i2_brier_delta_ci95_date_cluster": [-0.0009523704695292764, 0.0006393923753803473],
+        "full_i2_logloss_delta_ci95_date_cluster": [-0.0019583276211936796, 0.001287970266052229]
+      }
+    },
+    "model_comparison_aic": {
+      "bottom_only": 5070.557157854604,
+      "half_offset": 5069.520283289931,
+      "half_curve": 5071.310642131597
+    }
+  },
+  "full_slate": {
+    "games": 2430,
+    "top_actual_minus_predicted_score_pp": -0.6956954732510288,
+    "bottom_actual_minus_predicted_score_pp": 2.427884773662551,
+    "bottom_only_logit_offset": 0.1279255621419837,
+    "bottom_only_p_date_cluster": 0.0073930014364557315,
+    "bottom_minus_top_offset_p_date_cluster": 0.020575641538529067
+  },
+  "interpretation": {
+    "top_adjustment": "NO FORCED ADJUSTMENT SUPPORTED AS PARSIMONIOUS CANDIDATE",
+    "bottom_adjustment": "POSITIVE SCORE-PROBABILITY LOGIT OFFSET CANDIDATE",
+    "slope_curve": "NOT SUPPORTED OVER SIMPLE OFFSET",
+    "promotion": "DO NOT PROMOTE FROM 2025; PROSPECTIVE OR INDEPENDENT VALIDATION REQUIRED"
+  },
+  "governance": {
+    "live_model_changed": false,
+    "production_calibration_changed": false,
+    "market_workflow_changed": false,
+    "2025_previously_inspected": true,
+    "eligible_for_direct_promotion": false
+  }
+}
