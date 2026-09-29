@@ -41,9 +41,12 @@ def validation_cohort(data: dict) -> dict:
     final = data.get("finalCalibration") or {}
     return {
         "prospective_validation_start": data.get("prospectiveValidationStart"),
+        "probability_stack_version": data.get("probabilityStackVersion"),
         "half_calibration_version": half.get("version"),
         "half_calibration_type": half.get("type"),
+        "half_calibration_enabled": half.get("enabled", True) if half else False,
         "half_contrast_h": half.get("h"),
+        "final_calibration_version": data.get("finalCalibrationVersion"),
         "final_calibration_type": final.get("type") or final.get("method") or "identity",
     }
 
@@ -64,6 +67,7 @@ def archive(snapshot: Path, directory: Path) -> dict:
     if not isinstance(data.get("games"), list):
         raise ValueError("Missing game rows")
     half = data.get("halfCalibration") or None
+    half_enabled = bool(half and half.get("enabled", True))
     for game in data["games"]:
         if game.get("modelStatus") == "FROZEN_VNEXT_SHADOW_PROJECTION":
             if not generated < timestamp(game["gameDate"]):
@@ -73,15 +77,25 @@ def archive(snapshot: Path, directory: Path) -> dict:
             if half:
                 matched = bool((game.get("dataAudit") or {}).get("venueProfileMatched"))
                 applied = bool(game.get("halfContrastApplied"))
-                if half.get("matchedHomeVenueOnly") is True and applied != matched:
-                    raise ValueError(f"Half-contrast venue scope mismatch: {game['gamePk']}")
+                if half_enabled:
+                    if half.get("matchedHomeVenueOnly") is True and applied != matched:
+                        raise ValueError(f"Half-contrast venue scope mismatch: {game['gamePk']}")
+                elif applied:
+                    raise ValueError(f"Disabled half calibration was applied: {game['gamePk']}")
                 for field in (
                     "rawTop2ScoreProbability", "rawBottom2ScoreProbability",
                     "top2ScoreProbability", "bottom2ScoreProbability",
                     "halfAdjustedUnder05",
                 ):
                     if field not in game:
-                        raise ValueError(f"Missing half-contrast audit field {field}: {game['gamePk']}")
+                        raise ValueError(f"Missing half-calibration audit field {field}: {game['gamePk']}")
+                if not half_enabled:
+                    if abs(float(game["rawTop2ScoreProbability"]) - float(game["top2ScoreProbability"])) > 1e-12:
+                        raise ValueError(f"Disabled top half calibration changed probability: {game['gamePk']}")
+                    if abs(float(game["rawBottom2ScoreProbability"]) - float(game["bottom2ScoreProbability"])) > 1e-12:
+                        raise ValueError(f"Disabled bottom half calibration changed probability: {game['gamePk']}")
+                    if abs(float(game.get("rawUnder05", game["under05"])) - float(game["halfAdjustedUnder05"])) > 1e-12:
+                        raise ValueError(f"Disabled half calibration changed full-I2 probability: {game['gamePk']}")
     filename = f"{generated.strftime('%Y%m%dT%H%M%S%fZ')}_{digest}.json"
     target = directory / date / filename
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -447,7 +461,7 @@ def score(archive_dir: Path, outcome_dir: Path, baseline_file: Path, draws: int 
         draws,
     )
     return {
-        "version": "i2-vnext-prospective-score-v2",
+        "version": "i2-vnext-prospective-score-v3",
         "market_inputs_used": False,
         "promotion_status": "SHADOW_ONLY",
         "selection_policy": "Latest valid pregame forecast per game, then restrict scoring to the single latest declared prospective-validation cohort; exclude source-invalidated snapshots before outcomes.",
@@ -484,7 +498,7 @@ def score(archive_dir: Path, outcome_dir: Path, baseline_file: Path, draws: int 
             "No inference interval is reported with fewer than 20 scored calendar dates.",
             "The baseline is a prior-season constant, not the deployed production model at the same cutoff.",
             "No prices, EV, or staking metrics are calculated; this is baseball-only forecast validation.",
-            "Prior validation cohorts are reported as excluded rather than pooled with the current half-calibration cohort.",
+            "Prior validation cohorts are reported as excluded rather than pooled with the current probability-stack cohort.",
         ],
     }
 
