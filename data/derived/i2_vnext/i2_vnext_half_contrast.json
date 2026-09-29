@@ -1,38 +1,72 @@
 {
-  "version": "i2-vnext-half-contrast-v1",
+  "version": "i2-vnext-half-contrast-v2-retired",
   "type": "zero_sum_logit_contrast",
+  "enabled": false,
   "market_inputs_used": false,
-  "status": "SHADOW_ONLY_VALIDATED_HISTORICAL_CANDIDATE",
-  "train_season": 2024,
-  "validation_season": 2025,
+  "status": "RETIRED_BY_PHASE19D_NO_HALF_ADJUSTMENT",
   "matched_home_venue_only": true,
-  "zero_sum_half_contrast_h": 0.0757053177820764,
-  "top_logit_delta": -0.0757053177820764,
-  "bottom_logit_delta": 0.0757053177820764,
+  "zero_sum_half_contrast_h": 0,
+  "top_logit_delta": 0,
+  "bottom_logit_delta": 0,
   "common_component_applied": false,
   "common_component_reserved_for_final_full_i2_calibration": true,
-  "prospective_validation_start": "2026-09-28",
-  "source": {
-    "checkpoint": "data/derived/i2_vnext/PHASE19_CHECKPOINT.json",
-    "train_half_offset_top": -0.08281305372851491,
-    "train_half_offset_bottom": 0.06859758183563788,
-    "removed_common_component": -0.007107735946438515
-  },
-  "validation": {
-    "test_season": 2025,
-    "test_matched_games": 2264,
-    "half_brier_delta": -0.00037731861236841506,
-    "half_brier_ci95_date_cluster": [-0.0007507186058799655, -7.368022567122027e-07],
-    "half_logloss_delta": -0.001016298460479914,
-    "full_i2_brier_delta": -0.00015188861816550192,
-    "full_i2_brier_ci95_date_cluster": [-0.00025006360444736675, -0.00005045236028079789],
-    "full_i2_logloss_delta": -0.000309870730616661,
-    "full_i2_logloss_ci95_date_cluster": [-0.0005118293743834958, -0.00010132118595303592]
+  "retirement": {
+    "decision_checkpoint": "data/derived/i2_vnext/PHASE19D_CHECKPOINT.json",
+    "selected_half_adjustment": "NO_HALF_ADJUSTMENT",
+    "untouched_holdout_year": 2026,
+    "selection_metric": "minimum 2026 full-I2 log loss; Brier tie-break",
+    "prior_artifact": {
+      "version": "i2-vnext-half-contrast-v1",
+      "type": "zero_sum_logit_contrast",
+      "market_inputs_used": false,
+      "status": "SHADOW_ONLY_VALIDATED_HISTORICAL_CANDIDATE",
+      "train_season": 2024,
+      "validation_season": 2025,
+      "matched_home_venue_only": true,
+      "zero_sum_half_contrast_h": 0.0757053177820764,
+      "top_logit_delta": -0.0757053177820764,
+      "bottom_logit_delta": 0.0757053177820764,
+      "common_component_applied": false,
+      "common_component_reserved_for_final_full_i2_calibration": true,
+      "prospective_validation_start": "2026-09-28",
+      "source": {
+        "checkpoint": "data/derived/i2_vnext/PHASE19_CHECKPOINT.json",
+        "train_half_offset_top": -0.08281305372851491,
+        "train_half_offset_bottom": 0.06859758183563788,
+        "removed_common_component": -0.007107735946438515
+      },
+      "validation": {
+        "test_season": 2025,
+        "test_matched_games": 2264,
+        "half_brier_delta": -0.00037731861236841506,
+        "half_brier_ci95_date_cluster": [
+          -0.0007507186058799655,
+          -7.368022567122027e-7
+        ],
+        "half_logloss_delta": -0.001016298460479914,
+        "full_i2_brier_delta": -0.00015188861816550192,
+        "full_i2_brier_ci95_date_cluster": [
+          -0.00025006360444736675,
+          -0.00005045236028079789
+        ],
+        "full_i2_logloss_delta": -0.000309870730616661,
+        "full_i2_logloss_ci95_date_cluster": [
+          -0.0005118293743834958,
+          -0.00010132118595303592
+        ]
+      },
+      "governance": {
+        "calendar_month_used": false,
+        "2025_used_to_fit_h": false,
+        "2024_hyperparameter_overlap_warning": true,
+        "production_promoted": false
+      }
+    }
   },
   "governance": {
     "calendar_month_used": false,
-    "2025_used_to_fit_h": false,
-    "2024_hyperparameter_overlap_warning": true,
-    "production_promoted": false
+    "production_promoted": false,
+    "half_adjustment_enabled": false,
+    "production_changed": false
   }
 }
