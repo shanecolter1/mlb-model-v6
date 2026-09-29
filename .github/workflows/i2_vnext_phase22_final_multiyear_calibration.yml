@@ -1,0 +1,218 @@
+name: I2 vNext Phase 22 - final multiyear calibration
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase22_final_multiyear_calibration.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase22-final-calibration
+  cancel-in-progress: true
+
+env:
+  SOURCE_RUN_ID: 36505646844
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install bounded calibration dependencies
+        run: python -m pip install --upgrade pip numpy pandas scipy statsmodels
+
+      - name: Restore governed 2022-2026 precision bundles
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/downloaded data/bundle
+          for year in 2022 2023 2024 2025 2026; do
+            mkdir -p "data/downloaded/${year}"
+            gh run download "${SOURCE_RUN_ID}" \
+              --repo shanecolter1/mlb-model-v6 \
+              --name "i2-vnext-phase19c-season-${year}" \
+              --dir "data/downloaded/${year}"
+            for name in "replay_${year}_precision_10000.json" "replay_${year}_inputs.json" "home_venue_${year}.json"; do
+              src=$(find "data/downloaded/${year}" -name "$name" -print -quit)
+              test -n "$src"
+              cp "$src" "data/bundle/$name"
+            done
+          done
+
+      - name: Verify final calibration input governance
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('data/bundle')
+          for year in range(2022,2027):
+              replay=json.loads((root/f'replay_{year}_precision_10000.json').read_text())
+              inputs=json.loads((root/f'replay_{year}_inputs.json').read_text())
+              venue=json.loads((root/f'home_venue_{year}.json').read_text())
+              assert replay['season']==inputs['season']==venue['season']==year
+              assert replay['market_inputs_used'] is False
+              assert inputs['market_inputs_used'] is False
+              assert venue['market_inputs_used'] is False
+              assert replay['trials_per_game']==10000
+              assert replay['i1_state_mode']=='player_asof'
+              assert replay['i1_environment']=='prior_season_park'
+              gids=[str(g['gid']) for g in inputs['games']]
+              assert len(gids)==len(set(gids))==inputs['games_eligible']
+          decision=json.loads(Path('data/derived/i2_vnext/PHASE19D_CHECKPOINT.json').read_text())
+          assert decision['selected_half_adjustment']=='NO_HALF_ADJUSTMENT'
+          assert decision['governance']['production_changed'] is False
+          half=json.loads(Path('data/derived/i2_vnext/i2_vnext_half_contrast.json').read_text())
+          assert half['enabled'] is False
+          assert half['zero_sum_half_contrast_h']==0
+          print('Final calibration input governance verified')
+          PY
+          python -m py_compile src/research/validate_i2_full_calibration_multiyear.py
+          node --check src/pipeline/run_i2_vnext_today.mjs
+
+      - name: Fit and validate single final full-I2 calibration layer
+        run: |
+          python src/research/validate_i2_full_calibration_multiyear.py \
+            --bundle-dir data/bundle \
+            --output data/derived/i2_vnext/phase22_final_multiyear_calibration.json \
+            --bootstrap 10000
+
+      - name: Build governed final calibration artifact
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          p=Path('data/derived/i2_vnext')
+          x=json.loads((p/'phase22_final_multiyear_calibration.json').read_text())
+          artifact={
+              'version':'i2-vnext-full-calibration-v2-multiyear',
+              'generated_at':datetime.now(timezone.utc).isoformat(),
+              'market_inputs_used':False,
+              'target':'full I2 Under 0.5 probability',
+              'half_adjustment':'NONE',
+              'source_decision':'data/derived/i2_vnext/PHASE19D_CHECKPOINT.json',
+              'source_precision_run':36505646844,
+              'sample':x['sample'],
+              'development_years':x['development_years'],
+              'replication_year':x['replication_year'],
+              'replication_pristine_holdout':x['replication_pristine_holdout'],
+              'replication_note':x['replication_note'],
+              'seasonal_raw':x['seasonal_raw'],
+              'calibration_selection':{
+                  'candidates':['identity','offset','affine'],
+                  'shrinkage_rule':'lambda selected by 2022-2025 leave-one-season-out full-I2 log loss; lambda constrained to [0,1]',
+                  'development_selected_candidate':x['development_selected_candidate'],
+                  'candidate_evidence':x['candidates'],
+                  'promotion_rule':x['promotion_rule'],
+                  'replication_2026':x['replication_2026'],
+                  'replication_pass':x['replication_pass'],
+                  'chosen':x['final_selected_candidate'],
+              },
+              'final_curve':x['final_curve'],
+              'holdout_policy':{
+                  'calibration_development_years':x['development_years'],
+                  'replication_year':x['replication_year'],
+                  'replication_not_pristine_due_prior_half_research':True,
+                  '2026_used_for_calibration_fit':False,
+                  '2026_used_for_shrinkage_selection':False,
+              },
+              'governance':{
+                  **x['governance'],
+                  'single_final_probability_calibration_layer':True,
+                  'production_output_changed':x['final_selected_candidate']!='identity',
+                  'half_adjustment_enabled':False,
+              },
+          }
+          (p/'i2_vnext_full_calibration.json').write_text(json.dumps(artifact,indent=2)+'\n')
+          checkpoint={
+              'version':'i2-vnext-phase22-final-calibration-v1',
+              'market_inputs_used':False,
+              'calendar_month_used':False,
+              'half_adjustment':'NONE',
+              'development_selected_candidate':x['development_selected_candidate'],
+              'development_candidate_scores':{
+                  k:{
+                      'lambda':v['shrinkage']['multiplier'],
+                      'brier_delta':v['development_loso']['adjusted_minus_raw']['brier'],
+                      'logloss_delta':v['development_loso']['adjusted_minus_raw']['logloss'],
+                  }
+                  for k,v in x['candidates'].items()
+              },
+              'replication_2026_scores':{
+                  k:v['adjusted_minus_raw'] for k,v in x['replication_2026'].items()
+              },
+              'replication_pass':x['replication_pass'],
+              'final_selected_candidate':x['final_selected_candidate'],
+              'final_curve':x['final_curve'],
+              'production_output_changed':x['final_selected_candidate']!='identity',
+              'governance':artifact['governance'],
+          }
+          (p/'PHASE22_CHECKPOINT.json').write_text(json.dumps(checkpoint,indent=2)+'\n')
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Verify final probability stack
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/derived/i2_vnext')
+          half=json.loads((p/'i2_vnext_half_contrast.json').read_text())
+          full=json.loads((p/'i2_vnext_full_calibration.json').read_text())
+          phase=json.loads((p/'PHASE22_CHECKPOINT.json').read_text())
+          assert half['enabled'] is False
+          assert full['half_adjustment']=='NONE'
+          assert full['governance']['half_adjustment_enabled'] is False
+          assert full['governance']['component_level_probability_calibration'] is False
+          assert full['market_inputs_used'] is False
+          assert phase['market_inputs_used'] is False
+          if phase['final_selected_candidate']=='identity':
+              assert full['final_curve']['type']=='none'
+              assert phase['production_output_changed'] is False
+          print({
+              'half_adjustment_enabled':half['enabled'],
+              'final_candidate':phase['final_selected_candidate'],
+              'final_curve':full['final_curve'],
+              'production_output_changed':phase['production_output_changed'],
+          })
+          PY
+
+      - name: Upload Phase 22 evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase22-final-multiyear-calibration
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/phase22_final_multiyear_calibration.json
+            data/derived/i2_vnext/i2_vnext_full_calibration.json
+            data/derived/i2_vnext/PHASE22_CHECKPOINT.json
+
+      - name: Commit governed final calibration
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            data/derived/i2_vnext/i2_vnext_full_calibration.json \
+            data/derived/i2_vnext/PHASE22_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 22 calibration change"
+          else
+            git commit -m "research: finalize multiyear I2 probability calibration"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
