@@ -29,7 +29,7 @@ EVENTS = [
     "single", "double", "triple", "home_run", "walk", "hit_by_pitch",
     "strikeout", "ball_in_play_out",
 ]
-MAX_MODEL_ITER = 2500
+MAX_MODEL_ITER = 7500
 
 CAT = ["batter", "pitcher", "platoon", "home_team"]
 PLATOONS = ["LvL", "LvR", "RvL", "RvR"]
