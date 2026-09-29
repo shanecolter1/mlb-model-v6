@@ -251,7 +251,9 @@ def main():
     manifest = json.loads((args.raw_dir / "fetch_manifest.json").read_text())
     league = load_prior_rates(args.prior_league_rates)
 
-    records = []
+    records_by_game = {}
+    duplicate_manifest_records = 0
+    non_regular_feeds = 0
     for rec in manifest.get("games", []):
         feed_path = Path(rec["feed_path"])
         if not feed_path.is_absolute():
@@ -265,13 +267,32 @@ def main():
         status = str(gd.get("status", {}).get("abstractGameState") or gd.get("status", {}).get("detailedState") or "")
         if "final" not in status.lower():
             continue
-        records.append({
-            "gamePk": int(gd.get("game", {}).get("pk") or rec["game_id"]),
+        game_type = str(
+            gd.get("game", {}).get("type")
+            or gd.get("game", {}).get("gameType")
+            or ""
+        ).strip().upper()
+        if game_type and game_type != "R":
+            non_regular_feeds += 1
+            continue
+        game_pk = int(gd.get("game", {}).get("pk") or rec["game_id"])
+        row = {
+            "gamePk": game_pk,
             "officialDate": gd.get("datetime", {}).get("officialDate") or rec.get("game_date"),
             "gameNumber": gd.get("game", {}).get("gameNumber") or 1,
             "feed": feed,
-        })
-    records.sort(key=game_sort_key)
+        }
+        if game_pk in records_by_game:
+            duplicate_manifest_records += 1
+            prior = records_by_game[game_pk]
+            if str(prior["officialDate"]) != str(row["officialDate"]):
+                raise ValueError(
+                    f"Conflicting official dates for duplicate gamePk {game_pk}: "
+                    f"{prior['officialDate']} vs {row['officialDate']}"
+                )
+            continue
+        records_by_game[game_pk] = row
+    records = sorted(records_by_game.values(), key=game_sort_key)
 
     hitter_counts = defaultdict(Counter)
     hitter_pa = Counter()
@@ -354,6 +375,9 @@ def main():
 
     if not output:
         raise RuntimeError("2026 replay builder produced zero games")
+    gids = [str(g["gid"]) for g in output]
+    if len(gids) != len(set(gids)):
+        raise RuntimeError("Duplicate game IDs remain after MLB replay-input build")
 
     payload = {
         "version": "i2-vnext-replay-inputs-mlbstats-v1-player-asof-i1",
@@ -380,6 +404,10 @@ def main():
             "fallback_to_league_if_missing": False,
         },
         "games_total": len(records),
+        "manifest_records": len(manifest.get("games", [])),
+        "duplicate_manifest_records_removed": duplicate_manifest_records,
+        "non_regular_feeds_removed": non_regular_feeds,
+        "unique_game_ids": len(records_by_game),
         "games_eligible": len(output),
         "games_excluded": int(sum(exclusions.values())),
         "exclusions": dict(exclusions),
