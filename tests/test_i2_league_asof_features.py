@@ -37,6 +37,12 @@ class LeagueAsOfFeaturesTest(unittest.TestCase):
                 path.write_text(json.dumps(feed))
                 records.append({"game_id": pk, "game_date": day,
                                 "feed_path": str(path)})
+            # Repeated same-date schedule rows count once. A game listed on
+            # two dates is excluded because its final feed could mix periods.
+            records.append(dict(records[1]))
+            records.extend([{"game_id": 4, "game_date": day,
+                             "feed_path": str(root / "4.json")}
+                            for day in ("2026-04-01", "2026-04-03")])
             (root / "fetch_manifest.json").write_text(json.dumps({"games": records}))
             daily, games = feed_games(root)
             features = build_features(daily, (14,))
