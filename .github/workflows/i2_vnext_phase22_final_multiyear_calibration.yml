@@ -111,6 +111,8 @@ jobs:
               'replication_year':x['replication_year'],
               'replication_pristine_holdout':x['replication_pristine_holdout'],
               'replication_note':x['replication_note'],
+              'prospective_validation_start':'2026-09-29',
+              'prospective_cohort_version':'i2-vnext-raw-identity-prospective-v1',
               'seasonal_raw':x['seasonal_raw'],
               'calibration_selection':{
                   'candidates':['identity','offset','affine'],
@@ -129,6 +131,8 @@ jobs:
                   'replication_not_pristine_due_prior_half_research':True,
                   '2026_used_for_calibration_fit':False,
                   '2026_used_for_shrinkage_selection':False,
+                  'prospective_validation_start':'2026-09-29',
+                  'prospective_cohort_version':'i2-vnext-raw-identity-prospective-v1',
               },
               'governance':{
                   **x['governance'],
