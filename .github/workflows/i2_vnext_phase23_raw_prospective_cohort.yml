@@ -1,0 +1,102 @@
+name: I2 vNext Phase 23 - final raw-stack prospective cohort
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase23_raw_prospective_cohort.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: i2-vnext-phase23-raw-prospective-cohort
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Compile prospective scorer and run unit tests
+        run: |
+          python -m py_compile src/research/i2_vnext_prospective.py tests/test_i2_vnext_prospective.py
+          python -m unittest -v tests.test_i2_vnext_prospective
+
+      - name: Verify final raw identity probability stack
+        run: |
+          node --check src/pipeline/run_i2_vnext_today.mjs
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p=Path('data/derived/i2_vnext')
+          phase19=json.loads((p/'PHASE19D_CHECKPOINT.json').read_text())
+          phase22=json.loads((p/'PHASE22_CHECKPOINT.json').read_text())
+          half=json.loads((p/'i2_vnext_half_contrast.json').read_text())
+          full=json.loads((p/'i2_vnext_full_calibration.json').read_text())
+
+          assert phase19['selected_half_adjustment']=='NO_HALF_ADJUSTMENT'
+          assert phase22['final_selected_candidate']=='identity'
+          assert phase22['production_output_changed'] is False
+          assert half['enabled'] is False
+          assert half['zero_sum_half_contrast_h']==0
+          assert full['half_adjustment']=='NONE'
+          assert full['final_curve']=={'type':'none','intercept':0.0,'slope':1.0}
+          assert full['prospective_validation_start']=='2026-09-29'
+          assert full['prospective_cohort_version']=='i2-vnext-raw-identity-prospective-v1'
+          assert full['holdout_policy']['2026_used_for_calibration_fit'] is False
+          assert full['holdout_policy']['2026_used_for_shrinkage_selection'] is False
+
+          runner=Path('src/pipeline/run_i2_vnext_today.mjs').read_text()
+          assert 'vnextHalfContrast.enabled !== false' in runner
+          assert 'probabilityStackVersion:vnextFullCalibration?.prospective_cohort_version' in runner
+
+          result={
+              'version':'i2-vnext-phase23-raw-prospective-cohort-v1',
+              'market_inputs_used':False,
+              'prospective_validation_start':'2026-09-29',
+              'probability_stack_version':'i2-vnext-raw-identity-prospective-v1',
+              'half_calibration':{
+                  'enabled':False,
+                  'artifact_version':half['version'],
+                  'h':0.0,
+                  'decision':'NO_HALF_ADJUSTMENT',
+              },
+              'final_calibration':{
+                  'type':'identity',
+                  'artifact_version':full['version'],
+                  'curve':full['final_curve'],
+              },
+              'scorer_version':'i2-vnext-prospective-score-v3',
+              'forecast_selection_rule':'latest valid pregame snapshot per game within the single latest probability-stack cohort',
+              'prior_cohort_pooling_allowed':False,
+              'same_start_multiple_versions':'ERROR_FAIL_CLOSED',
+              'production_changed':False,
+              'betting_eligible':False,
+              'promotion_status':'SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED',
+          }
+          (p/'PHASE23_CHECKPOINT.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+
+      - name: Commit Phase 23 checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE23_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 23 checkpoint change"
+          else
+            git commit -m "research: open final raw vNext prospective cohort"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
