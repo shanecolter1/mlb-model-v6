@@ -1,0 +1,28 @@
+{
+  "version": "i2-vnext-phase23-raw-prospective-cohort-v1",
+  "market_inputs_used": false,
+  "prospective_validation_start": "2026-09-29",
+  "probability_stack_version": "i2-vnext-raw-identity-prospective-v1",
+  "half_calibration": {
+    "enabled": false,
+    "artifact_version": "i2-vnext-half-contrast-v2-retired",
+    "h": 0.0,
+    "decision": "NO_HALF_ADJUSTMENT"
+  },
+  "final_calibration": {
+    "type": "identity",
+    "artifact_version": "i2-vnext-full-calibration-v2-multiyear",
+    "curve": {
+      "type": "none",
+      "intercept": 0.0,
+      "slope": 1.0
+    }
+  },
+  "scorer_version": "i2-vnext-prospective-score-v3",
+  "forecast_selection_rule": "latest valid pregame snapshot per game within the single latest probability-stack cohort",
+  "prior_cohort_pooling_allowed": false,
+  "same_start_multiple_versions": "ERROR_FAIL_CLOSED",
+  "production_changed": false,
+  "betting_eligible": false,
+  "promotion_status": "SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED"
+}
