@@ -188,8 +188,16 @@ def full_under_metrics(frame, q_score, replay, draws):
     pivot = temp.pivot(index="gid", columns="side", values="q")
     meta = {p["gid"]: p for p in replay["predictions"]}
     gids = list(pivot.index)
-    adjusted = np.asarray([(1 - pivot.loc[g, "top"]) * (1 - pivot.loc[g, "bottom"]) for g in gids])
     raw = np.asarray([meta[g]["raw_under05"] for g in gids])
+    raw_top = np.asarray([float(meta[g]["top2_score_probability"]) for g in gids])
+    raw_bottom = np.asarray([float(meta[g]["bottom2_score_probability"]) for g in gids])
+    raw_independent_zero = np.clip((1 - raw_top) * (1 - raw_bottom), 1e-12, None)
+    dependence = raw / raw_independent_zero
+    adjusted_independent_zero = np.asarray([
+        (1 - pivot.loc[g, "top"]) * (1 - pivot.loc[g, "bottom"])
+        for g in gids
+    ])
+    adjusted = np.clip(dependence * adjusted_independent_zero, 1e-12, 1 - 1e-12)
     y = np.asarray([meta[g]["observed_under05"] for g in gids])
     dates = np.asarray([meta[g]["date"] for g in gids])
     b0, l0 = losses(y, raw)
@@ -198,6 +206,7 @@ def full_under_metrics(frame, q_score, replay, draws):
     return {
         "raw": metric(y, raw),
         "adjusted": metric(y, adjusted),
+        "joint_dependence_rule": "preserve each game's raw joint-zero dependence factor",
         "adjusted_minus_raw": {
             "brier": float(np.mean(b1 - b0)),
             "logloss": float(np.mean(l1 - l0)),
