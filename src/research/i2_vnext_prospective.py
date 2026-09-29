@@ -153,8 +153,10 @@ def candidates(directory: Path) -> tuple[dict[int, list[dict]], int]:
                     return half_under(pct_field)
                 return fallback
 
-            if data.get("prospectiveValidationStart") and generated.date() < timestamp(data["prospectiveValidationStart"] + "T00:00:00Z").date():
-                continue
+            if data.get("prospectiveValidationStart"):
+                cohort_start = timestamp(data["prospectiveValidationStart"] + "T00:00:00Z").date()
+                if start.date() < cohort_start:
+                    continue
             adjusted_top_under = exact_half_under("top2ScoreProbability", "top2ScorePct", half_under("top2ScorePct"))
             adjusted_bottom_under = exact_half_under("bottom2ScoreProbability", "bottom2ScorePct", half_under("bottom2ScorePct"))
             raw_top_under = exact_half_under("rawTop2ScoreProbability", "rawTop2ScorePct", adjusted_top_under)
