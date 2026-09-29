@@ -59,6 +59,9 @@ jobs:
           runner=Path('src/pipeline/run_i2_vnext_today.mjs').read_text()
           assert 'vnextHalfContrast.enabled !== false' in runner
           assert 'probabilityStackVersion:vnextFullCalibration?.prospective_cohort_version' in runner
+          scorer=Path('src/research/i2_vnext_prospective.py').read_text()
+          assert 'if start.date() < cohort_start:' in scorer
+          assert 'generated.date() <' not in scorer
 
           result={
               'version':'i2-vnext-phase23-raw-prospective-cohort-v1',
