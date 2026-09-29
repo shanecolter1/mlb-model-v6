@@ -27,6 +27,8 @@ jobs:
           with urlopen(request,timeout=30) as response:
               page=response.read().decode('utf-8','replace')
               print('status',response.status,'bytes',len(page))
+          from pathlib import Path
+          Path('drag-dashboard-page.html').write_text(page)
           print('scripts',re.findall(r'<script[^>]+src=["\']([^"\']+)',page)[:30])
           for pattern in ('drag', 'Drag', 'coefficient', 'chartData', 'api/'):
               matches=list(re.finditer(re.escape(pattern),page))
@@ -48,5 +50,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: i2-public-drag-dashboard-source
-          path: drag-dashboard-source.js
+          path: |
+            drag-dashboard-source.js
+            drag-dashboard-page.html
           retention-days: 2
