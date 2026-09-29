@@ -93,7 +93,7 @@ const vnextHalfContrast = fs.existsSync(VNEXT_HALF_CONTRAST_PATH)
   : null;
 const prospectiveValidationStart = [
   vnextFullCalibration?.holdout_policy?.prospective_validation_start,
-  vnextHalfContrast?.prospective_validation_start,
+  vnextHalfContrast?.enabled !== false ? vnextHalfContrast?.prospective_validation_start : null,
 ].filter(Boolean).sort().at(-1) || null;
 
 function clamp01(x) { return Math.max(1e-9, Math.min(1 - 1e-9, Number(x))); }
@@ -542,7 +542,9 @@ async function runGame(game) {
   const rawUnder05 = result.under05;
   const rawTopScoreProbability = result.top2.cumulative['1+'];
   const rawBottomScoreProbability = result.bottom2.cumulative['1+'];
-  const halfContrastApplicable = Boolean(vnextHalfContrast && venueProfile);
+  const halfContrastApplicable = Boolean(
+    vnextHalfContrast && vnextHalfContrast.enabled !== false && venueProfile
+  );
   const halfContrast = halfContrastApplicable
     ? applyHalfScoreContrast({
         topScoreProbability:rawTopScoreProbability,
@@ -646,7 +648,7 @@ async function main(){
     transitionGovernance:playCalibration.governance || null,
     i1StateEngine:'existing V6 season-rate engine used only to simulate I1 lineup progression',
     i2TalentEngine:'direct I2 Statcast PA model; jointly regularized batter/pitcher/platoon/arsenal',
-    halfCalibration:vnextHalfContrast ? {version:vnextHalfContrast.version,type:vnextHalfContrast.type,h:vnextHalfContrast.zero_sum_half_contrast_h,status:vnextHalfContrast.status,matchedHomeVenueOnly:vnextHalfContrast.matched_home_venue_only === true,prospectiveValidationStart:vnextHalfContrast.prospective_validation_start} : null,
+    halfCalibration:vnextHalfContrast ? {version:vnextHalfContrast.version,type:vnextHalfContrast.type,enabled:vnextHalfContrast.enabled !== false,h:vnextHalfContrast.zero_sum_half_contrast_h,status:vnextHalfContrast.status,matchedHomeVenueOnly:vnextHalfContrast.matched_home_venue_only === true,prospectiveValidationStart:vnextHalfContrast.enabled !== false ? vnextHalfContrast.prospective_validation_start : null} : null,
     finalCalibration:vnextFullCalibration?.final_curve || vnextFullCalibration?.selected || null,
     leagueBaselineSource:'Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json',
     parkSource:venueProfiles.length?'Baseball Savant 3-year Statcast park factors':'neutral fallback',
@@ -658,7 +660,7 @@ async function main(){
       'Weather/roof is not yet applied.',
       'Missing Savant venue profiles use an explicit neutral fallback and are fail-closed for betting eligibility.',
       'Normal starters default to the probable starter for I2; confirmed opener/bulk identities must be supplied by the input workflow.',
-      'The zero-sum top/bottom half contrast is historically validated but remains shadow-only pending prospective confirmation.',
+      'Multiyear 2022-2026 validation rejected an added half-inning calibration layer; raw top/bottom probabilities feed the single final full-I2 calibration layer.',
       'Full-I2 calibration is validated on the normal-starter path; nonstandard pitching plans are not silently assigned the same calibration evidence.',
       'MLB season-to-date rates remain in I1 only to generate the I2 starting-position distribution; they are not I2 talent inputs.'
     ],
