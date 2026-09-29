@@ -68,5 +68,13 @@
     "bettingEligibleOutputs": 0,
     "commonCalibrationAppliedInHalfLayer": false,
     "halfContrastMatchedVenueOnly": true
-  }
+  },
+  "status": "HISTORICAL_SHADOW_SUPERSEDED",
+  "active": false,
+  "superseded_by": [
+    "data/derived/i2_vnext/PHASE19D_CHECKPOINT.json",
+    "data/derived/i2_vnext/PHASE22_CHECKPOINT.json",
+    "data/derived/i2_vnext/PHASE23_CHECKPOINT.json"
+  ],
+  "superseded_reason": "Multiyear validation rejected the half contrast; final full-I2 calibration is identity."
 }
