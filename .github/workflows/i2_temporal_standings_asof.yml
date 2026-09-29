@@ -1,0 +1,52 @@
+name: I2 temporal research - prior-day standings context
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_temporal_standings_asof.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  standings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify prior-day mapping
+        run: PYTHONDONTWRITEBYTECODE=1 python -m unittest tests.test_i2_standings_asof -q
+      - name: Fetch historical standings through preceding dates
+        run: |
+          python src/research/fetch_i2_standings_asof.py \
+            --league-daily "data/derived/i2_vnext/temporal/league_${{ matrix.season }}_asof.csv" \
+            --output "data/derived/i2_vnext/temporal/standings_${{ matrix.season }}_asof.csv"
+          python - <<'PY'
+          import csv
+          from pathlib import Path
+          year=${{ matrix.season }}
+          path=Path(f'data/derived/i2_vnext/temporal/standings_{year}_asof.csv')
+          with path.open() as handle: rows=list(csv.DictReader(handle))
+          dates={r['game_date'] for r in rows}
+          assert len(dates)>=170, len(dates)
+          assert all(r['standings_asof_date']<r['game_date'] for r in rows)
+          assert len(rows)==30*len(dates)
+          print({'season':year,'teams':30,'dates':len(dates),'rows':len(rows)})
+          PY
+      - name: Archive pregame context
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-temporal-standings-asof-${{ matrix.season }}
+          if-no-files-found: error
+          retention-days: 14
+          path: data/derived/i2_vnext/temporal/standings_${{ matrix.season }}_asof.csv
