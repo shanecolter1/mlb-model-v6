@@ -1,0 +1,36 @@
+name: I2 temporal research - Savant drag source probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_drag_source_probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect public Savant drag page metadata
+        run: |
+          python - <<'PY'
+          import re
+          from urllib.request import Request, urlopen
+          url='https://baseballsavant.mlb.com/drag-dashboard'
+          request=Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html'})
+          with urlopen(request,timeout=30) as response:
+              page=response.read().decode('utf-8','replace')
+              print('status',response.status,'bytes',len(page))
+          print('scripts',re.findall(r'<script[^>]+src=["\']([^"\']+)',page)[:30])
+          for pattern in ('drag', 'Drag', 'coefficient', 'chartData', 'api/'):
+              matches=list(re.finditer(re.escape(pattern),page))
+              print(pattern,'matches',len(matches))
+              for m in matches[-5:]:
+                  print(repr(page[max(0,m.start()-100):m.end()+150]))
+          PY
