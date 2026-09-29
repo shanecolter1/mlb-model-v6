@@ -1,0 +1,397 @@
+{
+  "version": "i2-season-position-validation-v1",
+  "market_inputs_used": false,
+  "sample": "primary-home games; all contact types and scoring outcomes",
+  "development_years": [
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "basis": "logit(raw full-I2 Over) + intercept + early(max(0,1-elapsed/28)) + late(max(0,1-remaining/42))",
+  "selection": "ridge by pooled 2023-25 leave-one-season-out log loss; 2026 scored after selection",
+  "caution": "2026 outcomes were previously inspected; descriptive replication, not pristine holdout",
+  "development_raw": {
+    "by_year": {
+      "2023": {
+        "games": 2425,
+        "observed_over": 0.4531958762886598,
+        "predicted_over": 0.42611212371134016,
+        "actual_minus_predicted": 0.027083752577319587,
+        "logloss": 0.6922003796406806,
+        "brier": 0.2494721916494846
+      },
+      "2024": {
+        "games": 2421,
+        "observed_over": 0.4419661296984717,
+        "predicted_over": 0.43686980586534485,
+        "actual_minus_predicted": 0.005096323833126806,
+        "logloss": 0.6867505813534488,
+        "brier": 0.24680449933085502
+      },
+      "2025": {
+        "games": 2426,
+        "observed_over": 0.4476504534212696,
+        "predicted_over": 0.42645721352019783,
+        "actual_minus_predicted": 0.021193239901071723,
+        "logloss": 0.6860245330841409,
+        "brier": 0.24645045314921687
+      }
+    },
+    "pooled_logloss": 0.6883257144317212
+  },
+  "fits": {
+    "constant": {
+      "development_choices": [
+        {
+          "ridge": 0.0,
+          "loso_logloss": 0.6878995214346829,
+          "folds": {
+            "2023": {
+              "logloss": 0.6910978369954323,
+              "brier": 0.24894844660076704
+            },
+            "2024": {
+              "logloss": 0.6874418142311303,
+              "brier": 0.24715526763075682
+            },
+            "2025": {
+              "logloss": 0.6851592880896638,
+              "brier": 0.24602656084410188
+            }
+          }
+        },
+        {
+          "ridge": 0.0001,
+          "loso_logloss": 0.6878993065255481,
+          "folds": {
+            "2023": {
+              "logloss": 0.6910984474354076,
+              "brier": 0.24894873517657654
+            },
+            "2024": {
+              "logloss": 0.6874402827730138,
+              "brier": 0.24715450484592152
+            },
+            "2025": {
+              "logloss": 0.6851595620071952,
+              "brier": 0.24602669601965657
+            }
+          }
+        },
+        {
+          "ridge": 0.001,
+          "loso_logloss": 0.6878974277656312,
+          "folds": {
+            "2023": {
+              "logloss": 0.6911039161669811,
+              "brier": 0.24895132063218708
+            },
+            "2024": {
+              "logloss": 0.6874266801893861,
+              "brier": 0.24714772949395022
+            },
+            "2025": {
+              "logloss": 0.6851620384452749,
+              "brier": 0.24602791802068683
+            }
+          }
+        },
+        {
+          "ridge": 0.01,
+          "loso_logloss": 0.687883489065929,
+          "folds": {
+            "2023": {
+              "logloss": 0.6911563069558868,
+              "brier": 0.24897610612235946
+            },
+            "2024": {
+              "logloss": 0.6873067093141051,
+              "brier": 0.24708795386326393
+            },
+            "2025": {
+              "logloss": 0.6851876112407098,
+              "brier": 0.24604052831420023
+            }
+          }
+        },
+        {
+          "ridge": 0.1,
+          "loso_logloss": 0.6879198337939652,
+          "folds": {
+            "2023": {
+              "logloss": 0.6915058046898342,
+              "brier": 0.24914191723722792
+            },
+            "2024": {
+              "logloss": 0.6868358787259964,
+              "brier": 0.24685251436867123
+            },
+            "2025": {
+              "logloss": 0.6854170620697565,
+              "brier": 0.246153314835054
+            }
+          }
+        },
+        {
+          "ridge": 1.0,
+          "loso_logloss": 0.6882120132714399,
+          "folds": {
+            "2023": {
+              "logloss": 0.6920458282647088,
+              "brier": 0.2493986863097868
+            },
+            "2024": {
+              "logloss": 0.6867099297718063,
+              "brier": 0.2467858910416419
+            },
+            "2025": {
+              "logloss": 0.6858787662780085,
+              "brier": 0.2463792948180455
+            }
+          }
+        }
+      ],
+      "selected_ridge": 0.01,
+      "selected_loso_logloss_delta_vs_raw": -0.0004422253657921926,
+      "coefficients": [
+        0.06718308426325618
+      ]
+    },
+    "season_position": {
+      "development_choices": [
+        {
+          "ridge": 0.0,
+          "loso_logloss": 0.6883914281336683,
+          "folds": {
+            "2023": {
+              "logloss": 0.6919106446548254,
+              "brier": 0.24934462684703573
+            },
+            "2024": {
+              "logloss": 0.687185423362303,
+              "brier": 0.24702725966774453
+            },
+            "2025": {
+              "logloss": 0.6860771814261947,
+              "brier": 0.24646915398289018
+            }
+          }
+        },
+        {
+          "ridge": 0.0001,
+          "loso_logloss": 0.6883774591823772,
+          "folds": {
+            "2023": {
+              "logloss": 0.6918862901532273,
+              "brier": 0.24933268088917973
+            },
+            "2024": {
+              "logloss": 0.6871857045527742,
+              "brier": 0.24702740410779966
+            },
+            "2025": {
+              "logloss": 0.6860593729721371,
+              "brier": 0.24646061177696832
+            }
+          }
+        },
+        {
+          "ridge": 0.001,
+          "loso_logloss": 0.6882752147279472,
+          "folds": {
+            "2023": {
+              "logloss": 0.6917140767668464,
+              "brier": 0.24924824425032155
+            },
+            "2024": {
+              "logloss": 0.6871878846299625,
+              "brier": 0.24702852521612204
+            },
+            "2025": {
+              "logloss": 0.6859228592963273,
+              "brier": 0.2463950770079517
+            }
+          }
+        },
+        {
+          "ridge": 0.01,
+          "loso_logloss": 0.6879749573216954,
+          "folds": {
+            "2023": {
+              "logloss": 0.6913079117211653,
+              "brier": 0.24904930736233696
+            },
+            "2024": {
+              "logloss": 0.6871658199905497,
+              "brier": 0.2470176802124548
+            },
+            "2025": {
+              "logloss": 0.6854508464643129,
+              "brier": 0.24616785404714486
+            }
+          }
+        },
+        {
+          "ridge": 0.1,
+          "loso_logloss": 0.6879229022871708,
+          "folds": {
+            "2023": {
+              "logloss": 0.6915179716947992,
+              "brier": 0.24914785885002455
+            },
+            "2024": {
+              "logloss": 0.686811946799906,
+              "brier": 0.2468406271500011
+            },
+            "2025": {
+              "logloss": 0.6854379805728961,
+              "brier": 0.24616344517932087
+            }
+          }
+        },
+        {
+          "ridge": 1.0,
+          "loso_logloss": 0.6882108025316995,
+          "folds": {
+            "2023": {
+              "logloss": 0.6920450703091682,
+              "brier": 0.24939835339379499
+            },
+            "2024": {
+              "logloss": 0.6867067565859702,
+              "brier": 0.24678433770556185
+            },
+            "2025": {
+              "logloss": 0.6858790613421895,
+              "brier": 0.24637944092521027
+            }
+          }
+        }
+      ],
+      "selected_ridge": 0.1,
+      "selected_loso_logloss_delta_vs_raw": -0.0004028121445504018,
+      "coefficients": [
+        0.039774133973645466,
+        0.01167363684617154,
+        -0.003576570058029042
+      ]
+    }
+  },
+  "replication": {
+    "identity": {
+      "full_season": {
+        "games": 2414,
+        "observed_over": 0.4275062137531069,
+        "predicted_over": 0.4266299502899752,
+        "actual_minus_predicted": 0.0008762634631317262,
+        "logloss": 0.680703924891098,
+        "brier": 0.24381183954018223
+      },
+      "versus_raw": {
+        "logloss_delta": 6.735168093866041e-19,
+        "brier_delta": 0.0,
+        "logloss_ci95_day_cluster": [
+          -2.7389622791369414e-19,
+          1.6208076951799481e-18
+        ],
+        "brier_ci95_day_cluster": [
+          0.0,
+          0.0
+        ]
+      },
+      "before_may_25": {
+        "games": 789,
+        "observed_over": 0.4017743979721166,
+        "predicted_over": 0.4288467680608365,
+        "actual_minus_predicted": -0.0270723700887199,
+        "logloss": 0.6712637085233263,
+        "brier": 0.23915074594423325
+      },
+      "may_25_onward": {
+        "games": 1625,
+        "observed_over": 0.44,
+        "predicted_over": 0.4255536,
+        "actual_minus_predicted": 0.014446399999999998,
+        "logloss": 0.6852875130228959,
+        "brier": 0.24607497975384615
+      }
+    },
+    "constant": {
+      "full_season": {
+        "games": 2414,
+        "observed_over": 0.4275062137531069,
+        "predicted_over": 0.44306627779066776,
+        "actual_minus_predicted": -0.015560064037560925,
+        "logloss": 0.6811963775218433,
+        "brier": 0.2440553531613559
+      },
+      "versus_raw": {
+        "logloss_delta": 0.0004924526307452632,
+        "brier_delta": 0.00024351362117366613,
+        "logloss_ci95_day_cluster": [
+          -0.0008810537433117888,
+          0.0018630493899826864
+        ],
+        "brier_ci95_day_cluster": [
+          -0.0004259554339662831,
+          0.0009148115601223663
+        ]
+      },
+      "before_may_25": {
+        "games": 789,
+        "observed_over": 0.4017743979721166,
+        "predicted_over": 0.4453056911980654,
+        "actual_minus_predicted": -0.04353129322594879,
+        "logloss": 0.673634621789365,
+        "brier": 0.2403082669070614
+      },
+      "may_25_onward": {
+        "games": 1625,
+        "observed_over": 0.44,
+        "predicted_over": 0.4419789564500914,
+        "actual_minus_predicted": -0.001978956450091363,
+        "logloss": 0.6848679007667205,
+        "brier": 0.24587470765651803
+      }
+    },
+    "season_position": {
+      "full_season": {
+        "games": 2414,
+        "observed_over": 0.4275062137531069,
+        "predicted_over": 0.4364447334216545,
+        "actual_minus_predicted": -0.008938519668547616,
+        "logloss": 0.680929949516423,
+        "brier": 0.24392364429953256
+      },
+      "versus_raw": {
+        "logloss_delta": 0.00022602462532503523,
+        "brier_delta": 0.00011180475935029953,
+        "logloss_ci95_day_cluster": [
+          -0.0005899653971955383,
+          0.0010462701223695483
+        ],
+        "brier_ci95_day_cluster": [
+          -0.00028558093022677523,
+          0.0005111996014270922
+        ]
+      },
+      "before_may_25": {
+        "games": 789,
+        "observed_over": 0.4017743979721166,
+        "predicted_over": 0.43920008442871744,
+        "actual_minus_predicted": -0.03742568645660077,
+        "logloss": 0.6726922188795634,
+        "brier": 0.23984648887222126
+      },
+      "may_25_onward": {
+        "games": 1625,
+        "observed_over": 0.44,
+        "predicted_over": 0.4351069045326868,
+        "actual_minus_predicted": 0.004893095467313265,
+        "logloss": 0.6849296845764122,
+        "brier": 0.2459032600731625
+      }
+    }
+  }
+}
