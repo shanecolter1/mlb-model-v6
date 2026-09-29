@@ -1,0 +1,58 @@
+{
+  "version": "i2-vnext-current-model-state-2026-09-28-v1",
+  "branch": "research/i2-vnext-direct-talent",
+  "market_inputs_used": false,
+  "model_specification": {
+    "pa_model": "direct I2 Statcast PA talent model",
+    "C": 0.05,
+    "half_life_days": 730,
+    "max_solver_iterations": 7500,
+    "i1_mode": "player_asof",
+    "i1_environment": "prior_season_park",
+    "monte_carlo_trials_for_validation": 10000,
+    "transition_policy": "target-season replay uses prior-only transition evidence; fixed governed shrinkage constants"
+  },
+  "historical_validation": {
+    "validation_years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
+    "year_2021_role": "training and transition foundation; not a validation year",
+    "year_2020_role": "arsenal only; no 2020 Retrosheet or PA target history",
+    "home_venue_definition": "season-specific primary home venue",
+    "calendar_month_feature_or_control": false
+  },
+  "probability_stack": {
+    "half_adjustment": {
+      "enabled": false,
+      "decision": "NO_HALF_ADJUSTMENT",
+      "decision_checkpoint": "data/derived/i2_vnext/PHASE19D_CHECKPOINT.json",
+      "retired_artifact": "data/derived/i2_vnext/i2_vnext_half_contrast.json"
+    },
+    "final_full_i2_calibration": {
+      "type": "identity",
+      "curve": {
+        "type": "none",
+        "intercept": 0,
+        "slope": 1
+      },
+      "decision_checkpoint": "data/derived/i2_vnext/PHASE22_CHECKPOINT.json",
+      "artifact": "data/derived/i2_vnext/i2_vnext_full_calibration.json"
+    },
+    "effective_output": "raw joint full-I2 simulator probability"
+  },
+  "active_prospective_validation": {
+    "status": "SHADOW_ONLY_PROSPECTIVE_VALIDATION_REQUIRED",
+    "start": "2026-09-29",
+    "cohort_version": "i2-vnext-raw-identity-prospective-v1",
+    "checkpoint": "data/derived/i2_vnext/PHASE23_CHECKPOINT.json",
+    "scorer_version": "i2-vnext-prospective-score-v3",
+    "prior_cohort_pooling_allowed": false
+  },
+  "promotion_status": "NOT_PROMOTED",
+  "production_output_changed": false,
+  "next_valid_model_evidence": "new frozen pregame forecasts from the 2026-09-29-or-later prospective cohort; do not retune on those outcomes before scoring the frozen cohort"
+}
