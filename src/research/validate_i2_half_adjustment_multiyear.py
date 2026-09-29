@@ -285,6 +285,31 @@ def select_bottom_only_shrinkage(halves,years=DEVELOPMENT_YEARS):
     }
 
 
+def forward_holdout_affine(halves,games):
+    dev=halves[halves["season"].isin(DEVELOPMENT_YEARS)].copy()
+    test=halves[halves["season"]==HOLDOUT_YEAR].copy()
+    gtest=games[games["season"]==HOLDOUT_YEAR].copy()
+    coefs={side:fit_affine(dev[dev["side"]==side]) for side in ("top","bottom")}
+    pred=predict_halves(test,coefs,"affine",None)
+    gpred=gtest.copy()
+    gpred["q_under"]=adjusted_game_under(gtest,pred)
+
+    test=test.sort_values(["season","gid","side"]).reset_index(drop=True)
+    pred=pred.sort_values(["season","gid","side"]).reset_index(drop=True)
+    gtest=gtest.sort_values(["season","gid"]).reset_index(drop=True)
+    gpred=gpred.sort_values(["season","gid"]).reset_index(drop=True)
+
+    result=compare_predictions(test,gtest,pred,gpred)
+    result["training"]={
+        "seasons":list(DEVELOPMENT_YEARS),
+        "top":{"intercept":coefs["top"][0],"slope":coefs["top"][1]},
+        "bottom":{"intercept":coefs["bottom"][0],"slope":coefs["bottom"][1]},
+        "shrinkage":"none; complexity judged only by untouched 2026 holdout",
+    }
+    result["holdout_year"]=HOLDOUT_YEAR
+    return result
+
+
 def forward_holdout_bottom_only(halves,games,shrink):
     dev=halves[halves["season"].isin(DEVELOPMENT_YEARS)].copy()
     test=halves[halves["season"]==HOLDOUT_YEAR].copy()
@@ -441,6 +466,7 @@ def main():
     bottom_only_shrink=select_bottom_only_shrinkage(halves,DEVELOPMENT_YEARS)
     forward_2026=forward_2026_holdout(halves,games,zero_sum_shrink)
     forward_2026_bottom=forward_holdout_bottom_only(halves,games,bottom_only_shrink)
+    forward_2026_affine=forward_holdout_affine(halves,games)
 
     zero_h,zero_g,zero_folds=loso_predictions(halves,games,"zero_sum",zero_sum_shrink["multiplier"])
     zero_raw_h,zero_raw_g,zero_raw_folds=loso_predictions(halves,games,"zero_sum",None)
@@ -451,12 +477,26 @@ def main():
     pooled={}
     final_map={}
     dev_halves=halves[halves["season"].isin(DEVELOPMENT_YEARS)]
+    development_affine={
+        side:{
+            "intercept":fit_affine(dev_halves[dev_halves["side"]==side])[0],
+            "slope":fit_affine(dev_halves[dev_halves["side"]==side])[1],
+        }
+        for side in ("top","bottom")
+    }
     development_bottom_raw=fit_offset(dev_halves[dev_halves["side"]=="bottom"])
     development_bottom={
         "raw_bottom_logit_offset":development_bottom_raw,
         "shrinkage_multiplier":bottom_only_shrink["multiplier"],
         "applied_bottom_logit_offset":development_bottom_raw*bottom_only_shrink["multiplier"],
         "top_logit_offset":0.0,
+    }
+    future_affine={
+        side:{
+            "intercept":fit_affine(halves[halves["side"]==side])[0],
+            "slope":fit_affine(halves[halves["side"]==side])[1],
+        }
+        for side in ("top","bottom")
     }
     future_bottom_raw=fit_offset(halves[halves["side"]=="bottom"])
     future_bottom={
@@ -532,12 +572,15 @@ def main():
         },
         "development_zero_sum_candidate_2022_2025":development_zero,
         "development_bottom_only_candidate_2022_2025":development_bottom,
+        "development_affine_candidate_2022_2025":development_affine,
         "forward_2026_holdout":{
             "zero_sum":forward_2026,
             "bottom_only":forward_2026_bottom,
+            "affine_logit":forward_2026_affine,
         },
         "pooled_zero_sum_refit_2022_2026_for_future":pooled_zero,
         "pooled_bottom_only_refit_2022_2026_for_future":future_bottom,
+        "pooled_affine_refit_2022_2026_for_future":future_affine,
         "pooled_zero_sum_probability_map":zero_map,
         "pooled_final_offset_candidate":pooled,
         "pooled_final_probability_map":final_map,
@@ -581,11 +624,14 @@ def main():
         "forward_2026_holdout":{
             "zero_sum":forward_2026,
             "bottom_only":forward_2026_bottom,
+            "affine_logit":forward_2026_affine,
         },
+        "development_affine":development_affine,
         "development_bottom_only":development_bottom,
         "future_refit_after_holdout":{
             "zero_sum":pooled_zero,
             "bottom_only":future_bottom,
+            "affine_logit":future_affine,
         },
         "independent_offset_diagnostic":pooled,
         "ci":result["uncertainty"],
