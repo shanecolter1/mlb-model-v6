@@ -33,4 +33,13 @@ jobs:
               print(pattern,'matches',len(matches))
               for m in matches[-5:]:
                   print(repr(page[max(0,m.start()-100):m.end()+150]))
+          script_url=re.findall(r'<script[^>]+src=["\']([^"\']*drag-dashboard\.js)',page)[0]
+          with urlopen(Request(script_url,headers={'User-Agent':'Mozilla/5.0'}),timeout=30) as response:
+              script=response.read().decode('utf-8','replace')
+              print('drag_js_status',response.status,'bytes',len(script))
+          for pattern in ('fetch(', 'd3.csv', 'd3.json', '$.ajax', '$.get', 'drag-coeff', 'api/', '/drag'):
+              matches=list(re.finditer(re.escape(pattern),script))
+              print('js',pattern,'matches',len(matches))
+              for m in matches[:8]:
+                  print(repr(script[max(0,m.start()-180):m.end()+250]))
           PY
