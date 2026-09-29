@@ -9,5 +9,10 @@
   "raw_vs_adjusted_half_metrics_enabled": true,
   "prior_cohort_pooling_allowed": false,
   "same_start_multiple_versions": "ERROR_FAIL_CLOSED",
-  "production_changed": false
+  "production_changed": false,
+  "status": "SUPERSEDED_BY_PHASE23_RAW_IDENTITY_COHORT",
+  "active": false,
+  "superseded_by": "data/derived/i2_vnext/PHASE23_CHECKPOINT.json",
+  "superseded_reason": "Phase19D rejected the half adjustment and Phase22 selected identity final calibration.",
+  "historical_record_only": true
 }
