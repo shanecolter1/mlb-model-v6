@@ -1,0 +1,29 @@
+{
+  "source": "https://baseballsavant.mlb.com/drag-dashboard",
+  "html_sha256": "d35ffee9363bfe61b2360201bab1950030fddd1ebed6156aceb2230ff3925de9",
+  "retrospective_snapshot": true,
+  "publication_timing_verified": false,
+  "lag_days": 2,
+  "seasons": {
+    "2022": {
+      "game_dates": 179,
+      "nonempty_28d": 177
+    },
+    "2023": {
+      "game_dates": 182,
+      "nonempty_28d": 180
+    },
+    "2024": {
+      "game_dates": 185,
+      "nonempty_28d": 181
+    },
+    "2025": {
+      "game_dates": 184,
+      "nonempty_28d": 180
+    },
+    "2026": {
+      "game_dates": 184,
+      "nonempty_28d": 181
+    }
+  }
+}
