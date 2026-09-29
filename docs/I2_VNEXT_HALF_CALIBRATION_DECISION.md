@@ -1,9 +1,10 @@
 # I2 vNext Phases 18–21 and 19B–19D — half-inning calibration decision
 
 Current decision: **NO HALF-INNING ADJUSTMENT** for the full-I2 betting model.
-The 2024-fitted contrast remains a frozen, betting-ineligible shadow cohort;
-its favorable 2025 result was superseded by the 2022–2025 development and
-untouched 2026 full-season comparison below. Production remains unchanged.
+The 2024-fitted contrast is archived in the retired artifact and is disabled
+in the vNext shadow runner; its favorable 2025 result was superseded by the
+2022–2025 development and untouched 2026 full-season comparison below.
+Production remains unchanged.
 
 The Phase 17 bottom-only proposal and the later 2024-fitted zero-sum proposal
 describe historical experiments. The five-season decision below governs the
@@ -89,7 +90,7 @@ The governed artifact is:
 
 `data/derived/i2_vnext/i2_vnext_half_contrast.json`
 
-The shadow runner order is:
+The historical shadow-runner experiment used this order:
 
 1. simulate raw top and bottom I2 score probabilities;
 2. preserve the raw probabilities for audit;
@@ -123,7 +124,7 @@ It:
 - reports both adjusted and raw top/bottom metrics;
 - reports the half-adjusted versus raw full-I2 contribution separately.
 
-Current cohort:
+The originally declared cohort was:
 
 - half calibration version: **i2-vnext-half-contrast-v1**;
 - prospective validation start: **2026-09-28**;
@@ -181,7 +182,8 @@ establish that every future half adjustment is harmful. The 2022–2025
 development seasons also test a fixed model specification chosen partly with
 2024 data, so they are robustness evidence rather than pristine historical
 holdouts. The 2024→2025 shadow artifact remains available for its originally
-declared prospective comparison, but it is not the selected model adjustment.
+declared prospective comparison; the current artifact has `enabled: false`
+and retains that original specification under `retirement.prior_artifact`.
 
 ## Prior shadow candidate (superseded for model selection)
 
@@ -198,7 +200,7 @@ Scope:
 - baseball-only, market-isolated;
 - common calibration component withheld;
 - final full-I2 calibration remains a separate single layer;
-- shadow only and betting-ineligible;
+- retired from the shadow runner and betting-ineligible;
 - not selected by the 2026 full-I2 holdout.
 
 Do not implement the superseded Phase 17 bottom-only offset.
