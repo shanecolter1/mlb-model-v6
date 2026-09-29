@@ -1,38 +1,48 @@
 # I2 vNext prospective shadow ledger
 
-Status: **SHADOW ONLY**. This ledger records forecasts before first pitch and
-scores them after the game from official MLB final feeds. It never reads odds
-or changes the production betting workflow.
+Status: **SHADOW ONLY**. The current prospective cohort begins **2026-09-29**
+and evaluates the finalized raw vNext probability stack:
+
+- half-inning calibration: **disabled**
+- final full-I2 calibration: **identity**
+- probability stack version: `i2-vnext-raw-identity-prospective-v1`
+
+This ledger records forecasts before first pitch and scores them after the game
+from official MLB final feeds. It never reads odds or changes the production
+betting workflow.
 
 ## Fixed selection and scoring rules
 
 1. Run `src/pipeline/run_i2_vnext_today.mjs` before first pitch with a distinct
-   `I2_OUTPUT` filename for each run. Preserve the file as generated.
-2. Archive it immediately. An archive entry is content-addressed and created
-   exclusively, so the same run can be archived again but cannot be changed
-   in place. A projected game generated after first pitch is rejected.
-3. For each game, score the **latest valid pregame projection**, regardless
-   of whether its lineup source was confirmed or provisional. A clean
-   pre-freeze source recheck is required; invalidated snapshots are excluded.
-   This rule is applied before final outcomes are read.
+   `I2_OUTPUT` filename for each run. Preserve the file exactly as generated.
+2. Archive it immediately. Archive entries are content-addressed and immutable.
+   Any projected game generated after first pitch is rejected.
+3. For each game, score the **latest valid pregame projection** within the
+   single latest declared probability-stack cohort. A clean pre-freeze source
+   recheck is required; invalidated snapshots are excluded before outcomes are
+   read.
 4. Once games are final, fetch the official MLB game feed once per game.
-   Files already saved are not overwritten. Nonfinal games stay pending.
-5. Compare full-I2 Under forecasts against the prior regular season's
-   full-I2 Under rate. Report Brier, log loss, mean prediction versus realized
-   rate, AUC, fixed probability calibration bins, separate half-inning
-   summaries, and a confirmed-input subset. A paired
-   calendar-date interval is withheld until at least 20 scored dates.
+   Saved outcome files are not overwritten. Nonfinal games remain pending.
+5. Report full-I2 Under Brier, log loss, mean prediction versus realized rate,
+   AUC, fixed calibration bins, separate top/bottom summaries, and a
+   confirmed-input subset. The scorer also verifies that the retired half
+   layer changed no probability.
+6. Prior probability-stack cohorts are never pooled into the current cohort.
 
-The source snapshot SHA-256 and chosen timestamp are retained in each scored
-row. A model-versus-production comparison requires a separate, genuinely
-pregame production snapshot with the same game and cutoff; the prior-season
-constant does not stand in for that comparison. Betting EV requires archived
-post-freeze prices and is outside this baseball-only scorer.
+## Current validation boundary
+
+The 2022-2025 seasons were used for model/calibration development and 2026
+was inspected during retrospective half-calibration research. Therefore none
+of those seasons is a clean prospective promotion sample for the finalized
+stack. The first clean cohort starts with games on or after **2026-09-29**.
+
+Prospective scoring remains baseball-only. Prices, EV, and staking are not
+read until a projection is frozen and the separate market-isolation boundary
+is crossed.
 
 ## Commands
 
-For a future regular-season date, after running the live shadow runner and
-before first pitch:
+Before first pitch:
 
 ```bash
 python src/research/i2_vnext_prospective.py archive \
@@ -40,7 +50,7 @@ python src/research/i2_vnext_prospective.py archive \
   --archive-dir data/runtime/i2_vnext_prospective/forecasts
 ```
 
-After those games end:
+After games are final:
 
 ```bash
 python src/research/i2_vnext_prospective.py fetch-final \
@@ -53,19 +63,3 @@ python src/research/i2_vnext_prospective.py score \
   --prior-csv data/derived/i2/i2_state_compact_PRIOR_YEAR.csv \
   --output data/runtime/i2_vnext_prospective/score.json
 ```
-
-Replace `DATE` and `PRIOR_YEAR` with the run date and the year preceding the
-forecasts. The `fetch-final` command requests one MLB Stats API game feed for
-each forecast game without an already saved feed. It does not poll a sportsbook.
-Archive files and final feeds need to be persisted by the caller's future
-workflow; this tool does not schedule or publish a run by itself.
-
-## Validation boundary
-
-The 2025 replay was inspected and used for calibration selection. It cannot
-validate the Phase 7D hypotheses independently. Future prospective dates and
-the unchanged model must be evaluated before changing calibration, adding a
-home-side feature, or considering promotion. The full-I2 matched production
-benchmark and price/EV audit remain separate required work. The reported
-calibration bins and AUC are descriptive until the prospective sample is
-large enough for stable comparisons.
