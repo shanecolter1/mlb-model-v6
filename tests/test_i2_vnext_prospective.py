@@ -21,6 +21,7 @@ def snapshot(
     validation_start="2026-09-26",
     half_version=None,
     half_h=0.0757053177820764,
+    half_enabled=True,
     venue_matched=True,
 ):
     game = {
@@ -52,21 +53,25 @@ def snapshot(
         payload["halfCalibration"] = {
             "version": half_version,
             "type": "zero_sum_logit_contrast",
-            "h": half_h,
+            "enabled": half_enabled,
+            "h": half_h if half_enabled else 0,
             "matchedHomeVenueOnly": True,
         }
+        payload["finalCalibrationVersion"] = "i2-vnext-full-calibration-v2-multiyear"
+        payload["probabilityStackVersion"] = "i2-vnext-raw-identity-prospective-v1"
         payload["finalCalibration"] = {"type": "none", "intercept": 0, "slope": 1}
+        applied = bool(venue_matched and half_enabled)
         game.update({
             "dataAudit": {"venueProfileMatched": venue_matched},
-            "halfContrastApplied": venue_matched,
-            "halfContrastH": half_h if venue_matched else 0,
+            "halfContrastApplied": applied,
+            "halfContrastH": half_h if applied else 0,
             "rawTop2ScoreProbability": .21,
             "rawBottom2ScoreProbability": .24,
-            "top2ScoreProbability": .20 if venue_matched else .21,
-            "bottom2ScoreProbability": .25 if venue_matched else .24,
+            "top2ScoreProbability": .20 if applied else .21,
+            "bottom2ScoreProbability": .25 if applied else .24,
             "rawTop2ScorePct": 21,
             "rawBottom2ScorePct": 24,
-            "halfAdjustedUnder05": .60 if venue_matched else .6004,
+            "halfAdjustedUnder05": .60 if applied else .6004,
             "rawUnder05": .6004,
         })
     return payload
@@ -145,7 +150,7 @@ class ProspectiveTest(unittest.TestCase):
             prior.write_text("season,gid,half,i2_runs\n2025,A,top,0\n2025,A,bottom,0\n2025,B,top,1\n2025,B,bottom,0\n")
 
             report = score(archive_dir, outcome_dir, prior)
-            self.assertEqual(report["version"], "i2-vnext-prospective-score-v2")
+            self.assertEqual(report["version"], "i2-vnext-prospective-score-v3")
             self.assertEqual(report["all_selected_games_before_cohort_filter"], 2)
             self.assertEqual(report["excluded_prior_cohort_games"], 1)
             self.assertEqual(report["selected_games"], 1)
@@ -160,6 +165,38 @@ class ProspectiveTest(unittest.TestCase):
             self.assertEqual(report["half_innings_raw"]["top"]["n"], 1)
             self.assertEqual(report["half_contrast_adjusted_minus_raw"]["n"], 2)
             self.assertEqual(report["full_i2_half_adjusted_minus_raw"]["n"], 1)
+
+
+    def test_disabled_half_calibration_is_identity_and_forms_new_stack_cohort(self):
+        with tempfile.TemporaryDirectory() as root:
+            root = Path(root)
+            archive_dir, outcome_dir = root / "archive", root / "outcomes"
+            outcome_dir.mkdir()
+            file = root / "raw_identity.json"
+            file.write_text(json.dumps(snapshot(
+                "2026-09-28T22:00:00Z", .6004,
+                pk=125,
+                date="2026-09-29",
+                game_date="2026-09-29T23:00:00Z",
+                validation_start="2026-09-29",
+                half_version="i2-vnext-half-contrast-v2-retired",
+                half_enabled=False,
+                venue_matched=True,
+            )))
+            archive(file, archive_dir)
+            (outcome_dir / "125.json").write_text(json.dumps(final_feed(125, 0, 0)))
+            prior = root / "prior.csv"
+            prior.write_text("season,gid,half,i2_runs\n2025,A,top,0\n2025,A,bottom,0\n2025,B,top,1\n2025,B,bottom,0\n")
+            report = score(archive_dir, outcome_dir, prior)
+            self.assertEqual(report["version"], "i2-vnext-prospective-score-v3")
+            self.assertEqual(report["selected_games"], 1)
+            self.assertFalse(report["validation_cohort"]["half_calibration_enabled"])
+            self.assertEqual(
+                report["validation_cohort"]["probability_stack_version"],
+                "i2-vnext-raw-identity-prospective-v1",
+            )
+            self.assertEqual(report["full_i2_half_adjusted_minus_raw"]["brier"], 0.0)
+            self.assertEqual(report["full_i2_half_adjusted_minus_raw"]["logloss"], 0.0)
 
     def test_rejects_multiple_current_calibration_versions_same_start(self):
         with tempfile.TemporaryDirectory() as root:
