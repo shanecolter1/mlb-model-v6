@@ -1,0 +1,214 @@
+name: I2 vNext Phase 19D - final half candidate holdout comparison
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase19d_final_half_candidate.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+concurrency:
+  group: i2-vnext-phase19d-final
+  cancel-in-progress: true
+
+env:
+  RECOVERY_RUN_ID: 36505646844
+  CANDIDATE_SPEC_COMMIT: cbcfeaae2f1796812588b8a93169313b7462c133
+
+jobs:
+  final-compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install validation dependencies
+        run: python -m pip install --upgrade pip numpy pandas scipy statsmodels
+
+      - name: Restore recovered season bundles as they become available
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p data/downloaded
+          for year in 2022 2023 2024 2025 2026; do
+            ok=0
+            for attempt in $(seq 1 90); do
+              rm -rf "data/downloaded/${year}"
+              mkdir -p "data/downloaded/${year}"
+              if gh run download "${RECOVERY_RUN_ID}" \
+                --repo shanecolter1/mlb-model-v6 \
+                --name "i2-vnext-phase19c-season-${year}" \
+                --dir "data/downloaded/${year}"; then
+                ok=1
+                break
+              fi
+              sleep 15
+            done
+            if [ "$ok" -ne 1 ]; then
+              echo "Missing recovered season artifact: ${year}"
+              exit 1
+            fi
+          done
+
+      - name: Assemble governed five-season bundle
+        run: |
+          set -euo pipefail
+          mkdir -p data/bundle
+          for year in 2022 2023 2024 2025 2026; do
+            for name in "replay_${year}_precision_10000.json" "replay_${year}_inputs.json" "home_venue_${year}.json"; do
+              src=$(find "data/downloaded/${year}" -name "$name" -print -quit)
+              test -n "$src"
+              cp "$src" "data/bundle/$name"
+            done
+          done
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('data/bundle')
+          for y in range(2022,2027):
+              r=json.loads((p/f'replay_{y}_precision_10000.json').read_text())
+              i=json.loads((p/f'replay_{y}_inputs.json').read_text())
+              v=json.loads((p/f'home_venue_{y}.json').read_text())
+              assert r['market_inputs_used'] is False
+              assert i['market_inputs_used'] is False
+              assert v['market_inputs_used'] is False
+              assert r['season']==i['season']==v['season']==y
+              assert r['trials_per_game']==10000
+              assert len({str(g['gid']) for g in i['games']})==i['games_eligible']
+          print('five-season governed bundle verified')
+          PY
+
+      - name: Run pre-specified bottom-only vs zero-sum holdout comparison
+        run: |
+          python -m py_compile src/research/validate_i2_half_adjustment_multiyear.py
+          python src/research/validate_i2_half_adjustment_multiyear.py \
+            --bundle-dir data/bundle \
+            --output data/derived/i2_vnext/phase19d_final_half_candidate.json \
+            --bootstrap 10000
+
+      - name: Apply precommitted 2026 selection rule
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p=Path('data/derived/i2_vnext')
+          x=json.loads((p/'phase19d_final_half_candidate.json').read_text())
+          hold=x['forward_2026_holdout']
+
+          candidates={
+              'NO_HALF_ADJUSTMENT':{
+                  'full_i2_logloss_delta':0.0,
+                  'full_i2_brier_delta':0.0,
+              },
+              'BOTTOM_ONLY':{
+                  'full_i2_logloss_delta':hold['bottom_only']['full_i2_dependence_preserved']['adjusted_minus_raw']['logloss'],
+                  'full_i2_brier_delta':hold['bottom_only']['full_i2_dependence_preserved']['adjusted_minus_raw']['brier'],
+              },
+              'ZERO_SUM':{
+                  'full_i2_logloss_delta':hold['zero_sum']['full_i2_dependence_preserved']['adjusted_minus_raw']['logloss'],
+                  'full_i2_brier_delta':hold['zero_sum']['full_i2_dependence_preserved']['adjusted_minus_raw']['brier'],
+              },
+          }
+          selected=min(
+              candidates,
+              key=lambda k:(
+                  candidates[k]['full_i2_logloss_delta'],
+                  candidates[k]['full_i2_brier_delta'],
+              ),
+          )
+
+          seasonal={}
+          for year,row in x['seasonal'].items():
+              z=row['half_decomposition']
+              seasonal[year]={
+                  'games':row['n_games'],
+                  'top_actual_minus_predicted':row['sides']['top']['raw']['actual_minus_predicted'],
+                  'bottom_actual_minus_predicted':row['sides']['bottom']['raw']['actual_minus_predicted'],
+                  'top_logit_offset':z['top_offset'],
+                  'bottom_logit_offset':z['bottom_offset'],
+                  'common_component':z['common_component'],
+                  'zero_sum_h':z['h'],
+              }
+
+          checkpoint={
+              'version':'i2-vnext-phase19d-final-half-candidate-v1',
+              'market_inputs_used':False,
+              'calendar_month_used':False,
+              'i1_environment':'prior_season_park',
+              'sample':'season-specific PRIMARY_HOME_VENUE games',
+              'development_years':[2022,2023,2024,2025],
+              'untouched_holdout_year':2026,
+              'candidate_specification_commit':str(Path('.').resolve()) if False else 'cbcfeaae2f1796812588b8a93169313b7462c133',
+              'candidate_specified_before_2026_replay_completion':True,
+              'selection_rule':(
+                  'Choose minimum 2026 full-I2 log-loss delta among no half adjustment, '
+                  'bottom-only, and zero-sum; use full-I2 Brier delta as tie-break.'
+              ),
+              'seasonal':seasonal,
+              'development_candidates':{
+                  'bottom_only':x['development_bottom_only_candidate_2022_2025'],
+                  'zero_sum':x['development_zero_sum_candidate_2022_2025'],
+              },
+              'development_shrinkage':{
+                  'bottom_only':x['shrinkage_selection']['bottom_only'],
+                  'zero_sum':x['shrinkage_selection']['zero_sum_half_contrast'],
+              },
+              'forward_2026_holdout':hold,
+              'candidate_holdout_scores':candidates,
+              'selected_half_adjustment':selected,
+              'future_refit_after_holdout':{
+                  'bottom_only':x['pooled_bottom_only_refit_2022_2026_for_future'],
+                  'zero_sum':x['pooled_zero_sum_refit_2022_2026_for_future'],
+              },
+              'future_zero_sum_probability_map':x['pooled_zero_sum_probability_map'],
+              'uncertainty':x['uncertainty'],
+              'governance':{
+                  'production_changed':False,
+                  'market_inputs_used':False,
+                  'calendar_month_feature_or_control':False,
+                  'holdout_2026_used_for_development_coefficient_fit':False,
+                  'holdout_2026_used_for_shrinkage_selection':False,
+                  'joint_dependence_preserved':True,
+                  'year_2020':'arsenal only; no 2020 Retrosheet or PA target history',
+                  'year_2021':'training/transition foundation; not a validation year',
+                  'historical_fixed_specification_caveat':x['governance']['historical_fixed_specification_caveat'],
+              },
+              'status':'FINAL_HALF_CANDIDATE_SELECTED_PRODUCTION_UNCHANGED',
+          }
+          (p/'PHASE19D_CHECKPOINT.json').write_text(json.dumps(checkpoint,indent=2)+'\n')
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Upload final evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase19d-final-half-candidate
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            data/derived/i2_vnext/phase19d_final_half_candidate.json
+            data/derived/i2_vnext/PHASE19D_CHECKPOINT.json
+
+      - name: Commit compact final checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE19D_CHECKPOINT.json
+          if git diff --cached --quiet; then
+            echo "No Phase 19D checkpoint change"
+          else
+            git commit -m "research: select I2 half adjustment on untouched 2026 holdout"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
