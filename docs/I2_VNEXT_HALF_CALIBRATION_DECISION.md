@@ -1,8 +1,13 @@
-# I2 vNext Phases 18–21 — half-inning calibration decision
+# I2 vNext Phases 18–21 and 19B–19D — half-inning calibration decision
 
-Status: **VALIDATED HISTORICAL SHADOW CANDIDATE / NOT PRODUCTION**.
+Current decision: **NO HALF-INNING ADJUSTMENT** for the full-I2 betting model.
+The 2024-fitted contrast remains a frozen, betting-ineligible shadow cohort;
+its favorable 2025 result was superseded by the 2022–2025 development and
+untouched 2026 full-season comparison below. Production remains unchanged.
 
-This document supersedes the Phase 17 recommendation to consider a bottom-only adjustment. Phase 17 remains a valid description of the inspected 2025 residuals, but the 2024 replication changed the adjustment structure.
+The Phase 17 bottom-only proposal and the later 2024-fitted zero-sum proposal
+describe historical experiments. The five-season decision below governs the
+current model choice.
 
 ## Objective
 
@@ -126,9 +131,61 @@ Current cohort:
 
 Because the 2026 regular season ended before prospective collection began, postseason observations can be archived as prospective evidence but should not be treated as a substitute for a full regular-season validation sample.
 
-## Current decision
+## Phase 19B–19D — five-season decision
 
-**Governing half-inning adjustment candidate**
+The recovered replay used 10,000 trials per game, no prices or month controls,
+and each team's season-specific primary home venue. Development used 2022–2025;
+2021 supplied the prior training/transition foundation, and 2020 supplied
+arsenal history only. The completed 2026 regular season was held out from
+candidate coefficient fitting and shrinkage selection. The 2026 Stats API
+manifest contained 2,459 records for 2,430 unique regular-season games; 29
+duplicate game IDs were removed before as-of player updates. Of 2,425 eligible
+replays, 2,414 were at primary home venues.
+
+| Season | Primary-home games | Top actual − predicted | Bottom actual − predicted |
+| --- | ---: | ---: | ---: |
+| 2022 | 2,427 | −2.19 pp | +1.11 pp |
+| 2023 | 2,425 | +2.48 pp | +1.22 pp |
+| 2024 | 2,421 | −0.92 pp | +1.93 pp |
+| 2025 | 2,426 | −0.58 pp | +2.48 pp |
+| 2026 | 2,414 | +0.25 pp | +0.92 pp |
+
+The full-season 2023 top residual changed sign. The previously chosen 2024
+contrast of ±0.0757053 logit units was therefore not treated as a general
+correction. A 2022–2025 fit yielded `h = 0.0531313`; development-only
+leave-one-season-out selection shrank it by 0.6404547 to an applied contrast
+of **±0.0340282** for the untouched 2026 test.
+
+The candidates were specified before the corrected 2026 replay completed.
+The governing rule chose the lowest 2026 full-I2 log loss, with Brier as a
+tie-break. Full-I2 probabilities retained each game's raw joint-zero
+dependence factor when the half probabilities were changed.
+
+| 2026 candidate versus raw | Full-I2 log-loss change | Full-I2 Brier change |
+| --- | ---: | ---: |
+| No half adjustment | **0** | **0** |
+| Zero-sum contrast | +0.0000282 | +0.0000143 |
+| Bottom-only offset | +0.0002974 | +0.0001477 |
+| Separate affine-logit curves | +0.0004504 | +0.0002217 |
+
+Positive changes are worse. In 2026 the shrunk zero-sum candidate reduced the
+bottom scoring residual from +0.92 to +0.30 pp, but increased the top residual
+from +0.25 to +0.87 pp. Raw full-I2 Under 0.5 averaged 57.337% versus 57.249%
+observed; the zero-sum candidate averaged 57.325% and worsened both proper
+scores slightly. These data do not support adding a half adjustment to the
+full-I2 betting model. The exact selected value is
+`PHASE19D_CHECKPOINT.json:selected_half_adjustment = NO_HALF_ADJUSTMENT`.
+
+This selection compares candidate forms on one held-out season and does not
+establish that every future half adjustment is harmful. The 2022–2025
+development seasons also test a fixed model specification chosen partly with
+2024 data, so they are robustness evidence rather than pristine historical
+holdouts. The 2024→2025 shadow artifact remains available for its originally
+declared prospective comparison, but it is not the selected model adjustment.
+
+## Prior shadow candidate (superseded for model selection)
+
+**Frozen 2024-fitted half-inning experiment**
 
 ```
 TOP I2:    logit(p) - 0.0757053177820764
@@ -141,8 +198,8 @@ Scope:
 - baseball-only, market-isolated;
 - common calibration component withheld;
 - final full-I2 calibration remains a separate single layer;
-- shadow only;
-- no production promotion yet.
+- shadow only and betting-ineligible;
+- not selected by the 2026 full-I2 holdout.
 
 Do not implement the superseded Phase 17 bottom-only offset.
 
@@ -152,3 +209,5 @@ Primary checkpoints:
 - `data/derived/i2_vnext/PHASE19_CHECKPOINT.json`
 - `data/derived/i2_vnext/PHASE20_CHECKPOINT.json`
 - `data/derived/i2_vnext/PHASE21_CHECKPOINT.json`
+- `data/derived/i2_vnext/PHASE19B_CHECKPOINT.json`
+- `data/derived/i2_vnext/PHASE19D_CHECKPOINT.json`
