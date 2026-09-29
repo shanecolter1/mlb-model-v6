@@ -1,93 +1,706 @@
 {
-  "version": "i2-vnext-full-calibration-v1",
-  "generated_at": "2026-09-26T23:23:30.921249+00:00",
+  "version": "i2-vnext-full-calibration-v2-multiyear",
+  "generated_at": "2026-09-29T01:17:25.068053+00:00",
   "market_inputs_used": false,
   "target": "full I2 Under 0.5 probability",
-  "source_replay_version": "i2-vnext-full-replay-v4-player-asof-i1-sharded",
-  "source_model_version": "i2-vnext-walkforward-2025-v1",
-  "source_model_training": {
-    "start": "2023-03-30",
-    "end": "2024-09-30",
-    "n": 40812,
-    "seasons": [
-      2023,
-      2024
-    ],
-    "event_counts": {
-      "ball_in_play_out": 18363,
-      "strikeout": 9675,
-      "single": 6068,
-      "walk": 3115,
-      "double": 1802,
-      "home_run": 1228,
-      "hit_by_pitch": 400,
-      "triple": 161
+  "half_adjustment": "NONE",
+  "source_decision": "data/derived/i2_vnext/PHASE19D_CHECKPOINT.json",
+  "source_precision_run": 36505646844,
+  "sample": "season-specific PRIMARY_HOME_VENUE games",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "replication_pristine_holdout": false,
+  "replication_note": "2026 outcomes were previously inspected during half-calibration research; 2026 is not used to fit coefficients or shrinkage and is used here only as an external no-promotion stress test.",
+  "seasonal_raw": {
+    "2022": {
+      "n": 2427,
+      "observed": 0.580552121961269,
+      "mean_prediction": 0.575189740420272,
+      "actual_minus_predicted": 0.005362381540997115,
+      "brier": 0.243794789381953,
+      "logloss": 0.6806708780700106
     },
-    "batters": 763,
-    "pitchers": 546
-  },
-  "holdout_policy": {
-    "raw_pa_estimation_years": [
-      2023,
-      2024
-    ],
-    "hyperparameter_selection_period": "2024H2",
-    "full_i2_calibration_year": 2025,
-    "full_i2_calibration_fit_segment": "first chronological half",
-    "full_i2_calibration_validation_segment": "second chronological half",
-    "prospective_validation_start": "2026-09-26",
-    "fit_uses_2025": false,
-    "fit_uses_2026": false
+    "2023": {
+      "n": 2425,
+      "observed": 0.5468041237113402,
+      "mean_prediction": 0.5738878762886598,
+      "actual_minus_predicted": -0.027083752577319587,
+      "brier": 0.2494721916494846,
+      "logloss": 0.6922003796406806
+    },
+    "2024": {
+      "n": 2421,
+      "observed": 0.5580338703015283,
+      "mean_prediction": 0.5631301941346551,
+      "actual_minus_predicted": -0.005096323833126806,
+      "brier": 0.24680449933085502,
+      "logloss": 0.6867505813534488
+    },
+    "2025": {
+      "n": 2426,
+      "observed": 0.5523495465787304,
+      "mean_prediction": 0.5735427864798022,
+      "actual_minus_predicted": -0.021193239901071723,
+      "brier": 0.24645045314921687,
+      "logloss": 0.6860245330841409
+    },
+    "2026": {
+      "n": 2414,
+      "observed": 0.5724937862468932,
+      "mean_prediction": 0.5733700497100248,
+      "actual_minus_predicted": -0.0008762634631317262,
+      "brier": 0.24381183954018223,
+      "logloss": 0.680703924891098
+    }
   },
   "calibration_selection": {
-    "fit_segment": "2025 dates before 20250625",
-    "validation_segment": "2025 dates on/after 20250625",
-    "split_date": "20250625",
-    "fit_games": 1189,
-    "validation_games": 1241,
-    "candidate_models": [
+    "candidates": [
       "identity",
-      "single_sigmoid_logit"
+      "offset",
+      "affine"
     ],
-    "selection_rule": "sigmoid must improve both Brier and log loss on later-2025 validation; otherwise identity",
-    "identity_validation": {
-      "n": 1241,
-      "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.5741922643029814,
-      "brier": 0.24970507481063658,
-      "logloss": 0.692651717890755
+    "shrinkage_rule": "lambda selected by 2022-2025 leave-one-season-out full-I2 log loss; lambda constrained to [0,1]",
+    "development_selected_candidate": "affine",
+    "candidate_evidence": {
+      "identity": {
+        "shrinkage": {
+          "multiplier": 0.0,
+          "loso_logloss": 0.6864102295518498,
+          "no_adjustment_logloss": 0.6864102295518498,
+          "unshrunk_logloss": 0.6864102295518498
+        },
+        "development_loso": {
+          "raw": {
+            "n": 9699,
+            "observed": 0.5594391174347871,
+            "mean_prediction": 0.571442066192391,
+            "actual_minus_predicted": -0.012002948757603877,
+            "brier": 0.24662980831013506,
+            "logloss": 0.6864102295518497
+          },
+          "adjusted": {
+            "n": 9699,
+            "observed": 0.5594391174347871,
+            "mean_prediction": 0.571442066192391,
+            "actual_minus_predicted": -0.012002948757603877,
+            "brier": 0.24662980831013506,
+            "logloss": 0.6864102295518497
+          },
+          "adjusted_minus_raw": {
+            "brier": 0.0,
+            "logloss": 0.0
+          }
+        },
+        "development_by_year": {
+          "2022": {
+            "raw": {
+              "n": 2427,
+              "observed": 0.580552121961269,
+              "mean_prediction": 0.5751897404202719,
+              "actual_minus_predicted": 0.005362381540997115,
+              "brier": 0.24379478938195304,
+              "logloss": 0.6806708780700106
+            },
+            "adjusted": {
+              "n": 2427,
+              "observed": 0.580552121961269,
+              "mean_prediction": 0.5751897404202719,
+              "actual_minus_predicted": 0.005362381540997115,
+              "brier": 0.24379478938195304,
+              "logloss": 0.6806708780700106
+            },
+            "adjusted_minus_raw": {
+              "brier": 0.0,
+              "logloss": 0.0
+            }
+          },
+          "2023": {
+            "raw": {
+              "n": 2425,
+              "observed": 0.5468041237113402,
+              "mean_prediction": 0.5738878762886598,
+              "actual_minus_predicted": -0.027083752577319587,
+              "brier": 0.24947219164948453,
+              "logloss": 0.6922003796406806
+            },
+            "adjusted": {
+              "n": 2425,
+              "observed": 0.5468041237113402,
+              "mean_prediction": 0.5738878762886598,
+              "actual_minus_predicted": -0.027083752577319587,
+              "brier": 0.24947219164948453,
+              "logloss": 0.6922003796406806
+            },
+            "adjusted_minus_raw": {
+              "brier": 0.0,
+              "logloss": 0.0
+            }
+          },
+          "2024": {
+            "raw": {
+              "n": 2421,
+              "observed": 0.5580338703015283,
+              "mean_prediction": 0.5631301941346551,
+              "actual_minus_predicted": -0.005096323833126811,
+              "brier": 0.24680449933085502,
+              "logloss": 0.6867505813534488
+            },
+            "adjusted": {
+              "n": 2421,
+              "observed": 0.5580338703015283,
+              "mean_prediction": 0.5631301941346551,
+              "actual_minus_predicted": -0.005096323833126811,
+              "brier": 0.24680449933085502,
+              "logloss": 0.6867505813534488
+            },
+            "adjusted_minus_raw": {
+              "brier": 0.0,
+              "logloss": 0.0
+            }
+          },
+          "2025": {
+            "raw": {
+              "n": 2426,
+              "observed": 0.5523495465787304,
+              "mean_prediction": 0.5735427864798022,
+              "actual_minus_predicted": -0.021193239901071723,
+              "brier": 0.24645045314921682,
+              "logloss": 0.6860245330841409
+            },
+            "adjusted": {
+              "n": 2426,
+              "observed": 0.5523495465787304,
+              "mean_prediction": 0.5735427864798022,
+              "actual_minus_predicted": -0.021193239901071723,
+              "brier": 0.24645045314921682,
+              "logloss": 0.6860245330841409
+            },
+            "adjusted_minus_raw": {
+              "brier": 0.0,
+              "logloss": 0.0
+            }
+          }
+        },
+        "fold_coefficients": {
+          "2022": {
+            "train_seasons": [
+              2023,
+              2024,
+              2025
+            ],
+            "coefficient": null
+          },
+          "2023": {
+            "train_seasons": [
+              2022,
+              2024,
+              2025
+            ],
+            "coefficient": null
+          },
+          "2024": {
+            "train_seasons": [
+              2022,
+              2023,
+              2025
+            ],
+            "coefficient": null
+          },
+          "2025": {
+            "train_seasons": [
+              2022,
+              2023,
+              2024
+            ],
+            "coefficient": null
+          }
+        },
+        "development_ci95_season_date_cluster": {
+          "brier": [
+            0.0,
+            0.0
+          ],
+          "logloss": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "offset": {
+        "shrinkage": {
+          "multiplier": 0.5494973773896006,
+          "loso_logloss": 0.6863100543891827,
+          "no_adjustment_logloss": 0.6864102295518497,
+          "unshrunk_logloss": 0.6863775568749302
+        },
+        "development_loso": {
+          "raw": {
+            "n": 9699,
+            "observed": 0.5594391174347871,
+            "mean_prediction": 0.571442066192391,
+            "actual_minus_predicted": -0.012002948757603877,
+            "brier": 0.24662980831013506,
+            "logloss": 0.6864102295518497
+          },
+          "adjusted": {
+            "n": 9699,
+            "observed": 0.5594391174347871,
+            "mean_prediction": 0.5648560752960912,
+            "actual_minus_predicted": -0.005416957861304076,
+            "brier": 0.2465846824079877,
+            "logloss": 0.6863100543891827
+          },
+          "adjusted_minus_raw": {
+            "brier": -4.512590214737384e-05,
+            "logloss": -0.00010017516266702432
+          }
+        },
+        "development_by_year": {
+          "2022": {
+            "raw": {
+              "n": 2427,
+              "observed": 0.580552121961269,
+              "mean_prediction": 0.5751897404202719,
+              "actual_minus_predicted": 0.005362381540997115,
+              "brier": 0.24379478938195304,
+              "logloss": 0.6806708780700106
+            },
+            "adjusted": {
+              "n": 2427,
+              "observed": 0.580552121961269,
+              "mean_prediction": 0.5654636797445788,
+              "actual_minus_predicted": 0.015088442216690296,
+              "brier": 0.24400060724500555,
+              "logloss": 0.6810788838207288
+            },
+            "adjusted_minus_raw": {
+              "brier": 0.0002058178630525563,
+              "logloss": 0.0004080057507182743
+            }
+          },
+          "2023": {
+            "raw": {
+              "n": 2425,
+              "observed": 0.5468041237113402,
+              "mean_prediction": 0.5738878762886598,
+              "actual_minus_predicted": -0.027083752577319587,
+              "brier": 0.24947219164948453,
+              "logloss": 0.6922003796406806
+            },
+            "adjusted": {
+              "n": 2425,
+              "observed": 0.5468041237113402,
+              "mean_prediction": 0.570066275718483,
+              "actual_minus_predicted": -0.02326215200714273,
+              "brier": 0.24928430645866936,
+              "logloss": 0.6918053315931281
+            },
+            "adjusted_minus_raw": {
+              "brier": -0.0001878851908151626,
+              "logloss": -0.00039504804755258796
+            }
+          },
+          "2024": {
+            "raw": {
+              "n": 2421,
+              "observed": 0.5580338703015283,
+              "mean_prediction": 0.5631301941346551,
+              "actual_minus_predicted": -0.005096323833126811,
+              "brier": 0.24680449933085502,
+              "logloss": 0.6867505813534488
+            },
+            "adjusted": {
+              "n": 2421,
+              "observed": 0.5580338703015283,
+              "mean_prediction": 0.5552357429373522,
+              "actual_minus_predicted": 0.0027981273641760813,
+              "brier": 0.24679007916301754,
+              "logloss": 0.6867135272725833
+            },
+            "adjusted_minus_raw": {
+              "brier": -1.4420167837458103e-05,
+              "logloss": -3.705408086556065e-05
+            }
+          },
+          "2025": {
+            "raw": {
+              "n": 2426,
+              "observed": 0.5523495465787304,
+              "mean_prediction": 0.5735427864798022,
+              "actual_minus_predicted": -0.021193239901071723,
+              "brier": 0.24645045314921682,
+              "logloss": 0.6860245330841409
+            },
+            "adjusted": {
+              "n": 2426,
+              "observed": 0.5523495465787304,
+              "mean_prediction": 0.5686406724188148,
+              "actual_minus_predicted": -0.016291125840084398,
+              "brier": 0.24626633803606976,
+              "logloss": 0.685647727884384
+            },
+            "adjusted_minus_raw": {
+              "brier": -0.00018411511314702297,
+              "logloss": -0.00037680519975687247
+            }
+          }
+        },
+        "fold_coefficients": {
+          "2022": {
+            "train_seasons": [
+              2023,
+              2024,
+              2025
+            ],
+            "coefficient": -0.07264591358024214
+          },
+          "2023": {
+            "train_seasons": [
+              2022,
+              2024,
+              2025
+            ],
+            "coefficient": -0.02855866121008983
+          },
+          "2024": {
+            "train_seasons": [
+              2022,
+              2023,
+              2025
+            ],
+            "coefficient": -0.05855651215355868
+          },
+          "2025": {
+            "train_seasons": [
+              2022,
+              2023,
+              2024
+            ],
+            "coefficient": -0.03658510157381397
+          }
+        },
+        "development_ci95_season_date_cluster": {
+          "brier": [
+            -0.0001741120326844429,
+            8.0684986458006e-05
+          ],
+          "logloss": [
+            -0.0003620312891488918,
+            0.00015673607148640052
+          ]
+        }
+      },
+      "affine": {
+        "shrinkage": {
+          "multiplier": 0.7566988817526501,
+          "loso_logloss": 0.6858330785982442,
+          "no_adjustment_logloss": 0.6864102295518497,
+          "unshrunk_logloss": 0.6858932162504132
+        },
+        "development_loso": {
+          "raw": {
+            "n": 9699,
+            "observed": 0.5594391174347871,
+            "mean_prediction": 0.571442066192391,
+            "actual_minus_predicted": -0.012002948757603877,
+            "brier": 0.24662980831013506,
+            "logloss": 0.6864102295518497
+          },
+          "adjusted": {
+            "n": 9699,
+            "observed": 0.5594391174347871,
+            "mean_prediction": 0.5623429687896287,
+            "actual_minus_predicted": -0.0029038513548416316,
+            "brier": 0.24635270328527784,
+            "logloss": 0.6858330785982442
+          },
+          "adjusted_minus_raw": {
+            "brier": -0.0002771050248571991,
+            "logloss": -0.000577150953605545
+          }
+        },
+        "development_by_year": {
+          "2022": {
+            "raw": {
+              "n": 2427,
+              "observed": 0.580552121961269,
+              "mean_prediction": 0.5751897404202719,
+              "actual_minus_predicted": 0.005362381540997115,
+              "brier": 0.24379478938195304,
+              "logloss": 0.6806708780700106
+            },
+            "adjusted": {
+              "n": 2427,
+              "observed": 0.580552121961269,
+              "mean_prediction": 0.5598931595679962,
+              "actual_minus_predicted": 0.020658962393272893,
+              "brier": 0.24376686649323456,
+              "logloss": 0.6806184921201683
+            },
+            "adjusted_minus_raw": {
+              "brier": -2.7922888718426285e-05,
+              "logloss": -5.238594984219575e-05
+            }
+          },
+          "2023": {
+            "raw": {
+              "n": 2425,
+              "observed": 0.5468041237113402,
+              "mean_prediction": 0.5738878762886598,
+              "actual_minus_predicted": -0.027083752577319587,
+              "brier": 0.24947219164948453,
+              "logloss": 0.6922003796406806
+            },
+            "adjusted": {
+              "n": 2425,
+              "observed": 0.5468041237113402,
+              "mean_prediction": 0.5677113457072626,
+              "actual_minus_predicted": -0.020907221995922206,
+              "brier": 0.24865579646422037,
+              "logloss": 0.6904981046749926
+            },
+            "adjusted_minus_raw": {
+              "brier": -0.000816395185264182,
+              "logloss": -0.0017022749656880035
+            }
+          },
+          "2024": {
+            "raw": {
+              "n": 2421,
+              "observed": 0.5580338703015283,
+              "mean_prediction": 0.5631301941346551,
+              "actual_minus_predicted": -0.005096323833126811,
+              "brier": 0.24680449933085502,
+              "logloss": 0.6867505813534488
+            },
+            "adjusted": {
+              "n": 2421,
+              "observed": 0.5580338703015283,
+              "mean_prediction": 0.5563543859001627,
+              "actual_minus_predicted": 0.0016794844013655007,
+              "brier": 0.24646312889516994,
+              "logloss": 0.6860509322585514
+            },
+            "adjusted_minus_raw": {
+              "brier": -0.0003413704356850985,
+              "logloss": -0.00069964909489742
+            }
+          },
+          "2025": {
+            "raw": {
+              "n": 2426,
+              "observed": 0.5523495465787304,
+              "mean_prediction": 0.5735427864798022,
+              "actual_minus_predicted": -0.021193239901071723,
+              "brier": 0.24645045314921682,
+              "logloss": 0.6860245330841409
+            },
+            "adjusted": {
+              "n": 2426,
+              "observed": 0.5523495465787304,
+              "mean_prediction": 0.5654038641445494,
+              "actual_minus_predicted": -0.013054317565818976,
+              "brier": 0.24652726409888248,
+              "logloss": 0.6861693067246136
+            },
+            "adjusted_minus_raw": {
+              "brier": 7.681094966566867e-05,
+              "logloss": 0.00014477364047274966
+            }
+          }
+        },
+        "fold_coefficients": {
+          "2022": {
+            "train_seasons": [
+              2023,
+              2024,
+              2025
+            ],
+            "coefficient": [
+              0.07052466300584809,
+              0.49325673672319936
+            ]
+          },
+          "2023": {
+            "train_seasons": [
+              2022,
+              2024,
+              2025
+            ],
+            "coefficient": [
+              0.07767267647836532,
+              0.625677920594607
+            ]
+          },
+          "2024": {
+            "train_seasons": [
+              2022,
+              2023,
+              2025
+            ],
+            "coefficient": [
+              0.0866857080964661,
+              0.5138508562697218
+            ]
+          },
+          "2025": {
+            "train_seasons": [
+              2022,
+              2023,
+              2024
+            ],
+            "coefficient": [
+              0.15291923183907577,
+              0.3342857828356766
+            ]
+          }
+        },
+        "development_ci95_season_date_cluster": {
+          "brier": [
+            -0.0005865202347871015,
+            3.4544906990982576e-05
+          ],
+          "logloss": [
+            -0.0012180094493146817,
+            6.899744171387068e-05
+          ]
+        }
+      }
     },
-    "sigmoid_validation": {
-      "n": 1241,
-      "realized_under_rate": 0.5398871877518131,
-      "predicted_under_mean": 0.5706423214414869,
-      "brier": 0.2498500148422421,
-      "logloss": 0.6929743715134274
+    "promotion_rule": "Select candidate on 2022-2025 LOSO by minimum full-I2 log loss, Brier tie-break. A non-identity selected candidate must improve both log loss and Brier on 2026 replication to be promoted; otherwise identity.",
+    "replication_2026": {
+      "identity": {
+        "raw": {
+          "n": 2414,
+          "observed": 0.5724937862468932,
+          "mean_prediction": 0.5733700497100248,
+          "actual_minus_predicted": -0.0008762634631317262,
+          "brier": 0.24381183954018223,
+          "logloss": 0.680703924891098
+        },
+        "adjusted": {
+          "n": 2414,
+          "observed": 0.5724937862468932,
+          "mean_prediction": 0.5733700497100248,
+          "actual_minus_predicted": -0.0008762634631317262,
+          "brier": 0.24381183954018223,
+          "logloss": 0.680703924891098
+        },
+        "adjusted_minus_raw": {
+          "brier": 0.0,
+          "logloss": 0.0
+        },
+        "ci95_date_cluster": {
+          "brier": [
+            0.0,
+            0.0
+          ],
+          "logloss": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "offset": {
+        "raw": {
+          "n": 2414,
+          "observed": 0.5724937862468932,
+          "mean_prediction": 0.5733700497100248,
+          "actual_minus_predicted": -0.0008762634631317262,
+          "brier": 0.24381183954018223,
+          "logloss": 0.680703924891098
+        },
+        "adjusted": {
+          "n": 2414,
+          "observed": 0.5724937862468932,
+          "mean_prediction": 0.566786184790042,
+          "actual_minus_predicted": 0.00570760145685125,
+          "brier": 0.2438445299253597,
+          "logloss": 0.68076904903592
+        },
+        "adjusted_minus_raw": {
+          "brier": 3.2690385177400494e-05,
+          "logloss": 6.512414482199146e-05
+        },
+        "ci95_date_cluster": {
+          "brier": [
+            -0.0002408351066551285,
+            0.0002963697829793105
+          ],
+          "logloss": [
+            -0.0004943677109663823,
+            0.0006079294256662524
+          ]
+        }
+      },
+      "affine": {
+        "raw": {
+          "n": 2414,
+          "observed": 0.5724937862468932,
+          "mean_prediction": 0.5733700497100248,
+          "actual_minus_predicted": -0.0008762634631317262,
+          "brier": 0.24381183954018223,
+          "logloss": 0.680703924891098
+        },
+        "adjusted": {
+          "n": 2414,
+          "observed": 0.5724937862468932,
+          "mean_prediction": 0.5635716413149664,
+          "actual_minus_predicted": 0.008922144931926713,
+          "brier": 0.24399569025959392,
+          "logloss": 0.6810756317676658
+        },
+        "adjusted_minus_raw": {
+          "brier": 0.00018385071941164673,
+          "logloss": 0.0003717068765678115
+        },
+        "ci95_date_cluster": {
+          "brier": [
+            -0.0004758324915182485,
+            0.0008271739725866626
+          ],
+          "logloss": [
+            -0.001000142320694354,
+            0.001713591021761874
+          ]
+        }
+      }
     },
-    "sigmoid_candidate": {
-      "intercept": -0.0893061569366758,
-      "slope": 1.2512597580121654
-    },
+    "replication_pass": false,
     "chosen": "identity"
   },
-  "raw_all_2025": {
-    "n": 2430,
-    "realized_under_rate": 0.551440329218107,
-    "predicted_under_mean": 0.5714136625514403,
-    "brier": 0.24705671633744858,
-    "logloss": 0.6872618188154105
-  },
-  "replay_games": 2430,
   "final_curve": {
     "type": "none",
     "intercept": 0.0,
     "slope": 1.0
   },
+  "holdout_policy": {
+    "calibration_development_years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "replication_year": 2026,
+    "replication_not_pristine_due_prior_half_research": true,
+    "2026_used_for_calibration_fit": false,
+    "2026_used_for_shrinkage_selection": false
+  },
   "governance": {
     "probability_calibration_layers": 0,
     "component_level_probability_calibration": false,
+    "half_inning_calibration_enabled": false,
     "market_conditioning": false,
-    "observed_i2_state_used_as_predictor": false,
-    "prospective_validation_required": true
+    "production_changed": false,
+    "calendar_month_feature_or_control": false,
+    "shrinkage_estimated_by_development_loso": true,
+    "single_final_probability_calibration_layer": true,
+    "production_output_changed": false,
+    "half_adjustment_enabled": false
   }
 }

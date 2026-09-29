@@ -1,0 +1,58 @@
+{
+  "version": "i2-vnext-phase22-final-calibration-v1",
+  "market_inputs_used": false,
+  "calendar_month_used": false,
+  "half_adjustment": "NONE",
+  "development_selected_candidate": "affine",
+  "development_candidate_scores": {
+    "identity": {
+      "lambda": 0.0,
+      "brier_delta": 0.0,
+      "logloss_delta": 0.0
+    },
+    "offset": {
+      "lambda": 0.5494973773896006,
+      "brier_delta": -4.512590214737384e-05,
+      "logloss_delta": -0.00010017516266702432
+    },
+    "affine": {
+      "lambda": 0.7566988817526501,
+      "brier_delta": -0.0002771050248571991,
+      "logloss_delta": -0.000577150953605545
+    }
+  },
+  "replication_2026_scores": {
+    "identity": {
+      "brier": 0.0,
+      "logloss": 0.0
+    },
+    "offset": {
+      "brier": 3.2690385177400494e-05,
+      "logloss": 6.512414482199146e-05
+    },
+    "affine": {
+      "brier": 0.00018385071941164673,
+      "logloss": 0.0003717068765678115
+    }
+  },
+  "replication_pass": false,
+  "final_selected_candidate": "identity",
+  "final_curve": {
+    "type": "none",
+    "intercept": 0.0,
+    "slope": 1.0
+  },
+  "production_output_changed": false,
+  "governance": {
+    "probability_calibration_layers": 0,
+    "component_level_probability_calibration": false,
+    "half_inning_calibration_enabled": false,
+    "market_conditioning": false,
+    "production_changed": false,
+    "calendar_month_feature_or_control": false,
+    "shrinkage_estimated_by_development_loso": true,
+    "single_final_probability_calibration_layer": true,
+    "production_output_changed": false,
+    "half_adjustment_enabled": false
+  }
+}
