@@ -649,6 +649,8 @@ async function main(){
     i1StateEngine:'existing V6 season-rate engine used only to simulate I1 lineup progression',
     i2TalentEngine:'direct I2 Statcast PA model; jointly regularized batter/pitcher/platoon/arsenal',
     halfCalibration:vnextHalfContrast ? {version:vnextHalfContrast.version,type:vnextHalfContrast.type,enabled:vnextHalfContrast.enabled !== false,h:vnextHalfContrast.zero_sum_half_contrast_h,status:vnextHalfContrast.status,matchedHomeVenueOnly:vnextHalfContrast.matched_home_venue_only === true,prospectiveValidationStart:vnextHalfContrast.enabled !== false ? vnextHalfContrast.prospective_validation_start : null} : null,
+    finalCalibrationVersion:vnextFullCalibration?.version || null,
+    probabilityStackVersion:vnextFullCalibration?.prospective_cohort_version || null,
     finalCalibration:vnextFullCalibration?.final_curve || vnextFullCalibration?.selected || null,
     leagueBaselineSource:'Retrosheet 2021-2025 pooled event counts from i2_play_calibration.json',
     parkSource:venueProfiles.length?'Baseball Savant 3-year Statcast park factors':'neutral fallback',
