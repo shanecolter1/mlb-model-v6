@@ -69,7 +69,7 @@
     "candidate_evidence": {
       "identity": {
         "shrinkage": {
-          "multiplier": 0.0,
+          "multiplier": 0,
           "loso_logloss": 0.6864102295518498,
           "no_adjustment_logloss": 0.6864102295518498,
           "unshrunk_logloss": 0.6864102295518498
@@ -92,8 +92,8 @@
             "logloss": 0.6864102295518497
           },
           "adjusted_minus_raw": {
-            "brier": 0.0,
-            "logloss": 0.0
+            "brier": 0,
+            "logloss": 0
           }
         },
         "development_by_year": {
@@ -115,8 +115,8 @@
               "logloss": 0.6806708780700106
             },
             "adjusted_minus_raw": {
-              "brier": 0.0,
-              "logloss": 0.0
+              "brier": 0,
+              "logloss": 0
             }
           },
           "2023": {
@@ -137,8 +137,8 @@
               "logloss": 0.6922003796406806
             },
             "adjusted_minus_raw": {
-              "brier": 0.0,
-              "logloss": 0.0
+              "brier": 0,
+              "logloss": 0
             }
           },
           "2024": {
@@ -159,8 +159,8 @@
               "logloss": 0.6867505813534488
             },
             "adjusted_minus_raw": {
-              "brier": 0.0,
-              "logloss": 0.0
+              "brier": 0,
+              "logloss": 0
             }
           },
           "2025": {
@@ -181,8 +181,8 @@
               "logloss": 0.6860245330841409
             },
             "adjusted_minus_raw": {
-              "brier": 0.0,
-              "logloss": 0.0
+              "brier": 0,
+              "logloss": 0
             }
           }
         },
@@ -222,12 +222,12 @@
         },
         "development_ci95_season_date_cluster": {
           "brier": [
-            0.0,
-            0.0
+            0,
+            0
           ],
           "logloss": [
-            0.0,
-            0.0
+            0,
+            0
           ]
         }
       },
@@ -256,7 +256,7 @@
             "logloss": 0.6863100543891827
           },
           "adjusted_minus_raw": {
-            "brier": -4.512590214737384e-05,
+            "brier": -0.00004512590214737384,
             "logloss": -0.00010017516266702432
           }
         },
@@ -323,8 +323,8 @@
               "logloss": 0.6867135272725833
             },
             "adjusted_minus_raw": {
-              "brier": -1.4420167837458103e-05,
-              "logloss": -3.705408086556065e-05
+              "brier": -0.000014420167837458103,
+              "logloss": -0.00003705408086556065
             }
           },
           "2025": {
@@ -387,7 +387,7 @@
         "development_ci95_season_date_cluster": {
           "brier": [
             -0.0001741120326844429,
-            8.0684986458006e-05
+            0.000080684986458006
           ],
           "logloss": [
             -0.0003620312891488918,
@@ -443,8 +443,8 @@
               "logloss": 0.6806184921201683
             },
             "adjusted_minus_raw": {
-              "brier": -2.7922888718426285e-05,
-              "logloss": -5.238594984219575e-05
+              "brier": -0.000027922888718426285,
+              "logloss": -0.00005238594984219575
             }
           },
           "2023": {
@@ -509,7 +509,7 @@
               "logloss": 0.6861693067246136
             },
             "adjusted_minus_raw": {
-              "brier": 7.681094966566867e-05,
+              "brier": 0.00007681094966566867,
               "logloss": 0.00014477364047274966
             }
           }
@@ -563,11 +563,11 @@
         "development_ci95_season_date_cluster": {
           "brier": [
             -0.0005865202347871015,
-            3.4544906990982576e-05
+            0.000034544906990982576
           ],
           "logloss": [
             -0.0012180094493146817,
-            6.899744171387068e-05
+            0.00006899744171387068
           ]
         }
       }
@@ -592,17 +592,17 @@
           "logloss": 0.680703924891098
         },
         "adjusted_minus_raw": {
-          "brier": 0.0,
-          "logloss": 0.0
+          "brier": 0,
+          "logloss": 0
         },
         "ci95_date_cluster": {
           "brier": [
-            0.0,
-            0.0
+            0,
+            0
           ],
           "logloss": [
-            0.0,
-            0.0
+            0,
+            0
           ]
         }
       },
@@ -624,8 +624,8 @@
           "logloss": 0.68076904903592
         },
         "adjusted_minus_raw": {
-          "brier": 3.2690385177400494e-05,
-          "logloss": 6.512414482199146e-05
+          "brier": 0.000032690385177400494,
+          "logloss": 0.00006512414482199146
         },
         "ci95_date_cluster": {
           "brier": [
@@ -676,8 +676,8 @@
   },
   "final_curve": {
     "type": "none",
-    "intercept": 0.0,
-    "slope": 1.0
+    "intercept": 0,
+    "slope": 1
   },
   "holdout_policy": {
     "calibration_development_years": [
@@ -689,7 +689,9 @@
     "replication_year": 2026,
     "replication_not_pristine_due_prior_half_research": true,
     "2026_used_for_calibration_fit": false,
-    "2026_used_for_shrinkage_selection": false
+    "2026_used_for_shrinkage_selection": false,
+    "prospective_validation_start": "2026-09-29",
+    "prospective_cohort_version": "i2-vnext-raw-identity-prospective-v1"
   },
   "governance": {
     "probability_calibration_layers": 0,
@@ -702,5 +704,7 @@
     "single_final_probability_calibration_layer": true,
     "production_output_changed": false,
     "half_adjustment_enabled": false
-  }
+  },
+  "prospective_validation_start": "2026-09-29",
+  "prospective_cohort_version": "i2-vnext-raw-identity-prospective-v1"
 }
