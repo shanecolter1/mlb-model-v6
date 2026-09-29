@@ -1,10 +1,11 @@
-# I2 vNext Phases 18–21 and 19B–19D — half-inning calibration decision
+# I2 vNext Phases 18–22 — calibration decision
 
 Current decision: **NO HALF-INNING ADJUSTMENT** for the full-I2 betting model.
 The 2024-fitted contrast is archived in the retired artifact and is disabled
 in the vNext shadow runner; its favorable 2025 result was superseded by the
 2022–2025 development and untouched 2026 full-season comparison below.
-Production remains unchanged.
+Production remains unchanged. Phase 22 also selected the identity final full-I2
+calibration curve.
 
 The Phase 17 bottom-only proposal and the later 2024-fitted zero-sum proposal
 describe historical experiments. The five-season decision below governs the
@@ -185,6 +186,26 @@ holdouts. The 2024→2025 shadow artifact remains available for its originally
 declared prospective comparison; the current artifact has `enabled: false`
 and retains that original specification under `retirement.prior_artifact`.
 
+## Phase 22 — one final full-I2 calibration decision
+
+With the half adjustment disabled, one final full-I2 calibration layer was
+evaluated after the baseball model. On the 9,699 primary-home games in
+2022–2025, leave-one-season-out log loss selected a shrunk affine-logit curve
+over an offset and identity. The fitted shrinkage multiplier was 0.7567.
+When those development-only coefficients were applied to the 2,414 2026
+primary-home games, the affine curve increased full-I2 log loss by 0.0003717
+and Brier by 0.0001839. The offset increased them by 0.0000651 and 0.0000327.
+The replication gate required improvements in both metrics, so the selected
+final curve is **identity** (`type: none`, intercept 0, slope 1). The vNext
+shadow probability therefore has no added half or final calibration layer.
+
+The 2026 outcomes had already been inspected during half-calibration research;
+Phase 22 uses them as a no-promotion replication check, not a pristine new
+holdout. Neither curve's coefficients nor shrinkage were fitted on 2026.
+The selected artifact and checkpoint are
+`data/derived/i2_vnext/i2_vnext_full_calibration.json` and
+`data/derived/i2_vnext/PHASE22_CHECKPOINT.json`.
+
 ## Prior shadow candidate (superseded for model selection)
 
 **Frozen 2024-fitted half-inning experiment**
@@ -213,3 +234,4 @@ Primary checkpoints:
 - `data/derived/i2_vnext/PHASE21_CHECKPOINT.json`
 - `data/derived/i2_vnext/PHASE19B_CHECKPOINT.json`
 - `data/derived/i2_vnext/PHASE19D_CHECKPOINT.json`
+- `data/derived/i2_vnext/PHASE22_CHECKPOINT.json`
