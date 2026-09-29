@@ -1,0 +1,54 @@
+{
+  "version": "i2-temporal-all-pa-asof-v1",
+  "market_inputs_used": false,
+  "same_day_outcomes_used_as_features": false,
+  "source": "MLB Stats API completed regular-season feeds",
+  "workflow_run_id": 36545276521,
+  "years": {
+    "2022": {
+      "path": "data/derived/i2_vnext/temporal/league_2022_asof.csv",
+      "sha256": "5967dd2bdab5539b54208fb8f1c42bb6def6a774d6439ff38154dad534d3ca9f",
+      "dates": 182,
+      "games": 2430,
+      "first_date": "2022-04-07",
+      "last_date": "2022-10-05"
+    },
+    "2023": {
+      "path": "data/derived/i2_vnext/temporal/league_2023_asof.csv",
+      "sha256": "573120f26610fba7fc814ce38b2dd7a112fa04fb35fb3b346b3da852cb19b35f",
+      "dates": 186,
+      "games": 2430,
+      "first_date": "2023-03-30",
+      "last_date": "2023-10-01"
+    },
+    "2024": {
+      "path": "data/derived/i2_vnext/temporal/league_2024_asof.csv",
+      "sha256": "26d8b146494013b4704a237151dc7f5f4b31f0a3400ee278edddb4ebc2e631ac",
+      "dates": 195,
+      "games": 2429,
+      "first_date": "2024-03-20",
+      "last_date": "2024-09-30"
+    },
+    "2025": {
+      "path": "data/derived/i2_vnext/temporal/league_2025_asof.csv",
+      "sha256": "44f4bbf352228ab1bb6b7b83762ce6f8b13b4bfc192dada503a90d66e903e535",
+      "dates": 195,
+      "games": 2430,
+      "first_date": "2025-03-18",
+      "last_date": "2025-09-28"
+    },
+    "2026": {
+      "path": "data/derived/i2_vnext/temporal/league_2026_asof.csv",
+      "sha256": "1f9e6528a399eb4aaaa8add1b6f89007e31099bae508fb2cc790d659a413bebf",
+      "dates": 187,
+      "games": 2429,
+      "first_date": "2026-03-25",
+      "last_date": "2026-09-27"
+    }
+  },
+  "limits": [
+    "Outcomes are not independent ball drag measurements",
+    "Final feeds reconstruct known prior-day outcomes retrospectively",
+    "Conflicting multi-date game records and no-play finals excluded"
+  ]
+}
