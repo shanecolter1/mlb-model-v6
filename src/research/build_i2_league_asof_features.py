@@ -23,10 +23,19 @@ def feed_games(raw_dir: Path) -> tuple[dict[date, Counter], int]:
     manifest = json.loads((raw_dir / "fetch_manifest.json").read_text())
     daily: dict[date, Counter] = defaultdict(Counter)
     seen = set()
+    records: dict[int, dict] = {}
+    ambiguous = set()
     for rec in manifest["games"]:
         game_id = int(rec["game_id"])
-        if game_id in seen:
-            raise ValueError(f"Duplicate game {game_id}")
+        if game_id in records and rec["game_date"] != records[game_id]["game_date"]:
+            ambiguous.add(game_id)
+        records.setdefault(game_id, rec)
+    # A multi-date schedule entry can be a suspended/resumed game. Its final
+    # feed may contain plate appearances played after its official date.
+    # Without pitch-time reconstruction it must not enter earlier features.
+    for game_id, rec in records.items():
+        if game_id in ambiguous:
+            continue
         seen.add(game_id)
         path = Path(rec["feed_path"])
         if not path.is_absolute() and not path.exists():
@@ -43,7 +52,10 @@ def feed_games(raw_dir: Path) -> tuple[dict[date, Counter], int]:
             raise ValueError(f"Non-final feed: {game_id}")
         game_date = date.fromisoformat(str(gd["datetime"]["officialDate"])[:10])
         if game_date.isoformat() != rec["game_date"]:
-            raise ValueError(f"Date mismatch: {game_id}")
+            # Schedule and final-feed dates disagree. The actual timing of
+            # the plate appearances cannot safely be inferred here.
+            seen.remove(game_id)
+            continue
         plays = feed["liveData"]["plays"]["allPlays"]
         if not plays:
             raise ValueError(f"No plays: {game_id}")
