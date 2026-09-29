@@ -7,6 +7,8 @@ on:
       - research/i2-vnext-direct-talent
     paths:
       - '.github/workflows/i2_temporal_asof_features.yml'
+      - 'src/research/build_i2_league_asof_features.py'
+      - 'tests/test_i2_league_asof_features.py'
 
 permissions:
   contents: read
