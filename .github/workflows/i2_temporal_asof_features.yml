@@ -1,0 +1,68 @@
+name: I2 temporal research - all-PA prior-day league features
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_temporal_asof_features.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  all-pa-features:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {season: 2022, end: '2022-10-06'}
+          - {season: 2023, end: '2023-10-02'}
+          - {season: 2024, end: '2024-10-01'}
+          - {season: 2025, end: '2025-09-29'}
+          - {season: 2026, end: '2026-09-28'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded dependencies
+        run: python -m pip install pandas requests
+      - name: Verify prior-day gate
+        run: PYTHONDONTWRITEBYTECODE=1 python -m unittest tests.test_i2_league_asof_features -q
+      - name: Fetch completed regular-season feeds
+        run: |
+          python src/ingestion/fetch_mlb_statsapi_season.py \
+            --start-date '${{ matrix.season }}-03-01' \
+            --end-date '${{ matrix.end }}' \
+            --output-dir "data/raw/mlbstats_${{ matrix.season }}" \
+            --workers 16
+      - name: Build all-PA prior-day environment features
+        run: |
+          python src/research/build_i2_league_asof_features.py \
+            --raw-dir "data/raw/mlbstats_${{ matrix.season }}" \
+            --output "data/temporal/league_${{ matrix.season }}_asof.csv"
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          season=${{ matrix.season }}
+          path=Path(f'data/temporal/league_{season}_asof.csv')
+          frame=pd.read_csv(path)
+          assert 2400<=frame.games_on_date.sum()<=2440
+          assert len(frame)>=175
+          assert frame.game_date.is_unique
+          assert frame.iloc[0].prior_14d_pa==0
+          assert frame.prior_14d_pa.max()>10000
+          print({'season':season,'games':int(frame.games_on_date.sum()),
+                 'dates':len(frame),'max_prior_14d_pa':int(frame.prior_14d_pa.max())})
+          PY
+      - name: Archive prior-day research features
+        uses: actions/upload-artifact@v4
+        with:
+          name: i2-temporal-league-asof-${{ matrix.season }}
+          if-no-files-found: error
+          retention-days: 14
+          path: data/temporal/league_${{ matrix.season }}_asof.csv
