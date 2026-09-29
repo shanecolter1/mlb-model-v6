@@ -43,6 +43,12 @@ class LeagueAsOfFeaturesTest(unittest.TestCase):
             records.extend([{"game_id": 4, "game_date": day,
                              "feed_path": str(root / "4.json")}
                             for day in ("2026-04-01", "2026-04-03")])
+            empty = json.loads(json.dumps(feed))
+            empty["gamePk"] = 5
+            empty["liveData"]["plays"]["allPlays"] = []
+            (root / "5.json").write_text(json.dumps(empty))
+            records.append({"game_id": 5, "game_date": "2026-04-02",
+                            "feed_path": str(root / "5.json")})
             (root / "fetch_manifest.json").write_text(json.dumps({"games": records}))
             daily, games = feed_games(root)
             features = build_features(daily, (14,))

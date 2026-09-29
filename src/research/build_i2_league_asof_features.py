@@ -58,7 +58,10 @@ def feed_games(raw_dir: Path) -> tuple[dict[date, Counter], int]:
             continue
         plays = feed["liveData"]["plays"]["allPlays"]
         if not plays:
-            raise ValueError(f"No plays: {game_id}")
+            # Some schedule entries marked Final have no completed plays.
+            # They contribute no event exposure and are excluded explicitly.
+            seen.remove(game_id)
+            continue
         for play in plays:
             if not play.get("about", {}).get("isComplete"):
                 continue
@@ -66,6 +69,10 @@ def feed_games(raw_dir: Path) -> tuple[dict[date, Counter], int]:
             if event in EVENT_KEYS:
                 daily[game_date][event] += 1
         daily[game_date]["games"] += 1
+    print(json.dumps({"manifest_records": len(manifest["games"]),
+                      "unique_game_ids": len(records),
+                      "date_ambiguous_excluded": len(ambiguous),
+                      "usable_games": len(seen)}))
     return daily, len(seen)
 
 
