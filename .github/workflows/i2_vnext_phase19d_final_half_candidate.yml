@@ -18,7 +18,7 @@ concurrency:
 
 env:
   RECOVERY_RUN_ID: 36505646844
-  CANDIDATE_SPEC_COMMIT: cbcfeaae2f1796812588b8a93169313b7462c133
+  CANDIDATE_SPEC_COMMIT: 64819af91683fc0f7857c7b299313517eda17b0d
 
 jobs:
   final-compare:
@@ -119,6 +119,10 @@ jobs:
                   'full_i2_logloss_delta':hold['zero_sum']['full_i2_dependence_preserved']['adjusted_minus_raw']['logloss'],
                   'full_i2_brier_delta':hold['zero_sum']['full_i2_dependence_preserved']['adjusted_minus_raw']['brier'],
               },
+              'AFFINE_LOGIT':{
+                  'full_i2_logloss_delta':hold['affine_logit']['full_i2_dependence_preserved']['adjusted_minus_raw']['logloss'],
+                  'full_i2_brier_delta':hold['affine_logit']['full_i2_dependence_preserved']['adjusted_minus_raw']['brier'],
+              },
           }
           selected=min(
               candidates,
@@ -149,16 +153,17 @@ jobs:
               'sample':'season-specific PRIMARY_HOME_VENUE games',
               'development_years':[2022,2023,2024,2025],
               'untouched_holdout_year':2026,
-              'candidate_specification_commit':str(Path('.').resolve()) if False else 'cbcfeaae2f1796812588b8a93169313b7462c133',
+              'candidate_specification_commit':'64819af91683fc0f7857c7b299313517eda17b0d',
               'candidate_specified_before_2026_replay_completion':True,
               'selection_rule':(
                   'Choose minimum 2026 full-I2 log-loss delta among no half adjustment, '
-                  'bottom-only, and zero-sum; use full-I2 Brier delta as tie-break.'
+                  'bottom-only, zero-sum, and affine-logit; use full-I2 Brier delta as tie-break.'
               ),
               'seasonal':seasonal,
               'development_candidates':{
                   'bottom_only':x['development_bottom_only_candidate_2022_2025'],
                   'zero_sum':x['development_zero_sum_candidate_2022_2025'],
+                  'affine_logit':x['development_affine_candidate_2022_2025'],
               },
               'development_shrinkage':{
                   'bottom_only':x['shrinkage_selection']['bottom_only'],
@@ -170,6 +175,7 @@ jobs:
               'future_refit_after_holdout':{
                   'bottom_only':x['pooled_bottom_only_refit_2022_2026_for_future'],
                   'zero_sum':x['pooled_zero_sum_refit_2022_2026_for_future'],
+                  'affine_logit':x['pooled_affine_refit_2022_2026_for_future'],
               },
               'future_zero_sum_probability_map':x['pooled_zero_sum_probability_map'],
               'uncertainty':x['uncertainty'],
