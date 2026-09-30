@@ -2,6 +2,8 @@
 
 Research checkpoint, 2026-09-30. No production or vNext pre-freeze input changed.
 
+**Interpretation update:** This is a transfer test of v0.4's fixed formula, **not** a vNext-trained total effect. It should not be used to reject total information for vNext. The subsequently fitted vNext-specific top/bottom test is in `docs/I2_VNEXT_TRAINED_OPENING_TOTAL_TEST.md`.
+
 ## Decision and scope
 
 The promoted v0.4 workflow already conditions on a DraftKings pregame full-game total. The newer I2 vNext replay is intentionally baseball-only before the forecast freeze. This experiment applies the *same exact-bucket logit recentering* used by v0.4 **after the archived vNext predictions are fixed**, strictly as a diagnostic. It neither uses an I2 price nor modifies a live probability artifact.

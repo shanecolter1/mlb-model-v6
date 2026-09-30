@@ -1,0 +1,232 @@
+{
+  "version": "i2-vnext-trained-total-slope-v1",
+  "scope": "Research post-freeze diagnostic; no production model changed",
+  "source_sha256": "8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5",
+  "ridge_slope": 0.01,
+  "total_center": 8.5,
+  "market_input": "DraftKings pregame full-game opening total point only",
+  "i2_price_used": false,
+  "regime": "2023+ post-rule only",
+  "excluded_years": {
+    "2022": "No 2021 vNext replay to train pre-rule effect",
+    "2023": "Training foundation; no prior post-rule vNext season",
+    "2026": "No canonical opening-total archive and outcomes previously inspected"
+  },
+  "seasons": {
+    "2024": {
+      "training_seasons": [
+        2023
+      ],
+      "training_games": 2310,
+      "matched_test_games": 2354,
+      "first_test_date": "2024-03-28",
+      "last_test_date": "2024-09-30",
+      "coefficients": {
+        "constant_half": {
+          "top": {
+            "intercept": 0.12711734776091868,
+            "total_slope_per_run": 0.0
+          },
+          "bottom": {
+            "intercept": 0.06506059951693947,
+            "total_slope_per_run": 0.0
+          }
+        },
+        "vnext_total": {
+          "top": {
+            "intercept": 0.12234381735555974,
+            "total_slope_per_run": 0.04799095407380437
+          },
+          "bottom": {
+            "intercept": 0.06098696007731798,
+            "total_slope_per_run": 0.042125845875740336
+          }
+        }
+      },
+      "scores": {
+        "raw": {
+          "top": {
+            "actual": 0.23661852166525063,
+            "predicted": 0.24920008496176718,
+            "logloss": 0.545949832349573,
+            "brier": 0.1802223380203908
+          },
+          "bottom": {
+            "actual": 0.2650807136788445,
+            "predicted": 0.24952850467289722,
+            "logloss": 0.5799846420662571,
+            "brier": 0.19547453410790147
+          },
+          "under": {
+            "actual": 0.5637213254035683,
+            "predicted": 0.5635055649957519,
+            "logloss": 0.6855142779655712,
+            "brier": 0.24619259505947327
+          }
+        },
+        "constant_half": {
+          "top": {
+            "actual": 0.23661852166525063,
+            "predicted": 0.2736008857778645,
+            "logloss": 0.5490845244072795,
+            "brier": 0.18145683714737765
+          },
+          "bottom": {
+            "actual": 0.2650807136788445,
+            "predicted": 0.2618515241914634,
+            "logloss": 0.5793715726991815,
+            "brier": 0.1952808304541461
+          },
+          "under": {
+            "actual": 0.5637213254035683,
+            "predicted": 0.5362868520099009,
+            "logloss": 0.6869482603052326,
+            "brier": 0.24691058964522708
+          }
+        },
+        "vnext_total": {
+          "top": {
+            "actual": 0.23661852166525063,
+            "predicted": 0.27158092521908844,
+            "logloss": 0.5487244196288396,
+            "brier": 0.18133794358465866
+          },
+          "bottom": {
+            "actual": 0.2650807136788445,
+            "predicted": 0.2601059562567062,
+            "logloss": 0.5796301879703816,
+            "brier": 0.19538078829456226
+          },
+          "under": {
+            "actual": 0.5637213254035683,
+            "predicted": 0.5392285087100976,
+            "logloss": 0.6869754410443848,
+            "brier": 0.2469235340812431
+          }
+        }
+      },
+      "total_vs_raw": {
+        "delta_logloss": 0.001461163078813581,
+        "ci95_day_cluster": [
+          -0.0006771079289409346,
+          0.003671285165301824
+        ]
+      },
+      "total_vs_constant_half": {
+        "delta_logloss": 2.7180739152118026e-05,
+        "ci95_day_cluster": [
+          -0.0007356290030943349,
+          0.0007950416992733376
+        ]
+      }
+    },
+    "2025": {
+      "training_seasons": [
+        2023,
+        2024
+      ],
+      "training_games": 4664,
+      "matched_test_games": 1660,
+      "first_test_date": "2025-03-27",
+      "last_test_date": "2025-08-16",
+      "coefficients": {
+        "constant_half": {
+          "top": {
+            "intercept": 0.029487973634111434,
+            "total_slope_per_run": 0.0
+          },
+          "bottom": {
+            "intercept": 0.07360726086426572,
+            "total_slope_per_run": 0.0
+          }
+        },
+        "vnext_total": {
+          "top": {
+            "intercept": 0.029828237481601457,
+            "total_slope_per_run": 0.048865636886483745
+          },
+          "bottom": {
+            "intercept": 0.07378969834668747,
+            "total_slope_per_run": 0.010020925990498497
+          }
+        }
+      },
+      "scores": {
+        "raw": {
+          "top": {
+            "actual": 0.2253012048192771,
+            "predicted": 0.24140036144578314,
+            "logloss": 0.5318395301676239,
+            "brier": 0.1740141463253012
+          },
+          "bottom": {
+            "actual": 0.25421686746987954,
+            "predicted": 0.24242078313253013,
+            "logloss": 0.5672671482740248,
+            "brier": 0.1897000415963855
+          },
+          "under": {
+            "actual": 0.5710843373493976,
+            "predicted": 0.5748130120481928,
+            "logloss": 0.6810572642577254,
+            "brier": 0.24400783550602412
+          }
+        },
+        "constant_half": {
+          "top": {
+            "actual": 0.2253012048192771,
+            "predicted": 0.24681487944697678,
+            "logloss": 0.5323938943856366,
+            "brier": 0.1742180822101858
+          },
+          "bottom": {
+            "actual": 0.25421686746987954,
+            "predicted": 0.25613438200608607,
+            "logloss": 0.5669005020034575,
+            "brier": 0.18959270874593837
+          },
+          "under": {
+            "actual": 0.5710843373493976,
+            "predicted": 0.5603904452765525,
+            "logloss": 0.6810999715538283,
+            "brier": 0.24402486217686087
+          }
+        },
+        "vnext_total": {
+          "top": {
+            "actual": 0.2253012048192771,
+            "predicted": 0.24620559623353738,
+            "logloss": 0.5319678696458532,
+            "brier": 0.1740852430966258
+          },
+          "bottom": {
+            "actual": 0.25421686746987954,
+            "predicted": 0.256002855367293,
+            "logloss": 0.5668607677408956,
+            "brier": 0.18957662564714078
+          },
+          "under": {
+            "actual": 0.5710843373493976,
+            "predicted": 0.5610194925306393,
+            "logloss": 0.6807258320910656,
+            "brier": 0.2438428754433946
+          }
+        }
+      },
+      "total_vs_raw": {
+        "delta_logloss": -0.00033143216665983203,
+        "ci95_day_cluster": [
+          -0.0018180319662358226,
+          0.001155758867090404
+        ]
+      },
+      "total_vs_constant_half": {
+        "delta_logloss": -0.0003741394627628213,
+        "ci95_day_cluster": [
+          -0.0009318752452364718,
+          0.0001504196757695638
+        ]
+      }
+    }
+  }
+}
