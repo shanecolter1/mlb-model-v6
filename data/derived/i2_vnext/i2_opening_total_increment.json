@@ -1,0 +1,401 @@
+{
+  "version": "i2-opening-total-increment-v1",
+  "source_sha256": "8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5",
+  "source_eligible_rows": 10730,
+  "v04_validation_release_sha256": "a10284015798da6e797abca00b6df81e9c16cd72e30c7928e22860672b49a820",
+  "crosswalk_matched_games": 6317,
+  "market_inputs_used": "opening full-game total point only",
+  "i2_prices_used": false,
+  "method": "Production exact-bucket logit recentering and equal-half shift",
+  "rule_eras": {
+    "2022": "2021 pre-rule training",
+    "2024": "2023 post-rule training",
+    "2025": "2023\u20132024 post-rule training"
+  },
+  "excluded_years": {
+    "2023": "No earlier post-rule total prior",
+    "2026": "No canonical game-level DK opening-total archive; previously inspected skew"
+  },
+  "seasons": {
+    "2022": {
+      "training_seasons": [
+        2021
+      ],
+      "training_games": 2101,
+      "training_broad_over": 0.4402665397429795,
+      "training_buckets": {
+        "6.0": {
+          "n": 7,
+          "over": 0.42857142857142855
+        },
+        "6.5": {
+          "n": 37,
+          "over": 0.43243243243243246
+        },
+        "7.0": {
+          "n": 113,
+          "over": 0.37168141592920356
+        },
+        "7.5": {
+          "n": 269,
+          "over": 0.4163568773234201
+        },
+        "8.0": {
+          "n": 363,
+          "over": 0.41597796143250687
+        },
+        "8.5": {
+          "n": 526,
+          "over": 0.42585551330798477
+        },
+        "9.0": {
+          "n": 383,
+          "over": 0.42036553524804177
+        },
+        "9.5": {
+          "n": 212,
+          "over": 0.5283018867924528
+        },
+        "10.0": {
+          "n": 84,
+          "over": 0.44047619047619047
+        },
+        "10.5": {
+          "n": 76,
+          "over": 0.631578947368421
+        },
+        "11.0": {
+          "n": 31,
+          "over": 0.6129032258064516
+        }
+      },
+      "replay_games": 2427,
+      "matched_eligible": 2293,
+      "unmatched_or_outside_training_buckets": 134,
+      "first_date": "2022-04-07",
+      "last_date": "2022-10-05",
+      "full_i2": {
+        "raw": {
+          "observed": 0.41822939380723945,
+          "predicted": 0.4231975141735717,
+          "logloss": 0.6805766769118783,
+          "brier": 0.24374587367204534
+        },
+        "total_conditioned": {
+          "observed": 0.41822939380723945,
+          "predicted": 0.4096157010341132,
+          "logloss": 0.6840856377092636,
+          "brier": 0.24537914560150864
+        },
+        "paired_day_ci": {
+          "logloss_delta_vs_raw": 0.0035089607973851516,
+          "ci95_day_cluster": [
+            -0.00041637512954284685,
+            0.007528403302027188
+          ]
+        }
+      },
+      "top": {
+        "raw": {
+          "observed": 0.21631051024858264,
+          "predicted": 0.24036999563890102,
+          "logloss": 0.5232286032055973,
+          "brier": 0.16992489499345834
+        },
+        "total_conditioned": {
+          "observed": 0.21631051024858264,
+          "predicted": 0.23248655389081568,
+          "logloss": 0.5250038308716581,
+          "brier": 0.17083189431587736
+        }
+      },
+      "bottom": {
+        "raw": {
+          "observed": 0.2546881814217183,
+          "predicted": 0.24086266899258613,
+          "logloss": 0.5687565988209072,
+          "brier": 0.19031848857828174
+        },
+        "total_conditioned": {
+          "observed": 0.2546881814217183,
+          "predicted": 0.23293190070252648,
+          "logloss": 0.5719438403596362,
+          "brier": 0.19151767724695104
+        }
+      },
+      "v04_release_matched": {
+        "status": "Historical OOS validation candidate, not a timestamped frozen production forecast",
+        "games": 2278,
+        "vnext_raw": {
+          "observed": 0.5803336259877085,
+          "predicted": 0.5767561457418788,
+          "logloss": 0.681023853298662,
+          "brier": 0.2439672927172959
+        },
+        "vnext_total": {
+          "observed": 0.5803336259877085,
+          "predicted": 0.5903347762172603,
+          "logloss": 0.6845346349818809,
+          "brier": 0.2456023412215643
+        },
+        "v04_local_cv": {
+          "observed": 0.5803336259877085,
+          "predicted": 0.5798393130588985,
+          "logloss": 0.6790106354140508,
+          "brier": 0.24298018199837335
+        }
+      }
+    },
+    "2024": {
+      "training_seasons": [
+        2023
+      ],
+      "training_games": 2312,
+      "training_broad_over": 0.45025951557093424,
+      "training_buckets": {
+        "6.5": {
+          "n": 17,
+          "over": 0.5294117647058824
+        },
+        "7.0": {
+          "n": 96,
+          "over": 0.3333333333333333
+        },
+        "7.5": {
+          "n": 275,
+          "over": 0.43272727272727274
+        },
+        "8.0": {
+          "n": 372,
+          "over": 0.43010752688172044
+        },
+        "8.5": {
+          "n": 628,
+          "over": 0.45222929936305734
+        },
+        "9.0": {
+          "n": 493,
+          "over": 0.460446247464503
+        },
+        "9.5": {
+          "n": 278,
+          "over": 0.46402877697841727
+        },
+        "10.0": {
+          "n": 83,
+          "over": 0.4819277108433735
+        },
+        "10.5": {
+          "n": 43,
+          "over": 0.5813953488372093
+        },
+        "11.0": {
+          "n": 27,
+          "over": 0.5925925925925926
+        }
+      },
+      "replay_games": 2421,
+      "matched_eligible": 2354,
+      "unmatched_or_outside_training_buckets": 67,
+      "first_date": "2024-03-28",
+      "last_date": "2024-09-30",
+      "full_i2": {
+        "raw": {
+          "observed": 0.4362786745964316,
+          "predicted": 0.4364944350042481,
+          "logloss": 0.6855142779655712,
+          "brier": 0.24619259505947327
+        },
+        "total_conditioned": {
+          "observed": 0.4362786745964316,
+          "predicted": 0.431525684299631,
+          "logloss": 0.688123852101479,
+          "brier": 0.24741739881399966
+        },
+        "paired_day_ci": {
+          "logloss_delta_vs_raw": 0.0026095741359079003,
+          "ci95_day_cluster": [
+            -0.0003128551794256085,
+            0.005477835126493199
+          ]
+        }
+      },
+      "top": {
+        "raw": {
+          "observed": 0.23661852166525063,
+          "predicted": 0.24920008496176718,
+          "logloss": 0.545949832349573,
+          "brier": 0.1802223380203908
+        },
+        "total_conditioned": {
+          "observed": 0.23661852166525063,
+          "predicted": 0.24659442722345185,
+          "logloss": 0.5471820206272077,
+          "brier": 0.18070244389910597
+        }
+      },
+      "bottom": {
+        "raw": {
+          "observed": 0.2650807136788445,
+          "predicted": 0.24952850467289722,
+          "logloss": 0.5799846420662571,
+          "brier": 0.19547453410790147
+        },
+        "total_conditioned": {
+          "observed": 0.2650807136788445,
+          "predicted": 0.24673426247029306,
+          "logloss": 0.5818594129399852,
+          "brier": 0.196176564466628
+        }
+      },
+      "v04_release_matched": {
+        "status": "Historical OOS validation candidate, not a timestamped frozen production forecast",
+        "games": 2339,
+        "vnext_raw": {
+          "observed": 0.5639162035057717,
+          "predicted": 0.5634389910218042,
+          "logloss": 0.6853885734321605,
+          "brier": 0.24613046876442923
+        },
+        "vnext_total": {
+          "observed": 0.5639162035057717,
+          "predicted": 0.5683073344607263,
+          "logloss": 0.6881084113862643,
+          "brier": 0.24740357202680457
+        },
+        "v04_local_cv": {
+          "observed": 0.5639162035057717,
+          "predicted": 0.5684838806867002,
+          "logloss": 0.6859866227805045,
+          "brier": 0.2464212408690715
+        }
+      }
+    },
+    "2025": {
+      "training_seasons": [
+        2023,
+        2024
+      ],
+      "training_games": 4672,
+      "training_broad_over": 0.4428510273972603,
+      "training_buckets": {
+        "6.5": {
+          "n": 24,
+          "over": 0.4166666666666667
+        },
+        "7.0": {
+          "n": 182,
+          "over": 0.3516483516483517
+        },
+        "7.5": {
+          "n": 641,
+          "over": 0.43837753510140404
+        },
+        "8.0": {
+          "n": 961,
+          "over": 0.441207075962539
+        },
+        "8.5": {
+          "n": 1361,
+          "over": 0.432035268185158
+        },
+        "9.0": {
+          "n": 871,
+          "over": 0.4592422502870264
+        },
+        "9.5": {
+          "n": 388,
+          "over": 0.4587628865979381
+        },
+        "10.0": {
+          "n": 118,
+          "over": 0.4745762711864407
+        },
+        "10.5": {
+          "n": 72,
+          "over": 0.5555555555555556
+        },
+        "11.0": {
+          "n": 54,
+          "over": 0.5185185185185185
+        }
+      },
+      "replay_games": 2426,
+      "matched_eligible": 1659,
+      "unmatched_or_outside_training_buckets": 767,
+      "first_date": "2025-03-27",
+      "last_date": "2025-08-16",
+      "full_i2": {
+        "raw": {
+          "observed": 0.42857142857142855,
+          "predicted": 0.4252223628691983,
+          "logloss": 0.6808627497951589,
+          "brier": 0.24391301066305004
+        },
+        "total_conditioned": {
+          "observed": 0.42857142857142855,
+          "predicted": 0.4229972752801579,
+          "logloss": 0.6806347736837779,
+          "brier": 0.24379758658513564
+        },
+        "paired_day_ci": {
+          "logloss_delta_vs_raw": -0.0002279761113810016,
+          "ci95_day_cluster": [
+            -0.002720363936209091,
+            0.0021588843839024045
+          ]
+        }
+      },
+      "top": {
+        "raw": {
+          "observed": 0.22543701024713683,
+          "predicted": 0.2414285714285714,
+          "logloss": 0.532029658738813,
+          "brier": 0.1740962108137432
+        },
+        "total_conditioned": {
+          "observed": 0.22543701024713683,
+          "predicted": 0.24036029863774286,
+          "logloss": 0.5317391310653035,
+          "brier": 0.17405012331703648
+        }
+      },
+      "bottom": {
+        "raw": {
+          "observed": 0.2537673297166968,
+          "predicted": 0.2424383363471971,
+          "logloss": 0.5666777640032408,
+          "brier": 0.18944133342977698
+        },
+        "total_conditioned": {
+          "observed": 0.2537673297166968,
+          "predicted": 0.24124236608091337,
+          "logloss": 0.566606934847928,
+          "brier": 0.18940939968550727
+        }
+      },
+      "v04_release_matched": {
+        "status": "Historical OOS validation candidate, not a timestamped frozen production forecast",
+        "games": 1646,
+        "vnext_raw": {
+          "observed": 0.5729040097205347,
+          "predicted": 0.5748715066828676,
+          "logloss": 0.680447874653151,
+          "brier": 0.24370863253341435
+        },
+        "vnext_total": {
+          "observed": 0.5729040097205347,
+          "predicted": 0.5771087163017738,
+          "logloss": 0.6800472364478691,
+          "brier": 0.2435162277462136
+        },
+        "v04_local_cv": {
+          "observed": 0.5729040097205347,
+          "predicted": 0.566245348275963,
+          "logloss": 0.6807030611924129,
+          "brier": 0.2438208223976598
+        }
+      }
+    }
+  }
+}
