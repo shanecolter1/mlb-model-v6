@@ -1,6 +1,6 @@
 {
   "date": "2026-09-30",
-  "generatedAt": "2026-09-30T12:08:31.056Z",
+  "generatedAt": "2026-09-30T12:12:04.291Z",
   "governance": {
     "sourceStatus": "BASEBALL_ONLY_SOURCE_HIERARCHY",
     "marketDataUsed": false
@@ -31,44 +31,44 @@
       ],
       "inputAudit": {
         "gamePk": 849841,
-        "retrievedAt": "2026-09-30T12:08:29.618Z",
+        "retrievedAt": "2026-09-30T12:12:02.824Z",
         "providers": [
           {
             "source": "ROTOWIRE",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROTOWIRE_STARTERS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROSTERRESOURCE",
             "status": "ROSTERRESOURCE_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "TEAM_BEAT_REPORTS",
             "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "MLB_NEWS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z"
+            "retrievedAt": "2026-09-30T12:12:00.248Z"
           }
         ],
         "away": {
@@ -77,7 +77,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Trea Turner",
@@ -150,7 +150,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Trea Turner",
@@ -206,7 +206,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849845",
                   "timestamp": "2026-09-29T18:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:29.828Z",
+                  "retrievedAt": "2026-09-30T12:12:03.028Z",
                   "players": [
                     "Trea Turner",
                     "Kyle Schwarber",
@@ -264,8 +264,8 @@
           "starter": {
             "provider": "MLB",
             "source": "MLB Stats API probable pitcher",
-            "timestamp": "2026-09-30T12:08:29.828Z",
-            "retrievedAt": "2026-09-30T12:08:29.828Z",
+            "timestamp": "2026-09-30T12:12:03.028Z",
+            "retrievedAt": "2026-09-30T12:12:03.028Z",
             "id": 650911,
             "name": "Cristopher Sánchez",
             "confirmed": false,
@@ -278,8 +278,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:29.828Z",
-                "retrievedAt": "2026-09-30T12:08:29.828Z",
+                "timestamp": "2026-09-30T12:12:03.028Z",
+                "retrievedAt": "2026-09-30T12:12:03.028Z",
                 "id": 650911,
                 "name": "Cristopher Sánchez",
                 "confirmed": false
@@ -290,7 +290,7 @@
             {
               "source": "https://www.mlb.com/news/key-takeaways-from-braves-win-over-phillies-in-game-1-of-nl-wild-card-series",
               "timestamp": "Tue, 29 Sep 2026 23:17:00 GMT",
-              "retrievedAt": "2026-09-30T12:08:26.827Z",
+              "retrievedAt": "2026-09-30T12:12:00.413Z",
               "reason": "4 big takeaways from the Phillies-Braves back-and-forth WC opener ",
               "action": "REVIEW_NEWS",
               "verified": false,
@@ -322,7 +322,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Ronald Acuna",
@@ -395,7 +395,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Ronald Acuna",
@@ -451,7 +451,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849845",
                   "timestamp": "2026-09-29T18:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:29.973Z",
+                  "retrievedAt": "2026-09-30T12:12:03.196Z",
                   "players": [
                     "Drake Baldwin",
                     "Ronald Acuña Jr.",
@@ -524,7 +524,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Tyler Mahle",
             "confirmed": false,
             "role": "STARTER",
@@ -539,7 +539,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Tyler Mahle",
                 "confirmed": false,
                 "role": "STARTER"
@@ -547,8 +547,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:29.973Z",
-                "retrievedAt": "2026-09-30T12:08:29.973Z",
+                "timestamp": "2026-09-30T12:12:03.196Z",
+                "retrievedAt": "2026-09-30T12:12:03.196Z",
                 "id": 641816,
                 "name": "Tyler Mahle",
                 "confirmed": false
@@ -559,7 +559,7 @@
             {
               "source": "https://www.mlb.com/news/key-takeaways-from-braves-win-over-phillies-in-game-1-of-nl-wild-card-series",
               "timestamp": "Tue, 29 Sep 2026 23:17:00 GMT",
-              "retrievedAt": "2026-09-30T12:08:26.827Z",
+              "retrievedAt": "2026-09-30T12:12:00.413Z",
               "reason": "4 big takeaways from the Phillies-Braves back-and-forth WC opener ",
               "action": "REVIEW_NEWS",
               "verified": false,
@@ -620,44 +620,44 @@
       ],
       "inputAudit": {
         "gamePk": 849842,
-        "retrievedAt": "2026-09-30T12:08:30.635Z",
+        "retrievedAt": "2026-09-30T12:12:03.955Z",
         "providers": [
           {
             "source": "ROTOWIRE",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROTOWIRE_STARTERS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROSTERRESOURCE",
             "status": "ROSTERRESOURCE_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "TEAM_BEAT_REPORTS",
             "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "MLB_NEWS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z"
+            "retrievedAt": "2026-09-30T12:12:00.248Z"
           }
         ],
         "away": {
@@ -666,7 +666,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Pete Crow-Armstrong",
@@ -739,7 +739,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Pete Crow-Armstrong",
@@ -795,7 +795,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849843",
                   "timestamp": "2026-09-30T02:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:30.871Z",
+                  "retrievedAt": "2026-09-30T12:12:04.122Z",
                   "players": [
                     "Pete Crow-Armstrong",
                     "Alex Bregman",
@@ -858,7 +858,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Kevin Gausman",
             "confirmed": false,
             "role": "STARTER",
@@ -873,7 +873,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Kevin Gausman",
                 "confirmed": false,
                 "role": "STARTER"
@@ -881,8 +881,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:30.871Z",
-                "retrievedAt": "2026-09-30T12:08:30.871Z",
+                "timestamp": "2026-09-30T12:12:04.122Z",
+                "retrievedAt": "2026-09-30T12:12:04.122Z",
                 "id": 592332,
                 "name": "Kevin Gausman",
                 "confirmed": false
@@ -898,7 +898,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Fernando Tatis",
@@ -971,7 +971,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Fernando Tatis",
@@ -1027,7 +1027,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849843",
                   "timestamp": "2026-09-30T02:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:31.054Z",
+                  "retrievedAt": "2026-09-30T12:12:04.289Z",
                   "players": [
                     "Fernando Tatis Jr.",
                     "Samad Taylor",
@@ -1089,7 +1089,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Nick Pivetta",
             "confirmed": false,
             "role": "STARTER",
@@ -1104,7 +1104,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Nick Pivetta",
                 "confirmed": false,
                 "role": "STARTER"
@@ -1112,8 +1112,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:31.054Z",
-                "retrievedAt": "2026-09-30T12:08:31.054Z",
+                "timestamp": "2026-09-30T12:12:04.289Z",
+                "retrievedAt": "2026-09-30T12:12:04.289Z",
                 "id": 601713,
                 "name": "Nick Pivetta",
                 "confirmed": false
@@ -1158,44 +1158,44 @@
       ],
       "inputAudit": {
         "gamePk": 849846,
-        "retrievedAt": "2026-09-30T12:08:29.980Z",
+        "retrievedAt": "2026-09-30T12:12:03.221Z",
         "providers": [
           {
             "source": "ROTOWIRE",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROTOWIRE_STARTERS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROSTERRESOURCE",
             "status": "ROSTERRESOURCE_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "TEAM_BEAT_REPORTS",
             "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "MLB_NEWS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z"
+            "retrievedAt": "2026-09-30T12:12:00.248Z"
           }
         ],
         "away": {
@@ -1204,7 +1204,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Sam Antonacci",
@@ -1277,7 +1277,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Sam Antonacci",
@@ -1333,7 +1333,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849849",
                   "timestamp": "2026-09-29T21:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:30.152Z",
+                  "retrievedAt": "2026-09-30T12:12:03.387Z",
                   "players": [
                     "Sam Antonacci",
                     "Kyle Teel",
@@ -1381,7 +1381,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Sean Burke",
             "confirmed": false,
             "role": "STARTER",
@@ -1396,7 +1396,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Sean Burke",
                 "confirmed": false,
                 "role": "STARTER"
@@ -1404,8 +1404,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:30.152Z",
-                "retrievedAt": "2026-09-30T12:08:30.152Z",
+                "timestamp": "2026-09-30T12:12:03.387Z",
+                "retrievedAt": "2026-09-30T12:12:03.387Z",
                 "id": 680732,
                 "name": "Sean Burke",
                 "confirmed": false
@@ -1421,7 +1421,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Jeremy Pena",
@@ -1494,7 +1494,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Jeremy Pena",
@@ -1550,7 +1550,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849849",
                   "timestamp": "2026-09-29T21:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:30.303Z",
+                  "retrievedAt": "2026-09-30T12:12:03.549Z",
                   "players": [
                     "Jeremy Peña",
                     "Yordan Alvarez",
@@ -1582,7 +1582,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Hunter Brown",
             "confirmed": false,
             "role": "STARTER",
@@ -1597,7 +1597,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Hunter Brown",
                 "confirmed": false,
                 "role": "STARTER"
@@ -1605,8 +1605,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:30.303Z",
-                "retrievedAt": "2026-09-30T12:08:30.303Z",
+                "timestamp": "2026-09-30T12:12:03.549Z",
+                "retrievedAt": "2026-09-30T12:12:03.549Z",
                 "id": 686613,
                 "name": "Hunter Brown",
                 "confirmed": false
@@ -1617,7 +1617,7 @@
             {
               "source": "https://www.mlb.com/news/astros-lose-al-wild-card-game-1-2026",
               "timestamp": "Wed, 30 Sep 2026 02:20:00 GMT",
-              "retrievedAt": "2026-09-30T12:08:26.827Z",
+              "retrievedAt": "2026-09-30T12:12:00.413Z",
               "reason": "Bullpen game struggles put Astros in must-win position for ALWC G2 ",
               "action": "REVIEW_NEWS",
               "verified": false,
@@ -1678,44 +1678,44 @@
       ],
       "inputAudit": {
         "gamePk": 849848,
-        "retrievedAt": "2026-09-30T12:08:30.312Z",
+        "retrievedAt": "2026-09-30T12:12:03.574Z",
         "providers": [
           {
             "source": "ROTOWIRE",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROTOWIRE_STARTERS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "publicPage": {
               "source": "ROTOWIRE_PUBLIC",
               "status": "AVAILABLE",
-              "retrievedAt": "2026-09-30T12:08:26.683Z"
+              "retrievedAt": "2026-09-30T12:12:00.211Z"
             }
           },
           {
             "source": "ROSTERRESOURCE",
             "status": "ROSTERRESOURCE_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "TEAM_BEAT_REPORTS",
             "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "retrievedAt": "2026-09-30T12:12:00.248Z",
             "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
           },
           {
             "source": "MLB_NEWS",
             "status": "AVAILABLE",
-            "retrievedAt": "2026-09-30T12:08:26.720Z"
+            "retrievedAt": "2026-09-30T12:12:00.248Z"
           }
         ],
         "away": {
@@ -1724,7 +1724,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Jahmai Jones",
@@ -1797,7 +1797,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Jahmai Jones",
@@ -1853,7 +1853,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849851",
                   "timestamp": "2026-09-30T00:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:30.487Z",
+                  "retrievedAt": "2026-09-30T12:12:03.756Z",
                   "players": [
                     "Roman Anthony",
                     "Adley Rutschman",
@@ -1946,7 +1946,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Sonny Gray",
             "confirmed": false,
             "role": "STARTER",
@@ -1961,7 +1961,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Sonny Gray",
                 "confirmed": false,
                 "role": "STARTER"
@@ -1969,8 +1969,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:30.487Z",
-                "retrievedAt": "2026-09-30T12:08:30.487Z",
+                "timestamp": "2026-09-30T12:12:03.756Z",
+                "retrievedAt": "2026-09-30T12:12:03.756Z",
                 "id": 543243,
                 "name": "Sonny Gray",
                 "confirmed": false
@@ -1986,7 +1986,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "confirmed": false,
             "players": [
               "Ben Rice",
@@ -2059,7 +2059,7 @@
                   "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                   "transport": "PUBLIC_HTML",
                   "timestamp": null,
-                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "retrievedAt": "2026-09-30T12:12:01.356Z",
                   "confirmed": false,
                   "players": [
                     "Ben Rice",
@@ -2115,7 +2115,7 @@
                   "provider": "PREVIOUS_GAME",
                   "source": "MLB previous game 849851",
                   "timestamp": "2026-09-30T00:00:00Z",
-                  "retrievedAt": "2026-09-30T12:08:30.627Z",
+                  "retrievedAt": "2026-09-30T12:12:03.928Z",
                   "players": [
                     "Paul Goldschmidt",
                     "Ben Rice",
@@ -2199,7 +2199,7 @@
             "source": "https://www.rotowire.com/baseball/daily-lineups.php",
             "transport": "PUBLIC_HTML",
             "timestamp": null,
-            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "retrievedAt": "2026-09-30T12:12:01.356Z",
             "name": "Max Fried",
             "confirmed": false,
             "role": "STARTER",
@@ -2214,7 +2214,7 @@
                 "source": "https://www.rotowire.com/baseball/daily-lineups.php",
                 "transport": "PUBLIC_HTML",
                 "timestamp": null,
-                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "retrievedAt": "2026-09-30T12:12:01.356Z",
                 "name": "Max Fried",
                 "confirmed": false,
                 "role": "STARTER"
@@ -2222,8 +2222,8 @@
               {
                 "provider": "MLB",
                 "source": "MLB Stats API probable pitcher",
-                "timestamp": "2026-09-30T12:08:30.627Z",
-                "retrievedAt": "2026-09-30T12:08:30.627Z",
+                "timestamp": "2026-09-30T12:12:03.928Z",
+                "retrievedAt": "2026-09-30T12:12:03.928Z",
                 "id": 608331,
                 "name": "Max Fried",
                 "confirmed": false
