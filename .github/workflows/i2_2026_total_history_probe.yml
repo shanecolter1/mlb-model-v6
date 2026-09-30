@@ -24,6 +24,7 @@ jobs:
           import json, os
           from urllib.parse import urlencode
           from urllib.request import Request, urlopen
+          from urllib.error import HTTPError
           from pathlib import Path
           params={
               'leagueID':'MLB','oddID':'points-all-game-ou-over',
@@ -32,9 +33,14 @@ jobs:
               'startsBefore':'2026-06-17T00:00:00Z','limit':'25',
           }
           url='https://api.sportsgameodds.com/v2/events?'+urlencode(params)
-          with urlopen(Request(url,headers={'accept':'application/json',
-                                            'x-api-key':os.environ['SPORTSGAMEODDS_API_KEY']}),timeout=30) as response:
-              payload=json.load(response)
+          try:
+              with urlopen(Request(url,headers={'accept':'application/json',
+                                                'x-api-key':os.environ['SPORTSGAMEODDS_API_KEY']}),timeout=30) as response:
+                  payload=json.load(response)
+          except HTTPError as error:
+              message=error.read().decode('utf-8','replace')[:1000]
+              print(json.dumps({'status':error.code,'api_error':message}))
+              raise SystemExit(2)
           rows=[]
           for event in payload.get('data',[]):
               book=event.get('odds',{}).get('points-all-game-ou-over',{}).get('byBookmaker',{}).get('draftkings',{})
