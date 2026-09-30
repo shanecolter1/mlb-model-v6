@@ -1,0 +1,55 @@
+name: I2 research - 2026 historical total source probe
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_2026_total_history_probe.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+    steps:
+      - name: Verify 2026 historical DraftKings opening-total coverage
+        run: |
+          python - <<'PY'
+          import json, os
+          from urllib.parse import urlencode
+          from urllib.request import Request, urlopen
+          from pathlib import Path
+          params={
+              'leagueID':'MLB','oddID':'points-all-game-ou-over',
+              'bookmakerID':'draftkings','includeOpenCloseOdds':'true',
+              'finalized':'true','startsAfter':'2026-06-15T00:00:00Z',
+              'startsBefore':'2026-06-17T00:00:00Z','limit':'25',
+          }
+          url='https://api.sportsgameodds.com/v2/events?'+urlencode(params)
+          with urlopen(Request(url,headers={'accept':'application/json',
+                                            'x-api-key':os.environ['SPORTSGAMEODDS_API_KEY']}),timeout=30) as response:
+              payload=json.load(response)
+          rows=[]
+          for event in payload.get('data',[]):
+              book=event.get('odds',{}).get('points-all-game-ou-over',{}).get('byBookmaker',{}).get('draftkings',{})
+              rows.append({'event_id':event.get('eventID'),'start_time':event.get('startTime'),
+                           'open_total':book.get('openOverUnder'),
+                           'close_total':book.get('closeOverUnder'),
+                           'current_total':book.get('overUnder')})
+          summary={'events':len(rows),'with_open_total':sum(x['open_total'] is not None for x in rows),
+                   'has_next_cursor':bool(payload.get('nextCursor')),
+                   'sample':rows[:4]}
+          Path('i2_2026_sgo_total_probe.json').write_text(json.dumps(summary,indent=2)+'\n')
+          print(json.dumps(summary))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-2026-sgo-opening-total-probe
+          path: i2_2026_sgo_total_probe.json
+          retention-days: 7
