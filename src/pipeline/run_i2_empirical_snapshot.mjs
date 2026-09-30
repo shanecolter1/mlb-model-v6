@@ -134,7 +134,7 @@ async function offenseData(team){
 }
 
 const schedule=await getJson(`https://statsapi.mlb.com/api/v1/schedule?sportId=1&date=${DATE}&hydrate=probablePitcher,team`);
-const scheduled=(schedule.dates||[]).flatMap(d=>d.games||[]).filter(g=>g.gameType==='R');
+const scheduled=(schedule.dates||[]).flatMap(d=>d.games||[]);
 const metas=await mapLimit(scheduled,CONCURRENCY,async g=>{
   const f=await feed(g.gamePk);
   const pg=productionByGame.get(String(g.gamePk));
