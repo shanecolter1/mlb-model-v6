@@ -153,3 +153,5 @@ jobs:
           done
           echo 'Unable to push empirical artifact after 3 attempts.'
           exit 1
+
+# postseason empirical companion rerun 2026-09-30
