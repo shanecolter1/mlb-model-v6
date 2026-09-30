@@ -1,0 +1,109 @@
+{
+  "date": "2026-09-30",
+  "model": "MLB I2 Under/Over v0.4 Local-CV Production",
+  "generatedAt": "2026-09-30T12:09:14.230Z",
+  "underGateStatus": "CANDIDATE_PENDING_FULL_RETEST",
+  "underThresholdPct": 61.5,
+  "qualifiedUnders": [
+    {
+      "rank": 1,
+      "gamePk": 849841,
+      "matchup": "Philadelphia Phillies @ Atlanta Braves",
+      "total": 7,
+      "under05Pct": 64.98,
+      "over05Pct": 35.02,
+      "fairUnder": -186,
+      "fairOver": 186,
+      "localCvBin": 10,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": true
+    },
+    {
+      "rank": 2,
+      "gamePk": 849848,
+      "matchup": "Boston Red Sox @ New York Yankees",
+      "total": 6.5,
+      "under05Pct": 64.08,
+      "over05Pct": 35.92,
+      "fairUnder": -178,
+      "fairOver": 178,
+      "localCvBin": 10,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": true
+    },
+    {
+      "rank": 3,
+      "gamePk": 849842,
+      "matchup": "Chicago Cubs @ San Diego Padres",
+      "total": 7,
+      "under05Pct": 62.89,
+      "over05Pct": 37.11,
+      "fairUnder": -169,
+      "fairOver": 169,
+      "localCvBin": 10,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": true
+    }
+  ],
+  "ranking": [
+    {
+      "rank": 1,
+      "gamePk": 849841,
+      "matchup": "Philadelphia Phillies @ Atlanta Braves",
+      "total": 7,
+      "under05Pct": 64.98,
+      "over05Pct": 35.02,
+      "fairUnder": -186,
+      "fairOver": 186,
+      "localCvBin": 10,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": true
+    },
+    {
+      "rank": 2,
+      "gamePk": 849848,
+      "matchup": "Boston Red Sox @ New York Yankees",
+      "total": 6.5,
+      "under05Pct": 64.08,
+      "over05Pct": 35.92,
+      "fairUnder": -178,
+      "fairOver": 178,
+      "localCvBin": 10,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": true
+    },
+    {
+      "rank": 3,
+      "gamePk": 849842,
+      "matchup": "Chicago Cubs @ San Diego Padres",
+      "total": 7,
+      "under05Pct": 62.89,
+      "over05Pct": 37.11,
+      "fairUnder": -169,
+      "fairOver": 169,
+      "localCvBin": 10,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": true
+    },
+    {
+      "rank": 4,
+      "gamePk": 849846,
+      "matchup": "Chicago White Sox @ Houston Astros",
+      "total": 7.5,
+      "under05Pct": 57.73,
+      "over05Pct": 42.27,
+      "fairUnder": -137,
+      "fairOver": 137,
+      "localCvBin": 6,
+      "shrinkage": 10,
+      "predictionClass": null,
+      "underQualified": false
+    }
+  ]
+}

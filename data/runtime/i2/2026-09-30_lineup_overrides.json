@@ -1,0 +1,2247 @@
+{
+  "date": "2026-09-30",
+  "generatedAt": "2026-09-30T12:08:31.056Z",
+  "governance": {
+    "sourceStatus": "BASEBALL_ONLY_SOURCE_HIERARCHY",
+    "marketDataUsed": false
+  },
+  "games": {
+    "849841": {
+      "away": [
+        "Trea Turner",
+        "Kyle Schwarber",
+        "Bryce Harper",
+        "Bryson Stott",
+        "Alec Bohm",
+        "Brandon Marsh",
+        "Edmundo Sosa",
+        "Justin Crawford",
+        "J.T. Realmuto"
+      ],
+      "home": [
+        "Ronald Acuna",
+        "Drake Baldwin",
+        "Matt Olson",
+        "Ozzie Albies",
+        "Michael Harris",
+        "Mauricio Dubon",
+        "Austin Riley",
+        "Sean Murphy",
+        "Ha-Seong Kim"
+      ],
+      "inputAudit": {
+        "gamePk": 849841,
+        "retrievedAt": "2026-09-30T12:08:29.618Z",
+        "providers": [
+          {
+            "source": "ROTOWIRE",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROTOWIRE_STARTERS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROSTERRESOURCE",
+            "status": "ROSTERRESOURCE_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "TEAM_BEAT_REPORTS",
+            "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "MLB_NEWS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z"
+          }
+        ],
+        "away": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Trea Turner",
+              "Kyle Schwarber",
+              "Bryce Harper",
+              "Bryson Stott",
+              "Alec Bohm",
+              "Brandon Marsh",
+              "Edmundo Sosa",
+              "Justin Crawford",
+              "J.T. Realmuto"
+            ],
+            "handedness": [
+              {
+                "name": "Trea Turner",
+                "bats": "R"
+              },
+              {
+                "name": "Kyle Schwarber",
+                "bats": "L"
+              },
+              {
+                "name": "Bryce Harper",
+                "bats": "L"
+              },
+              {
+                "name": "Bryson Stott",
+                "bats": "L"
+              },
+              {
+                "name": "Alec Bohm",
+                "bats": "R"
+              },
+              {
+                "name": "Brandon Marsh",
+                "bats": "L"
+              },
+              {
+                "name": "Edmundo Sosa",
+                "bats": "R"
+              },
+              {
+                "name": "Justin Crawford",
+                "bats": "L"
+              },
+              {
+                "name": "J.T. Realmuto",
+                "bats": "R"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Trea Turner",
+              "Kyle Schwarber",
+              "Bryce Harper",
+              "Bryson Stott"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Trea Turner",
+                    "Kyle Schwarber",
+                    "Bryce Harper",
+                    "Bryson Stott",
+                    "Alec Bohm",
+                    "Brandon Marsh",
+                    "Edmundo Sosa",
+                    "Justin Crawford",
+                    "J.T. Realmuto"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Trea Turner",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Kyle Schwarber",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Bryce Harper",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Bryson Stott",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Alec Bohm",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Brandon Marsh",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Edmundo Sosa",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Justin Crawford",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "J.T. Realmuto",
+                      "bats": "R"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849845",
+                  "timestamp": "2026-09-29T18:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:29.828Z",
+                  "players": [
+                    "Trea Turner",
+                    "Kyle Schwarber",
+                    "Bryce Harper",
+                    "Alec Bohm",
+                    "Derek Hill",
+                    "Bryan De La Cruz",
+                    "Bryson Stott",
+                    "Edmundo Sosa",
+                    "J.T. Realmuto"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [
+                  "Brandon Marsh",
+                  "Justin Crawford"
+                ],
+                "removed": [
+                  "Derek Hill",
+                  "Bryan De La Cruz"
+                ],
+                "moves": [
+                  {
+                    "player": "Bryson Stott",
+                    "from": 7,
+                    "to": 4
+                  },
+                  {
+                    "player": "Alec Bohm",
+                    "from": 4,
+                    "to": 5
+                  },
+                  {
+                    "player": "Edmundo Sosa",
+                    "from": 8,
+                    "to": 7
+                  }
+                ],
+                "top4Changes": [
+                  {
+                    "position": 4,
+                    "before": "Alec Bohm",
+                    "after": "Bryson Stott"
+                  }
+                ],
+                "exactSlots": 4,
+                "weightedSlotAccuracy": 0.5384615384615384
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "MLB",
+            "source": "MLB Stats API probable pitcher",
+            "timestamp": "2026-09-30T12:08:29.828Z",
+            "retrievedAt": "2026-09-30T12:08:29.828Z",
+            "id": 650911,
+            "name": "Cristopher Sánchez",
+            "confirmed": false,
+            "status": "PROJECTED_LOW",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:29.828Z",
+                "retrievedAt": "2026-09-30T12:08:29.828Z",
+                "id": 650911,
+                "name": "Cristopher Sánchez",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [
+            {
+              "source": "https://www.mlb.com/news/key-takeaways-from-braves-win-over-phillies-in-game-1-of-nl-wild-card-series",
+              "timestamp": "Tue, 29 Sep 2026 23:17:00 GMT",
+              "retrievedAt": "2026-09-30T12:08:26.827Z",
+              "reason": "4 big takeaways from the Phillies-Braves back-and-forth WC opener ",
+              "action": "REVIEW_NEWS",
+              "verified": false,
+              "explicit": false,
+              "recommendedAction": "SRM_REVIEW_RECOMMENDED"
+            }
+          ],
+          "srmReviews": [
+            {
+              "currentInput": "Cristopher Sánchez",
+              "proposedChange": "REVIEW_NEWS",
+              "evidence": {
+                "source": "https://www.mlb.com/news/key-takeaways-from-braves-win-over-phillies-in-game-1-of-nl-wild-card-series",
+                "timestamp": "Tue, 29 Sep 2026 23:17:00 GMT",
+                "reason": "4 big takeaways from the Phillies-Braves back-and-forth WC opener "
+              },
+              "affectedComponent": "starter quality/duration only",
+              "expectedDirection": "REQUIRES_APPROVED_SRM",
+              "expectedMagnitude": null,
+              "status": "APPROVAL_AND_EXISTING_SRM_REQUIRED",
+              "applied": false,
+              "beforeAfterDelta": null
+            }
+          ]
+        },
+        "home": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Ronald Acuna",
+              "Drake Baldwin",
+              "Matt Olson",
+              "Ozzie Albies",
+              "Michael Harris",
+              "Mauricio Dubon",
+              "Austin Riley",
+              "Sean Murphy",
+              "Ha-Seong Kim"
+            ],
+            "handedness": [
+              {
+                "name": "Ronald Acuna",
+                "bats": "R"
+              },
+              {
+                "name": "Drake Baldwin",
+                "bats": "L"
+              },
+              {
+                "name": "Matt Olson",
+                "bats": "L"
+              },
+              {
+                "name": "Ozzie Albies",
+                "bats": "S"
+              },
+              {
+                "name": "Michael Harris",
+                "bats": "L"
+              },
+              {
+                "name": "Mauricio Dubon",
+                "bats": "R"
+              },
+              {
+                "name": "Austin Riley",
+                "bats": "R"
+              },
+              {
+                "name": "Sean Murphy",
+                "bats": "R"
+              },
+              {
+                "name": "Ha-Seong Kim",
+                "bats": "R"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Ronald Acuna",
+              "Drake Baldwin",
+              "Matt Olson",
+              "Ozzie Albies"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Ronald Acuna",
+                    "Drake Baldwin",
+                    "Matt Olson",
+                    "Ozzie Albies",
+                    "Michael Harris",
+                    "Mauricio Dubon",
+                    "Austin Riley",
+                    "Sean Murphy",
+                    "Ha-Seong Kim"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Ronald Acuna",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Drake Baldwin",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Matt Olson",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Ozzie Albies",
+                      "bats": "S"
+                    },
+                    {
+                      "name": "Michael Harris",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Mauricio Dubon",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Austin Riley",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Sean Murphy",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Ha-Seong Kim",
+                      "bats": "R"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849845",
+                  "timestamp": "2026-09-29T18:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:29.973Z",
+                  "players": [
+                    "Drake Baldwin",
+                    "Ronald Acuña Jr.",
+                    "Matt Olson",
+                    "Mauricio Dubón",
+                    "Michael Harris II",
+                    "Ozzie Albies",
+                    "Austin Riley",
+                    "Mike Yastrzemski",
+                    "Ha-Seong Kim"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [
+                  "Sean Murphy"
+                ],
+                "removed": [
+                  "Mike Yastrzemski"
+                ],
+                "moves": [
+                  {
+                    "player": "Ronald Acuna",
+                    "from": 2,
+                    "to": 1
+                  },
+                  {
+                    "player": "Drake Baldwin",
+                    "from": 1,
+                    "to": 2
+                  },
+                  {
+                    "player": "Ozzie Albies",
+                    "from": 6,
+                    "to": 4
+                  },
+                  {
+                    "player": "Mauricio Dubon",
+                    "from": 4,
+                    "to": 6
+                  }
+                ],
+                "top4Changes": [
+                  {
+                    "position": 1,
+                    "before": "Drake Baldwin",
+                    "after": "Ronald Acuna"
+                  },
+                  {
+                    "position": 2,
+                    "before": "Ronald Acuña Jr.",
+                    "after": "Drake Baldwin"
+                  },
+                  {
+                    "position": 4,
+                    "before": "Mauricio Dubón",
+                    "after": "Ozzie Albies"
+                  }
+                ],
+                "exactSlots": 4,
+                "weightedSlotAccuracy": 0.38461538461538464
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Tyler Mahle",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Tyler Mahle",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:29.973Z",
+                "retrievedAt": "2026-09-30T12:08:29.973Z",
+                "id": 641816,
+                "name": "Tyler Mahle",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [
+            {
+              "source": "https://www.mlb.com/news/key-takeaways-from-braves-win-over-phillies-in-game-1-of-nl-wild-card-series",
+              "timestamp": "Tue, 29 Sep 2026 23:17:00 GMT",
+              "retrievedAt": "2026-09-30T12:08:26.827Z",
+              "reason": "4 big takeaways from the Phillies-Braves back-and-forth WC opener ",
+              "action": "REVIEW_NEWS",
+              "verified": false,
+              "explicit": false,
+              "recommendedAction": "SRM_REVIEW_RECOMMENDED"
+            }
+          ],
+          "srmReviews": [
+            {
+              "currentInput": "Tyler Mahle",
+              "proposedChange": "REVIEW_NEWS",
+              "evidence": {
+                "source": "https://www.mlb.com/news/key-takeaways-from-braves-win-over-phillies-in-game-1-of-nl-wild-card-series",
+                "timestamp": "Tue, 29 Sep 2026 23:17:00 GMT",
+                "reason": "4 big takeaways from the Phillies-Braves back-and-forth WC opener "
+              },
+              "affectedComponent": "starter quality/duration only",
+              "expectedDirection": "REQUIRES_APPROVED_SRM",
+              "expectedMagnitude": null,
+              "status": "APPROVAL_AND_EXISTING_SRM_REQUIRED",
+              "applied": false,
+              "beforeAfterDelta": null
+            }
+          ]
+        },
+        "gate": {
+          "projection": "PRELIMINARY",
+          "requiresCleanRerun": false,
+          "invalidations": [],
+          "eligible": true,
+          "status": "ELIGIBLE",
+          "reasons": []
+        }
+      }
+    },
+    "849842": {
+      "away": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Michael Busch",
+        "Alex Bregman",
+        "Ian Happ",
+        "Michael Conforto",
+        "Nico Hoerner",
+        "Carson Kelly",
+        "Dansby Swanson"
+      ],
+      "home": [
+        "Fernando Tatis",
+        "Dustin Harris",
+        "Manny Machado",
+        "Jackson Merrill",
+        "Ty France",
+        "Gavin Sheets",
+        "Xander Bogaerts",
+        "Jake Cronenworth",
+        "Ethan Salas"
+      ],
+      "inputAudit": {
+        "gamePk": 849842,
+        "retrievedAt": "2026-09-30T12:08:30.635Z",
+        "providers": [
+          {
+            "source": "ROTOWIRE",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROTOWIRE_STARTERS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROSTERRESOURCE",
+            "status": "ROSTERRESOURCE_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "TEAM_BEAT_REPORTS",
+            "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "MLB_NEWS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z"
+          }
+        ],
+        "away": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Pete Crow-Armstrong",
+              "Seiya Suzuki",
+              "Michael Busch",
+              "Alex Bregman",
+              "Ian Happ",
+              "Michael Conforto",
+              "Nico Hoerner",
+              "Carson Kelly",
+              "Dansby Swanson"
+            ],
+            "handedness": [
+              {
+                "name": "Pete Crow-Armstrong",
+                "bats": "L"
+              },
+              {
+                "name": "Seiya Suzuki",
+                "bats": "R"
+              },
+              {
+                "name": "Michael Busch",
+                "bats": "L"
+              },
+              {
+                "name": "Alex Bregman",
+                "bats": "R"
+              },
+              {
+                "name": "Ian Happ",
+                "bats": "S"
+              },
+              {
+                "name": "Michael Conforto",
+                "bats": "L"
+              },
+              {
+                "name": "Nico Hoerner",
+                "bats": "R"
+              },
+              {
+                "name": "Carson Kelly",
+                "bats": "R"
+              },
+              {
+                "name": "Dansby Swanson",
+                "bats": "R"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Pete Crow-Armstrong",
+              "Seiya Suzuki",
+              "Michael Busch",
+              "Alex Bregman"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Pete Crow-Armstrong",
+                    "Seiya Suzuki",
+                    "Michael Busch",
+                    "Alex Bregman",
+                    "Ian Happ",
+                    "Michael Conforto",
+                    "Nico Hoerner",
+                    "Carson Kelly",
+                    "Dansby Swanson"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Pete Crow-Armstrong",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Seiya Suzuki",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Michael Busch",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Alex Bregman",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Ian Happ",
+                      "bats": "S"
+                    },
+                    {
+                      "name": "Michael Conforto",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Nico Hoerner",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Carson Kelly",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Dansby Swanson",
+                      "bats": "R"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849843",
+                  "timestamp": "2026-09-30T02:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:30.871Z",
+                  "players": [
+                    "Pete Crow-Armstrong",
+                    "Alex Bregman",
+                    "Michael Busch",
+                    "Seiya Suzuki",
+                    "Ian Happ",
+                    "Nico Hoerner",
+                    "Pedro Ramírez",
+                    "Carson Kelly",
+                    "Dansby Swanson"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [
+                  "Michael Conforto"
+                ],
+                "removed": [
+                  "Pedro Ramírez"
+                ],
+                "moves": [
+                  {
+                    "player": "Seiya Suzuki",
+                    "from": 4,
+                    "to": 2
+                  },
+                  {
+                    "player": "Alex Bregman",
+                    "from": 2,
+                    "to": 4
+                  },
+                  {
+                    "player": "Nico Hoerner",
+                    "from": 6,
+                    "to": 7
+                  }
+                ],
+                "top4Changes": [
+                  {
+                    "position": 2,
+                    "before": "Alex Bregman",
+                    "after": "Seiya Suzuki"
+                  },
+                  {
+                    "position": 4,
+                    "before": "Seiya Suzuki",
+                    "after": "Alex Bregman"
+                  }
+                ],
+                "exactSlots": 5,
+                "weightedSlotAccuracy": 0.5384615384615384
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Kevin Gausman",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Kevin Gausman",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:30.871Z",
+                "retrievedAt": "2026-09-30T12:08:30.871Z",
+                "id": 592332,
+                "name": "Kevin Gausman",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [],
+          "srmReviews": []
+        },
+        "home": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Fernando Tatis",
+              "Dustin Harris",
+              "Manny Machado",
+              "Jackson Merrill",
+              "Ty France",
+              "Gavin Sheets",
+              "Xander Bogaerts",
+              "Jake Cronenworth",
+              "Ethan Salas"
+            ],
+            "handedness": [
+              {
+                "name": "Fernando Tatis",
+                "bats": "R"
+              },
+              {
+                "name": "Dustin Harris",
+                "bats": "L"
+              },
+              {
+                "name": "Manny Machado",
+                "bats": "R"
+              },
+              {
+                "name": "Jackson Merrill",
+                "bats": "L"
+              },
+              {
+                "name": "Ty France",
+                "bats": "R"
+              },
+              {
+                "name": "Gavin Sheets",
+                "bats": "L"
+              },
+              {
+                "name": "Xander Bogaerts",
+                "bats": "R"
+              },
+              {
+                "name": "Jake Cronenworth",
+                "bats": "L"
+              },
+              {
+                "name": "Ethan Salas",
+                "bats": "L"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Fernando Tatis",
+              "Dustin Harris",
+              "Manny Machado",
+              "Jackson Merrill"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Fernando Tatis",
+                    "Dustin Harris",
+                    "Manny Machado",
+                    "Jackson Merrill",
+                    "Ty France",
+                    "Gavin Sheets",
+                    "Xander Bogaerts",
+                    "Jake Cronenworth",
+                    "Ethan Salas"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Fernando Tatis",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Dustin Harris",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Manny Machado",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Jackson Merrill",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Ty France",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Gavin Sheets",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Xander Bogaerts",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Jake Cronenworth",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Ethan Salas",
+                      "bats": "L"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849843",
+                  "timestamp": "2026-09-30T02:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:31.054Z",
+                  "players": [
+                    "Fernando Tatis Jr.",
+                    "Samad Taylor",
+                    "Manny Machado",
+                    "Ty France",
+                    "Jackson Merrill",
+                    "Austin Hays",
+                    "Xander Bogaerts",
+                    "Jake Cronenworth",
+                    "Luis Campusano"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [
+                  "Dustin Harris",
+                  "Gavin Sheets",
+                  "Ethan Salas"
+                ],
+                "removed": [
+                  "Samad Taylor",
+                  "Austin Hays",
+                  "Luis Campusano"
+                ],
+                "moves": [
+                  {
+                    "player": "Jackson Merrill",
+                    "from": 5,
+                    "to": 4
+                  },
+                  {
+                    "player": "Ty France",
+                    "from": 4,
+                    "to": 5
+                  }
+                ],
+                "top4Changes": [
+                  {
+                    "position": 2,
+                    "before": "Samad Taylor",
+                    "after": "Dustin Harris"
+                  },
+                  {
+                    "position": 4,
+                    "before": "Ty France",
+                    "after": "Jackson Merrill"
+                  }
+                ],
+                "exactSlots": 4,
+                "weightedSlotAccuracy": 0.46153846153846156
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Nick Pivetta",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Nick Pivetta",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:31.054Z",
+                "retrievedAt": "2026-09-30T12:08:31.054Z",
+                "id": 601713,
+                "name": "Nick Pivetta",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [],
+          "srmReviews": []
+        },
+        "gate": {
+          "projection": "PRELIMINARY",
+          "requiresCleanRerun": false,
+          "invalidations": [],
+          "eligible": true,
+          "status": "ELIGIBLE",
+          "reasons": []
+        }
+      }
+    },
+    "849846": {
+      "away": [
+        "Sam Antonacci",
+        "Kyle Teel",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Colson Montgomery",
+        "Braden Montgomery"
+      ],
+      "home": [
+        "Jeremy Pena",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Yainer Diaz",
+        "Christian Walker",
+        "Lucas Spence",
+        "Cam Smith",
+        "Taylor Trammell"
+      ],
+      "inputAudit": {
+        "gamePk": 849846,
+        "retrievedAt": "2026-09-30T12:08:29.980Z",
+        "providers": [
+          {
+            "source": "ROTOWIRE",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROTOWIRE_STARTERS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROSTERRESOURCE",
+            "status": "ROSTERRESOURCE_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "TEAM_BEAT_REPORTS",
+            "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "MLB_NEWS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z"
+          }
+        ],
+        "away": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Sam Antonacci",
+              "Kyle Teel",
+              "Miguel Vargas",
+              "Munetaka Murakami",
+              "Andrew Benintendi",
+              "Tristan Peters",
+              "Chase Meidroth",
+              "Colson Montgomery",
+              "Braden Montgomery"
+            ],
+            "handedness": [
+              {
+                "name": "Sam Antonacci",
+                "bats": "L"
+              },
+              {
+                "name": "Kyle Teel",
+                "bats": "L"
+              },
+              {
+                "name": "Miguel Vargas",
+                "bats": "R"
+              },
+              {
+                "name": "Munetaka Murakami",
+                "bats": "L"
+              },
+              {
+                "name": "Andrew Benintendi",
+                "bats": "L"
+              },
+              {
+                "name": "Tristan Peters",
+                "bats": "L"
+              },
+              {
+                "name": "Chase Meidroth",
+                "bats": "R"
+              },
+              {
+                "name": "Colson Montgomery",
+                "bats": "L"
+              },
+              {
+                "name": "Braden Montgomery",
+                "bats": "S"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Sam Antonacci",
+              "Kyle Teel",
+              "Miguel Vargas",
+              "Munetaka Murakami"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Sam Antonacci",
+                    "Kyle Teel",
+                    "Miguel Vargas",
+                    "Munetaka Murakami",
+                    "Andrew Benintendi",
+                    "Tristan Peters",
+                    "Chase Meidroth",
+                    "Colson Montgomery",
+                    "Braden Montgomery"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Sam Antonacci",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Kyle Teel",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Miguel Vargas",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Munetaka Murakami",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Andrew Benintendi",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Tristan Peters",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Chase Meidroth",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Colson Montgomery",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Braden Montgomery",
+                      "bats": "S"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849849",
+                  "timestamp": "2026-09-29T21:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:30.152Z",
+                  "players": [
+                    "Sam Antonacci",
+                    "Kyle Teel",
+                    "Miguel Vargas",
+                    "Munetaka Murakami",
+                    "Andrew Benintendi",
+                    "Tristan Peters",
+                    "Braden Montgomery",
+                    "Chase Meidroth",
+                    "Colson Montgomery"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [],
+                "removed": [],
+                "moves": [
+                  {
+                    "player": "Chase Meidroth",
+                    "from": 8,
+                    "to": 7
+                  },
+                  {
+                    "player": "Colson Montgomery",
+                    "from": 9,
+                    "to": 8
+                  },
+                  {
+                    "player": "Braden Montgomery",
+                    "from": 7,
+                    "to": 9
+                  }
+                ],
+                "top4Changes": [],
+                "exactSlots": 6,
+                "weightedSlotAccuracy": 0.7692307692307693
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Sean Burke",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Sean Burke",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:30.152Z",
+                "retrievedAt": "2026-09-30T12:08:30.152Z",
+                "id": 680732,
+                "name": "Sean Burke",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [],
+          "srmReviews": []
+        },
+        "home": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Jeremy Pena",
+              "Yordan Alvarez",
+              "Isaac Paredes",
+              "Jose Altuve",
+              "Yainer Diaz",
+              "Christian Walker",
+              "Lucas Spence",
+              "Cam Smith",
+              "Taylor Trammell"
+            ],
+            "handedness": [
+              {
+                "name": "Jeremy Pena",
+                "bats": "R"
+              },
+              {
+                "name": "Yordan Alvarez",
+                "bats": "L"
+              },
+              {
+                "name": "Isaac Paredes",
+                "bats": "R"
+              },
+              {
+                "name": "Jose Altuve",
+                "bats": "R"
+              },
+              {
+                "name": "Yainer Diaz",
+                "bats": "R"
+              },
+              {
+                "name": "Christian Walker",
+                "bats": "R"
+              },
+              {
+                "name": "Lucas Spence",
+                "bats": "L"
+              },
+              {
+                "name": "Cam Smith",
+                "bats": "R"
+              },
+              {
+                "name": "Taylor Trammell",
+                "bats": "L"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Jeremy Pena",
+              "Yordan Alvarez",
+              "Isaac Paredes",
+              "Jose Altuve"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Jeremy Pena",
+                    "Yordan Alvarez",
+                    "Isaac Paredes",
+                    "Jose Altuve",
+                    "Yainer Diaz",
+                    "Christian Walker",
+                    "Lucas Spence",
+                    "Cam Smith",
+                    "Taylor Trammell"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Jeremy Pena",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Yordan Alvarez",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Isaac Paredes",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Jose Altuve",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Yainer Diaz",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Christian Walker",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Lucas Spence",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Cam Smith",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Taylor Trammell",
+                      "bats": "L"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849849",
+                  "timestamp": "2026-09-29T21:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:30.303Z",
+                  "players": [
+                    "Jeremy Peña",
+                    "Yordan Alvarez",
+                    "Isaac Paredes",
+                    "Jose Altuve",
+                    "Yainer Diaz",
+                    "Christian Walker",
+                    "Lucas Spence",
+                    "Cam Smith",
+                    "Taylor Trammell"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [],
+                "removed": [],
+                "moves": [],
+                "top4Changes": [],
+                "exactSlots": 9,
+                "weightedSlotAccuracy": 1
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Hunter Brown",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Hunter Brown",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:30.303Z",
+                "retrievedAt": "2026-09-30T12:08:30.303Z",
+                "id": 686613,
+                "name": "Hunter Brown",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [
+            {
+              "source": "https://www.mlb.com/news/astros-lose-al-wild-card-game-1-2026",
+              "timestamp": "Wed, 30 Sep 2026 02:20:00 GMT",
+              "retrievedAt": "2026-09-30T12:08:26.827Z",
+              "reason": "Bullpen game struggles put Astros in must-win position for ALWC G2 ",
+              "action": "REVIEW_NEWS",
+              "verified": false,
+              "explicit": false,
+              "recommendedAction": "SRM_REVIEW_RECOMMENDED"
+            }
+          ],
+          "srmReviews": [
+            {
+              "currentInput": "Hunter Brown",
+              "proposedChange": "REVIEW_NEWS",
+              "evidence": {
+                "source": "https://www.mlb.com/news/astros-lose-al-wild-card-game-1-2026",
+                "timestamp": "Wed, 30 Sep 2026 02:20:00 GMT",
+                "reason": "Bullpen game struggles put Astros in must-win position for ALWC G2 "
+              },
+              "affectedComponent": "starter quality/duration only",
+              "expectedDirection": "REQUIRES_APPROVED_SRM",
+              "expectedMagnitude": null,
+              "status": "APPROVAL_AND_EXISTING_SRM_REQUIRED",
+              "applied": false,
+              "beforeAfterDelta": null
+            }
+          ]
+        },
+        "gate": {
+          "projection": "PRELIMINARY",
+          "requiresCleanRerun": false,
+          "invalidations": [],
+          "eligible": true,
+          "status": "ELIGIBLE",
+          "reasons": []
+        }
+      }
+    },
+    "849848": {
+      "away": [
+        "Jahmai Jones",
+        "Ceddanne Rafaela",
+        "Adley Rutschman",
+        "Willson Contreras",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Jarren Duran",
+        "Caleb Durbin",
+        "Nick Sogard"
+      ],
+      "home": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Luis Garcia",
+        "Spencer Jones",
+        "George Lombard",
+        "Jazz Chisholm",
+        "Trent Grisham",
+        "Austin Wells",
+        "Ryan McMahon"
+      ],
+      "inputAudit": {
+        "gamePk": 849848,
+        "retrievedAt": "2026-09-30T12:08:30.312Z",
+        "providers": [
+          {
+            "source": "ROTOWIRE",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROTOWIRE_STARTERS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "publicPage": {
+              "source": "ROTOWIRE_PUBLIC",
+              "status": "AVAILABLE",
+              "retrievedAt": "2026-09-30T12:08:26.683Z"
+            }
+          },
+          {
+            "source": "ROSTERRESOURCE",
+            "status": "ROSTERRESOURCE_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "TEAM_BEAT_REPORTS",
+            "status": "TEAM_BEAT_REPORTS_UNAVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z",
+            "reason": "MISSING_CREDENTIAL_OR_ACCESS_OR_INVALID_SCHEMA"
+          },
+          {
+            "source": "MLB_NEWS",
+            "status": "AVAILABLE",
+            "retrievedAt": "2026-09-30T12:08:26.720Z"
+          }
+        ],
+        "away": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Jahmai Jones",
+              "Ceddanne Rafaela",
+              "Adley Rutschman",
+              "Willson Contreras",
+              "Wilyer Abreu",
+              "Trevor Story",
+              "Jarren Duran",
+              "Caleb Durbin",
+              "Nick Sogard"
+            ],
+            "handedness": [
+              {
+                "name": "Jahmai Jones",
+                "bats": "R"
+              },
+              {
+                "name": "Ceddanne Rafaela",
+                "bats": "R"
+              },
+              {
+                "name": "Adley Rutschman",
+                "bats": "S"
+              },
+              {
+                "name": "Willson Contreras",
+                "bats": "R"
+              },
+              {
+                "name": "Wilyer Abreu",
+                "bats": "L"
+              },
+              {
+                "name": "Trevor Story",
+                "bats": "R"
+              },
+              {
+                "name": "Jarren Duran",
+                "bats": "L"
+              },
+              {
+                "name": "Caleb Durbin",
+                "bats": "R"
+              },
+              {
+                "name": "Nick Sogard",
+                "bats": "S"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Jahmai Jones",
+              "Ceddanne Rafaela",
+              "Adley Rutschman",
+              "Willson Contreras"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Jahmai Jones",
+                    "Ceddanne Rafaela",
+                    "Adley Rutschman",
+                    "Willson Contreras",
+                    "Wilyer Abreu",
+                    "Trevor Story",
+                    "Jarren Duran",
+                    "Caleb Durbin",
+                    "Nick Sogard"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Jahmai Jones",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Ceddanne Rafaela",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Adley Rutschman",
+                      "bats": "S"
+                    },
+                    {
+                      "name": "Willson Contreras",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Wilyer Abreu",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Trevor Story",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Jarren Duran",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Caleb Durbin",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Nick Sogard",
+                      "bats": "S"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849851",
+                  "timestamp": "2026-09-30T00:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:30.487Z",
+                  "players": [
+                    "Roman Anthony",
+                    "Adley Rutschman",
+                    "Willson Contreras",
+                    "Wilyer Abreu",
+                    "Ceddanne Rafaela",
+                    "Nick Sogard",
+                    "Jarren Duran",
+                    "Trevor Story",
+                    "Caleb Durbin"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [
+                  "Jahmai Jones"
+                ],
+                "removed": [
+                  "Roman Anthony"
+                ],
+                "moves": [
+                  {
+                    "player": "Ceddanne Rafaela",
+                    "from": 5,
+                    "to": 2
+                  },
+                  {
+                    "player": "Adley Rutschman",
+                    "from": 2,
+                    "to": 3
+                  },
+                  {
+                    "player": "Willson Contreras",
+                    "from": 3,
+                    "to": 4
+                  },
+                  {
+                    "player": "Wilyer Abreu",
+                    "from": 4,
+                    "to": 5
+                  },
+                  {
+                    "player": "Trevor Story",
+                    "from": 8,
+                    "to": 6
+                  },
+                  {
+                    "player": "Caleb Durbin",
+                    "from": 9,
+                    "to": 8
+                  },
+                  {
+                    "player": "Nick Sogard",
+                    "from": 6,
+                    "to": 9
+                  }
+                ],
+                "top4Changes": [
+                  {
+                    "position": 1,
+                    "before": "Roman Anthony",
+                    "after": "Jahmai Jones"
+                  },
+                  {
+                    "position": 2,
+                    "before": "Adley Rutschman",
+                    "after": "Ceddanne Rafaela"
+                  },
+                  {
+                    "position": 3,
+                    "before": "Willson Contreras",
+                    "after": "Adley Rutschman"
+                  },
+                  {
+                    "position": 4,
+                    "before": "Wilyer Abreu",
+                    "after": "Willson Contreras"
+                  }
+                ],
+                "exactSlots": 1,
+                "weightedSlotAccuracy": 0.07692307692307693
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Sonny Gray",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Sonny Gray",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:30.487Z",
+                "retrievedAt": "2026-09-30T12:08:30.487Z",
+                "id": 543243,
+                "name": "Sonny Gray",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [],
+          "srmReviews": []
+        },
+        "home": {
+          "lineup": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "confirmed": false,
+            "players": [
+              "Ben Rice",
+              "Cody Bellinger",
+              "Luis Garcia",
+              "Spencer Jones",
+              "George Lombard",
+              "Jazz Chisholm",
+              "Trent Grisham",
+              "Austin Wells",
+              "Ryan McMahon"
+            ],
+            "handedness": [
+              {
+                "name": "Ben Rice",
+                "bats": "L"
+              },
+              {
+                "name": "Cody Bellinger",
+                "bats": "L"
+              },
+              {
+                "name": "Luis Garcia",
+                "bats": "L"
+              },
+              {
+                "name": "Spencer Jones",
+                "bats": "L"
+              },
+              {
+                "name": "George Lombard",
+                "bats": "R"
+              },
+              {
+                "name": "Jazz Chisholm",
+                "bats": "L"
+              },
+              {
+                "name": "Trent Grisham",
+                "bats": "L"
+              },
+              {
+                "name": "Austin Wells",
+                "bats": "L"
+              },
+              {
+                "name": "Ryan McMahon",
+                "bats": "L"
+              }
+            ],
+            "status": "PROVISIONAL_ROTOWIRE",
+            "confidence": "LOW",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "unresolved": false,
+            "changes": [],
+            "confidenceSource": "DERIVED",
+            "top4": [
+              "Ben Rice",
+              "Cody Bellinger",
+              "Luis Garcia",
+              "Spencer Jones"
+            ],
+            "audit": {
+              "provisionalSourcePolicy": "ROTOWIRE_ONLY",
+              "rosterResourceRole": "AUDIT_ONLY",
+              "candidates": [
+                {
+                  "provider": "ROTOWIRE",
+                  "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                  "transport": "PUBLIC_HTML",
+                  "timestamp": null,
+                  "retrievedAt": "2026-09-30T12:08:28.112Z",
+                  "confirmed": false,
+                  "players": [
+                    "Ben Rice",
+                    "Cody Bellinger",
+                    "Luis Garcia",
+                    "Spencer Jones",
+                    "George Lombard",
+                    "Jazz Chisholm",
+                    "Trent Grisham",
+                    "Austin Wells",
+                    "Ryan McMahon"
+                  ],
+                  "handedness": [
+                    {
+                      "name": "Ben Rice",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Cody Bellinger",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Luis Garcia",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Spencer Jones",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "George Lombard",
+                      "bats": "R"
+                    },
+                    {
+                      "name": "Jazz Chisholm",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Trent Grisham",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Austin Wells",
+                      "bats": "L"
+                    },
+                    {
+                      "name": "Ryan McMahon",
+                      "bats": "L"
+                    }
+                  ]
+                },
+                {
+                  "provider": "PREVIOUS_GAME",
+                  "source": "MLB previous game 849851",
+                  "timestamp": "2026-09-30T00:00:00Z",
+                  "retrievedAt": "2026-09-30T12:08:30.627Z",
+                  "players": [
+                    "Paul Goldschmidt",
+                    "Ben Rice",
+                    "Heliot Ramos",
+                    "Cody Bellinger",
+                    "George Lombard Jr.",
+                    "Amed Rosario",
+                    "Anthony Volpe",
+                    "Spencer Jones",
+                    "Austin Wells"
+                  ],
+                  "confirmed": false
+                }
+              ],
+              "vsPrevious": {
+                "added": [
+                  "Luis Garcia",
+                  "Jazz Chisholm",
+                  "Trent Grisham",
+                  "Ryan McMahon"
+                ],
+                "removed": [
+                  "Paul Goldschmidt",
+                  "Heliot Ramos",
+                  "Amed Rosario",
+                  "Anthony Volpe"
+                ],
+                "moves": [
+                  {
+                    "player": "Ben Rice",
+                    "from": 2,
+                    "to": 1
+                  },
+                  {
+                    "player": "Cody Bellinger",
+                    "from": 4,
+                    "to": 2
+                  },
+                  {
+                    "player": "Spencer Jones",
+                    "from": 8,
+                    "to": 4
+                  },
+                  {
+                    "player": "Austin Wells",
+                    "from": 9,
+                    "to": 8
+                  }
+                ],
+                "top4Changes": [
+                  {
+                    "position": 1,
+                    "before": "Paul Goldschmidt",
+                    "after": "Ben Rice"
+                  },
+                  {
+                    "position": 2,
+                    "before": "Ben Rice",
+                    "after": "Cody Bellinger"
+                  },
+                  {
+                    "position": 3,
+                    "before": "Heliot Ramos",
+                    "after": "Luis Garcia"
+                  },
+                  {
+                    "position": 4,
+                    "before": "Cody Bellinger",
+                    "after": "Spencer Jones"
+                  }
+                ],
+                "exactSlots": 1,
+                "weightedSlotAccuracy": 0.07692307692307693
+              },
+              "rotowireVsRosterResource": null,
+              "projectedVsConfirmed": []
+            }
+          },
+          "starter": {
+            "provider": "ROTOWIRE",
+            "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+            "transport": "PUBLIC_HTML",
+            "timestamp": null,
+            "retrievedAt": "2026-09-30T12:08:28.112Z",
+            "name": "Max Fried",
+            "confirmed": false,
+            "role": "STARTER",
+            "status": "PROJECTED_HIGH",
+            "confidence": "HIGH",
+            "inputStatus": "PRIMARY",
+            "fallback": false,
+            "conflict": null,
+            "candidates": [
+              {
+                "provider": "ROTOWIRE",
+                "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+                "transport": "PUBLIC_HTML",
+                "timestamp": null,
+                "retrievedAt": "2026-09-30T12:08:28.112Z",
+                "name": "Max Fried",
+                "confirmed": false,
+                "role": "STARTER"
+              },
+              {
+                "provider": "MLB",
+                "source": "MLB Stats API probable pitcher",
+                "timestamp": "2026-09-30T12:08:30.627Z",
+                "retrievedAt": "2026-09-30T12:08:30.627Z",
+                "id": 608331,
+                "name": "Max Fried",
+                "confirmed": false
+              }
+            ]
+          },
+          "news": [],
+          "srmReviews": []
+        },
+        "gate": {
+          "projection": "PRELIMINARY",
+          "requiresCleanRerun": false,
+          "invalidations": [],
+          "eligible": true,
+          "status": "ELIGIBLE",
+          "reasons": []
+        }
+      }
+    }
+  }
+}
