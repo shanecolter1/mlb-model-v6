@@ -1,10 +1,6 @@
 name: Sync SportsGameOdds MLB inning markets
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/sportsgameodds_inning_market_sync.yml'
   workflow_dispatch:
     inputs:
       date:
