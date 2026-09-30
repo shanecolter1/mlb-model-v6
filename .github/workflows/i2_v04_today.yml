@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   run-v04:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     env:
       I2_ROSTERRESOURCE_SNAPSHOT: config/i2_rosterresource_snapshot.json
@@ -154,4 +154,3 @@ jobs:
           echo 'Unable to push empirical artifact after 3 attempts.'
           exit 1
 
-# postseason empirical companion rerun 2026-09-30
