@@ -1,18 +1,645 @@
 {
-  "version": "i2-vnext-trained-total-slope-v1",
+  "version": "i2-vnext-trained-total-slope-v2",
   "scope": "Research post-freeze diagnostic; no production model changed",
   "source_sha256": "8512a4fc2fc8e8566d62080bcf006ab6dbdc953e95c3eb8725b55c47a8dafee5",
   "ridge_slope": 0.01,
   "total_center": 8.5,
   "market_input": "DraftKings pregame full-game opening total point only",
   "i2_price_used": false,
-  "regime": "2023+ post-rule only",
+  "regimes": {
+    "2022": "pre-rule, within-season prior-date refits only",
+    "2023": "post-rule foundation, within-season prior-date refits only",
+    "2024-2025": "earlier post-rule seasons train; full next season tests"
+  },
   "excluded_years": {
-    "2022": "No 2021 vNext replay to train pre-rule effect",
-    "2023": "Training foundation; no prior post-rule vNext season",
-    "2026": "No canonical opening-total archive and outcomes previously inspected"
+    "2021": "No archived vNext replay predictions",
+    "2026": "No canonical game-level DK opening-total archive; previously inspected outcomes"
   },
   "seasons": {
+    "2022": {
+      "training_mode": "weekly expanding prior-date within-season refits",
+      "warmup_days": 28,
+      "refit_days": 7,
+      "min_train_games": 250,
+      "weekly_fits": [
+        {
+          "test_start": "2022-05-05",
+          "test_end": "2022-05-11",
+          "training_last_date": "2022-05-04",
+          "training_games": 353,
+          "total_slopes": {
+            "top": 0.16526667959839855,
+            "bottom": -0.17688093744333913
+          }
+        },
+        {
+          "test_start": "2022-05-12",
+          "test_end": "2022-05-18",
+          "training_last_date": "2022-05-11",
+          "training_games": 434,
+          "total_slopes": {
+            "top": 0.11505834380691428,
+            "bottom": -0.08448547940927709
+          }
+        },
+        {
+          "test_start": "2022-05-19",
+          "test_end": "2022-05-25",
+          "training_last_date": "2022-05-18",
+          "training_games": 526,
+          "total_slopes": {
+            "top": 0.11635557448329013,
+            "bottom": -0.059230848352591965
+          }
+        },
+        {
+          "test_start": "2022-05-26",
+          "test_end": "2022-06-01",
+          "training_last_date": "2022-05-25",
+          "training_games": 615,
+          "total_slopes": {
+            "top": 0.08366990955343465,
+            "bottom": -0.035882713990640976
+          }
+        },
+        {
+          "test_start": "2022-06-02",
+          "test_end": "2022-06-08",
+          "training_last_date": "2022-06-01",
+          "training_games": 707,
+          "total_slopes": {
+            "top": 0.10514821530207522,
+            "bottom": -0.016283257173322713
+          }
+        },
+        {
+          "test_start": "2022-06-09",
+          "test_end": "2022-06-15",
+          "training_last_date": "2022-06-08",
+          "training_games": 794,
+          "total_slopes": {
+            "top": 0.10525451866492351,
+            "bottom": -0.00978423213375445
+          }
+        },
+        {
+          "test_start": "2022-06-16",
+          "test_end": "2022-06-22",
+          "training_last_date": "2022-06-15",
+          "training_games": 888,
+          "total_slopes": {
+            "top": 0.09647859174953251,
+            "bottom": -0.03948820977413398
+          }
+        },
+        {
+          "test_start": "2022-06-23",
+          "test_end": "2022-06-29",
+          "training_last_date": "2022-06-22",
+          "training_games": 976,
+          "total_slopes": {
+            "top": 0.1182608010453936,
+            "bottom": -0.024777684715353496
+          }
+        },
+        {
+          "test_start": "2022-06-30",
+          "test_end": "2022-07-06",
+          "training_last_date": "2022-06-29",
+          "training_games": 1067,
+          "total_slopes": {
+            "top": 0.13092565641659618,
+            "bottom": -0.03486570823826701
+          }
+        },
+        {
+          "test_start": "2022-07-07",
+          "test_end": "2022-07-13",
+          "training_last_date": "2022-07-06",
+          "training_games": 1158,
+          "total_slopes": {
+            "top": 0.10925869319857148,
+            "bottom": -0.014375345818915322
+          }
+        },
+        {
+          "test_start": "2022-07-14",
+          "test_end": "2022-07-17",
+          "training_last_date": "2022-07-13",
+          "training_games": 1252,
+          "total_slopes": {
+            "top": 0.11416155807444175,
+            "bottom": -0.01019096658147979
+          }
+        },
+        {
+          "test_start": "2022-07-21",
+          "test_end": "2022-07-27",
+          "training_last_date": "2022-07-17",
+          "training_games": 1303,
+          "total_slopes": {
+            "top": 0.12209363197166312,
+            "bottom": -0.012638207990646298
+          }
+        },
+        {
+          "test_start": "2022-07-28",
+          "test_end": "2022-08-03",
+          "training_last_date": "2022-07-27",
+          "training_games": 1391,
+          "total_slopes": {
+            "top": 0.11873466916399218,
+            "bottom": -0.0064368266157456425
+          }
+        },
+        {
+          "test_start": "2022-08-04",
+          "test_end": "2022-08-10",
+          "training_last_date": "2022-08-03",
+          "training_games": 1482,
+          "total_slopes": {
+            "top": 0.10213291305473601,
+            "bottom": -0.008534808018782546
+          }
+        },
+        {
+          "test_start": "2022-08-11",
+          "test_end": "2022-08-17",
+          "training_last_date": "2022-08-10",
+          "training_games": 1574,
+          "total_slopes": {
+            "top": 0.08958642978083772,
+            "bottom": 0.011910395126640012
+          }
+        },
+        {
+          "test_start": "2022-08-18",
+          "test_end": "2022-08-24",
+          "training_last_date": "2022-08-17",
+          "training_games": 1665,
+          "total_slopes": {
+            "top": 0.08324333895905214,
+            "bottom": 0.004090374381328997
+          }
+        },
+        {
+          "test_start": "2022-08-25",
+          "test_end": "2022-08-31",
+          "training_last_date": "2022-08-24",
+          "training_games": 1756,
+          "total_slopes": {
+            "top": 0.0899414010986165,
+            "bottom": 0.016279437190966955
+          }
+        },
+        {
+          "test_start": "2022-09-01",
+          "test_end": "2022-09-07",
+          "training_last_date": "2022-08-31",
+          "training_games": 1848,
+          "total_slopes": {
+            "top": 0.10139454305272384,
+            "bottom": 0.029423829986991112
+          }
+        },
+        {
+          "test_start": "2022-09-08",
+          "test_end": "2022-09-14",
+          "training_last_date": "2022-09-07",
+          "training_games": 1935,
+          "total_slopes": {
+            "top": 0.09210667012644942,
+            "bottom": 0.028637300844911645
+          }
+        },
+        {
+          "test_start": "2022-09-15",
+          "test_end": "2022-09-21",
+          "training_last_date": "2022-09-14",
+          "training_games": 2020,
+          "total_slopes": {
+            "top": 0.058642379472166765,
+            "bottom": 0.019361423603522557
+          }
+        },
+        {
+          "test_start": "2022-09-22",
+          "test_end": "2022-09-28",
+          "training_last_date": "2022-09-21",
+          "training_games": 2110,
+          "total_slopes": {
+            "top": 0.05473090802030591,
+            "bottom": 0.023806502949350137
+          }
+        },
+        {
+          "test_start": "2022-09-29",
+          "test_end": "2022-10-05",
+          "training_last_date": "2022-09-28",
+          "training_games": 2200,
+          "total_slopes": {
+            "top": 0.03792303801789593,
+            "bottom": 0.0376409938411662
+          }
+        }
+      ],
+      "matched_test_games": 1940,
+      "first_test_date": "2022-05-05",
+      "last_test_date": "2022-10-05",
+      "scores": {
+        "raw": {
+          "top": {
+            "actual": 0.2175257731958763,
+            "predicted": 0.2398975257731959,
+            "logloss": 0.524614840824928,
+            "brier": 0.1705510921752577
+          },
+          "bottom": {
+            "actual": 0.24793814432989691,
+            "predicted": 0.2404293298969072,
+            "logloss": 0.561496553231857,
+            "brier": 0.18701370120103095
+          },
+          "under": {
+            "actual": 0.588659793814433,
+            "predicted": 0.5774772680412371,
+            "logloss": 0.6789834082224604,
+            "brier": 0.2429564497886598
+          }
+        },
+        "constant_half": {
+          "top": {
+            "actual": 0.2175257731958763,
+            "predicted": 0.2079936076501302,
+            "logloss": 0.5237128739792042,
+            "brier": 0.17014327400186563
+          },
+          "bottom": {
+            "actual": 0.24793814432989691,
+            "predicted": 0.2653123938588508,
+            "logloss": 0.5625201952259741,
+            "brier": 0.18750849793178248
+          },
+          "under": {
+            "actual": 0.588659793814433,
+            "predicted": 0.5820054095786416,
+            "logloss": 0.679268670333389,
+            "brier": 0.2430927015983205
+          }
+        },
+        "vnext_total": {
+          "top": {
+            "actual": 0.2175257731958763,
+            "predicted": 0.20613515013282346,
+            "logloss": 0.5242220007463414,
+            "brier": 0.1703426461796702
+          },
+          "bottom": {
+            "actual": 0.24793814432989691,
+            "predicted": 0.2657087608401938,
+            "logloss": 0.5634481462263522,
+            "brier": 0.18788292462042702
+          },
+          "under": {
+            "actual": 0.588659793814433,
+            "predicted": 0.5831119010058594,
+            "logloss": 0.6792344164364541,
+            "brier": 0.24307968036058855
+          }
+        }
+      },
+      "total_vs_raw": {
+        "delta_logloss": 0.0002510082139934859,
+        "ci95_day_cluster": [
+          -0.0009058642966842005,
+          0.0014726332546402255
+        ]
+      },
+      "total_vs_constant_half": {
+        "delta_logloss": -3.425389693489043e-05,
+        "ci95_day_cluster": [
+          -0.0008924976262462294,
+          0.0008349255244078022
+        ]
+      }
+    },
+    "2023": {
+      "training_mode": "weekly expanding prior-date within-season refits",
+      "warmup_days": 28,
+      "refit_days": 7,
+      "min_train_games": 250,
+      "weekly_fits": [
+        {
+          "test_start": "2023-04-27",
+          "test_end": "2023-05-03",
+          "training_last_date": "2023-04-26",
+          "training_games": 362,
+          "total_slopes": {
+            "top": 0.09740161733012455,
+            "bottom": 0.08357198067725008
+          }
+        },
+        {
+          "test_start": "2023-05-04",
+          "test_end": "2023-05-10",
+          "training_last_date": "2023-05-03",
+          "training_games": 443,
+          "total_slopes": {
+            "top": 0.10481560045499703,
+            "bottom": 0.07634550498722444
+          }
+        },
+        {
+          "test_start": "2023-05-11",
+          "test_end": "2023-05-17",
+          "training_last_date": "2023-05-10",
+          "training_games": 538,
+          "total_slopes": {
+            "top": 0.12421910504356362,
+            "bottom": 0.16399499155632227
+          }
+        },
+        {
+          "test_start": "2023-05-18",
+          "test_end": "2023-05-24",
+          "training_last_date": "2023-05-17",
+          "training_games": 624,
+          "total_slopes": {
+            "top": 0.1228495365859571,
+            "bottom": 0.09863931126714383
+          }
+        },
+        {
+          "test_start": "2023-05-25",
+          "test_end": "2023-05-31",
+          "training_last_date": "2023-05-24",
+          "training_games": 715,
+          "total_slopes": {
+            "top": 0.10000548055699927,
+            "bottom": 0.045302124316133244
+          }
+        },
+        {
+          "test_start": "2023-06-01",
+          "test_end": "2023-06-07",
+          "training_last_date": "2023-05-31",
+          "training_games": 808,
+          "total_slopes": {
+            "top": 0.10097462343654692,
+            "bottom": 0.047117633038034595
+          }
+        },
+        {
+          "test_start": "2023-06-08",
+          "test_end": "2023-06-14",
+          "training_last_date": "2023-06-07",
+          "training_games": 894,
+          "total_slopes": {
+            "top": 0.09734330930883553,
+            "bottom": 0.06368048424255475
+          }
+        },
+        {
+          "test_start": "2023-06-15",
+          "test_end": "2023-06-21",
+          "training_last_date": "2023-06-14",
+          "training_games": 984,
+          "total_slopes": {
+            "top": 0.09270378767240549,
+            "bottom": 0.041604303523835096
+          }
+        },
+        {
+          "test_start": "2023-06-22",
+          "test_end": "2023-06-28",
+          "training_last_date": "2023-06-21",
+          "training_games": 1077,
+          "total_slopes": {
+            "top": 0.0892076480172465,
+            "bottom": 0.05984582277394072
+          }
+        },
+        {
+          "test_start": "2023-06-29",
+          "test_end": "2023-07-05",
+          "training_last_date": "2023-06-28",
+          "training_games": 1157,
+          "total_slopes": {
+            "top": 0.07210491787331826,
+            "bottom": 0.048506135704843564
+          }
+        },
+        {
+          "test_start": "2023-07-06",
+          "test_end": "2023-07-09",
+          "training_last_date": "2023-07-05",
+          "training_games": 1246,
+          "total_slopes": {
+            "top": 0.0709890104857754,
+            "bottom": 0.0018380891053890497
+          }
+        },
+        {
+          "test_start": "2023-07-14",
+          "test_end": "2023-07-19",
+          "training_last_date": "2023-07-09",
+          "training_games": 1301,
+          "total_slopes": {
+            "top": 0.06559242760989656,
+            "bottom": 0.0020217670266374833
+          }
+        },
+        {
+          "test_start": "2023-07-20",
+          "test_end": "2023-07-26",
+          "training_last_date": "2023-07-19",
+          "training_games": 1378,
+          "total_slopes": {
+            "top": 0.05836988999340824,
+            "bottom": 0.015930653120679195
+          }
+        },
+        {
+          "test_start": "2023-07-27",
+          "test_end": "2023-08-02",
+          "training_last_date": "2023-07-26",
+          "training_games": 1470,
+          "total_slopes": {
+            "top": 0.05024158642198714,
+            "bottom": 0.03998562520514297
+          }
+        },
+        {
+          "test_start": "2023-08-03",
+          "test_end": "2023-08-09",
+          "training_last_date": "2023-08-02",
+          "training_games": 1553,
+          "total_slopes": {
+            "top": 0.06772559822570846,
+            "bottom": 0.027152947350320776
+          }
+        },
+        {
+          "test_start": "2023-08-10",
+          "test_end": "2023-08-16",
+          "training_last_date": "2023-08-09",
+          "training_games": 1649,
+          "total_slopes": {
+            "top": 0.07774919017812383,
+            "bottom": 0.02222273266275616
+          }
+        },
+        {
+          "test_start": "2023-08-17",
+          "test_end": "2023-08-23",
+          "training_last_date": "2023-08-16",
+          "training_games": 1736,
+          "total_slopes": {
+            "top": 0.06351771565620876,
+            "bottom": 0.033599036911485525
+          }
+        },
+        {
+          "test_start": "2023-08-24",
+          "test_end": "2023-08-30",
+          "training_last_date": "2023-08-23",
+          "training_games": 1816,
+          "total_slopes": {
+            "top": 0.05324355904527344,
+            "bottom": 0.04158311676080539
+          }
+        },
+        {
+          "test_start": "2023-08-31",
+          "test_end": "2023-09-06",
+          "training_last_date": "2023-08-30",
+          "training_games": 1910,
+          "total_slopes": {
+            "top": 0.04881250462786267,
+            "bottom": 0.030874799822582222
+          }
+        },
+        {
+          "test_start": "2023-09-07",
+          "test_end": "2023-09-13",
+          "training_last_date": "2023-09-06",
+          "training_games": 1997,
+          "total_slopes": {
+            "top": 0.052775704610961024,
+            "bottom": 0.036622480124495455
+          }
+        },
+        {
+          "test_start": "2023-09-14",
+          "test_end": "2023-09-20",
+          "training_last_date": "2023-09-13",
+          "training_games": 2087,
+          "total_slopes": {
+            "top": 0.04265687007851924,
+            "bottom": 0.031016706923531267
+          }
+        },
+        {
+          "test_start": "2023-09-21",
+          "test_end": "2023-09-27",
+          "training_last_date": "2023-09-20",
+          "training_games": 2179,
+          "total_slopes": {
+            "top": 0.027312633904726,
+            "bottom": 0.0303103855655208
+          }
+        },
+        {
+          "test_start": "2023-09-28",
+          "test_end": "2023-10-01",
+          "training_last_date": "2023-09-27",
+          "training_games": 2261,
+          "total_slopes": {
+            "top": 0.03580888047471553,
+            "bottom": 0.03744774359739913
+          }
+        }
+      ],
+      "matched_test_games": 1948,
+      "first_test_date": "2023-04-27",
+      "last_test_date": "2023-10-01",
+      "scores": {
+        "raw": {
+          "top": {
+            "actual": 0.2648870636550308,
+            "predicted": 0.2416549281314168,
+            "logloss": 0.5831677487529254,
+            "brier": 0.19652441723819303
+          },
+          "bottom": {
+            "actual": 0.2561601642710472,
+            "predicted": 0.24229419917864478,
+            "logloss": 0.5687311842963371,
+            "brier": 0.19045243105236137
+          },
+          "under": {
+            "actual": 0.5462012320328542,
+            "predicted": 0.5746066221765914,
+            "logloss": 0.6930344754054747,
+            "brier": 0.24988261306468174
+          }
+        },
+        "constant_half": {
+          "top": {
+            "actual": 0.2648870636550308,
+            "predicted": 0.2663736654840889,
+            "logloss": 0.5822062144517812,
+            "brier": 0.19633203818403858
+          },
+          "bottom": {
+            "actual": 0.2561601642710472,
+            "predicted": 0.2610881565981814,
+            "logloss": 0.5690518054367295,
+            "brier": 0.19060856118336725
+          },
+          "under": {
+            "actual": 0.5462012320328542,
+            "predicted": 0.5422168383613565,
+            "logloss": 0.6921682130406326,
+            "brier": 0.2494961546539211
+          }
+        },
+        "vnext_total": {
+          "top": {
+            "actual": 0.2648870636550308,
+            "predicted": 0.2683070918992182,
+            "logloss": 0.5822105586111203,
+            "brier": 0.19634246548638562
+          },
+          "bottom": {
+            "actual": 0.2561601642710472,
+            "predicted": 0.26227183334300974,
+            "logloss": 0.5694908321107601,
+            "brier": 0.19079577374329557
+          },
+          "under": {
+            "actual": 0.5462012320328542,
+            "predicted": 0.5402163689658247,
+            "logloss": 0.692057439879106,
+            "brier": 0.24943562090977445
+          }
+        }
+      },
+      "total_vs_raw": {
+        "delta_logloss": -0.0009770355263686874,
+        "ci95_day_cluster": [
+          -0.004170493110235447,
+          0.002259544063184948
+        ]
+      },
+      "total_vs_constant_half": {
+        "delta_logloss": -0.00011077316152658416,
+        "ci95_day_cluster": [
+          -0.0014325242056443116,
+          0.0012107181639410007
+        ]
+      }
+    },
     "2024": {
       "training_seasons": [
         2023

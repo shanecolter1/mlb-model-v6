@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 from src.research.fit_i2_vnext_opening_total import (
-    TRAIN, fit_half, half_predictions, predictions,
+    TRAIN, fit_half, half_predictions, predictions, within_season,
 )
 
 
@@ -28,6 +28,24 @@ class VnextOpeningTotalTest(unittest.TestCase):
         self.assertLess(p[0],p[3])
         out=predictions(data,{'top':total,'bottom':constant})
         np.testing.assert_allclose(out['under'],(1-out['top'])*(1-out['bottom']))
+
+    def test_weekly_refits_use_only_prior_dates(self):
+        rows=[]
+        for day in range(45):
+            for game in range(12):
+                top=int((day+game)%4==0)
+                bottom=int((day+2*game)%5==0)
+                rows.append({'date':f'2022-04-{day+1:02d}' if day<30 else
+                                     f'2022-05-{day-29:02d}',
+                             'gid':f'{day}-{game}','total':8.+(game%3)/2,
+                             'top_p':.25,'bottom_p':.25,'under_p':.5625,
+                             'top_y':top,'bottom_y':bottom,
+                             'under_y':int(not(top or bottom))})
+        result=within_season(pd.DataFrame(rows))
+        self.assertTrue(result['weekly_fits'])
+        for block in result['weekly_fits']:
+            self.assertLess(block['training_last_date'],block['test_start'])
+            self.assertGreaterEqual(block['training_games'],250)
 
 
 if __name__=='__main__':

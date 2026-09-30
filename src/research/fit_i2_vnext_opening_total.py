@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fit vNext-specific top/bottom total slopes on prior post-rule seasons.
+"""Fit vNext-specific top/bottom total slopes with chronological evaluation.
 
 Research-only post-freeze diagnostic; vNext pre-freeze inputs remain baseball-only.
 The total feature and coefficient are learned only from earlier vNext replay games.
@@ -24,6 +24,10 @@ except ImportError:
     from validate_i2_opening_total_increment import load_master, MASTER_SHA256
 
 TRAIN = {2024: (2023,), 2025: (2023, 2024)}
+WITHIN_SEASON = (2022, 2023)
+WARMUP_DAYS = 28
+REFIT_DAYS = 7
+MIN_TRAIN_GAMES = 250
 RIDGE = 0.01  # Fixed before evaluation, applied only to the total slope.
 CENTER = 8.5
 
@@ -108,6 +112,46 @@ def paired_ci(data: pd.DataFrame, target: np.ndarray,
             'ci95_day_cluster':[float(x) for x in np.quantile(samples,[.025,.975])]}
 
 
+def within_season(data: pd.DataFrame) -> dict:
+    """Weekly expanding refits, each trained strictly before its forecast block."""
+    ordered=data.sort_values(['date','gid']).reset_index(drop=True)
+    start=pd.Timestamp(ordered.date.min())
+    elapsed=(pd.to_datetime(ordered.date)-start).dt.days
+    chunks=[]
+    fits=[]
+    for block,group in ordered.groupby(elapsed//REFIT_DAYS,sort=True):
+        if int(block)*REFIT_DAYS < WARMUP_DAYS:
+            continue
+        first=group.date.min()
+        train=ordered.loc[ordered.date<first]
+        if len(train)<MIN_TRAIN_GAMES:
+            continue
+        specs={name:{h:fit_half(train,h,with_total=(name=='vnext_total'))
+                     for h in ('top','bottom')}
+               for name in ('constant_half','vnext_total')}
+        fits.append({'test_start':first,'test_end':group.date.max(),
+                     'training_last_date':train.date.max(),'training_games':len(train),
+                     'total_slopes':{h:float(specs['vnext_total'][h][1]) for h in ('top','bottom')}})
+        chunks.append((group,{name:predictions(group,specs[name])
+                              for name in ('constant_half','vnext_total')}))
+    if not chunks:
+        raise ValueError('No within-season evaluation blocks')
+    test=pd.concat([c[0] for c in chunks],ignore_index=True)
+    pred={'raw':predictions(test,None)}
+    for name in ('constant_half','vnext_total'):
+        pred[name]={h:np.concatenate([forecast[name][h] for _,forecast in chunks])
+                    for h in ('top','bottom','under')}
+    return {'training_mode':'weekly expanding prior-date within-season refits',
+            'warmup_days':WARMUP_DAYS,'refit_days':REFIT_DAYS,
+            'min_train_games':MIN_TRAIN_GAMES,'weekly_fits':fits,
+            'matched_test_games':len(test),'first_test_date':test.date.min(),
+            'last_test_date':test.date.max(),
+            'scores':{name:scores(test,forecast) for name,forecast in pred.items()},
+            'total_vs_raw':paired_ci(test,pred['vnext_total']['under'],pred['raw']['under']),
+            'total_vs_constant_half':paired_ci(test,pred['vnext_total']['under'],
+                                                pred['constant_half']['under'])}
+
+
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--master',type=Path,required=True)
@@ -117,19 +161,23 @@ def main():
     if hashlib.sha256(args.master.read_bytes()).hexdigest()!=MASTER_SHA256:
         raise ValueError('Historical master checksum mismatch')
     bundles={int(y):Path(path) for y,path in args.bundle}
-    if set(bundles)!={2023,2024,2025}:
-        raise ValueError('Requires 2023–2025 vNext replays')
+    if set(bundles)!={2022,2023,2024,2025}:
+        raise ValueError('Requires 2022–2025 vNext replays')
     master=load_master(args.master)
     seasons={y:joined_season(master,path,y) for y,path in bundles.items()}
-    result={'version':'i2-vnext-trained-total-slope-v1',
+    result={'version':'i2-vnext-trained-total-slope-v2',
             'scope':'Research post-freeze diagnostic; no production model changed',
             'source_sha256':MASTER_SHA256,'ridge_slope':RIDGE,'total_center':CENTER,
             'market_input':'DraftKings pregame full-game opening total point only',
-            'i2_price_used':False,'regime':'2023+ post-rule only',
-            'excluded_years':{'2022':'No 2021 vNext replay to train pre-rule effect',
-                              '2023':'Training foundation; no prior post-rule vNext season',
-                              '2026':'No canonical opening-total archive and outcomes previously inspected'},
+            'i2_price_used':False,
+            'regimes':{'2022':'pre-rule, within-season prior-date refits only',
+                       '2023':'post-rule foundation, within-season prior-date refits only',
+                       '2024-2025':'earlier post-rule seasons train; full next season tests'},
+            'excluded_years':{'2021':'No archived vNext replay predictions',
+                              '2026':'No canonical game-level DK opening-total archive; previously inspected outcomes'},
             'seasons':{}}
+    for year in WITHIN_SEASON:
+        result['seasons'][str(year)]=within_season(seasons[year])
     for year,train_years in TRAIN.items():
         train=pd.concat([seasons[y] for y in train_years],ignore_index=True)
         test=seasons[year]
