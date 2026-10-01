@@ -1,0 +1,1244 @@
+{
+  "summary": {
+    "date": "2026-09-30",
+    "generatedAt": "2026-10-01T17:04:13.874Z",
+    "historicalBaselineUnder": 0.564958,
+    "gradedGames": 4,
+    "actualUnders": 2,
+    "actualOvers": 2,
+    "observedUnderRate": 0.5,
+    "modelExpectedUnders": 2.5022,
+    "meanModelUnderProbability": 0.62555,
+    "modelBrier": 0.24472926272687118,
+    "baselineBrier": 0.25421954176399997,
+    "modelLogLoss": 0.6812688351746845,
+    "meanProbabilityAssignedToActualI2StartSlot": 0.231425,
+    "rotowireProvisionalAccuracy": {
+      "sidesGraded": 8,
+      "exactLineups": 1,
+      "exactPlayerSets": 4,
+      "meanPlayerSetAccuracy": 0.9444444444444444,
+      "meanSlotAccuracy": 0.611111111111111,
+      "meanTop4SlotAccuracy": 0.71875,
+      "meanObservationLeadHours": 10.048473611111111,
+      "sourceRole": "AUDIT_ONLY",
+      "affectsPrediction": false,
+      "affectsEligibility": false
+    },
+    "starterMismatches": [],
+    "lineupMismatches": [
+      {
+        "gamePk": 849841,
+        "matchup": "Philadelphia Phillies @ Atlanta Braves",
+        "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+        "awayMatch": false,
+        "homeMatch": false
+      },
+      {
+        "gamePk": 849846,
+        "matchup": "Chicago White Sox @ Houston Astros",
+        "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+        "awayMatch": false,
+        "homeMatch": false
+      },
+      {
+        "gamePk": 849848,
+        "matchup": "Boston Red Sox @ New York Yankees",
+        "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+        "awayMatch": false,
+        "homeMatch": true
+      },
+      {
+        "gamePk": 849842,
+        "matchup": "Chicago Cubs @ San Diego Padres",
+        "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+        "awayMatch": false,
+        "homeMatch": false
+      }
+    ],
+    "sourcePriorityAudit": {
+      "mlbStatsApiAttempts": 4,
+      "mlbStatsApiSuccesses": 4
+    }
+  },
+  "rows": [
+    {
+      "gamePk": 849841,
+      "matchup": "Philadelphia Phillies @ Atlanta Braves",
+      "status": "Final",
+      "source": "MLB_STATS_API_PRIMARY",
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": null,
+      "modelUnderPct": 65.08,
+      "modelOverPct": 34.92,
+      "fairUnder": -186,
+      "fairOver": 186,
+      "actualI2": {
+        "away": 0,
+        "home": 0,
+        "total": 0,
+        "complete": true
+      },
+      "actualUnder": 1,
+      "brier": 0.12193914748759072,
+      "logLoss": 0.42954961991216206,
+      "baselineBrier": 0.18926154176400004,
+      "predictedAwayStarter": "Cristopher Sánchez",
+      "actualAwayStarter": "Cristopher Sánchez",
+      "predictedHomeStarter": "Tyler Mahle",
+      "actualHomeStarter": "Tyler Mahle",
+      "awayStarterMatch": true,
+      "homeStarterMatch": true,
+      "predictedAwayLineup": [
+        "Trea Turner",
+        "Kyle Schwarber",
+        "Bryce Harper",
+        "Bryson Stott",
+        "Alec Bohm",
+        "Brandon Marsh",
+        "Edmundo Sosa",
+        "Justin Crawford",
+        "J.T. Realmuto"
+      ],
+      "actualAwayLineup": [
+        "Trea Turner",
+        "Kyle Schwarber",
+        "Bryce Harper",
+        "Alec Bohm",
+        "Bryson Stott",
+        "Brandon Marsh",
+        "Edmundo Sosa",
+        "Justin Crawford",
+        "J.T. Realmuto"
+      ],
+      "predictedHomeLineup": [
+        "Ronald Acuña Jr.",
+        "Drake Baldwin",
+        "Matt Olson",
+        "Ozzie Albies",
+        "Michael Harris II",
+        "Mauricio Dubón",
+        "Austin Riley",
+        "Sean Murphy",
+        "Ha-Seong Kim"
+      ],
+      "actualHomeLineup": [
+        "Ronald Acuña Jr.",
+        "Drake Baldwin",
+        "Ozzie Albies",
+        "Matt Olson",
+        "Mauricio Dubón",
+        "Austin Riley",
+        "Michael Harris II",
+        "Sean Murphy",
+        "Ha-Seong Kim"
+      ],
+      "awayLineupExactMatch": false,
+      "homeLineupExactMatch": false,
+      "rotowireProvisionalAudit": {
+        "away": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 5.7984736111111115,
+          "projectedLineup": [
+            "Trea Turner",
+            "Kyle Schwarber",
+            "Bryce Harper",
+            "Bryson Stott",
+            "Alec Bohm",
+            "Brandon Marsh",
+            "Edmundo Sosa",
+            "Justin Crawford",
+            "J.T. Realmuto"
+          ],
+          "actualLineup": [
+            "Trea Turner",
+            "Kyle Schwarber",
+            "Bryce Harper",
+            "Alec Bohm",
+            "Bryson Stott",
+            "Brandon Marsh",
+            "Edmundo Sosa",
+            "Justin Crawford",
+            "J.T. Realmuto"
+          ],
+          "accuracy": {
+            "playersMatched": 9,
+            "playerSetAccuracy": 1,
+            "exactPlayerSet": true,
+            "exactSlots": 7,
+            "slotAccuracy": 0.7777777777777778,
+            "top4ExactSlots": 3,
+            "top4SlotAccuracy": 0.75,
+            "exactLineup": false,
+            "delta": {
+              "added": [],
+              "removed": [],
+              "moves": [
+                {
+                  "player": "Alec Bohm",
+                  "from": 5,
+                  "to": 4
+                },
+                {
+                  "player": "Bryson Stott",
+                  "from": 4,
+                  "to": 5
+                }
+              ],
+              "top4Changes": [
+                {
+                  "position": 4,
+                  "before": "Bryson Stott",
+                  "after": "Alec Bohm"
+                }
+              ],
+              "exactSlots": 7,
+              "weightedSlotAccuracy": 0.7692307692307693
+            }
+          }
+        },
+        "home": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 5.7984736111111115,
+          "projectedLineup": [
+            "Ronald Acuna",
+            "Drake Baldwin",
+            "Matt Olson",
+            "Ozzie Albies",
+            "Michael Harris",
+            "Mauricio Dubon",
+            "Austin Riley",
+            "Sean Murphy",
+            "Ha-Seong Kim"
+          ],
+          "actualLineup": [
+            "Ronald Acuña Jr.",
+            "Drake Baldwin",
+            "Ozzie Albies",
+            "Matt Olson",
+            "Mauricio Dubón",
+            "Austin Riley",
+            "Michael Harris II",
+            "Sean Murphy",
+            "Ha-Seong Kim"
+          ],
+          "accuracy": {
+            "playersMatched": 9,
+            "playerSetAccuracy": 1,
+            "exactPlayerSet": true,
+            "exactSlots": 4,
+            "slotAccuracy": 0.4444444444444444,
+            "top4ExactSlots": 2,
+            "top4SlotAccuracy": 0.5,
+            "exactLineup": false,
+            "delta": {
+              "added": [],
+              "removed": [],
+              "moves": [
+                {
+                  "player": "Ozzie Albies",
+                  "from": 4,
+                  "to": 3
+                },
+                {
+                  "player": "Matt Olson",
+                  "from": 3,
+                  "to": 4
+                },
+                {
+                  "player": "Mauricio Dubón",
+                  "from": 6,
+                  "to": 5
+                },
+                {
+                  "player": "Austin Riley",
+                  "from": 7,
+                  "to": 6
+                },
+                {
+                  "player": "Michael Harris II",
+                  "from": 5,
+                  "to": 7
+                }
+              ],
+              "top4Changes": [
+                {
+                  "position": 3,
+                  "before": "Matt Olson",
+                  "after": "Ozzie Albies"
+                },
+                {
+                  "position": 4,
+                  "before": "Ozzie Albies",
+                  "after": "Matt Olson"
+                }
+              ],
+              "exactSlots": 4,
+              "weightedSlotAccuracy": 0.46153846153846156
+            }
+          }
+        }
+      },
+      "actualAwayI2StartSlot": 7,
+      "actualHomeI2StartSlot": 6,
+      "modelProbabilityOfActualAwayStartSlot": 0.0922,
+      "modelProbabilityOfActualHomeStartSlot": 0.1764,
+      "top2Plays": [
+        {
+          "batter": "Edmundo Sosa",
+          "pitcher": "Tyler Mahle",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Edmundo Sosa flies out to right fielder Ronald Acuña Jr.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Justin Crawford",
+          "pitcher": "Tyler Mahle",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Justin Crawford flies out to left fielder Mauricio Dubón.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "J.T. Realmuto",
+          "pitcher": "Tyler Mahle",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "J.T. Realmuto singles on a line drive to center fielder Michael Harris II.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Trea Turner",
+          "pitcher": "Tyler Mahle",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Trea Turner strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Austin Riley",
+          "pitcher": "Cristopher Sánchez",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Austin Riley grounds out, second baseman Bryson Stott to first baseman Alec Bohm.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Michael Harris II",
+          "pitcher": "Cristopher Sánchez",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Michael Harris II strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Sean Murphy",
+          "pitcher": "Cristopher Sánchez",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Sean Murphy grounds out, shortstop Trea Turner to first baseman Alec Bohm.",
+          "isScoringPlay": false
+        }
+      ]
+    },
+    {
+      "gamePk": 849846,
+      "matchup": "Chicago White Sox @ Houston Astros",
+      "status": "Final",
+      "source": "MLB_STATS_API_PRIMARY",
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": null,
+      "modelUnderPct": 57.75,
+      "modelOverPct": 42.25,
+      "fairUnder": -137,
+      "fairOver": 137,
+      "actualI2": {
+        "away": 0,
+        "home": 1,
+        "total": 1,
+        "complete": true
+      },
+      "actualUnder": 0,
+      "brier": 0.33345583728151207,
+      "logLoss": 0.8614625262196851,
+      "baselineBrier": 0.31917754176399993,
+      "predictedAwayStarter": "Sean Burke",
+      "actualAwayStarter": "Sean Burke",
+      "predictedHomeStarter": "Hunter Brown",
+      "actualHomeStarter": "Hunter Brown",
+      "awayStarterMatch": true,
+      "homeStarterMatch": true,
+      "predictedAwayLineup": [
+        "Sam Antonacci",
+        "Kyle Teel",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Colson Montgomery",
+        "Braden Montgomery"
+      ],
+      "actualAwayLineup": [
+        "Sam Antonacci",
+        "Kyle Teel",
+        "Miguel Vargas",
+        "Munetaka Murakami",
+        "Andrew Benintendi",
+        "Tristan Peters",
+        "Chase Meidroth",
+        "Braden Montgomery",
+        "Colson Montgomery"
+      ],
+      "predictedHomeLineup": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Yainer Diaz",
+        "Christian Walker",
+        "Lucas Spence",
+        "Cam Smith",
+        "Taylor Trammell"
+      ],
+      "actualHomeLineup": [
+        "Jeremy Peña",
+        "Yordan Alvarez",
+        "Isaac Paredes",
+        "Jose Altuve",
+        "Yainer Diaz",
+        "Christian Walker",
+        "Lucas Spence",
+        "Cam Smith",
+        "Nick Allen"
+      ],
+      "awayLineupExactMatch": false,
+      "homeLineupExactMatch": false,
+      "rotowireProvisionalAudit": {
+        "away": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 8.798473611111111,
+          "projectedLineup": [
+            "Sam Antonacci",
+            "Kyle Teel",
+            "Miguel Vargas",
+            "Munetaka Murakami",
+            "Andrew Benintendi",
+            "Tristan Peters",
+            "Chase Meidroth",
+            "Colson Montgomery",
+            "Braden Montgomery"
+          ],
+          "actualLineup": [
+            "Sam Antonacci",
+            "Kyle Teel",
+            "Miguel Vargas",
+            "Munetaka Murakami",
+            "Andrew Benintendi",
+            "Tristan Peters",
+            "Chase Meidroth",
+            "Braden Montgomery",
+            "Colson Montgomery"
+          ],
+          "accuracy": {
+            "playersMatched": 9,
+            "playerSetAccuracy": 1,
+            "exactPlayerSet": true,
+            "exactSlots": 7,
+            "slotAccuracy": 0.7777777777777778,
+            "top4ExactSlots": 4,
+            "top4SlotAccuracy": 1,
+            "exactLineup": false,
+            "delta": {
+              "added": [],
+              "removed": [],
+              "moves": [
+                {
+                  "player": "Braden Montgomery",
+                  "from": 9,
+                  "to": 8
+                },
+                {
+                  "player": "Colson Montgomery",
+                  "from": 8,
+                  "to": 9
+                }
+              ],
+              "top4Changes": [],
+              "exactSlots": 7,
+              "weightedSlotAccuracy": 0.8461538461538461
+            }
+          }
+        },
+        "home": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 8.798473611111111,
+          "projectedLineup": [
+            "Jeremy Pena",
+            "Yordan Alvarez",
+            "Isaac Paredes",
+            "Jose Altuve",
+            "Yainer Diaz",
+            "Christian Walker",
+            "Lucas Spence",
+            "Cam Smith",
+            "Taylor Trammell"
+          ],
+          "actualLineup": [
+            "Jeremy Peña",
+            "Yordan Alvarez",
+            "Isaac Paredes",
+            "Jose Altuve",
+            "Yainer Diaz",
+            "Christian Walker",
+            "Lucas Spence",
+            "Cam Smith",
+            "Nick Allen"
+          ],
+          "accuracy": {
+            "playersMatched": 8,
+            "playerSetAccuracy": 0.8888888888888888,
+            "exactPlayerSet": false,
+            "exactSlots": 8,
+            "slotAccuracy": 0.8888888888888888,
+            "top4ExactSlots": 4,
+            "top4SlotAccuracy": 1,
+            "exactLineup": false,
+            "delta": {
+              "added": [
+                "Nick Allen"
+              ],
+              "removed": [
+                "Taylor Trammell"
+              ],
+              "moves": [],
+              "top4Changes": [],
+              "exactSlots": 8,
+              "weightedSlotAccuracy": 0.9230769230769231
+            }
+          }
+        }
+      },
+      "actualAwayI2StartSlot": 2,
+      "actualHomeI2StartSlot": 6,
+      "modelProbabilityOfActualAwayStartSlot": 0.0036,
+      "modelProbabilityOfActualHomeStartSlot": 0.1895,
+      "top2Plays": [
+        {
+          "batter": "Kyle Teel",
+          "pitcher": "AJ Blubaugh",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Kyle Teel strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Miguel Vargas",
+          "pitcher": "AJ Blubaugh",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Miguel Vargas flies out to right fielder Cam Smith.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Munetaka Murakami",
+          "pitcher": "AJ Blubaugh",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Munetaka Murakami strikes out swinging.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Christian Walker",
+          "pitcher": "Sean Burke",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Christian Walker strikes out swinging.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Lucas Spence",
+          "pitcher": "Sean Burke",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Lucas Spence grounds out, shortstop Colson Montgomery to first baseman Munetaka Murakami.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Cam Smith",
+          "pitcher": "Sean Burke",
+          "event": "Home Run",
+          "eventType": "home_run",
+          "rbi": 1,
+          "description": "Cam Smith homers (1) on a fly ball to left field.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Nick Allen",
+          "pitcher": "Sean Burke",
+          "event": "Pop Out",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Nick Allen pops out to second baseman Chase Meidroth.",
+          "isScoringPlay": false
+        }
+      ]
+    },
+    {
+      "gamePk": 849848,
+      "matchup": "Boston Red Sox @ New York Yankees",
+      "status": "Final",
+      "source": "MLB_STATS_API_PRIMARY",
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": null,
+      "modelUnderPct": 64.4,
+      "modelOverPct": 35.6,
+      "fairUnder": -181,
+      "fairOver": 181,
+      "actualI2": {
+        "away": 0,
+        "home": 0,
+        "total": 0,
+        "complete": true
+      },
+      "actualUnder": 1,
+      "brier": 0.12670125728378429,
+      "logLoss": 0.43998078044677985,
+      "baselineBrier": 0.18926154176400004,
+      "predictedAwayStarter": "Sonny Gray",
+      "actualAwayStarter": "Sonny Gray",
+      "predictedHomeStarter": "Max Fried",
+      "actualHomeStarter": "Max Fried",
+      "awayStarterMatch": true,
+      "homeStarterMatch": true,
+      "predictedAwayLineup": [
+        "Jahmai Jones",
+        "Ceddanne Rafaela",
+        "Adley Rutschman",
+        "Willson Contreras",
+        "Wilyer Abreu",
+        "Trevor Story",
+        "Jarren Duran",
+        "Caleb Durbin",
+        "Nick Sogard"
+      ],
+      "actualAwayLineup": [
+        "Jahmai Jones",
+        "Adley Rutschman",
+        "Willson Contreras",
+        "Wilyer Abreu",
+        "Ceddanne Rafaela",
+        "Caleb Durbin",
+        "Nick Sogard",
+        "Trevor Story",
+        "Nate Eaton"
+      ],
+      "predictedHomeLineup": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Luis García Jr.",
+        "Spencer Jones",
+        "George Lombard Jr.",
+        "Jazz Chisholm Jr.",
+        "Trent Grisham",
+        "Austin Wells",
+        "Ryan McMahon"
+      ],
+      "actualHomeLineup": [
+        "Ben Rice",
+        "Cody Bellinger",
+        "Luis García Jr.",
+        "Spencer Jones",
+        "George Lombard Jr.",
+        "Jazz Chisholm Jr.",
+        "Trent Grisham",
+        "Austin Wells",
+        "Ryan McMahon"
+      ],
+      "awayLineupExactMatch": false,
+      "homeLineupExactMatch": true,
+      "rotowireProvisionalAudit": {
+        "away": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 11.798473611111111,
+          "projectedLineup": [
+            "Jahmai Jones",
+            "Ceddanne Rafaela",
+            "Adley Rutschman",
+            "Willson Contreras",
+            "Wilyer Abreu",
+            "Trevor Story",
+            "Jarren Duran",
+            "Caleb Durbin",
+            "Nick Sogard"
+          ],
+          "actualLineup": [
+            "Jahmai Jones",
+            "Adley Rutschman",
+            "Willson Contreras",
+            "Wilyer Abreu",
+            "Ceddanne Rafaela",
+            "Caleb Durbin",
+            "Nick Sogard",
+            "Trevor Story",
+            "Nate Eaton"
+          ],
+          "accuracy": {
+            "playersMatched": 8,
+            "playerSetAccuracy": 0.8888888888888888,
+            "exactPlayerSet": false,
+            "exactSlots": 1,
+            "slotAccuracy": 0.1111111111111111,
+            "top4ExactSlots": 1,
+            "top4SlotAccuracy": 0.25,
+            "exactLineup": false,
+            "delta": {
+              "added": [
+                "Nate Eaton"
+              ],
+              "removed": [
+                "Jarren Duran"
+              ],
+              "moves": [
+                {
+                  "player": "Adley Rutschman",
+                  "from": 3,
+                  "to": 2
+                },
+                {
+                  "player": "Willson Contreras",
+                  "from": 4,
+                  "to": 3
+                },
+                {
+                  "player": "Wilyer Abreu",
+                  "from": 5,
+                  "to": 4
+                },
+                {
+                  "player": "Ceddanne Rafaela",
+                  "from": 2,
+                  "to": 5
+                },
+                {
+                  "player": "Caleb Durbin",
+                  "from": 8,
+                  "to": 6
+                },
+                {
+                  "player": "Nick Sogard",
+                  "from": 9,
+                  "to": 7
+                },
+                {
+                  "player": "Trevor Story",
+                  "from": 6,
+                  "to": 8
+                }
+              ],
+              "top4Changes": [
+                {
+                  "position": 2,
+                  "before": "Ceddanne Rafaela",
+                  "after": "Adley Rutschman"
+                },
+                {
+                  "position": 3,
+                  "before": "Adley Rutschman",
+                  "after": "Willson Contreras"
+                },
+                {
+                  "position": 4,
+                  "before": "Willson Contreras",
+                  "after": "Wilyer Abreu"
+                }
+              ],
+              "exactSlots": 1,
+              "weightedSlotAccuracy": 0.15384615384615385
+            }
+          }
+        },
+        "home": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 11.798473611111111,
+          "projectedLineup": [
+            "Ben Rice",
+            "Cody Bellinger",
+            "Luis Garcia",
+            "Spencer Jones",
+            "George Lombard",
+            "Jazz Chisholm",
+            "Trent Grisham",
+            "Austin Wells",
+            "Ryan McMahon"
+          ],
+          "actualLineup": [
+            "Ben Rice",
+            "Cody Bellinger",
+            "Luis García Jr.",
+            "Spencer Jones",
+            "George Lombard Jr.",
+            "Jazz Chisholm Jr.",
+            "Trent Grisham",
+            "Austin Wells",
+            "Ryan McMahon"
+          ],
+          "accuracy": {
+            "playersMatched": 9,
+            "playerSetAccuracy": 1,
+            "exactPlayerSet": true,
+            "exactSlots": 9,
+            "slotAccuracy": 1,
+            "top4ExactSlots": 4,
+            "top4SlotAccuracy": 1,
+            "exactLineup": true,
+            "delta": {
+              "added": [],
+              "removed": [],
+              "moves": [],
+              "top4Changes": [],
+              "exactSlots": 9,
+              "weightedSlotAccuracy": 1
+            }
+          }
+        }
+      },
+      "actualAwayI2StartSlot": 5,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.29109999999999997,
+      "modelProbabilityOfActualHomeStartSlot": 0.37170000000000003,
+      "top2Plays": [
+        {
+          "batter": "Ceddanne Rafaela",
+          "pitcher": "Max Fried",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Ceddanne Rafaela grounds out, second baseman Jazz Chisholm Jr. to first baseman Luis García Jr.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Caleb Durbin",
+          "pitcher": "Max Fried",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Caleb Durbin flies out to center fielder Trent Grisham.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Nick Sogard",
+          "pitcher": "Max Fried",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Nick Sogard flies out to left fielder Cody Bellinger.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Spencer Jones",
+          "pitcher": "Sonny Gray",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Spencer Jones called out on strikes.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "George Lombard Jr.",
+          "pitcher": "Sonny Gray",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "George Lombard Jr. called out on strikes.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jazz Chisholm Jr.",
+          "pitcher": "Sonny Gray",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Jazz Chisholm Jr. singles on a line drive to shortstop Trevor Story.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Trent Grisham",
+          "pitcher": "Sonny Gray",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Trent Grisham flies out to shortstop Trevor Story.",
+          "isScoringPlay": false
+        }
+      ]
+    },
+    {
+      "gamePk": 849842,
+      "matchup": "Chicago Cubs @ San Diego Padres",
+      "status": "Final",
+      "source": "MLB_STATS_API_PRIMARY",
+      "modelStatus": "FROZEN_RESEARCH_PROJECTION",
+      "predictionClass": "PROVISIONAL_EXPECTED_INPUTS",
+      "lineupSource": null,
+      "modelUnderPct": 62.99,
+      "modelOverPct": 37.01,
+      "fairUnder": -170,
+      "fairOver": 170,
+      "actualI2": {
+        "away": 0,
+        "home": 2,
+        "total": 2,
+        "complete": true
+      },
+      "actualUnder": 0,
+      "brier": 0.3968208088545977,
+      "logLoss": 0.9940824141201108,
+      "baselineBrier": 0.31917754176399993,
+      "predictedAwayStarter": "Kevin Gausman",
+      "actualAwayStarter": "Kevin Gausman",
+      "predictedHomeStarter": "Nick Pivetta",
+      "actualHomeStarter": "Nick Pivetta",
+      "awayStarterMatch": true,
+      "homeStarterMatch": true,
+      "predictedAwayLineup": [
+        "Pete Crow-Armstrong",
+        "Seiya Suzuki",
+        "Michael Busch",
+        "Alex Bregman",
+        "Ian Happ",
+        "Michael Conforto",
+        "Nico Hoerner",
+        "Carson Kelly",
+        "Dansby Swanson"
+      ],
+      "actualAwayLineup": [
+        "Pete Crow-Armstrong",
+        "Alex Bregman",
+        "Michael Busch",
+        "Seiya Suzuki",
+        "Ian Happ",
+        "Nico Hoerner",
+        "Matt Shaw",
+        "Carson Kelly",
+        "Dansby Swanson"
+      ],
+      "predictedHomeLineup": [
+        "Fernando Tatis Jr.",
+        "Dustin Harris",
+        "Manny Machado",
+        "Jackson Merrill",
+        "Ty France",
+        "Gavin Sheets",
+        "Xander Bogaerts",
+        "Jake Cronenworth",
+        "Ethan Salas"
+      ],
+      "actualHomeLineup": [
+        "Fernando Tatis Jr.",
+        "Dustin Harris",
+        "Manny Machado",
+        "Ty France",
+        "Jackson Merrill",
+        "Xander Bogaerts",
+        "Ethan Salas",
+        "Austin Hays",
+        "Jake Cronenworth"
+      ],
+      "awayLineupExactMatch": false,
+      "homeLineupExactMatch": false,
+      "rotowireProvisionalAudit": {
+        "away": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 13.798473611111111,
+          "projectedLineup": [
+            "Pete Crow-Armstrong",
+            "Seiya Suzuki",
+            "Michael Busch",
+            "Alex Bregman",
+            "Ian Happ",
+            "Michael Conforto",
+            "Nico Hoerner",
+            "Carson Kelly",
+            "Dansby Swanson"
+          ],
+          "actualLineup": [
+            "Pete Crow-Armstrong",
+            "Alex Bregman",
+            "Michael Busch",
+            "Seiya Suzuki",
+            "Ian Happ",
+            "Nico Hoerner",
+            "Matt Shaw",
+            "Carson Kelly",
+            "Dansby Swanson"
+          ],
+          "accuracy": {
+            "playersMatched": 8,
+            "playerSetAccuracy": 0.8888888888888888,
+            "exactPlayerSet": false,
+            "exactSlots": 5,
+            "slotAccuracy": 0.5555555555555556,
+            "top4ExactSlots": 2,
+            "top4SlotAccuracy": 0.5,
+            "exactLineup": false,
+            "delta": {
+              "added": [
+                "Matt Shaw"
+              ],
+              "removed": [
+                "Michael Conforto"
+              ],
+              "moves": [
+                {
+                  "player": "Alex Bregman",
+                  "from": 4,
+                  "to": 2
+                },
+                {
+                  "player": "Seiya Suzuki",
+                  "from": 2,
+                  "to": 4
+                },
+                {
+                  "player": "Nico Hoerner",
+                  "from": 7,
+                  "to": 6
+                }
+              ],
+              "top4Changes": [
+                {
+                  "position": 2,
+                  "before": "Seiya Suzuki",
+                  "after": "Alex Bregman"
+                },
+                {
+                  "position": 4,
+                  "before": "Alex Bregman",
+                  "after": "Seiya Suzuki"
+                }
+              ],
+              "exactSlots": 5,
+              "weightedSlotAccuracy": 0.5384615384615384
+            }
+          }
+        },
+        "home": {
+          "source": "https://www.rotowire.com/baseball/daily-lineups.php",
+          "retrievedAt": "2026-09-30T12:12:05.495Z",
+          "timestamp": null,
+          "confirmed": false,
+          "observationLeadHours": 13.798473611111111,
+          "projectedLineup": [
+            "Fernando Tatis",
+            "Dustin Harris",
+            "Manny Machado",
+            "Jackson Merrill",
+            "Ty France",
+            "Gavin Sheets",
+            "Xander Bogaerts",
+            "Jake Cronenworth",
+            "Ethan Salas"
+          ],
+          "actualLineup": [
+            "Fernando Tatis Jr.",
+            "Dustin Harris",
+            "Manny Machado",
+            "Ty France",
+            "Jackson Merrill",
+            "Xander Bogaerts",
+            "Ethan Salas",
+            "Austin Hays",
+            "Jake Cronenworth"
+          ],
+          "accuracy": {
+            "playersMatched": 8,
+            "playerSetAccuracy": 0.8888888888888888,
+            "exactPlayerSet": false,
+            "exactSlots": 3,
+            "slotAccuracy": 0.3333333333333333,
+            "top4ExactSlots": 3,
+            "top4SlotAccuracy": 0.75,
+            "exactLineup": false,
+            "delta": {
+              "added": [
+                "Austin Hays"
+              ],
+              "removed": [
+                "Gavin Sheets"
+              ],
+              "moves": [
+                {
+                  "player": "Ty France",
+                  "from": 5,
+                  "to": 4
+                },
+                {
+                  "player": "Jackson Merrill",
+                  "from": 4,
+                  "to": 5
+                },
+                {
+                  "player": "Xander Bogaerts",
+                  "from": 7,
+                  "to": 6
+                },
+                {
+                  "player": "Ethan Salas",
+                  "from": 9,
+                  "to": 7
+                },
+                {
+                  "player": "Jake Cronenworth",
+                  "from": 8,
+                  "to": 9
+                }
+              ],
+              "top4Changes": [
+                {
+                  "position": 4,
+                  "before": "Jackson Merrill",
+                  "after": "Ty France"
+                }
+              ],
+              "exactSlots": 3,
+              "weightedSlotAccuracy": 0.46153846153846156
+            }
+          }
+        }
+      },
+      "actualAwayI2StartSlot": 4,
+      "actualHomeI2StartSlot": 4,
+      "modelProbabilityOfActualAwayStartSlot": 0.35840000000000005,
+      "modelProbabilityOfActualHomeStartSlot": 0.3685,
+      "top2Plays": [
+        {
+          "batter": "Seiya Suzuki",
+          "pitcher": "Nick Pivetta",
+          "event": "Strikeout",
+          "eventType": "strikeout",
+          "rbi": 0,
+          "description": "Seiya Suzuki called out on strikes.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Ian Happ",
+          "pitcher": "Nick Pivetta",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Ian Happ flies out to right fielder Fernando Tatis Jr.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Nico Hoerner",
+          "pitcher": "Nick Pivetta",
+          "event": "Flyout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Nico Hoerner flies out to right fielder Fernando Tatis Jr.",
+          "isScoringPlay": false
+        }
+      ],
+      "bottom2Plays": [
+        {
+          "batter": "Ty France",
+          "pitcher": "Kevin Gausman",
+          "event": "Double",
+          "eventType": "double",
+          "rbi": 0,
+          "description": "Ty France doubles (1) on a ground ball to left fielder Ian Happ.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jackson Merrill",
+          "pitcher": "Kevin Gausman",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 0,
+          "description": "Jackson Merrill singles on a soft ground ball to third baseman Matt Shaw. Ty France to 3rd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Xander Bogaerts",
+          "pitcher": "Kevin Gausman",
+          "event": "Single",
+          "eventType": "single",
+          "rbi": 1,
+          "description": "Xander Bogaerts singles on a ground ball to right fielder Seiya Suzuki. Ty France scores. Jackson Merrill to 3rd.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Ethan Salas",
+          "pitcher": "Kevin Gausman",
+          "event": "Sac Fly",
+          "eventType": "sac_fly",
+          "rbi": 1,
+          "description": "Ethan Salas out on a sacrifice fly to center fielder Pete Crow-Armstrong. Jackson Merrill scores.",
+          "isScoringPlay": true
+        },
+        {
+          "batter": "Austin Hays",
+          "pitcher": "Kevin Gausman",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Austin Hays grounds out, shortstop Dansby Swanson to first baseman Michael Busch. Xander Bogaerts to 2nd.",
+          "isScoringPlay": false
+        },
+        {
+          "batter": "Jake Cronenworth",
+          "pitcher": "Kevin Gausman",
+          "event": "Groundout",
+          "eventType": "field_out",
+          "rbi": 0,
+          "description": "Jake Cronenworth grounds out, second baseman Nico Hoerner to pitcher Kevin Gausman.",
+          "isScoringPlay": false
+        }
+      ]
+    }
+  ]
+}
