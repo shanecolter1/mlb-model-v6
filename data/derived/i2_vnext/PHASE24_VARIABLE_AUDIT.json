@@ -1,0 +1,62 @@
+{
+  "version": "i2-vnext-variable-audit-2026-10-03-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "market_inputs_used": false,
+  "production_changed": false,
+  "target": "full I2 Under 0.5 probability",
+  "selection_policy": {
+    "development_years": [2022, 2023, 2024, 2025],
+    "replication_year": 2026,
+    "2026_used_for_variable_selection": false,
+    "calendar_month_feature_or_control": false
+  },
+  "method": {
+    "ablation": "leave-one-input-out exact state propagation; player I1 rates neutralized to league baseline; park event factor neutralized to 1.0",
+    "scoring": ["binary log loss", "Brier score"],
+    "uncertainty": "paired game-date clustered standard errors within season plus cross-season replication",
+    "state_engine": "exact deterministic propagation of the governed I1->I2 batting-slot state and prior-only base/out transitions",
+    "canonical_validation": "exact baseline checked against canonical 10,000-trial replays for 2022-2026"
+  },
+  "baseline_validation": {
+    "2022": {"n":2430,"exact_logloss":0.6807730268316315,"canonical_10000_trial_logloss":0.6805876683123261,"exact_minus_mc_logloss":0.00018535851930545633},
+    "2023": {"n":2430,"exact_logloss":0.6919430235205755,"canonical_10000_trial_logloss":0.6924815622523951,"exact_minus_mc_logloss":-0.0005385387318196377},
+    "2024": {"n":2429,"exact_logloss":0.6866567512598791,"canonical_10000_trial_logloss":0.6866995999772264,"exact_minus_mc_logloss":-0.00004284871734727691},
+    "2025": {"n":2430,"exact_logloss":0.6865890763768789,"canonical_10000_trial_logloss":0.6863212827374477,"exact_minus_mc_logloss":0.00026779363943119083},
+    "2026": {"n":2425,"exact_logloss":0.6814500320959174,"canonical_10000_trial_logloss":0.681259124139862,"exact_minus_mc_logloss":0.00019090795605536393}
+  },
+  "individual_full_i2_ablation": {
+    "hitter_single": {"dev_dll":1.1841863371825611e-7,"dev_dbrier":5.5269999123863124e-8,"dev_pos_years":2,"replication_2026_dll":-2.585566700741282e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "hitter_double": {"dev_dll":1.9191471111903015e-6,"dev_dbrier":9.424759546567795e-7,"dev_pos_years":3,"replication_2026_dll":-1.581099119740692e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "hitter_triple": {"dev_dll":-4.899362106375924e-7,"dev_dbrier":-2.3479121978698903e-7,"dev_pos_years":1,"replication_2026_dll":1.094112258237523e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "hitter_home_run": {"dev_dll":-1.2152703675245563e-6,"dev_dbrier":-5.739709723825631e-7,"dev_pos_years":1,"replication_2026_dll":-3.022013778108956e-7,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "hitter_walk": {"dev_dll":-7.667789179853863e-7,"dev_dbrier":-3.566528303058003e-7,"dev_pos_years":2,"replication_2026_dll":-6.519623949818865e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "hitter_hit_by_pitch": {"dev_dll":8.7670138671038e-7,"dev_dbrier":4.3211121075356447e-7,"dev_pos_years":3,"replication_2026_dll":3.01854216888664e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "hitter_strikeout": {"dev_dll":0.0,"dev_dbrier":0.0,"dev_pos_years":0,"replication_2026_dll":0.0,"classification":"REMOVE_MECHANICALLY_REDUNDANT"},
+    "pitcher_single": {"dev_dll":5.593547995145761e-7,"dev_dbrier":2.970708129552261e-7,"dev_pos_years":1,"replication_2026_dll":4.270388061500263e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "pitcher_double": {"dev_dll":-1.392385844792785e-6,"dev_dbrier":-6.700714932041976e-7,"dev_pos_years":1,"replication_2026_dll":2.4933518203429372e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "pitcher_triple": {"dev_dll":1.0070955894540792e-6,"dev_dbrier":4.869981088961354e-7,"dev_pos_years":4,"replication_2026_dll":-1.7173786809321356e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "pitcher_home_run": {"dev_dll":-1.9964919035026215e-6,"dev_dbrier":-9.891572949513053e-7,"dev_pos_years":1,"replication_2026_dll":-1.4107862612577904e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "pitcher_walk": {"dev_dll":-3.795292537374655e-7,"dev_dbrier":-1.9948876154879127e-7,"dev_pos_years":2,"replication_2026_dll":-7.5524534055571024e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "pitcher_hit_by_pitch": {"dev_dll":9.918893881400434e-7,"dev_dbrier":4.821481763630785e-7,"dev_pos_years":3,"replication_2026_dll":1.3081783152291138e-6,"classification":"NO_RELIABLE_INCREMENTAL_VALUE"},
+    "pitcher_strikeout": {"dev_dll":0.0,"dev_dbrier":0.0,"dev_pos_years":0,"replication_2026_dll":0.0,"classification":"REMOVE_MECHANICALLY_REDUNDANT"},
+    "park_single": {"dev_dll":0.000383559309505563,"dev_dbrier":0.00018704514302846794,"dev_pos_years":4,"replication_2026_dll":0.0005867315231816717,"classification":"RETAIN_STRONG"},
+    "park_double": {"dev_dll":0.00026795543905057227,"dev_dbrier":0.00013090643461469446,"dev_pos_years":3,"replication_2026_dll":0.00018759608122842497,"classification":"RETAIN_LOW_CONFIDENCE"},
+    "park_triple": {"dev_dll":0.00017313452728255055,"dev_dbrier":0.00008458728975084775,"dev_pos_years":4,"replication_2026_dll":0.0003060386324477138,"classification":"RETAIN_STRONG"},
+    "park_home_run": {"dev_dll":-0.0004081949117336502,"dev_dbrier":-0.00020139387463876814,"dev_pos_years":2,"replication_2026_dll":0.00015728491023259128,"classification":"SHRINKAGE_RESEARCH_ONLY"}
+  },
+  "group_ablation": {
+    "hitter_all_i1": {"dev_dll":5.135188756537578e-7,"replication_2026_dll":-7.089788501613015e-6},
+    "pitcher_all_i1": {"dev_dll":-9.712609759335768e-7,"replication_2026_dll":-2.433663643608419e-6},
+    "both_all_i1": {"dev_dll":-5.228438004439166e-7,"replication_2026_dll":-1.1180241617059217e-5},
+    "park_all_events": {"dev_dll":0.00034301710789371126,"replication_2026_dll":0.0010866609273086913}
+  },
+  "decisions": {
+    "retain": ["direct batter identity","direct pitcher identity","Savant park single factor","Savant park triple factor"],
+    "retain_low_confidence": ["Savant park double factor"],
+    "remove_or_neutralize_in_next_candidate": ["player-specific I1 hitter event-rate layer","player-specific I1 pitcher event-rate layer","I1 hitter strikeout statistic","I1 pitcher strikeout statistic"],
+    "research_only": ["Savant park HR shrinkage toward neutral","standalone platoon/handedness term","individual arsenal interaction terms"],
+    "preserve": ["I1->I2 start-slot/state engine","confirmed/provisional lineup order governance","prior-only empirical base/out transitions","market isolation","single final probability calibration policy"]
+  },
+  "key_conclusion": "Player-specific I1 event rates do not add measurable full-I2 value individually or jointly. Keep the I1 state engine but simplify its player-talent inputs. Park 1B and 3B factors are the only event-level venue inputs with consistent 2022-2025 gains and positive 2026 replication."
+}
