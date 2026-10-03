@@ -1,0 +1,31 @@
+{
+  "version": "i2-vnext-phase25-neutral-i1-decision-v1",
+  "generated_at": "2026-10-03",
+  "source_checkpoint": "data/derived/i2_vnext/PHASE25_NEUTRAL_I1_CANDIDATE.json",
+  "market_inputs_used": false,
+  "production_changed": false,
+  "candidate": "neutral league I1 event rates with I1 batting-order/state engine preserved",
+  "deterministic_exact_evidence": {
+    "development_2022_2025_candidate_minus_baseline_logloss": -5.228438004439166e-07,
+    "replication_2026_candidate_minus_baseline_logloss": -1.1180241617059217e-05,
+    "interpretation": "No measurable unique predictive value from the player-specific I1 event-rate layer."
+  },
+  "canonical_10000_trial_replay": {
+    "development_2022_2025_candidate_minus_baseline_logloss": 0.00010159962207112556,
+    "approx_pooled_cluster_se_logloss": 0.00010288662326860931,
+    "approx_z": 0.98749107360513,
+    "replication_2026_candidate_minus_baseline_logloss": 0.00016028563285019892,
+    "replication_2026_cluster_se_logloss": 0.0002570780390186944,
+    "replication_2026_z": 0.6234901801104183,
+    "interpretation": "The replay direction is slightly worse but the magnitude is not distinguishable from simulation/sampling noise under this paired implementation check."
+  },
+  "decision": {
+    "classification": "ACCURACY_NEUTRAL_SIMPLIFICATION_CANDIDATE",
+    "claim_accuracy_improvement": false,
+    "promote_to_production_now": false,
+    "retain_i1_state_engine": true,
+    "retain_lineup_order_governance": true,
+    "next_use": "Carry neutral-I1 as a simplification challenger into the final combined candidate only after direct-I2 weak-feature attribution is complete."
+  },
+  "rationale": "The player-specific I1 rate layer does not provide a defensible incremental full-I2 accuracy gain. Removing it reduces complexity, but the evidence does not justify claiming sharper predictions from the removal itself."
+}
