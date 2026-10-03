@@ -1,0 +1,109 @@
+{
+  "version": "i2-vnext-phase25-neutral-i1-candidate-v1",
+  "market_inputs_used": false,
+  "production_changed": false,
+  "candidate": "neutral league I1 event rates with I1 batting-order/state engine preserved",
+  "single_change": "i1_state_mode player_asof -> league",
+  "unchanged": [
+    "direct I2 event model",
+    "lineup/order",
+    "I1->I2 state engine",
+    "prior-season Savant park environment",
+    "prior-only base/out transitions",
+    "full-I2 calibration policy",
+    "market isolation"
+  ],
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "seasonal": {
+    "2022": {
+      "n": 2430,
+      "baseline_logloss": 0.6805876683123261,
+      "candidate_logloss": 0.6805255196592013,
+      "candidate_minus_baseline_logloss": -6.21486531248161e-05,
+      "baseline_brier": 0.2437537520781893,
+      "candidate_brier": 0.2437223296872428,
+      "candidate_minus_baseline_brier": -3.142239094650057e-05,
+      "paired_cluster_se_logloss": 0.00020728334325384058,
+      "mean_probability_shift": 0.0001647325102880652,
+      "mean_abs_probability_shift": 0.0039048148148148132
+    },
+    "2023": {
+      "n": 2430,
+      "baseline_logloss": 0.6924815622523951,
+      "candidate_logloss": 0.6923913709056881,
+      "candidate_minus_baseline_logloss": -9.019134670695816e-05,
+      "baseline_brier": 0.2496107828395062,
+      "candidate_brier": 0.24956584415637859,
+      "candidate_minus_baseline_brier": -4.4938683127604406e-05,
+      "paired_cluster_se_logloss": 0.00021554651603191143,
+      "mean_probability_shift": -1.6213991769548304e-05,
+      "mean_abs_probability_shift": 0.0039610699588477375
+    },
+    "2024": {
+      "n": 2429,
+      "baseline_logloss": 0.6866995999772264,
+      "candidate_logloss": 0.6868455172016775,
+      "candidate_minus_baseline_logloss": 0.00014591722445111976,
+      "baseline_brier": 0.24677926006998765,
+      "candidate_brier": 0.24685116130506382,
+      "candidate_minus_baseline_brier": 7.190123507616608e-05,
+      "paired_cluster_se_logloss": 0.00019535736222808602,
+      "mean_probability_shift": 0.00012177850967476203,
+      "mean_abs_probability_shift": 0.0038780568135034998
+    },
+    "2025": {
+      "n": 2430,
+      "baseline_logloss": 0.6863212827374477,
+      "candidate_logloss": 0.6867341222388094,
+      "candidate_minus_baseline_logloss": 0.00041283950136161707,
+      "baseline_brier": 0.24659744335390946,
+      "candidate_brier": 0.2467970159547325,
+      "candidate_minus_baseline_brier": 0.00019957260082303918,
+      "paired_cluster_se_logloss": 0.0002043915080440765,
+      "mean_probability_shift": -8.353909465020473e-05,
+      "mean_abs_probability_shift": 0.003926255144032921
+    },
+    "2026": {
+      "n": 2425,
+      "baseline_logloss": 0.681259124139862,
+      "candidate_logloss": 0.6814194097727122,
+      "candidate_minus_baseline_logloss": 0.00016028563285019892,
+      "baseline_brier": 0.24408677147628866,
+      "candidate_brier": 0.2441669472659794,
+      "candidate_minus_baseline_brier": 8.017578969074513e-05,
+      "paired_cluster_se_logloss": 0.0002570780390186944,
+      "mean_probability_shift": 8.020618556700925e-05,
+      "mean_abs_probability_shift": 0.0040064742268041235
+    }
+  },
+  "pooled_development_2022_2025": {
+    "n": 9719,
+    "candidate_minus_baseline_logloss": 0.00010159962207112556,
+    "candidate_minus_baseline_brier": 4.877581129745861e-05,
+    "mean_probability_shift": 4.668175738244629e-05,
+    "mean_abs_probability_shift": 0.003917553246218747
+  },
+  "replication_2026": {
+    "n": 2425,
+    "candidate_minus_baseline_logloss": 0.0001602856328502077,
+    "candidate_minus_baseline_brier": 8.017578969072085e-05,
+    "mean_probability_shift": 8.020618556700925e-05,
+    "mean_abs_probability_shift": 0.0040064742268041235
+  },
+  "phase24_exact_state_ablation": {
+    "development_candidate_minus_baseline_logloss": -5.228438004439166e-07,
+    "replication_2026_candidate_minus_baseline_logloss": -1.1180241617059217e-05,
+    "note": "Exact deterministic Phase 24 audit is primary for tiny-effect inference; 10k-trial replay is implementation validation."
+  },
+  "decision_rule": {
+    "primary": "exact Phase 24 group ablation must not worsen 2022-2025 and should replicate directionally in 2026",
+    "secondary": "canonical 10k replay must show no material regression or governance drift"
+  },
+  "status": "CANDIDATE_VALIDATED_PRODUCTION_UNCHANGED"
+}
