@@ -1,36 +1,55 @@
 name: I2 vNext Phase 26A - direct feature ablation screen
+
 on:
   workflow_dispatch:
   push:
     branches: [research/i2-vnext-direct-talent]
     paths: ['.github/workflows/i2_vnext_phase26a_direct_feature_ablation.yml']
+
 permissions:
   contents: read
   actions: read
+
 env:
   HISTORY_RUN_ID: 36485385934
+
 jobs:
   season:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         season: [2022, 2023, 2024, 2025, 2026]
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Install dependencies
         run: python -m pip install --upgrade pip numpy pandas scikit-learn
-      - name: Restore governed historical I2 PA data
+
+      - name: Restore governed historical I2 PA data with bounded retry
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          mkdir -p data/reference/history
-          gh run download "${HISTORY_RUN_ID}" --repo shanecolter1/mlb-model-v6 --name i2-vnext-phase19a-history-optimized --dir data/reference/history
+          for attempt in 1 2 3 4 5; do
+            rm -rf data/reference/history
+            mkdir -p data/reference/history
+            if gh run download "${HISTORY_RUN_ID}"               --repo shanecolter1/mlb-model-v6               --name i2-vnext-phase19a-history-optimized               --dir data/reference/history; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 5 ]; then
+              echo "Historical artifact download failed after bounded retries"
+              exit 1
+            fi
+            sleep 20
+          done
+
       - name: Run direct feature ablation
         env:
           SEASON: ${{ matrix.season }}
@@ -41,7 +60,8 @@ jobs:
           test -n "$DATASET"
           test -n "$B2020"
           ARSENAL_DIR=$(dirname "$B2020")
-          python src/research/audit_i2_vnext_direct_features.py --dataset "$DATASET" --arsenal-dir "$ARSENAL_DIR" --target-season "$SEASON" --half-life 730 --c 0.05 --max-iter 5000 --bootstrap 2000 --output "data/derived/i2_vnext/phase26a_direct_feature_ablation_${SEASON}.json"
+          python src/research/audit_i2_vnext_direct_features.py             --dataset "$DATASET"             --arsenal-dir "$ARSENAL_DIR"             --target-season "$SEASON"             --half-life 730             --c 0.05             --max-iter 5000             --bootstrap 2000             --output "data/derived/i2_vnext/phase26a_direct_feature_ablation_${SEASON}.json"
+
       - name: Verify governance
         env:
           SEASON: ${{ matrix.season }}
@@ -62,6 +82,7 @@ jobs:
           assert x['selection_role']==('replication_only' if y==2026 else 'development')
           print({'season':y,'train_n':x['training']['n'],'test_n':x['test']['n']})
           PY
+
       - uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-phase26a-${{ matrix.season }}
