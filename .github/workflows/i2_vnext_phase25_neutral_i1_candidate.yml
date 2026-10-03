@@ -79,7 +79,7 @@ jobs:
               list(r.glob('**/manifest.json')),
               list(r.glob(f'**/arsenal_profile_{y-1}.json')),
               list(r.glob(f'**/savant_venue_profiles_{y-1}_3yr.json')),
-              list(r.glob(f'**/transitions_before_{y}.json')),
+              list(r.glob(f'**/transition_before_{y}.json')),
           ]
           assert all(x for x in needed), needed
           print({'season':y,'games':inp['games_eligible'],'baseline_logloss':base['raw_logloss']})
@@ -124,7 +124,7 @@ jobs:
           MANIFEST=$(find "$ROOT" -name manifest.json -path "*walkforward_${SEASON}*" -print -quit)
           ARSENAL=$(find "$ROOT" -name "arsenal_profile_$((SEASON-1)).json" -print -quit)
           PARKS=$(find "$ROOT" -name "savant_venue_profiles_$((SEASON-1))_3yr.json" -print -quit)
-          TRANS=$(find "$ROOT" -name "transitions_before_${SEASON}.json" -print -quit)
+          TRANS=$(find "$ROOT" -name "transition_before_${SEASON}.json" -print -quit)
           for f in "$INPUT" "$MODEL" "$MANIFEST" "$ARSENAL" "$PARKS" "$TRANS"; do test -n "$f"; done
 
           mkdir -p data/derived/i2_vnext/phase25_shards
