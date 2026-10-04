@@ -1,0 +1,52 @@
+{
+  "version": "i2-vnext-phase31-hyperparameter-audit-precommit-v1",
+  "generated_at": "2026-10-04",
+  "status": "PRECOMMITTED_BEFORE_RESULTS",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "model_specification": "Phase 28 combined lean vNext: no home_team nuisance; neutralized player-specific I1 rates; all other retained components unchanged",
+  "objective": "Test whether direct-I2 regularization strength and recency weighting can improve the actual full-I2 target.",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "grid": {
+    "C": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "half_life_days": [
+      365,
+      730,
+      1460
+    ],
+    "baseline": {
+      "C": 0.05,
+      "half_life_days": 730
+    }
+  },
+  "phases": {
+    "31A": {
+      "purpose": "computational screen only",
+      "method": "For each 2022-2025 target season, fit no-home-team direct-I2 model using only PAs before that season and score target-season I2 PA event log loss. Pool chronologically across development seasons.",
+      "finalist_rule": "Carry baseline plus up to two non-baseline grid points with lowest pooled PA event log loss into Phase 31B. PA screening cannot promote a model."
+    },
+    "31B": {
+      "purpose": "decision gate",
+      "method": "Build full monthly point-in-time walk-forward models for finalists and exact-score full-I2 Under 0.5 with neutralized I1 player rates.",
+      "selection_rule": "Select on pooled 2022-2025 full-I2 log loss, Brier tie-break; require no material 2026 replication reversal. Baseline remains if challenger advantage is negligible/unstable."
+    }
+  },
+  "exclusions": [
+    "market inputs",
+    "calendar month feature/control",
+    "new variables",
+    "recalibration during raw hyperparameter comparison",
+    "2026 in screening or selection"
+  ],
+  "final_calibration_rule": "Only after a raw finalist passes Phase 31B, rerun the single final calibration gate separately; calibration may not rescue a raw failure."
+}
