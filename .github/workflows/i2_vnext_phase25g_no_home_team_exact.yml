@@ -1,0 +1,162 @@
+name: I2 vNext Phase 25G - no-home-team exact full-I2 audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase25g_no_home_team_exact.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  HISTORY_RUN_ID: 36485385934
+  PREP_RUN_ID: 36486524206
+  BASELINE_RUN_ID: 36505646844
+
+jobs:
+  season:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install fit dependencies
+        run: python -m pip install --upgrade pip numpy pandas scikit-learn
+
+      - name: Restore governed history and replay inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p history prep canonical challenger out
+          gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history
+          gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+          if [ "${YEAR}" = "2026" ]; then
+            cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json
+          fi
+
+      - name: Fit no-home-team walk-forward models
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATASET=$(find history -name i2_pa_statcast.csv -print -quit)
+          B2020=$(find history -name batter_2020.csv -print -quit)
+          test -n "$DATASET"; test -n "$B2020"
+          ARSENAL_DIR=$(dirname "$B2020")
+          python src/research/build_i2_vnext_no_home_team_walkforward.py \
+            --input "$DATASET" \
+            --arsenal-dir "$ARSENAL_DIR" \
+            --season "${YEAR}" \
+            --half-life 730 \
+            --c 0.05 \
+            --max-iter 7500 \
+            --output-dir "challenger/walkforward_${YEAR}" \
+            --arsenal-output "challenger/arsenal_profile_$((YEAR-1)).json"
+
+      - name: Verify challenger governance
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          y=int(os.environ["YEAR"])
+          m=json.loads(Path(f"challenger/walkforward_{y}/manifest.json").read_text())
+          assert m["market_inputs_used"] is False
+          assert m["removed_feature_family"]=="home_team"
+          assert m["categorical_features"]==["batter","pitcher","platoon"]
+          assert m["hyperparameters"]["C"]==0.05
+          assert m["hyperparameters"]["half_life_days"]==730.0
+          assert m["hyperparameters"]["solver"]=="saga"
+          assert m["hyperparameters"]["solver_max_iter"]==7500
+          assert len(m["entries"])==6
+          print({"season":y,"models":len(m["entries"])})
+          PY
+
+      - name: Run exact full-I2 A/B
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR=$((YEAR - 1))
+          node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
+            --input "prep/replay_${YEAR}_inputs.json" \
+            --baseline-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --candidate-manifest "challenger/walkforward_${YEAR}/manifest.json" \
+            --arsenal "prep/arsenal_profile_${PRIOR}.json" \
+            --parks "prep/park/savant_venue_profiles_${PRIOR}_3yr.json" \
+            --play-calibration "prep/transition_before_${YEAR}.json" \
+            --baseline-hr-alpha 1 \
+            --candidate-hr-alpha 1 \
+            --i1-player-rates active \
+            --output "out/phase25g_${YEAR}.json"
+
+      - name: Verify baseline reproduction and summarize
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          y=int(os.environ["YEAR"])
+          x=json.loads(Path(f"out/phase25g_{y}.json").read_text())
+          exact=json.loads(Path("data/derived/i2_vnext/PHASE24_VARIABLE_AUDIT.json").read_text())
+          target=exact["baseline_validation"][str(y)]["exact_logloss"]
+          if abs(x["baseline_logloss"]-target)>1e-9:
+              raise SystemExit(f"baseline mismatch {x['baseline_logloss']} vs {target}")
+          print({"season":y,"n":x["n"],"dll":x["candidate_minus_baseline_logloss"],"dbrier":x["candidate_minus_baseline_brier"]})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase25g-${{ matrix.season }}
+          if-no-files-found: error
+          retention-days: 30
+          path: out/phase25g_${{ matrix.season }}.json
+
+  evaluate:
+    needs: season
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase25g-*
+          path: data/phase25g
+          merge-multiple: true
+      - name: Build checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows={}
+          for y in range(2022,2027):
+              x=json.loads(Path(f"data/phase25g/phase25g_{y}.json").read_text())
+              rows[str(y)]={"n":x["n"],"baseline_logloss":x["baseline_logloss"],"challenger_logloss":x["candidate_logloss"],"delta_logloss":x["candidate_minus_baseline_logloss"],"baseline_brier":x["baseline_brier"],"challenger_brier":x["candidate_brier"],"delta_brier":x["candidate_minus_baseline_brier"]}
+          dev=[rows[str(y)] for y in range(2022,2026)]
+          n=sum(r["n"] for r in dev)
+          pooled={"n":n,"delta_logloss":sum(r["delta_logloss"]*r["n"] for r in dev)/n,"delta_brier":sum(r["delta_brier"]*r["n"] for r in dev)/n,"years_improved":sum(r["delta_logloss"]<0 for r in dev),"years_worsened":sum(r["delta_logloss"]>0 for r in dev)}
+          ck={"version":"i2-vnext-phase25g-no-home-team-exact-v1","market_inputs_used":False,"production_changed":False,"target":"exact full second-inning Under 0.5 probability","challenger":"remove home_team fit-only nuisance control and refit all point-in-time direct-I2 models","development_years":[2022,2023,2024,2025],"replication_year":2026,"seasonal":rows,"pooled_development_2022_2025":pooled,"replication_2026":rows["2026"],"decision_rule":"2022-2025 determines merit; 2026 replication only","status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"}
+          Path("data/derived/i2_vnext/PHASE25G_HOME_TEAM_NUISANCE_FULL_I2.json").write_text(json.dumps(ck,indent=2)+"\n")
+          print(json.dumps(ck,indent=2))
+          PY
+      - name: Commit checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE25G_HOME_TEAM_NUISANCE_FULL_I2.json
+          git commit -m "research: checkpoint Phase 25G home-team nuisance audit"
+          git pull --rebase origin research/i2-vnext-direct-talent
+          git push origin HEAD:research/i2-vnext-direct-talent
