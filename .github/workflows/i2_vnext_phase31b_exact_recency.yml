@@ -71,15 +71,15 @@ jobs:
           set -euo pipefail
           PRIOR=$((YEAR-1))
           node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
-            --input "prep/replay_$YEAR_inputs.json" \
-            --baseline-manifest "prep/walkforward_$YEAR/manifest.json" \
-            --candidate-manifest "challenger/walkforward_$YEAR/manifest.json" \
+            --input "prep/replay_${YEAR}_inputs.json" \
+            --baseline-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --candidate-manifest "challenger/walkforward_${YEAR}/manifest.json" \
             --arsenal "prep/arsenal_profile_$PRIOR.json" \
             --parks "prep/park/savant_venue_profiles_$PRIOR_3yr.json" \
-            --play-calibration "prep/transition_before_$YEAR.json" \
+            --play-calibration "prep/transition_before_${YEAR}.json" \
             --baseline-hr-alpha 1 --candidate-hr-alpha 1 \
             --i1-player-rates neutralized \
-            --output "out/phase31b_$YEAR_$HALF_LIFE.json"
+            --output "out/phase31b_${YEAR}_${HALF_LIFE}.json"
       - uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-phase31b-${{ matrix.season }}-${{ matrix.half_life }}
@@ -135,15 +135,15 @@ jobs:
           set -euo pipefail
           PRIOR=$((YEAR-1))
           node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
-            --input "prep/replay_$YEAR_inputs.json" \
-            --baseline-manifest "prep/walkforward_$YEAR/manifest.json" \
-            --candidate-manifest "challenger/walkforward_$YEAR/manifest.json" \
+            --input "prep/replay_${YEAR}_inputs.json" \
+            --baseline-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --candidate-manifest "challenger/walkforward_${YEAR}/manifest.json" \
             --arsenal "prep/arsenal_profile_$PRIOR.json" \
             --parks "prep/park/savant_venue_profiles_$PRIOR_3yr.json" \
-            --play-calibration "prep/transition_before_$YEAR.json" \
+            --play-calibration "prep/transition_before_${YEAR}.json" \
             --baseline-hr-alpha 1 --candidate-hr-alpha 1 \
             --i1-player-rates neutralized \
-            --output "out/phase31b_$YEAR_730.json"
+            --output "out/phase31b_${YEAR}_730.json"
       - uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-phase31b-${{ matrix.season }}-730
