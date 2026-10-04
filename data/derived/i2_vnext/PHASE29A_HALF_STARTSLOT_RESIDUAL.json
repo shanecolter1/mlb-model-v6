@@ -1,0 +1,112 @@
+{
+  "version": "i2-vnext-phase29a-half-startslot-residual-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "BOTTOM_HALF_SYSTEMATIC_UNDERPREDICTION_IDENTIFIED",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "source_model": "Phase 28 combined lean research candidate",
+  "target": "half-inning probability of at least one run",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "method": {
+    "probabilities": "exact deterministic state propagation; no Monte Carlo",
+    "i1_player_rates": "neutralized",
+    "direct_i2_model": "point-in-time no-home-team refits",
+    "start_slot_measure": "pregame expected I2 batting-order start slot from exact I1 state distribution",
+    "uncertainty": "calendar-date clustered standard error"
+  },
+  "half_residuals": {
+    "development_2022_2025": {
+      "top": {
+        "n": 9719,
+        "actual_minus_predicted_scoring_probability": -0.00407540384236818,
+        "cluster_se": 0.004563207418632993,
+        "ci95": [
+          -0.013019290382888845,
+          0.004868482698152487
+        ]
+      },
+      "bottom": {
+        "n": 9719,
+        "actual_minus_predicted_scoring_probability": 0.015904015727425887,
+        "cluster_se": 0.004778280651931288,
+        "ci95": [
+          0.006538585649640563,
+          0.02526944580521121
+        ]
+      }
+    },
+    "replication_2026": {
+      "top": {
+        "n": 2454,
+        "actual_minus_predicted_scoring_probability": 0.002165532449903899,
+        "cluster_se": 0.01054049284342882,
+        "ci95": [
+          -0.018493833523216586,
+          0.022824898423024386
+        ]
+      },
+      "bottom": {
+        "n": 2454,
+        "actual_minus_predicted_scoring_probability": 0.008741666375727262,
+        "cluster_se": 0.008707012077413563,
+        "ci95": [
+          -0.008324077296003323,
+          0.025807410047457846
+        ]
+      }
+    },
+    "bottom_by_development_year": {
+      "2022": 0.009541434273840944,
+      "2023": 0.011318622889673419,
+      "2024": 0.0181905784623801,
+      "2025": 0.024566368256128002
+    },
+    "bottom_2026": 0.008741666375727262
+  },
+  "start_slot_diagnostic": {
+    "development_bottom_expected_slot_quartile_residuals": [
+      {
+        "quartile": 1,
+        "residual": 0.024124826284756633,
+        "ci95": [
+          0.0030017969658391076,
+          0.045247855603674156
+        ]
+      },
+      {
+        "quartile": 2,
+        "residual": 0.013073962619849628,
+        "ci95": [
+          -0.006830182599876878,
+          0.03297810783957614
+        ]
+      },
+      {
+        "quartile": 3,
+        "residual": 0.025272431745662967,
+        "ci95": [
+          0.006016025932890346,
+          0.04452883755843559
+        ]
+      },
+      {
+        "quartile": 4,
+        "residual": 0.001138766024988878,
+        "ci95": [
+          -0.02113221871836276,
+          0.023409750768340516
+        ]
+      }
+    ],
+    "conclusion": "The bottom-half bias is not isolated to one I2 expected-start-slot band. Start position alone does not explain the systematic miss."
+  },
+  "decision": "Do not add a start-slot correction. Treat bottom-half underprediction as a real residual structure requiring further decomposition by player-support and park/environment strata before proposing any adjustment.",
+  "next_phase": "Phase 29B direct-I2 support strata and park/environment magnitude decomposition"
+}
