@@ -18,18 +18,21 @@ const INPUT=arg('--input');
 const BASE_MANIFEST=arg('--baseline-manifest');
 const CAND_MANIFEST=arg('--candidate-manifest',BASE_MANIFEST);
 const ARSENAL=arg('--arsenal');
+const BASE_ARSENAL=arg('--baseline-arsenal',ARSENAL);
+const CAND_ARSENAL=arg('--candidate-arsenal',ARSENAL);
+const BASE_ARSENAL_MANIFEST=arg('--baseline-arsenal-manifest');
+const CAND_ARSENAL_MANIFEST=arg('--candidate-arsenal-manifest');
 const PARKS=arg('--parks');
 const PLAY=arg('--play-calibration');
 const OUTPUT=arg('--output');
 const BASE_HR_ALPHA=Number(arg('--baseline-hr-alpha','1'));
 const CAND_HR_ALPHA=Number(arg('--candidate-hr-alpha','1'));
 const I1_PLAYER_RATES=arg('--i1-player-rates','active');
-if(!INPUT||!BASE_MANIFEST||!ARSENAL||!PARKS||!PLAY||!OUTPUT) throw new Error('Missing required argument');
+if(!INPUT||!BASE_MANIFEST||(!BASE_ARSENAL&&!BASE_ARSENAL_MANIFEST)||(!CAND_ARSENAL&&!CAND_ARSENAL_MANIFEST)||!PARKS||!PLAY||!OUTPUT) throw new Error('Missing required argument');
 if(![BASE_HR_ALPHA,CAND_HR_ALPHA].every(x=>Number.isFinite(x)&&x>=0&&x<=1)) throw new Error('HR alpha must be in [0,1]');
 if(!['active','neutralized'].includes(I1_PLAYER_RATES)) throw new Error('Unknown I1 player-rate mode');
 
 const replay=JSON.parse(fs.readFileSync(INPUT,'utf8'));
-const arsenal=JSON.parse(fs.readFileSync(ARSENAL,'utf8'));
 const parkProfiles=JSON.parse(fs.readFileSync(PARKS,'utf8'));
 const rawPlay=JSON.parse(fs.readFileSync(PLAY,'utf8'));
 if(replay.market_inputs_used!==false) throw new Error('Replay inputs are not market-isolated');
@@ -51,6 +54,31 @@ const baseWF=loadWalkforward(BASE_MANIFEST);
 const candWF=loadWalkforward(CAND_MANIFEST);
 
 function compactDate(x){return String(x??'').replace(/[^0-9]/g,'').slice(0,8);}
+function loadArsenalSource(singlePath,manifestPath){
+  if(manifestPath){
+    const manifest=JSON.parse(fs.readFileSync(manifestPath,'utf8'));
+    if(manifest.market_inputs_used!==false) throw new Error('Arsenal manifest is not market-isolated');
+    const root=path.dirname(manifestPath), profiles=new Map();
+    for(const entry of manifest.entries||[]){
+      const file=entry.arsenal_file||entry.profile_file;
+      if(!file) throw new Error('Arsenal manifest entry missing arsenal_file');
+      profiles.set(file,JSON.parse(fs.readFileSync(path.join(root,file),'utf8')));
+    }
+    return {manifest,profiles,single:null};
+  }
+  return {manifest:null,profiles:null,single:JSON.parse(fs.readFileSync(singlePath,'utf8'))};
+}
+function arsenalForGame(source,game){
+  if(source.single) return source.single;
+  const d=compactDate(game.date); let chosen=null;
+  for(const entry of source.manifest.entries||[]){
+    if(compactDate(entry.effective_from)<=d && (!chosen||compactDate(entry.effective_from)>compactDate(chosen.effective_from))) chosen=entry;
+  }
+  if(!chosen) throw new Error(`No arsenal profile for ${game.gid} ${game.date}`);
+  const file=chosen.arsenal_file||chosen.profile_file, profile=source.profiles.get(file);
+  if(!profile) throw new Error(`Missing arsenal profile ${file}`);
+  return profile;
+}
 function modelForGame(wf,game){
   const d=compactDate(game.date); let chosen=null;
   for(const entry of wf.manifest.entries||[]){
@@ -74,6 +102,8 @@ function adaptPlayCalibration(payload){
   }
   return {version:`adapted-${payload.version||'validated'}`,base_transitions};
 }
+const baseArsenalSource=loadArsenalSource(BASE_ARSENAL,BASE_ARSENAL_MANIFEST);
+const candArsenalSource=loadArsenalSource(CAND_ARSENAL,CAND_ARSENAL_MANIFEST);
 const play=adaptPlayCalibration(rawPlay);
 const league=replay?.i1_state_model?.event_rates;
 if(!league) throw new Error('Missing league I1 event rates');
@@ -116,10 +146,10 @@ function i1Provider(environmentalContext){
     return applyEnvironmentalEventVector({neutralVector:neutral,environmentalContext,batterSide:stand(batter.bats,pitcher.throws)}).probabilities;
   };
 }
-function i2Provider(model,environmentalContext){
+function i2Provider(model,environmentalContext,arsenalProfile){
   return ({batter,pitcher})=>{
     const batterSide=stand(batter.bats,pitcher.throws);
-    const neutral=predictI2EventVector({batterId:batter.id,pitcherId:pitcher.id,batterSide,pitcherThrows:pitcher.throws,model,arsenalProfile:arsenal});
+    const neutral=predictI2EventVector({batterId:batter.id,pitcherId:pitcher.id,batterSide,pitcherThrows:pitcher.throws,model,arsenalProfile});
     return applyEnvironmentalEventVector({neutralVector:neutral,environmentalContext,batterSide}).probabilities;
   };
 }
@@ -178,10 +208,10 @@ function exactScorelessByStartSlot({lineup,pitcher,eventVectorForPA}){
   const out=Array(10).fill(0);for(let s=1;s<=9;s++) out[s]=f[stateIndex(0,0,s)];return out;
 }
 function weighted(slotDist,p0){let x=0;for(let s=1;s<=9;s++) x+=slotDist[s]*p0[s];return x;}
-function scoreArm(game,model,park){
+function scoreArm(game,model,park,arsenalProfile){
   const awayLineup=makeLineup(game.away_lineup),homeLineup=makeLineup(game.home_lineup);
   const awayPitcher=makePitcher(game.away_starter),homePitcher=makePitcher(game.home_starter);
-  const i1=i1Provider(park),i2=i2Provider(model,park);
+  const i1=i1Provider(park),i2=i2Provider(model,park,arsenalProfile);
   const awaySlots=exactNextSlotDistribution({lineup:awayLineup,pitcher:homePitcher,eventVectorForPA:i1});
   const homeSlots=exactNextSlotDistribution({lineup:homeLineup,pitcher:awayPitcher,eventVectorForPA:i1});
   const awayP0=exactScorelessByStartSlot({lineup:awayLineup,pitcher:homePitcher,eventVectorForPA:i2});
@@ -204,8 +234,8 @@ for(const game of replay.games||[]){
   const venue=venueForReplayGame(game,parkProfiles,replay.season);
   const basePark=parkWithHrAlpha(venue.profile,BASE_HR_ALPHA);
   const candPark=parkWithHrAlpha(venue.profile,CAND_HR_ALPHA);
-  const bp=scoreArm(game,modelForGame(baseWF,game),basePark);
-  const cp=scoreArm(game,modelForGame(candWF,game),candPark);
+  const bp=scoreArm(game,modelForGame(baseWF,game),basePark,arsenalForGame(baseArsenalSource,game));
+  const cp=scoreArm(game,modelForGame(candWF,game),candPark,arsenalForGame(candArsenalSource,game));
   const y=Number(game.observed.under05);
   baseLL+=loss(y,bp.under05);candLL+=loss(y,cp.under05);baseB+=(bp.under05-y)**2;candB+=(cp.under05-y)**2;
   predictions.push({
@@ -225,6 +255,8 @@ const payload={
   season:replay.season,n,market_inputs_used:false,method:'exact deterministic state propagation; no Monte Carlo',
   baseline_manifest:baseWF.manifest.version,candidate_manifest:candWF.manifest.version,
   baseline_hr_alpha:BASE_HR_ALPHA,candidate_hr_alpha:CAND_HR_ALPHA,i1_player_rates:I1_PLAYER_RATES,
+  baseline_arsenal_source:BASE_ARSENAL_MANIFEST?'walkforward_manifest':'single_snapshot',
+  candidate_arsenal_source:CAND_ARSENAL_MANIFEST?'walkforward_manifest':'single_snapshot',
   baseline_logloss:baseLL/n,candidate_logloss:candLL/n,candidate_minus_baseline_logloss:(candLL-baseLL)/n,
   baseline_brier:baseB/n,candidate_brier:candB/n,candidate_minus_baseline_brier:(candB-baseB)/n,
   predictions
