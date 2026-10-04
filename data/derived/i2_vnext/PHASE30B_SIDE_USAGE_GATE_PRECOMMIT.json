@@ -1,0 +1,13 @@
+{
+  "version": "i2-vnext-phase30b-side-usage-gate-addendum-v1",
+  "generated_at": "2026-10-04",
+  "status": "PRECOMMITTED_BEFORE_SIDE_RECONSTRUCTION_RESULTS",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "rationale": "Live arsenal architecture prefers I2 pitcher pitch mix by actual batter side; validate cutoff-safe aggregate reconstruction of that component before outcome scoring.",
+  "reconstruction_year": 2024,
+  "metric": "pitch-count-weighted MAE of within-pitcher-side pitch-type shares versus archived pitcher_usage_side_2024.csv",
+  "maximum_weighted_mae": 0.02,
+  "minimum_overlap_rows": 1000,
+  "failure_action": "Stop Phase 30B outcome scoring and reconcile side-specific query if gate fails."
+}
