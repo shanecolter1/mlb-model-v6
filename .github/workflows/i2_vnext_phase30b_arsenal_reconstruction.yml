@@ -1,6 +1,6 @@
 name: I2 vNext Phase 30B - arsenal reconstruction gate
-# rerun after fixing Statcast row-truncation via 3-day fetch chunks
-# governed reconstruction trigger v3 - five-day uncapped pulls
+# rerun after confirming 3-day Statcast chunks still truncate; use one-day pulls
+# governed reconstruction trigger v4 - one-day regular-season pulls
 
 on:
   workflow_dispatch:
