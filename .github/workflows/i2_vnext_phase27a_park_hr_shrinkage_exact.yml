@@ -74,7 +74,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-phase27a-dev-${{ matrix.season }}
-          path: out/phase27a_dev_${{ matrix.season }}.json
+          path: |
+            out/phase27a_dev_${{ matrix.season }}.json
+            out/hr_alpha_*.json
           retention-days: 30
 
   select:
@@ -97,23 +99,60 @@ jobs:
           import json, math, os
           from pathlib import Path
           alphas=[0.0,0.25,0.5,0.75,1.0]
-          seasons=[json.loads(Path(f"data/dev/phase27a_dev_{y}.json").read_text()) for y in [2022,2023,2024]]
+          def key(a): return str(int(a)) if a in (0.0,1.0) else str(a)
+          raw={}
           pooled={}
           for a in alphas:
-              key=str(int(a)) if a in (0.0,1.0) else str(a)
-              n=sum(s["alphas"][key]["n"] for s in seasons)
-              ll=sum(s["alphas"][key]["logloss"]*s["alphas"][key]["n"] for s in seasons)/n
-              br=sum(s["alphas"][key]["brier"]*s["alphas"][key]["n"] for s in seasons)/n
-              pooled[a]={"n":n,"logloss":ll,"brier":br}
+              games=[]
+              for y in [2022,2023,2024]:
+                  p=next(Path("data/dev").glob(f"**/hr_alpha_{key(a)}.json"))
+                  # download-artifact merge layout can collide across seasons,
+                  # so prefer files whose payload season matches.
+                  candidates=list(Path("data/dev").glob(f"**/hr_alpha_{key(a)}.json"))
+                  match=None
+                  for q in candidates:
+                      z=json.loads(q.read_text())
+                      if int(z["season"])==y: match=z; break
+                  if match is None: raise SystemExit(f"missing alpha={a} season={y}")
+                  games.extend(match["predictions"])
+              raw[a]=games
+              n=len(games)
+              def loss(r):
+                  y=float(r["observed_under05"]); p=max(1e-12,min(1-1e-12,float(r["candidate_under05"])))
+                  return -(y*math.log(p)+(1-y)*math.log1p(-p))
+              def brier(r):
+                  y=float(r["observed_under05"]); p=float(r["candidate_under05"]); return (p-y)**2
+              pooled[a]={"n":n,"logloss":sum(map(loss,games))/n,"brier":sum(map(brier,games))/n}
           best=min(alphas,key=lambda a:(pooled[a]["logloss"],pooled[a]["brier"],abs(1-a)))
-          # Conservative parsimony: only move away from baseline when raw pooled
-          # log loss actually improves. Statistical uncertainty is assessed in
-          # the frozen validation stages before promotion.
-          if pooled[best]["logloss"] >= pooled[1.0]["logloss"]:
-              best=1.0
-          Path("phase27a_selection.json").write_text(json.dumps({"selection_years":[2022,2023,2024],"pooled":{str(k):v for k,v in pooled.items()},"selected_alpha":best},indent=2)+"\n")
-          with open(os.environ["GITHUB_OUTPUT"],"a") as f: f.write(f"alpha={best}\n")
-          print(json.dumps({"selected_alpha":best,"pooled":pooled},indent=2))
+          def ll(r):
+              y=float(r["observed_under05"]); p=max(1e-12,min(1-1e-12,float(r["candidate_under05"])))
+              return -(y*math.log(p)+(1-y)*math.log1p(-p))
+          best_map={(r["date"],str(r["gid"])):r for r in raw[best]}
+          comparisons={}
+          eligible=[]
+          for a in alphas:
+              bydate={}
+              for r in raw[a]:
+                  k=(r["date"],str(r["gid"])); d=ll(r)-ll(best_map[k])
+                  bydate.setdefault(r["date"],[]).append(d)
+              means=[sum(v)/len(v) for v in bydate.values()]
+              mu=sum(means)/len(means)
+              se=(sum((v-mu)**2 for v in means)/(len(means)-1)/len(means))**0.5 if len(means)>1 else 0.0
+              indist=mu <= 1.96*se + 1e-15
+              comparisons[a]={"mean_date_cluster_delta_logloss_vs_best":mu,"cluster_se":se,"z":mu/se if se else None,"within_95pct_indifference_band":indist}
+              if indist: eligible.append(a)
+          selected=min(eligible,key=lambda a:abs(1-a))
+          Path("phase27a_selection.json").write_text(json.dumps({
+              "selection_years":[2022,2023,2024],
+              "primary_metric":"pooled log loss",
+              "raw_best_alpha":best,
+              "paired_calendar_date_comparisons_to_raw_best":{str(k):v for k,v in comparisons.items()},
+              "parsimony_rule":"among alphas statistically indistinguishable from raw best at paired date-cluster 95% threshold, choose closest to alpha=1",
+              "pooled":{str(k):v for k,v in pooled.items()},
+              "selected_alpha":selected
+          },indent=2)+"\n")
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f: f.write(f"alpha={selected}\n")
+          print(json.dumps({"raw_best":best,"selected_alpha":selected,"comparisons":comparisons,"pooled":pooled},indent=2))
           PY
       - uses: actions/upload-artifact@v4
         with:
