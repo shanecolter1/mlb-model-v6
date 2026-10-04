@@ -1,0 +1,97 @@
+{
+  "version": "i2-vnext-phase29-residual-decomposition-v1",
+  "generated_at": "2026-10-04",
+  "status": "COMPLETE_NO_PROMOTABLE_RESIDUAL_CORRECTION",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "source_model": "Phase 28 combined lean research candidate",
+  "target": "full second-inning Under 0.5",
+  "governance": {
+    "development_years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "replication_year": 2026,
+    "calendar_month_control": false
+  },
+  "half_residuals": {
+    "definition": "observed scoring rate minus predicted scoring probability; positive means scoring underpredicted",
+    "by_year": {
+      "2022": {
+        "top": -0.02322348436793989,
+        "bottom": 0.00954143427384091
+      },
+      "2023": {
+        "top": 0.023871011323886915,
+        "bottom": 0.011318622889673419
+      },
+      "2024": {
+        "top": -0.01054284027328331,
+        "bottom": 0.01819057846238009
+      },
+      "2025": {
+        "top": -0.0064089635486100915,
+        "bottom": 0.024566368256128013
+      },
+      "2026": {
+        "top": 0.0021655324499039175,
+        "bottom": 0.008741666375727292
+      }
+    },
+    "conclusion": "Bottom-half scoring is underpredicted in all five seasons; top-half residual direction is unstable."
+  },
+  "start_slot": {
+    "finding": "I2 start-slot distribution is modal at lineup slot 4 for every evaluated half; expected-slot residual correlations are tiny and inconsistent.",
+    "decision": "NO_CORRECTION"
+  },
+  "player_support": {
+    "finding": "Batter and pitcher training-support residual slopes are small and change sign across seasons; no stable sparse-support residual structure.",
+    "decision": "NO_CORRECTION"
+  },
+  "park_environment": {
+    "finding": "Bottom-half residual-versus-park-effect slope is negative in every season, suggesting current environmental effect magnitude may be too strong for bottom-half marginal scoring.",
+    "bottom_slopes_by_year": {
+      "2022": -0.200635,
+      "2023": -0.732466,
+      "2024": -1.099792,
+      "2025": -0.860173,
+      "2026": -1.008056
+    },
+    "full_target_gate": {
+      "candidates": [
+        "identity",
+        "bottom offset",
+        "bottom park attenuation",
+        "bottom offset + park attenuation"
+      ],
+      "development_loso_selected": "bottom offset + park attenuation",
+      "development_2022_2025_delta_logloss": -0.0002454105635248949,
+      "development_2022_2025_delta_brier": -0.0001138209476202745,
+      "frozen_offset": 0.08639169992210005,
+      "frozen_park_increment": -0.6804186478754047,
+      "replication_2026_delta_logloss": 0.0005013338436916648,
+      "replication_2026_delta_brier": 0.0002525278453386903,
+      "decision": "REJECT"
+    }
+  },
+  "joint_half_dependence": {
+    "definition": "observed P(top scoreless and bottom scoreless) minus product of observed half scoreless marginals",
+    "by_year": {
+      "2022": -0.0024396687496823777,
+      "2023": 0.0004758759674168278,
+      "2024": 0.002580999013396701,
+      "2025": -0.006495960981557691,
+      "2026": 0.007088040150671215
+    },
+    "finding": "Sign is unstable, so no fixed pregame dependence correction is justified.",
+    "decision": "NO_CORRECTION"
+  },
+  "decision": "Do not add a half-specific, start-slot, support, park-magnitude, or joint-dependence residual correction to the lean candidate. Bottom-half marginal bias is diagnostically real but the available correction fails the actual full-I2 replication gate.",
+  "next_phase": {
+    "name": "Phase 30 direct-model hyperparameter audit",
+    "objective": "Re-evaluate regularization strength and recency weighting for the completed lean architecture against the actual full-I2 target rather than relying on upstream PA-event selection.",
+    "rule": "Precommit grid and selection policy before refitting; 2022-2025 development, 2026 replication only; production unchanged."
+  }
+}
