@@ -2,7 +2,7 @@
   "version": "i2-vnext-phase25a-checkpoint-v1",
   "generated_at": "2026-10-03",
   "branch": "research/i2-vnext-direct-talent",
-  "status": "CANONICAL_10K_REPLAY_RUNNING",
+  "status": "IMPLEMENTED_EXACT_AUDIT_PASS_CANONICAL_MC_PENDING",
   "production_changed": false,
   "market_inputs_used": false,
   "challenger": {
@@ -21,18 +21,35 @@
     ]
   },
   "phase24_exact_evidence": {
-    "development_years": [2022, 2023, 2024, 2025],
+    "development_years": [
+      2022,
+      2023,
+      2024,
+      2025
+    ],
     "replication_year": 2026,
     "both_i1_player_layers_removal_delta_logloss_2022_2025": -5.228438004439166e-7,
-    "both_i1_player_layers_removal_delta_logloss_2026": -1.1180241617059217e-5,
+    "both_i1_player_layers_removal_delta_logloss_2026": -0.000011180241617059217,
     "interpretation": "no measurable full-I2 value from the player-specific I1 rate layer"
   },
   "acceptance_test": {
-    "years": [2022, 2023, 2024, 2025, 2026],
+    "years": [
+      2022,
+      2023,
+      2024,
+      2025,
+      2026
+    ],
     "trials_per_game": 10000,
     "baseline": "canonical Phase 19C governed replay",
     "selection_rule": "2022-2025 determines candidate merit; 2026 replication/sensitivity only",
     "required": "challenger must not materially degrade pooled development log loss or Brier; 2026 must not reveal a large adverse reversal"
   },
-  "workflow": ".github/workflows/i2_vnext_phase25a_simplified_i1.yml"
+  "workflow": ".github/workflows/i2_vnext_phase25a_simplified_i1.yml",
+  "execution_note": "GitHub connector commits did not emit an Actions push event; no Phase 25A Actions run was scheduled. Do not treat the 10k workflow as executed.",
+  "evidence_status": {
+    "exact_phase24_replay": "PASS: 2022-2025 pooled removal delta log loss -5.228438004439166e-7; 2026 replication -1.1180241617059217e-5",
+    "implementation_wiring": "COMPLETE on research branch; default remains active",
+    "canonical_10000_trial_replay": "PENDING execution; workflow committed but not triggered"
+  }
 }
