@@ -10,19 +10,52 @@ It can also reconstruct a completed annual snapshot and compare it with the
 archived Savant batter/pitcher arsenal leaderboards before any outcome scoring.
 """
 from __future__ import annotations
-import argparse, json
+import argparse, io, json, time
+from datetime import date, timedelta
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import requests
+
+STATCAST_URL='https://baseballsavant.mlb.com/statcast_search/csv'
 
 # Statcast estimated_woba_using_speedangle is not available for every terminal
 # event; estimated_woba_using_speedangle is preferred, woba_value is fallback.
 XWOBA_COLS=("estimated_woba_using_speedangle","woba_value")
 
+def month_chunks(start:date,end:date):
+    cur=start
+    while cur<=end:
+        nxt=date(cur.year+1,1,1) if cur.month==12 else date(cur.year,cur.month+1,1)
+        hi=min(end,nxt-timedelta(days=1)); yield cur,hi; cur=hi+timedelta(days=1)
+
+def fetch_month(cache:Path,lo:date,hi:date):
+    cache.mkdir(parents=True,exist_ok=True)
+    p=cache/f"all_{lo.isoformat()}_{hi.isoformat()}.csv"
+    if p.exists(): return p
+    params={"all":"true","type":"details","player_type":"pitcher","hfGT":"R|","game_date_gt":lo.isoformat(),"game_date_lt":hi.isoformat(),"group_by":"name","sort_col":"pitches","sort_order":"desc","min_pitches":"0","min_results":"0","min_abs":"0"}
+    headers={"User-Agent":"MLB-I2-vNext/1.0","Accept":"text/csv,*/*"}
+    last=None
+    for attempt in range(4):
+        try:
+            r=requests.get(STATCAST_URL,params=params,headers=headers,timeout=120); r.raise_for_status()
+            if not r.text.strip(): raise RuntimeError("empty Statcast response")
+            pd.read_csv(io.StringIO(r.text),nrows=2)
+            p.write_text(r.text); return p
+        except Exception as e:
+            last=e; time.sleep(2*(attempt+1))
+    raise RuntimeError(f"Statcast fetch failed {lo}..{hi}: {last}")
+
+def ensure_raw_cache(cache:Path,start:str,cutoff:str):
+    lo=date.fromisoformat(start); end=date.fromisoformat(cutoff)-timedelta(days=1)
+    for a,b in month_chunks(lo,end): fetch_month(cache,a,b)
+
 def read_raw(cache:Path, start:str, cutoff:str)->pd.DataFrame:
     parts=[]
     lo=pd.Timestamp(start); hi=pd.Timestamp(cutoff)
-    for p in sorted(cache.glob("*.csv")):
+    files=sorted(cache.glob("all_*.csv"))
+    if not files: files=sorted(cache.glob("*.csv"))
+    for p in files:
         try:
             x=pd.read_csv(p,low_memory=False)
         except Exception:
@@ -86,9 +119,11 @@ def main():
     p.add_argument("--start",required=True)
     p.add_argument("--cutoff",required=True)
     p.add_argument("--output-dir",type=Path,required=True)
+    p.add_argument("--fetch-if-missing",action="store_true")
     p.add_argument("--archived-pitcher",type=Path)
     p.add_argument("--archived-batter",type=Path)
     a=p.parse_args()
+    if a.fetch_if_missing: ensure_raw_cache(a.cache_dir,a.start,a.cutoff)
     raw=read_raw(a.cache_dir,a.start,a.cutoff)
     overall,side,batter,league=sufficient_stats(raw)
     a.output_dir.mkdir(parents=True,exist_ok=True)
