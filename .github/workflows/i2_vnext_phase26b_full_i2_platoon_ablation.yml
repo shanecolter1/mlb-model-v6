@@ -67,7 +67,7 @@ jobs:
             --season "${YEAR}" \
             --half-life 730 \
             --c 0.05 \
-            --max-iter 5000 \
+            --max-iter 7500 \
             --output-dir "out/walkforward_${YEAR}" \
             --arsenal-output "out/arsenal_profile_$((YEAR-1)).json"
       - name: Verify refit governance
