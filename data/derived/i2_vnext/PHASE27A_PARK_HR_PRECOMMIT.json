@@ -1,0 +1,39 @@
+{
+  "version":"i2-vnext-phase27a-park-hr-precommit-v1",
+  "generated_at":"2026-10-03",
+  "branch":"research/i2-vnext-direct-talent",
+  "status":"PRECOMMITTED_BEFORE_NEW_RESULTS",
+  "production_changed":false,
+  "market_inputs_used":false,
+  "target":"exact full second-inning Under 0.5 probability",
+  "candidate_parameter":{
+    "name":"park_home_run_alpha",
+    "formula":"shrunk_factor = 1 + alpha * (governed_park_hr_factor - 1)",
+    "grid":[0.0,0.25,0.5,0.75,1.0],
+    "baseline_alpha":1.0,
+    "application":"apply the same alpha to handedness-specific and overall Savant HR park factors in both I1 state generation and direct-I2 event vectors"
+  },
+  "governance":{
+    "selection_years":[2022,2023,2024],
+    "validation_year":2025,
+    "replication_year":2026,
+    "calendar_month_control":false,
+    "market_inputs":false,
+    "point_in_time_direct_i2_models":true,
+    "exact_state_propagation":true,
+    "monte_carlo_noise":false,
+    "all_non_hr_model_components_frozen":true
+  },
+  "selection_rule":{
+    "primary_metric":"pooled binary log loss over 2022-2024",
+    "secondary_metric":"pooled Brier score",
+    "parsimony_rule":"if candidate alphas are statistically indistinguishable under paired calendar-date uncertainty, choose the alpha closest to 1.0 rather than the most aggressively shrunk value",
+    "no_2025_or_2026_selection":"2025 and 2026 may not change the selected alpha"
+  },
+  "validation_rule":{
+    "2025":"after alpha is frozen, test once; reject promotion if paired calendar-date evidence shows credible degradation versus alpha=1.0",
+    "2026":"replication only; reject promotion if it reveals credible adverse reversal",
+    "promotion":"requires development advantage plus no credible degradation in either frozen validation stage; otherwise retain current HR factor"
+  },
+  "reason":"Park HR is the largest unresolved variable-level instability. Full removal improves pooled 2022-2025 but worsens 2026, so choosing shrinkage after seeing 2026 would overfit. This precommit prevents that."
+}
