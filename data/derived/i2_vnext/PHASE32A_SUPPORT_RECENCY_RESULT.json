@@ -1,77 +1,67 @@
 {
-  "version": "i2-vnext-phase32a-support-recency-diagnostic-v1",
+  "version": "i2-vnext-phase32a-support-recency-diagnostic-v2",
   "generated_at": "2026-10-04",
-  "status": "COMPLETE_STOP_ADAPTIVE_RECENCY",
+  "status": "COMPLETE_REJECT_ADAPTIVE_RECENCY",
   "production_changed": false,
   "market_inputs_used": false,
+  "source_precommit": "PHASE32A_SUPPORT_RECENCY_PRECOMMIT.json",
   "development_years": [
     2022,
     2023,
     2024,
     2025
   ],
-  "replication_year": 2026,
-  "replication_used": false,
-  "comparison": "365-day versus 730-day exact full-I2 predictions from Phase 31B",
-  "support_rule": "Historical I2 terminal PA counts strictly before game date; same-date observations excluded.",
-  "seasonal_slopes_delta_logloss_on_log1p_support": {
-    "2022": {
-      "pitcher_min": 0.000011232511673486386,
-      "batter_median": 0.00041431063473704513,
-      "batter_q25": 0.00040475733906819773
+  "replication_2026": "NOT_CONSULTED_BECAUSE_DIAGNOSTIC_FAILED_DEVELOPMENT_ADVANCE_RULE",
+  "support_timing": "Direct-I2 identity support counted strictly from training-history PAs before the monthly model cutoff used for each game.",
+  "dimensions": {
+    "hitter_min": {
+      "directional_years": 0,
+      "pooled_high_minus_low_delta_logloss": 0.0005495857805576094,
+      "passes": false
     },
-    "2023": {
-      "pitcher_min": 0.00009157758250985435,
-      "batter_median": -0.0007040599389933836,
-      "batter_q25": -0.00026932554511103574
+    "hitter_median": {
+      "directional_years": 2,
+      "pooled_high_minus_low_delta_logloss": -0.000019347042147102502,
+      "passes": false
     },
-    "2024": {
-      "pitcher_min": 0.00006270067099427739,
-      "batter_median": 0.0006039394208008925,
-      "batter_q25": 0.00024396861219809924
+    "pitcher_min": {
+      "directional_years": 3,
+      "pooled_high_minus_low_delta_logloss": 0.00003123958428423402,
+      "passes": false
     },
-    "2025": {
-      "pitcher_min": -0.00008722446645055329,
-      "batter_median": -0.0011289807383954617,
-      "batter_q25": -0.0006970032255816166
+    "all20_median": {
+      "directional_years": 2,
+      "pooled_high_minus_low_delta_logloss": -0.00012904578340363411,
+      "passes": false
     }
   },
-  "pooled_quartile_summary": {
-    "pitcher_min": {
-      "negative_slope_years": 1,
-      "quartile_delta_logloss": {
-        "Q1": -0.000032710534161883166,
-        "Q2": 0.0000969384511693623,
-        "Q3": 0.00031015796509198916,
-        "Q4": -0.00012859399634890107
-      },
-      "high_minus_low": -0.00009588346218701791,
-      "passes": false
+  "seasonal_high_minus_low": {
+    "2022": {
+      "hitter_min": 0.0003969,
+      "hitter_median": 0.0003417,
+      "pitcher_min": -0.0001331,
+      "all20_median": 0.0005635
     },
-    "batter_median": {
-      "negative_slope_years": 2,
-      "quartile_delta_logloss": {
-        "Q1": -0.000005801797891068583,
-        "Q2": 0.00013493058148161767,
-        "Q3": 0.00024306869339489617,
-        "Q4": -0.00012648007893987246
-      },
-      "high_minus_low": -0.00012067828104880387,
-      "passes": false
+    "2023": {
+      "hitter_min": 0.0007805,
+      "hitter_median": -0.0004868,
+      "pitcher_min": -0.0000646,
+      "all20_median": -0.0005508
     },
-    "batter_q25": {
-      "negative_slope_years": 2,
-      "quartile_delta_logloss": {
-        "Q1": -0.00007811221177890655,
-        "Q2": 0.00022848903971762108,
-        "Q3": 0.00009992833473635198,
-        "Q4": -0.000002610426138621752
-      },
-      "high_minus_low": 0.0000755017856402848,
-      "passes": false
+    "2024": {
+      "hitter_min": 0.0002917,
+      "hitter_median": 0.0005629,
+      "pitcher_min": 0.000451,
+      "all20_median": 0.0002695
+    },
+    "2025": {
+      "hitter_min": 0.0006745,
+      "hitter_median": -0.0005147,
+      "pitcher_min": -0.0001297,
+      "all20_median": -0.0008184
     }
   },
   "decision": "STOP_ADAPTIVE_RECENCY_RETAIN_730",
-  "interpretation": "The intuitive support-depth hypothesis is not stable enough to justify an adaptive weighting layer. Shorter recency sometimes helps high-support games, but the interaction sign is not repeatable across seasons and quartile response is non-monotonic.",
-  "next_step": "Return focus to Phase 30B leakage-safe as-of arsenal freshness, which has a materially larger and more consistent oracle signal than recency tuning."
+  "interpretation": "The hypothesis that 365-day weighting becomes systematically superior as direct-model player support increases is not stable across development seasons. Minimum starter support meets the 3-of-4 seasonal direction condition but fails the pooled-direction condition; all other dimensions fail the seasonal condition. Do not design an adaptive threshold or inspect 2026.",
+  "next_priority": "Resume Phase 30B leakage-safe current-season arsenal reconstruction and exact full-I2 test."
 }
