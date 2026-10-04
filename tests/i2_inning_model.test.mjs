@@ -42,3 +42,24 @@ assert.equal(Math.round(fairAmericanOdds(0.4)), 150);
 const awaySlotSum = Object.values(result.stateDiagnostics.awayI2StartSlotProbability)
   .reduce((a, b) => a + b, 0);
 assert.ok(Math.abs(awaySlotSum - 1) < 1e-12);
+
+
+const neutralized = simulateFullSecondInning({
+  away: { lineup, starter: pitcher },
+  home: { lineup, starter: pitcher },
+  league,
+  trials: 1000,
+  random: createSeededRandom(20260816),
+  neutralizeI1PlayerRates: true,
+});
+assert.equal(neutralized.governance.neutralizeI1PlayerRates, true);
+assert.equal(neutralized.governance.marketDataUsed, false);
+
+const defaultGovernance = simulateFullSecondInning({
+  away: { lineup, starter: pitcher },
+  home: { lineup, starter: pitcher },
+  league,
+  trials: 1000,
+  random: createSeededRandom(20260816),
+});
+assert.equal(defaultGovernance.governance.neutralizeI1PlayerRates, false);
