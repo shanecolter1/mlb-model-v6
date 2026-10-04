@@ -186,7 +186,15 @@ function scoreArm(game,model,park){
   const homeSlots=exactNextSlotDistribution({lineup:homeLineup,pitcher:awayPitcher,eventVectorForPA:i1});
   const awayP0=exactScorelessByStartSlot({lineup:awayLineup,pitcher:homePitcher,eventVectorForPA:i2});
   const homeP0=exactScorelessByStartSlot({lineup:homeLineup,pitcher:awayPitcher,eventVectorForPA:i2});
-  return weighted(awaySlots,awayP0)*weighted(homeSlots,homeP0);
+  const topScoreless=weighted(awaySlots,awayP0);
+  const bottomScoreless=weighted(homeSlots,homeP0);
+  return {
+    under05:topScoreless*bottomScoreless,
+    top_scoreless:topScoreless,
+    bottom_scoreless:bottomScoreless,
+    top_start_slot_distribution:awaySlots.slice(1),
+    bottom_start_slot_distribution:homeSlots.slice(1),
+  };
 }
 function loss(y,p){const q=Math.max(1e-12,Math.min(1-1e-12,p));return -(y*Math.log(q)+(1-y)*Math.log1p(-q));}
 
@@ -199,8 +207,17 @@ for(const game of replay.games||[]){
   const bp=scoreArm(game,modelForGame(baseWF,game),basePark);
   const cp=scoreArm(game,modelForGame(candWF,game),candPark);
   const y=Number(game.observed.under05);
-  baseLL+=loss(y,bp);candLL+=loss(y,cp);baseB+=(bp-y)**2;candB+=(cp-y)**2;
-  predictions.push({gid:game.gid,date:game.date,observed_under05:y,baseline_under05:bp,candidate_under05:cp});
+  baseLL+=loss(y,bp.under05);candLL+=loss(y,cp.under05);baseB+=(bp.under05-y)**2;candB+=(cp.under05-y)**2;
+  predictions.push({
+    gid:game.gid,date:game.date,observed_under05:y,
+    baseline_under05:bp.under05,candidate_under05:cp.under05,
+    baseline_top_scoreless:bp.top_scoreless,candidate_top_scoreless:cp.top_scoreless,
+    baseline_bottom_scoreless:bp.bottom_scoreless,candidate_bottom_scoreless:cp.bottom_scoreless,
+    top_start_slot_distribution:cp.top_start_slot_distribution,
+    bottom_start_slot_distribution:cp.bottom_start_slot_distribution,
+    venue_status:venue.status||null,
+    park_profile:venue.profile||null
+  });
 }
 const n=predictions.length;
 const payload={
