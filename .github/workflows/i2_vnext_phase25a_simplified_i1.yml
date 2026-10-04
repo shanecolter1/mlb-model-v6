@@ -5,40 +5,53 @@ on:
   push:
     branches:
       - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase25a_simplified_i1.yml'
 
 permissions:
-  contents: read
+  contents: write
   actions: read
 
+concurrency:
+  group: i2-vnext-phase25a-simplified-i1
+  cancel-in-progress: true
+
+env:
+  PREP_RUN_ID: 36486524206
+  BASELINE_RUN_ID: 36505646844
+
 jobs:
-  replay:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
+      max-parallel: 12
       matrix:
         season: [2022, 2023, 2024, 2025, 2026]
-    runs-on: ubuntu-latest
-    timeout-minutes: 120
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     env:
       GH_TOKEN: ${{ github.token }}
       YEAR: ${{ matrix.season }}
+      SHARD: ${{ matrix.shard }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Regression test inning engine
         run: node tests/i2_inning_model.test.mjs
 
-      - name: Download governed Phase 19 inputs and canonical replay
+      - name: Restore governed inputs
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p prep canonical out
-          gh run download 36486524206 --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
-          gh run download 36505646844 --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
-          if [ "$YEAR" = "2026" ]; then
+          gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+          if [ "${YEAR}" = "2026" ]; then
             cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json
           fi
 
-      - name: Run 10k simplified-I1 challenger
+      - name: Run 10k neutralized-I1 shard
         shell: bash
         run: |
           set -euo pipefail
@@ -50,43 +63,225 @@ jobs:
             --arsenal "prep/arsenal_profile_${PRIOR}.json" \
             --parks "prep/park/savant_venue_profiles_${PRIOR}_3yr.json" \
             --play-calibration "prep/transition_before_${YEAR}.json" \
-            --output "out/replay_${YEAR}_phase25a_neutral_i1_10000.json" \
+            --output "out/replay_${YEAR}_phase25a_shard_${SHARD}.json" \
             --trials 10000 \
             --i2-model vnext \
             --i1-mode player_asof \
             --i1-player-rates neutralized \
-            --i1-environment prior_season_park
+            --i1-environment prior_season_park \
+            --shard-count 12 \
+            --shard-index "${SHARD}"
 
-      - name: Compare against canonical governed baseline
+      - name: Verify shard governance
         shell: bash
         run: |
           python - <<'PY'
           import json, os
           from pathlib import Path
+          y=int(os.environ["YEAR"]); s=int(os.environ["SHARD"])
+          p=Path(f"out/replay_{y}_phase25a_shard_{s}.json")
+          x=json.loads(p.read_text())
+          assert x["season"]==y
+          assert x["market_inputs_used"] is False
+          assert x["i1_state_mode"]=="player_asof"
+          assert x["i1_player_rates"]=="neutralized"
+          assert x["i1_environment"]=="prior_season_park"
+          assert x["trials_per_game"]==10000
+          assert x["shard_count"]==12
+          assert x["shard_index"]==s
+          assert x["n"]>0
+          print({"season":y,"shard":s,"n":x["n"],"logloss":x["raw_logloss"]})
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase25a-${{ matrix.season }}-shard-${{ matrix.shard }}
+          if-no-files-found: error
+          retention-days: 30
+          path: out/replay_${{ matrix.season }}_phase25a_shard_${{ matrix.shard }}.json
+
+  merge:
+    needs: shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore challenger shards and canonical baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p shards canonical out
+          gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+          gh run download "${GITHUB_RUN_ID}" --repo "$GITHUB_REPOSITORY" --pattern "i2-vnext-phase25a-${YEAR}-shard-*" -D shards
+          find shards -type f -name "*.json" -exec cp {} out/ \;
+
+      - name: Merge challenger season
+        shell: bash
+        run: |
+          set -euo pipefail
+          GAMES=$(python -c "import json; print(json.load(open('canonical/replay_${YEAR}_inputs.json'))['games_eligible'])")
+          python src/research/merge_i2_vnext_replay_shards.py \
+            --input-dir out \
+            --expected-shards 12 \
+            --expected-games "${GAMES}" \
+            --output "out/replay_${YEAR}_phase25a_neutral_i1_10000.json"
+
+      - name: Compare against canonical baseline
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, math, os
+          from pathlib import Path
           y=int(os.environ["YEAR"])
           c=json.loads(Path(f"canonical/replay_{y}_precision_10000.json").read_text())
           n=json.loads(Path(f"out/replay_{y}_phase25a_neutral_i1_10000.json").read_text())
-          if c["n"] != n["n"]:
-              raise SystemExit(f"cohort mismatch: canonical={c['n']} challenger={n['n']}")
+          assert c["n"]==n["n"]
+          assert n["i1_state_mode"]=="player_asof"
+          assert n["i1_player_rates"]=="neutralized"
+          cm={str(x["gid"]):x for x in c["predictions"]}
+          nm={str(x["gid"]):x for x in n["predictions"]}
+          assert cm.keys()==nm.keys()
+
+          def ll(obs,p):
+            p=max(1e-9,min(1-1e-9,float(p)))
+            return -(obs*math.log(p)+(1-obs)*math.log(1-p))
+
+          rows=[]
+          for gid in cm:
+            a=cm[gid]; b=nm[gid]
+            obs=int(a["observed_under05"])
+            assert obs==int(b["observed_under05"])
+            cp=float(a["raw_under05"]); np=float(b["raw_under05"])
+            rows.append({
+              "date":str(a["date"]),
+              "dll":ll(obs,np)-ll(obs,cp),
+              "dbrier":(np-obs)**2-(cp-obs)**2,
+              "dp":np-cp,
+            })
+
+          bydate={}
+          for r in rows:
+            bydate.setdefault(r["date"],[]).append(r["dll"])
+          dmeans=[sum(v)/len(v) for v in bydate.values()]
+          dbar=sum(dmeans)/len(dmeans)
+          se=(sum((v-dbar)**2 for v in dmeans)/(len(dmeans)-1)/len(dmeans))**0.5
+
           out={
-            "version":"i2-vnext-phase25a-simplified-i1-10k-v1",
+            "version":"i2-vnext-phase25a-simplified-i1-10k-v2",
             "season":y,
             "n":n["n"],
             "market_inputs_used":False,
-            "challenger_i1_player_rates":n.get("i1_player_rates"),
+            "canonical_i1_state_mode":c["i1_state_mode"],
+            "challenger_i1_state_mode":n["i1_state_mode"],
+            "challenger_i1_player_rates":n["i1_player_rates"],
             "canonical_logloss":c["raw_logloss"],
             "challenger_logloss":n["raw_logloss"],
             "challenger_minus_canonical_logloss":n["raw_logloss"]-c["raw_logloss"],
             "canonical_brier":c["raw_brier"],
             "challenger_brier":n["raw_brier"],
             "challenger_minus_canonical_brier":n["raw_brier"]-c["raw_brier"],
+            "paired_date_cluster_se_logloss":se,
+            "mean_probability_shift":sum(r["dp"] for r in rows)/len(rows),
+            "mean_abs_probability_shift":sum(abs(r["dp"]) for r in rows)/len(rows),
           }
-          Path(f"out/phase25a_summary_{y}.json").write_text(json.dumps(out,indent=2))
+          Path(f"out/phase25a_summary_{y}.json").write_text(json.dumps(out,indent=2)+"\n")
           print(json.dumps(out,indent=2))
           PY
 
       - uses: actions/upload-artifact@v4
         with:
-          name: i2-vnext-phase25a-${{ matrix.season }}
-          path: out/
+          name: i2-vnext-phase25a-season-${{ matrix.season }}
+          if-no-files-found: error
           retention-days: 30
+          path: |
+            out/replay_${{ matrix.season }}_phase25a_neutral_i1_10000.json
+            out/phase25a_summary_${{ matrix.season }}.json
+
+  evaluate:
+    needs: merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase25a-season-*
+          path: data/phase25a
+          merge-multiple: true
+
+      - name: Build Phase 25A checkpoint
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          rows={}
+          for y in range(2022,2027):
+            p=Path(f"data/phase25a/phase25a_summary_{y}.json")
+            rows[str(y)]=json.loads(p.read_text())
+
+          dev=[rows[str(y)] for y in range(2022,2026)]
+          total=sum(x["n"] for x in dev)
+          pooled={
+            "n":total,
+            "challenger_minus_canonical_logloss":sum(x["challenger_minus_canonical_logloss"]*x["n"] for x in dev)/total,
+            "challenger_minus_canonical_brier":sum(x["challenger_minus_canonical_brier"]*x["n"] for x in dev)/total,
+            "mean_abs_probability_shift":sum(x["mean_abs_probability_shift"]*x["n"] for x in dev)/total,
+          }
+          rep=rows["2026"]
+
+          audit=json.loads(Path("data/derived/i2_vnext/PHASE24_VARIABLE_AUDIT.json").read_text())
+          exact_dev=audit["group_ablation"]["both_all_i1"]["dev_dll"]
+          exact_rep=audit["group_ablation"]["both_all_i1"]["replication_2026_dll"]
+
+          checkpoint={
+            "version":"i2-vnext-phase25a-simplified-i1-v2",
+            "market_inputs_used":False,
+            "production_changed":False,
+            "candidate":"neutralize player-specific I1 hitter/pitcher event rates only",
+            "preserved":[
+              "player_asof I1 framework",
+              "confirmed batting order and I1->I2 start-slot state engine",
+              "prior-season park environment",
+              "prior-only base/out transitions",
+              "direct I2 batter and pitcher talent",
+              "direct I2 arsenal/platoon specification",
+              "market isolation"
+            ],
+            "development_years":[2022,2023,2024,2025],
+            "replication_year":2026,
+            "seasonal":rows,
+            "pooled_development_2022_2025":pooled,
+            "replication_2026":rep,
+            "phase24_exact_state_ablation":{
+              "development_candidate_minus_baseline_logloss":exact_dev,
+              "replication_2026_candidate_minus_baseline_logloss":exact_rep
+            },
+            "decision_rule":{
+              "primary":"Phase 24 exact-state group ablation plus same-direction canonical replay without material regression",
+              "2026_role":"replication only; not used to select the challenger"
+            },
+            "status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"
+          }
+          Path("data/derived/i2_vnext/PHASE25A_SIMPLIFIED_I1.json").write_text(json.dumps(checkpoint,indent=2)+"\n")
+          print(json.dumps(checkpoint,indent=2))
+          PY
+
+      - name: Commit Phase 25A checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE25A_SIMPLIFIED_I1.json
+          if ! git diff --cached --quiet; then
+            git commit -m "research: checkpoint Phase 25A simplified I1 challenger"
+            git pull --rebase origin research/i2-vnext-direct-talent
+            git push origin HEAD:research/i2-vnext-direct-talent
+          fi
