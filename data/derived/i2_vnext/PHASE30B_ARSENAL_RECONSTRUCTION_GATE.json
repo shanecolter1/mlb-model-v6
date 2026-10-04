@@ -1,0 +1,32 @@
+{
+  "version": "i2-vnext-phase30b-arsenal-reconstruction-gate-v1",
+  "market_inputs_used": false,
+  "production_changed": false,
+  "reconstruction_year": 2024,
+  "thresholds_precommitted_before_result": {
+    "pitch_share_weighted_mae_max": 0.02,
+    "batter_est_woba_weighted_mae_max": 0.03,
+    "batter_est_woba_abs_signed_error_max": 0.01,
+    "minimum_overlap_rows_each": 1000
+  },
+  "metrics": {
+    "start": "2024-03-01",
+    "cutoff_exclusive": "2025-01-01",
+    "raw_rows": 711899,
+    "reconstructed_pitch_rows": 709227,
+    "market_inputs_used": false,
+    "fetch_chunk_days": 3,
+    "coverage_note": "Three-day chunks used to stay below Baseball Savant CSV result truncation ceiling.",
+    "pitcher_reconstruction": {
+      "overlap_rows": 3439,
+      "weighted_mae_pitch_share": 0.00015011933623063862
+    },
+    "batter_reconstruction": {
+      "overlap_rows": 5445,
+      "weighted_mae_est_woba": 0.003948844695850258,
+      "mean_signed_error": -0.001434637943760268
+    }
+  },
+  "passed": true,
+  "failure_action": "Stop outcome scoring and reconcile formula/source if false."
+}
