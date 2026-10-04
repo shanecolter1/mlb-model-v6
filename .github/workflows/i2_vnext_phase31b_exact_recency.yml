@@ -15,6 +15,7 @@ permissions:
 env:
   HISTORY_RUN_ID: 36485385934
   PREP_RUN_ID: 36486524206
+  BASELINE_RUN_ID: 36505646844
 
 jobs:
   challenger:
@@ -43,6 +44,11 @@ jobs:
           mkdir -p history prep challenger out
           gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history
           gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          if [ "${YEAR}" = "2026" ]; then
+            mkdir -p canonical
+            gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-2026" -D canonical
+            cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json
+          fi
       - name: Refit no-home-team finalist
         shell: bash
         run: |
@@ -104,6 +110,11 @@ jobs:
           mkdir -p history prep challenger out
           gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history
           gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          if [ "${YEAR}" = "2026" ]; then
+            mkdir -p canonical
+            gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-2026" -D canonical
+            cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json
+          fi
       - name: Refit lean 730-day baseline
         shell: bash
         run: |
