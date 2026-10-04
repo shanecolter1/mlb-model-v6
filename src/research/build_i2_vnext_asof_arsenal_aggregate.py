@@ -44,8 +44,9 @@ def compare(recon,archived):
     if m.empty: raise RuntimeError("No reconstruction overlap")
     m["share_raw"]=m.pitches_raw/m.groupby("player_id").pitches_raw.transform("sum")
     m["share_savant"]=m.pitches_savant/m.groupby("player_id").pitches_savant.transform("sum")
-    w=np.maximum(pd.to_numeric(m.pa,errors="coerce").fillna(1),1)
-    return {"overlap_rows":int(len(m)),"weighted_mae_pitch_share":float(np.average(abs(m.share_raw-m.share_savant),weights=m.pitches_savant)),"weighted_mae_est_woba":float(np.average(abs(m.est_woba_raw-m.est_woba_savant),weights=w)),"mean_signed_est_woba":float(np.average(m.est_woba_raw-m.est_woba_savant,weights=w))}
+    z=m.dropna(subset=["est_woba_raw","est_woba_savant"]).copy()
+    w=np.maximum(pd.to_numeric(z.pa,errors="coerce").fillna(1),1)
+    return {"overlap_rows":int(len(m)),"xwoba_overlap_rows":int(len(z)),"weighted_mae_pitch_share":float(np.average(abs(m.share_raw-m.share_savant),weights=m.pitches_savant)),"weighted_mae_est_woba":float(np.average(abs(z.est_woba_raw-z.est_woba_savant),weights=w)),"mean_signed_est_woba":float(np.average(z.est_woba_raw-z.est_woba_savant,weights=w))}
 
 def main():
     p=argparse.ArgumentParser();p.add_argument("--start",required=True);p.add_argument("--end",required=True);p.add_argument("--output-dir",type=Path,required=True);p.add_argument("--archived-batter",type=Path);p.add_argument("--archived-pitcher",type=Path);a=p.parse_args()
