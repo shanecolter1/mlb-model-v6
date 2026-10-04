@@ -1,0 +1,38 @@
+{
+  "version": "i2-vnext-phase25a-checkpoint-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "CANONICAL_10K_REPLAY_RUNNING",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "challenger": {
+    "name": "simplified I1 player-talent layer",
+    "change": "neutralize player-specific hitter and pitcher I1 event rates to the governed league baseline",
+    "preserved": [
+      "pregame batting order",
+      "I1-to-I2 start-slot state propagation",
+      "prior-only base/out transitions",
+      "direct I2 batter identity",
+      "direct I2 pitcher identity",
+      "direct I2 matchup model",
+      "prior-season Savant park environment",
+      "identity final full-I2 calibration",
+      "market isolation"
+    ]
+  },
+  "phase24_exact_evidence": {
+    "development_years": [2022, 2023, 2024, 2025],
+    "replication_year": 2026,
+    "both_i1_player_layers_removal_delta_logloss_2022_2025": -5.228438004439166e-7,
+    "both_i1_player_layers_removal_delta_logloss_2026": -1.1180241617059217e-5,
+    "interpretation": "no measurable full-I2 value from the player-specific I1 rate layer"
+  },
+  "acceptance_test": {
+    "years": [2022, 2023, 2024, 2025, 2026],
+    "trials_per_game": 10000,
+    "baseline": "canonical Phase 19C governed replay",
+    "selection_rule": "2022-2025 determines candidate merit; 2026 replication/sensitivity only",
+    "required": "challenger must not materially degrade pooled development log loss or Brier; 2026 must not reveal a large adverse reversal"
+  },
+  "workflow": ".github/workflows/i2_vnext_phase25a_simplified_i1.yml"
+}
