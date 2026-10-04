@@ -1,0 +1,56 @@
+{
+  "version": "i2-vnext-phase33-final-calibration-365-v1",
+  "generated_at": "2026-10-04",
+  "status": "IDENTITY_RETAINED",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "source_model": "Phase 31B preferred universal 365-day lean candidate",
+  "sample": "PRIMARY_HOME_VENUE games",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "n_development": 9699,
+  "n_replication": 2443,
+  "candidates": {
+    "identity": {
+      "development_delta_logloss": 0,
+      "development_delta_brier": 0,
+      "replication_delta_logloss": 0,
+      "replication_delta_brier": 0
+    },
+    "offset": {
+      "lambda": 0.42423853322635624,
+      "development_delta_logloss": -0.000045997586841317606,
+      "development_delta_brier": -0.000020297241889510875,
+      "replication_delta_logloss": 0.00002509225692726158,
+      "replication_delta_brier": 0.000013196488478750545
+    },
+    "affine": {
+      "lambda": 0.7755194269307089,
+      "development_delta_logloss": -0.0005194648631325904,
+      "development_delta_brier": -0.0002514424073717103,
+      "replication_delta_logloss": 0.00029469673796511664,
+      "replication_delta_brier": 0.0001479773075120372
+    }
+  },
+  "development_selected": "affine",
+  "replication_pass": false,
+  "final_selected": "identity",
+  "final_curve": {
+    "type": "none",
+    "intercept": 0,
+    "slope": 1
+  },
+  "decision": "Retain identity final calibration. Production unchanged.",
+  "preferred_research_specification": {
+    "C": 0.05,
+    "half_life_days": 365,
+    "home_team_nuisance": false,
+    "i1_player_event_rates": "neutralized",
+    "final_calibration": "identity"
+  }
+}
