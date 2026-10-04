@@ -1,0 +1,63 @@
+{
+  "version": "i2-vnext-phase28c-variable-audit-closeout-v1",
+  "generated_at": "2026-10-04",
+  "status": "VARIABLE_AUDIT_COMPLETE",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "preferred_research_specification": "combined lean vNext",
+  "accepted_simplifications": [
+    "neutralize player-specific I1 hitter/pitcher event-rate talent inputs while preserving batting-order/state propagation",
+    "remove home_team fit-only nuisance control from direct-I2 refits"
+  ],
+  "retained": [
+    "direct batter identity",
+    "direct pitcher identity",
+    "standalone categorical platoon",
+    "arsenal-by-platoon interactions",
+    "Savant park single factor",
+    "Savant park double factor",
+    "Savant park triple factor",
+    "Savant park home-run factor at alpha=1",
+    "I1 batting-order/state engine",
+    "prior-only empirical base/out transitions",
+    "identity final full-I2 calibration"
+  ],
+  "shadow_only": [
+    "arsenal-free direct-I2 model: development improvement reversed in 2026 replication"
+  ],
+  "rejected": [
+    "standalone platoon removal: worsened exact full-I2 target",
+    "park-HR shrinkage/retune: raw development optimum did not clear precommitted paired-date indifference rule",
+    "non-identity final calibration: development gain failed 2026 replication"
+  ],
+  "combined_candidate_evidence": {
+    "pooled_2022_2025_delta_logloss": -0.00015794503829225806,
+    "pooled_2022_2025_delta_brier": -0.00007562607587150192,
+    "development_years_improved": 3,
+    "development_years_effectively_flat_or_worse": 1,
+    "replication_2026_delta_logloss": -0.000008495954012643914,
+    "replication_2026_delta_brier": -0.0000040753171310081715,
+    "paired_date_95pct_development_interval": [
+      -0.000345537199960997,
+      0.00016784814315543928
+    ],
+    "interpretation": "complexity reduction with no measurable accuracy loss; directionally favorable but not a statistically established predictive gain"
+  },
+  "next_phase": {
+    "name": "Phase 29 residual-error decomposition",
+    "objective": "Find systematic remaining full-I2 error structure in the lean candidate rather than continue indiscriminate feature pruning.",
+    "precommitted_dimensions": [
+      "top-half versus bottom-half contribution",
+      "I2 batting-order start slot",
+      "direct-I2 batter/pitcher training-support strata",
+      "park/environment effect magnitude strata"
+    ],
+    "exclusions": [
+      "calendar month controls",
+      "sportsbook prices or market conditioning",
+      "new feature additions before residual structure is demonstrated",
+      "retesting settled variable families without new evidence"
+    ],
+    "selection_policy": "2022-2025 development; 2026 replication only. Diagnose first; propose a model change only where residual structure is stable and target-relevant."
+  }
+}
