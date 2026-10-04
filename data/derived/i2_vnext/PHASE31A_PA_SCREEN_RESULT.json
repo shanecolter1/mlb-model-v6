@@ -1,7 +1,7 @@
 {
   "version": "i2-vnext-phase31a-pa-screen-v1",
   "generated_at": "2026-10-04",
-  "status": "COMPLETE_FINALISTS_FROZEN",
+  "status": "SCREEN_COMPLETE_ADVANCE_BASELINE_PLUS_TWO_RECENCY_FINALISTS",
   "production_changed": false,
   "market_inputs_used": false,
   "screen_only": true,
@@ -11,84 +11,83 @@
     2024,
     2025
   ],
-  "cohort_reconciliation": {
-    "season": 2022,
-    "correct_n": 20125,
-    "note": "Early checkpoint metadata listed 20096 for several cells. All nine 2022 cells were rerun on the same frozen local history cohort; log-loss values reproduced exactly and only n metadata changed."
+  "model_specification": "Phase 28 lean direct-I2 model: no home_team nuisance; same retained batter/pitcher/platoon/arsenal feature families",
+  "grid": {
+    "C": [
+      0.02,
+      0.05,
+      0.1
+    ],
+    "half_life_days": [
+      365,
+      730,
+      1460
+    ]
   },
   "pooled_rank": [
     {
       "C": 0.05,
       "half_life_days": 730,
-      "n": 81125,
-      "pooled_logloss": 1.4749318895685601
+      "pooled_logloss": 1.474934177390028
     },
     {
       "C": 0.05,
       "half_life_days": 1460,
-      "n": 81125,
       "pooled_logloss": 1.4749755222726186
     },
     {
       "C": 0.05,
       "half_life_days": 365,
-      "n": 81125,
-      "pooled_logloss": 1.4751826143913072
+      "pooled_logloss": 1.4751850181976247
     },
     {
       "C": 0.02,
       "half_life_days": 1460,
-      "n": 81125,
       "pooled_logloss": 1.4756635247392211
     },
     {
       "C": 0.02,
       "half_life_days": 730,
-      "n": 81125,
-      "pooled_logloss": 1.4759206250927799
+      "pooled_logloss": 1.4759228658443888
     },
     {
       "C": 0.1,
       "half_life_days": 365,
-      "n": 81125,
-      "pooled_logloss": 1.4765090914710468
+      "pooled_logloss": 1.4765114357861195
     },
     {
       "C": 0.02,
       "half_life_days": 365,
-      "n": 81125,
-      "pooled_logloss": 1.4765228051595627
+      "pooled_logloss": 1.4765252122455228
     },
     {
       "C": 0.1,
       "half_life_days": 730,
-      "n": 81125,
       "pooled_logloss": 1.4766904268235923
     },
     {
       "C": 0.1,
       "half_life_days": 1460,
-      "n": 81125,
       "pooled_logloss": 1.4770564929980825
     }
   ],
-  "finalists": [
+  "screen_conclusion": "Current C=0.05 / 730-day setting is the pooled PA-event winner. C=0.05 wins every tested half-life comparison; regularization strength is therefore retained for the exact target gate.",
+  "phase31b_finalists": [
     {
-      "role": "baseline",
       "C": 0.05,
-      "half_life_days": 730
+      "half_life_days": 730,
+      "role": "baseline"
     },
     {
-      "role": "challenger",
       "C": 0.05,
-      "half_life_days": 1460
+      "half_life_days": 1460,
+      "role": "nonbaseline finalist 1"
     },
     {
-      "role": "challenger",
       "C": 0.05,
-      "half_life_days": 365
+      "half_life_days": 365,
+      "role": "nonbaseline finalist 2"
     }
   ],
-  "conclusion": "C=0.05 is the only competitive regularization setting. Current 730-day half-life wins the PA screen, but both non-baseline C=0.05 recency settings advance under the precommitted finalist rule. PA screen cannot promote or reject on full-I2 target.",
-  "next_phase": "Phase31B exact full-I2 walk-forward replay of the three frozen finalists; 2022-2025 selection, 2026 replication only."
+  "decision_rule": "PA-event screen cannot promote. Build monthly point-in-time refits for all three finalists and select only on exact full-I2 2022-2025 development, with 2026 replication only."
 }
