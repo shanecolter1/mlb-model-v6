@@ -1,0 +1,49 @@
+{
+  "version": "i2-vnext-phase32-support-adaptive-recency-v1",
+  "generated_at": "2026-10-04",
+  "status": "REJECT_ADAPTIVE_RETAIN_UNIVERSAL_365",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "baseline": "universal 365-day half-life",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "candidates": {
+    "k10": {
+      "delta_logloss_vs_365": -0.000013615294707336467,
+      "delta_brier_vs_365": -0.000006919174529523842,
+      "seasons_improved": 2
+    },
+    "k25": {
+      "delta_logloss_vs_365": -0.00002576921641561647,
+      "delta_brier_vs_365": -0.000013001111301674806,
+      "seasons_improved": 2
+    },
+    "k50": {
+      "delta_logloss_vs_365": -0.000035167379521805486,
+      "delta_brier_vs_365": -0.000017722201761383172,
+      "seasons_improved": 2
+    },
+    "k100": {
+      "delta_logloss_vs_365": -0.0000431863746989114,
+      "delta_brier_vs_365": -0.000021778095680963,
+      "seasons_improved": 2
+    }
+  },
+  "promotion_requirements": {
+    "minimum_pooled_logloss_improvement": 0.00005,
+    "pooled_brier_must_not_worsen": true,
+    "development_seasons_improved_at_least": 3
+  },
+  "best_candidate": "k100",
+  "selection_pass": false,
+  "replication_2026_scored": false,
+  "replication_reason": "Precommitted development gate failed; 2026 remains untouched for this hypothesis.",
+  "interpretation": "Longer-history support helps some seasons, especially 2025, but the support-adaptive blend does not produce a large or stable enough development gain to justify added complexity.",
+  "decision": "Retain universal 365-day half-life as preferred research recency setting.",
+  "next_gate": "Re-run final single-layer calibration governance for the 365-day lean candidate; calibration cannot rescue raw performance."
+}
