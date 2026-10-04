@@ -1,0 +1,90 @@
+name: I2 vNext Phase 30B - arsenal reconstruction gate
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase30b_arsenal_reconstruction.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  HISTORY_RUN_ID: 36485385934
+
+jobs:
+  reconstruct-2024:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip numpy pandas requests
+      - name: Restore archived annual arsenal
+        run: |
+          mkdir -p history
+          gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history
+      - name: Reconstruct 2024 from raw all-inning Statcast
+        shell: bash
+        run: |
+          set -euo pipefail
+          B=$(find history -name batter_2024.csv -print -quit)
+          P=$(find history -name pitcher_2024.csv -print -quit)
+          test -n "$B"; test -n "$P"
+          python src/research/build_i2_vnext_asof_arsenal.py \
+            --cache-dir data/cache/phase30b/statcast_all \
+            --start 2024-03-01 \
+            --cutoff 2025-01-01 \
+            --fetch-if-missing \
+            --archived-batter "$B" \
+            --archived-pitcher "$P" \
+            --output-dir data/phase30b/reconstruction_2024
+      - name: Apply precommitted equivalence gate
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path("data/phase30b/reconstruction_2024/manifest.json").read_text())
+          p=x["pitcher_reconstruction"]; b=x["batter_reconstruction"]
+          gate={
+            "pitch_share_weighted_mae_max":0.02,
+            "batter_est_woba_weighted_mae_max":0.03,
+            "batter_est_woba_abs_signed_error_max":0.01,
+            "minimum_overlap_rows_each":1000
+          }
+          passed=(
+            p["overlap_rows"]>=gate["minimum_overlap_rows_each"] and
+            b["overlap_rows"]>=gate["minimum_overlap_rows_each"] and
+            p["weighted_mae_pitch_share"]<=gate["pitch_share_weighted_mae_max"] and
+            b["weighted_mae_est_woba"]<=gate["batter_est_woba_weighted_mae_max"] and
+            abs(b["mean_signed_error"])<=gate["batter_est_woba_abs_signed_error_max"]
+          )
+          out={"version":"i2-vnext-phase30b-arsenal-reconstruction-gate-v1","market_inputs_used":False,"production_changed":False,"reconstruction_year":2024,"thresholds_precommitted_before_result":gate,"metrics":x,"passed":passed,"failure_action":"Stop outcome scoring and reconcile formula/source if false."}
+          Path("data/derived/i2_vnext/PHASE30B_ARSENAL_RECONSTRUCTION_GATE.json").write_text(json.dumps(out,indent=2)+"\n")
+          print(json.dumps(out,indent=2))
+          if not passed: raise SystemExit("Phase 30B reconstruction gate failed")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: i2-vnext-phase30b-arsenal-reconstruction-2024
+          retention-days: 30
+          path: |
+            data/phase30b/reconstruction_2024/
+            data/derived/i2_vnext/PHASE30B_ARSENAL_RECONSTRUCTION_GATE.json
+      - name: Commit passing gate
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE30B_ARSENAL_RECONSTRUCTION_GATE.json
+          git commit -m "research: pass Phase 30B arsenal reconstruction gate"
+          git pull --rebase origin research/i2-vnext-direct-talent
+          git push origin HEAD:research/i2-vnext-direct-talent
