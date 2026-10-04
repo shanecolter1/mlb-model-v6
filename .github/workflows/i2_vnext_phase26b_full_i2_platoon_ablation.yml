@@ -1,4 +1,4 @@
-name: I2 vNext Phase 26B - full-I2 platoon ablation
+name: I2 vNext Phase 26B - refit no-platoon full-I2 replay
 
 on:
   workflow_dispatch:
@@ -17,11 +17,95 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  HISTORY_RUN_ID: 36485385934
   PREP_RUN_ID: 36486524206
   BASELINE_RUN_ID: 36505646844
 
 jobs:
+  refit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install fit dependencies
+        run: python -m pip install --upgrade pip numpy pandas scikit-learn
+      - name: Restore governed historical I2 PA data
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p history out
+          for attempt in 1 2 3 4 5; do
+            rm -rf history/*
+            if gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history; then
+              break
+            fi
+            test "$attempt" -lt 5 || exit 1
+            sleep 20
+          done
+      - name: Fit leakage-safe no-platoon walk-forward models
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATASET=$(find history -name i2_pa_statcast.csv -print -quit)
+          B2020=$(find history -name batter_2020.csv -print -quit)
+          test -n "$DATASET"; test -n "$B2020"
+          ARSENAL_DIR=$(dirname "$B2020")
+          python src/research/build_i2_vnext_no_platoon_walkforward.py \
+            --input "$DATASET" \
+            --arsenal-dir "$ARSENAL_DIR" \
+            --season "${YEAR}" \
+            --half-life 730 \
+            --c 0.05 \
+            --max-iter 5000 \
+            --output-dir "out/walkforward_${YEAR}" \
+            --arsenal-output "out/arsenal_profile_$((YEAR-1)).json"
+      - name: Verify refit governance
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          y=int(os.environ["YEAR"])
+          d=Path(f"out/walkforward_{y}")
+          m=json.loads((d/"manifest.json").read_text())
+          assert m["season"]==y
+          assert m["market_inputs_used"] is False
+          assert m["removed_feature_family"]=="platoon"
+          assert m["categorical_features"]==["batter","pitcher","home_team"]
+          assert m["hyperparameters"]["C"]==0.05
+          assert m["hyperparameters"]["half_life_days"]==730.0
+          assert len(m["entries"])==6
+          for e in m["entries"]:
+              a=json.loads((d/e["model_file"]).read_text())
+              assert a["market_inputs_used"] is False
+              assert a["categorical_features"]==["batter","pitcher","home_team"]
+              assert "platoon" not in a["category_levels"]
+              assert a["research_specification_change"]["removed_feature_family"]=="standalone categorical platoon"
+              assert a["research_specification_change"]["production_changed"] is False
+          print({"season":y,"models":len(m["entries"]),"removed":"platoon"})
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase26b-refit-${{ matrix.season }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            out/walkforward_${{ matrix.season }}/
+            out/arsenal_profile_*.json
+
   shard:
+    needs: refit
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -36,43 +120,38 @@ jobs:
       SHARD: ${{ matrix.shard }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Regression test inning engine
-        run: node tests/i2_inning_model.test.mjs
-
-      - name: Restore governed inputs
+      - name: Restore governed replay inputs, canonical baseline, and no-platoon refit
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p prep canonical out
+          mkdir -p prep canonical challenger out
           gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
           gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+          gh run download "${GITHUB_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase26b-refit-${YEAR}" -D challenger
           if [ "${YEAR}" = "2026" ]; then
             cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json
           fi
-
-      - name: Run 10k no-platoon full-I2 shard
+      - name: Run 10k refit no-platoon full-I2 shard
         shell: bash
         run: |
           set -euo pipefail
           PRIOR=$((YEAR - 1))
           node src/research/run_i2_vnext_replay.mjs \
             --input "prep/replay_${YEAR}_inputs.json" \
-            --model "prep/walkforward_${YEAR}/model_preseason.json" \
-            --walkforward-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --model "challenger/walkforward_${YEAR}/model_preseason.json" \
+            --walkforward-manifest "challenger/walkforward_${YEAR}/manifest.json" \
             --arsenal "prep/arsenal_profile_${PRIOR}.json" \
             --parks "prep/park/savant_venue_profiles_${PRIOR}_3yr.json" \
             --play-calibration "prep/transition_before_${YEAR}.json" \
             --output "out/replay_${YEAR}_phase26b_shard_${SHARD}.json" \
             --trials 10000 \
             --i2-model vnext \
-            --i2-feature-mode no_platoon \
+            --i2-feature-mode baseline \
             --i1-mode player_asof \
             --i1-player-rates active \
             --i1-environment prior_season_park \
             --shard-count 12 \
             --shard-index "${SHARD}"
-
       - name: Verify shard governance
         shell: bash
         run: |
@@ -86,13 +165,12 @@ jobs:
           assert x["i1_state_mode"]=="player_asof"
           assert x["i1_player_rates"]=="active"
           assert x["i1_environment"]=="prior_season_park"
-          assert x["i2_feature_mode"]=="no_platoon"
+          assert x["i2_feature_mode"]=="baseline"
           assert x["trials_per_game"]==10000
           assert x["shard_count"]==12 and x["shard_index"]==s
           assert x["n"]>0
           print({"season":y,"shard":s,"n":x["n"],"logloss":x["raw_logloss"]})
           PY
-
       - uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-phase26b-${{ matrix.season }}-shard-${{ matrix.shard }}
@@ -113,7 +191,6 @@ jobs:
       YEAR: ${{ matrix.season }}
     steps:
       - uses: actions/checkout@v4
-
       - name: Restore shards and canonical baseline
         shell: bash
         run: |
@@ -122,7 +199,6 @@ jobs:
           gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
           gh run download "${GITHUB_RUN_ID}" --repo "$GITHUB_REPOSITORY" --pattern "i2-vnext-phase26b-${YEAR}-shard-*" -D shards
           find shards -type f -name "*.json" -exec cp {} out/ \;
-
       - name: Merge and compare season
         shell: bash
         run: |
@@ -130,55 +206,53 @@ jobs:
           GAMES=$(python -c "import json; print(json.load(open('canonical/replay_${YEAR}_inputs.json'))['games_eligible'])")
           python src/research/merge_i2_vnext_replay_shards.py \
             --input-dir out --expected-shards 12 --expected-games "${GAMES}" \
-            --output "out/replay_${YEAR}_phase26b_no_platoon_10000.json"
+            --output "out/replay_${YEAR}_phase26b_no_platoon_refit_10000.json"
           python - <<'PY'
           import json, math, os
           from pathlib import Path
           y=int(os.environ["YEAR"])
           c=json.loads(Path(f"canonical/replay_{y}_precision_10000.json").read_text())
-          n=json.loads(Path(f"out/replay_{y}_phase26b_no_platoon_10000.json").read_text())
+          n=json.loads(Path(f"out/replay_{y}_phase26b_no_platoon_refit_10000.json").read_text())
           assert c["n"]==n["n"]
-          assert n["i2_feature_mode"]=="no_platoon"
           cm={str(x["gid"]):x for x in c["predictions"]}
           nm={str(x["gid"]):x for x in n["predictions"]}
           assert cm.keys()==nm.keys()
           def ll(obs,p):
-            p=max(1e-9,min(1-1e-9,float(p)))
-            return -(obs*math.log(p)+(1-obs)*math.log(1-p))
+              p=max(1e-9,min(1-1e-9,float(p)))
+              return -(obs*math.log(p)+(1-obs)*math.log(1-p))
           rows=[]
           for gid,a in cm.items():
-            b=nm[gid]; obs=int(a["observed_under05"])
-            assert obs==int(b["observed_under05"])
-            cp=float(a["raw_under05"]); np=float(b["raw_under05"])
-            rows.append({"date":str(a["date"]),"dll":ll(obs,np)-ll(obs,cp),"dbrier":(np-obs)**2-(cp-obs)**2,"dp":np-cp})
+              b=nm[gid]; obs=int(a["observed_under05"])
+              assert obs==int(b["observed_under05"])
+              cp=float(a["raw_under05"]); np=float(b["raw_under05"])
+              rows.append({"date":str(a["date"]),"dll":ll(obs,np)-ll(obs,cp),"dbrier":(np-obs)**2-(cp-obs)**2,"dp":np-cp})
           bydate={}
           for r in rows: bydate.setdefault(r["date"],[]).append(r["dll"])
           dm=[sum(v)/len(v) for v in bydate.values()]
           mu=sum(dm)/len(dm)
           se=(sum((v-mu)**2 for v in dm)/(len(dm)-1)/len(dm))**0.5
           out={
-            "version":"i2-vnext-phase26b-full-i2-platoon-ablation-v1",
-            "season":y,"n":n["n"],"market_inputs_used":False,
-            "candidate":"remove standalone direct-I2 platoon categorical term only",
-            "canonical_logloss":c["raw_logloss"],"candidate_logloss":n["raw_logloss"],
-            "candidate_minus_canonical_logloss":n["raw_logloss"]-c["raw_logloss"],
-            "canonical_brier":c["raw_brier"],"candidate_brier":n["raw_brier"],
-            "candidate_minus_canonical_brier":n["raw_brier"]-c["raw_brier"],
-            "paired_date_cluster_se_logloss":se,
-            "mean_probability_shift":sum(r["dp"] for r in rows)/len(rows),
-            "mean_abs_probability_shift":sum(abs(r["dp"]) for r in rows)/len(rows)
+              "version":"i2-vnext-phase26b-refit-no-platoon-full-i2-v2",
+              "season":y,"n":n["n"],"market_inputs_used":False,
+              "candidate":"historical point-in-time SAGA refit without standalone platoon categorical term",
+              "canonical_logloss":c["raw_logloss"],"candidate_logloss":n["raw_logloss"],
+              "candidate_minus_canonical_logloss":n["raw_logloss"]-c["raw_logloss"],
+              "canonical_brier":c["raw_brier"],"candidate_brier":n["raw_brier"],
+              "candidate_minus_canonical_brier":n["raw_brier"]-c["raw_brier"],
+              "paired_date_cluster_se_logloss":se,
+              "mean_probability_shift":sum(r["dp"] for r in rows)/len(rows),
+              "mean_abs_probability_shift":sum(abs(r["dp"]) for r in rows)/len(rows)
           }
           Path(f"out/phase26b_summary_{y}.json").write_text(json.dumps(out,indent=2)+"\n")
           print(json.dumps(out,indent=2))
           PY
-
       - uses: actions/upload-artifact@v4
         with:
           name: i2-vnext-phase26b-season-${{ matrix.season }}
           if-no-files-found: error
           retention-days: 30
           path: |
-            out/replay_${{ matrix.season }}_phase26b_no_platoon_10000.json
+            out/replay_${{ matrix.season }}_phase26b_no_platoon_refit_10000.json
             out/phase26b_summary_${{ matrix.season }}.json
 
   evaluate:
@@ -192,7 +266,6 @@ jobs:
           pattern: i2-vnext-phase26b-season-*
           path: data/phase26b
           merge-multiple: true
-
       - name: Build and commit checkpoint
         run: |
           python - <<'PY'
@@ -202,28 +275,28 @@ jobs:
           dev=[rows[str(y)] for y in range(2022,2026)]
           n=sum(x["n"] for x in dev)
           pooled={
-            "n":n,
-            "candidate_minus_canonical_logloss":sum(x["candidate_minus_canonical_logloss"]*x["n"] for x in dev)/n,
-            "candidate_minus_canonical_brier":sum(x["candidate_minus_canonical_brier"]*x["n"] for x in dev)/n,
-            "positive_delta_years":sum(x["candidate_minus_canonical_logloss"]>0 for x in dev),
-            "negative_delta_years":sum(x["candidate_minus_canonical_logloss"]<0 for x in dev)
+              "n":n,
+              "candidate_minus_canonical_logloss":sum(x["candidate_minus_canonical_logloss"]*x["n"] for x in dev)/n,
+              "candidate_minus_canonical_brier":sum(x["candidate_minus_canonical_brier"]*x["n"] for x in dev)/n,
+              "positive_delta_years":sum(x["candidate_minus_canonical_logloss"]>0 for x in dev),
+              "negative_delta_years":sum(x["candidate_minus_canonical_logloss"]<0 for x in dev)
           }
           ck={
-            "version":"i2-vnext-phase26b-full-i2-platoon-ablation-v1",
-            "market_inputs_used":False,"production_changed":False,
-            "target":"full second-inning Under 0.5 raw probability",
-            "candidate":"remove standalone direct-I2 platoon categorical term only",
-            "development_years":[2022,2023,2024,2025],"replication_year":2026,
-            "seasonal":rows,"pooled_development_2022_2025":pooled,"replication_2026":rows["2026"],
-            "decision_rule":"2022-2025 select; 2026 replication only; no recalibration may mask raw effect",
-            "status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"
+              "version":"i2-vnext-phase26b-refit-no-platoon-full-i2-v2",
+              "market_inputs_used":False,"production_changed":False,
+              "target":"full second-inning Under 0.5 raw probability",
+              "candidate":"point-in-time SAGA refit without standalone direct-I2 platoon categorical term",
+              "development_years":[2022,2023,2024,2025],"replication_year":2026,
+              "seasonal":rows,"pooled_development_2022_2025":pooled,"replication_2026":rows["2026"],
+              "decision_rule":"2022-2025 select; 2026 replication only; raw full-I2 effect before any recalibration",
+              "status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"
           }
-          Path("data/derived/i2_vnext/PHASE26B_FULL_I2_PLATOON_ABLATION.json").write_text(json.dumps(ck,indent=2)+"\n")
+          Path("data/derived/i2_vnext/PHASE26B_FULL_I2_PLATOON_REFIT.json").write_text(json.dumps(ck,indent=2)+"\n")
           print(json.dumps(ck,indent=2))
           PY
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/derived/i2_vnext/PHASE26B_FULL_I2_PLATOON_ABLATION.json
-          git commit -m "research: checkpoint Phase 26B full-I2 platoon ablation"
+          git add data/derived/i2_vnext/PHASE26B_FULL_I2_PLATOON_REFIT.json
+          git commit -m "research: checkpoint Phase 26B refit no-platoon full-I2 replay"
           git pull --rebase origin research/i2-vnext-direct-talent
           git push origin HEAD:research/i2-vnext-direct-talent
