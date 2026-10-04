@@ -1,0 +1,44 @@
+{
+  "version": "i2-vnext-phase25d-platoon-governed-refit-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "PASS_ADVANCE_TO_FULL_I2_REPLAY",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "challenger": "remove standalone categorical platoon feature from direct-I2 multinomial model; preserve batter identity, pitcher identity, arsenal-by-platoon numeric interactions, and fit-only home-team nuisance control",
+  "fit": {
+    "solver": "saga",
+    "C": 0.05,
+    "half_life_days": 730,
+    "max_iter": 7500,
+    "tol": 0.0001,
+    "warm_start": "governed full-model saga coefficients with only categorical platoon block omitted",
+    "live_equivalent_scoring": "home-team nuisance block omitted at holdout inference"
+  },
+  "results": {
+    "2025": {
+      "n": 20188,
+      "governed_full_logloss": 1.464783502539107,
+      "platoon_free_logloss": 1.464727760261368,
+      "challenger_minus_full_logloss": -0.000055742277739,
+      "governed_full_brier": 0.7003592742459248,
+      "platoon_free_brier": 0.7003240538428482,
+      "challenger_minus_full_brier": -0.0000352204030766,
+      "challenger_iterations": 252,
+      "converged": true
+    },
+    "2026": {
+      "n": 20096,
+      "governed_full_logloss": 1.4722970462673373,
+      "platoon_free_logloss": 1.4722285680109628,
+      "challenger_minus_full_logloss": -0.0000684782563745,
+      "governed_full_brier": 0.7030609785686662,
+      "platoon_free_brier": 0.7030476046513342,
+      "challenger_minus_full_brier": -0.0000133739173320,
+      "challenger_iterations": 250,
+      "converged": true
+    }
+  },
+  "decision": "ADVANCE_ONLY. Do not remove platoon from production or current vNext yet. Build point-in-time platoon-free walk-forward models and score full-I2 Under 0.5 across 2022-2025 development, with 2026 replication.",
+  "next_phase": "25E multiyear full-I2 walk-forward replay of platoon-free challenger"
+}
