@@ -1,0 +1,33 @@
+{
+  "version": "i2-vnext-phase30b-v2-aggregate-reconstruction-gate-v1",
+  "market_inputs_used": false,
+  "production_changed": false,
+  "thresholds_unchanged_from_original_gate": {
+    "pitch_share_weighted_mae_max": 0.02,
+    "batter_est_woba_weighted_mae_max": 0.03,
+    "batter_est_woba_abs_signed_error_max": 0.01,
+    "minimum_overlap_rows_each": 1000
+  },
+  "metrics": {
+    "start": "2024-01-01",
+    "end_inclusive": "2024-12-31",
+    "market_inputs_used": false,
+    "method": "Statcast Search aggregate by player, one pitch type per request",
+    "batter": {
+      "overlap_rows": 5455,
+      "xwoba_overlap_rows": 5445,
+      "weighted_mae_pitch_share": 0.0046448176104996845,
+      "weighted_mae_est_woba": 0.002861964549068866,
+      "mean_signed_est_woba": -0.0007164374113306152
+    },
+    "pitcher": {
+      "overlap_rows": 3439,
+      "xwoba_overlap_rows": 3438,
+      "weighted_mae_pitch_share": 0.00015011933623063864,
+      "weighted_mae_est_woba": 0.0011450874318166514,
+      "mean_signed_est_woba": -0.0010474533659565874
+    }
+  },
+  "passed": true,
+  "failure_action": "Stop before outcome scoring if false."
+}
