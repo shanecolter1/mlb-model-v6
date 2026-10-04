@@ -1,0 +1,45 @@
+{
+  "version": "i2-vnext-phase29d-dependence-closeout-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "PHASE29_COMPLETE_NO_PROMOTABLE_RESIDUAL_CORRECTION",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "dependence": {
+    "metric": "mean (observed_top_scoreless - predicted_top_scoreless) * (observed_bottom_scoreless - predicted_bottom_scoreless)",
+    "by_year": {
+      "2022": -0.002209072443231903,
+      "2023": 0.0011009716861055151,
+      "2024": 0.0025614055760917204,
+      "2025": -0.006866845429481107,
+      "2026": 0.007125526682181322
+    },
+    "conclusion": "Residual dependence changes sign and is not stable enough to justify a joint-half correction."
+  },
+  "full_i2_actual_minus_independence_prediction": {
+    "2022": 0.007469954580867584,
+    "2023": -0.026080914776096958,
+    "2024": -0.0034783343156877624,
+    "2025": -0.020513963275823527,
+    "2026": -0.0012424955637697457
+  },
+  "phase29_findings": [
+    "Bottom-half scoring is systematically underpredicted in pooled 2022-2025 and directionally again in 2026.",
+    "I2 expected start slot does not isolate the bias.",
+    "Low batter/pitcher training support does not explain the bias.",
+    "Bias is associated with scoring-suppressive park effects, but park attenuation fails forward validation/replication.",
+    "A precommitted bottom offset + park attenuation challenger improves 2025 but worsens 2026 full-I2 target and is rejected.",
+    "Top/bottom residual dependence is unstable and does not justify changing the product construction."
+  ],
+  "decision": "No Phase 29 correction is promoted. Preserve the Phase 28 combined lean research specification unchanged.",
+  "next_phase": {
+    "name": "Phase 30 new-signal discovery",
+    "rule": "Stop tuning residual corrections. Test genuinely new pregame information only if it has a defensible causal/forecasting path and can be reconstructed historically without leakage.",
+    "priority_candidates": [
+      "game-day weather/environment beyond static Savant park profile",
+      "pregame-available starter workload/freshness and opener/restriction information",
+      "as-of-date current-season arsenal evolution versus prior-season-only historical arsenal"
+    ],
+    "governance": "Each candidate must be added one family at a time, evaluated on exact full-I2 Under 0.5, selected on 2022-2025 or a stricter chronological split where data availability requires it, with 2026 replication only; no market prices."
+  }
+}
