@@ -1,0 +1,32 @@
+{
+  "version": "i2-vnext-phase31b-recency-decision-precommit-v1",
+  "generated_at": "2026-10-04",
+  "status": "PRECOMMITTED_BEFORE_PHASE31B_RESULTS",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "finalists": [
+    365,
+    730,
+    1460
+  ],
+  "C": 0.05,
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "primary_metric": "exact full-I2 Under 0.5 log loss",
+  "secondary_metric": "Brier score",
+  "incumbent_half_life_days": 730,
+  "adaptive_preference": {
+    "rationale": "If shorter recency is functionally indistinguishable on the actual betting target, prefer 365 days for faster adaptation to changing established-player talent/arsenal while recognizing it does not solve sparse-history players by itself.",
+    "eligible_if_development_logloss_within": 0.0001,
+    "eligible_if_development_brier_within": 0.00005,
+    "comparison": "raw best development finalist",
+    "replication_guardrail": "If the pre-replication preferred challenger worsens 2026 versus 730 by more than 0.00010 log loss/game or 0.00005 Brier/game, retain 730."
+  },
+  "future_test_if_365_and_730_indistinguishable": "Test support-adaptive recency as a separate precommitted experiment; do not introduce it inside Phase 31B.",
+  "calibration": "No recalibration during raw comparison."
+}
