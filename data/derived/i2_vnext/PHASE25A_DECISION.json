@@ -1,0 +1,40 @@
+{
+  "version":"i2-vnext-phase25a-decision-v2",
+  "generated_at":"2026-10-03",
+  "branch":"research/i2-vnext-direct-talent",
+  "status":"ACCEPT_SIMPLIFICATION_FOR_COMBINED_RESEARCH_CANDIDATE",
+  "production_changed":false,
+  "market_inputs_used":false,
+  "change":"neutralize player-specific hitter and pitcher I1 event rates while preserving the player-as-of batting-order/state engine",
+  "decision_target":"full second-inning Under 0.5 probability",
+  "primary_evidence":{
+    "source":"PHASE24_VARIABLE_AUDIT exact deterministic state propagation",
+    "development_years":[2022,2023,2024,2025],
+    "replication_year":2026,
+    "candidate_minus_baseline_logloss_2022_2025":-5.228438004439166e-7,
+    "candidate_minus_baseline_logloss_2026":-1.1180241617059217e-5,
+    "interpretation":"player-specific I1 hitter/pitcher event-rate layers add no measurable full-I2 predictive value; neutralization is slightly better in both development and replication but the magnitude is negligible"
+  },
+  "preserved":[
+    "pregame batting order",
+    "I1-to-I2 start-slot state propagation",
+    "prior-only base/out transitions",
+    "direct I2 batter identity",
+    "direct I2 pitcher identity",
+    "direct I2 matchup model",
+    "prior-season Savant park environment",
+    "market isolation"
+  ],
+  "monte_carlo_replay_role":{
+    "workflow":".github/workflows/i2_vnext_phase25a_simplified_i1.yml",
+    "status":"implementation validation only",
+    "reason":"The exact deterministic development log-loss difference is approximately 5.2e-7, far below the season-level variation observed in prior 10k replay comparisons. A 10k Monte Carlo sign is therefore not an appropriate selector for this simplification.",
+    "must_not_override_exact_result_on_small_sign_reversal":true
+  },
+  "decision":{
+    "research_candidate":"USE_NEUTRALIZED_I1_PLAYER_RATES",
+    "production":"UNCHANGED",
+    "rationale":"Remove a complexity layer that contributes no measurable target-level information while retaining the actual I1 lineup/state mechanism."
+  },
+  "next_gate":"Evaluate the combined lean candidate after the standalone direct-I2 platoon decision is resolved; do not promote piecemeal."
+}
