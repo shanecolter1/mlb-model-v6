@@ -44,7 +44,7 @@ def compare(recon,archived):
     if m.empty: raise RuntimeError("No reconstruction overlap")
     m["share_raw"]=m.pitches_raw/m.groupby("player_id").pitches_raw.transform("sum")
     m["share_savant"]=m.pitches_savant/m.groupby("player_id").pitches_savant.transform("sum")
-    w=np.maximum(pd.to_numeric(m.pa_raw,errors="coerce").fillna(1),1)
+    w=np.maximum(pd.to_numeric(m.pa,errors="coerce").fillna(1),1)
     return {"overlap_rows":int(len(m)),"weighted_mae_pitch_share":float(np.average(abs(m.share_raw-m.share_savant),weights=m.pitches_savant)),"weighted_mae_est_woba":float(np.average(abs(m.est_woba_raw-m.est_woba_savant),weights=w)),"mean_signed_est_woba":float(np.average(m.est_woba_raw-m.est_woba_savant,weights=w))}
 
 def main():
