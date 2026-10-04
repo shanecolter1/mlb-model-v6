@@ -1,0 +1,58 @@
+{
+  "version": "i2-vnext-phase29c-bottom-mechanism-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "REJECT_BOTTOM_CORRECTION",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "governance": {
+    "selection": "2022-2024 three-season LOSO full-I2 log loss, Brier tie-break",
+    "validation": 2025,
+    "replication": 2026,
+    "calendar_month_control": false
+  },
+  "candidates": {
+    "identity": {
+      "loso_delta_logloss": 0,
+      "loso_delta_brier": 0
+    },
+    "bottom_offset": {
+      "loso_delta_logloss": -0.00008183204926193177,
+      "loso_delta_brier": -0.00003285711130990299
+    },
+    "bottom_park_attenuation": {
+      "loso_delta_logloss": -0.00007074069544155126,
+      "loso_delta_brier": -0.00003516811516507401
+    },
+    "bottom_offset_plus_park": {
+      "loso_delta_logloss": -0.00015797164224229387,
+      "loso_delta_brier": -0.00007132091110198524
+    }
+  },
+  "selected": "bottom_offset_plus_park",
+  "frozen_coefficients": {
+    "bottom_logit_offset": 0.07082474361940218,
+    "park_logit_effect_multiplier_correction": -0.6267048067104132
+  },
+  "validation_2025": {
+    "delta_logloss": -0.00060599399402117,
+    "delta_brier": -0.0002941834759798423
+  },
+  "replication_2026": {
+    "delta_logloss": 0.00037912713951482324,
+    "delta_brier": 0.00019191500662257832
+  },
+  "diagnostic_nonselected_frozen_2026": {
+    "bottom_offset": {
+      "delta_logloss": 0.0001878856297781173,
+      "delta_brier": 0.00009470222808304304
+    },
+    "bottom_park_attenuation": {
+      "delta_logloss": 0.00016837519484180774,
+      "delta_brier": 0.00008672819705069069
+    }
+  },
+  "interpretation": "Bottom-half underprediction is real, but correcting the half in isolation does not stably improve the primary full-I2 target. The precommitted winner fails 2026 replication, and both simpler components also worsen 2026.",
+  "decision": "Reject all Phase 29C bottom-half corrections. Do not change park factors, bottom-half offset, or production.",
+  "next_phase": "Test conditional top/bottom within-game dependence because current full-I2 Under probability multiplies the two exact half-inning scoreless probabilities; stable residual dependence could explain why half-level corrections do not translate to full-I2 improvement."
+}
