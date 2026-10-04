@@ -1,4 +1,4 @@
-name: I2 vNext Phase 27A - park HR shrinkage exact
+name: I2 vNext Phase 27A V2 - park HR shrinkage exact
 
 on:
   workflow_dispatch:
@@ -230,7 +230,7 @@ jobs:
           v26=json.loads(Path("data/phase27a_frozen_2026.json").read_text())
           alpha=float(os.environ["ALPHA"])
           ck={
-            "version":"i2-vnext-phase27a-park-hr-shrinkage-exact-v1",
+            "version":"i2-vnext-phase27a-park-hr-shrinkage-exact-v2",
             "market_inputs_used":False,"production_changed":False,
             "selection_years":[2022,2023,2024],"validation_year":2025,"replication_year":2026,
             "selected_alpha":alpha,"selection":sel,
@@ -239,14 +239,14 @@ jobs:
             "decision":"PROMOTION_CANDIDATE" if alpha<1 and v25["candidate_minus_baseline_logloss"]<=0 and v26["candidate_minus_baseline_logloss"]<=0 else "RETAIN_CURRENT_HR_FACTOR",
             "status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"
           }
-          Path("data/derived/i2_vnext/PHASE27A_PARK_HR_SHRINKAGE_RESULT.json").write_text(json.dumps(ck,indent=2)+"\n")
+          Path("data/derived/i2_vnext/PHASE27A_PARK_HR_SHRINKAGE_RESULT_V2.json").write_text(json.dumps(ck,indent=2)+"\n")
           print(json.dumps(ck,indent=2))
           PY
       - name: Commit checkpoint
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/derived/i2_vnext/PHASE27A_PARK_HR_SHRINKAGE_RESULT.json
+          git add data/derived/i2_vnext/PHASE27A_PARK_HR_SHRINKAGE_RESULT_V2.json
           git commit -m "research: checkpoint Phase 27A park HR shrinkage"
           git pull --rebase origin research/i2-vnext-direct-talent
           git push origin HEAD:research/i2-vnext-direct-talent
