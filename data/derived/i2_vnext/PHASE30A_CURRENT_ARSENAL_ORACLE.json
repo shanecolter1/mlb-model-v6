@@ -1,0 +1,45 @@
+{
+  "version": "i2-vnext-phase30a-current-arsenal-oracle-screen-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "JUSTIFIES_LEAKAGE_SAFE_ASOF_BUILD",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "warning": "INTENTIONALLY LEAKY ORACLE. Full-season current-year arsenal is unavailable at historical pregame cutoffs and must never be promoted or used as validation evidence.",
+  "comparison": "Phase 28 lean candidate using prior-season arsenal vs same exact engine using full-season current-year batter pitch-response, pitcher pitch mix, and side-specific pitch usage at inference",
+  "seasonal": {
+    "2022": {
+      "delta_logloss": -0.0004834198509580112,
+      "delta_brier": -0.00023817789203739448
+    },
+    "2023": {
+      "delta_logloss": -0.0007045911394449877,
+      "delta_brier": -0.0003401143260290118
+    },
+    "2024": {
+      "delta_logloss": -0.0004867194229575267,
+      "delta_brier": -0.00023561063463242715
+    },
+    "2025": {
+      "delta_logloss": -0.0003404039876244713,
+      "delta_brier": -0.00016329852907753795
+    },
+    "2026": {
+      "delta_logloss": -0.0002997049665643958,
+      "delta_brier": -0.00015221112144006566
+    }
+  },
+  "interpretation": "The upper-bound current-season arsenal substitution improves both proper scores in every season. This does not establish a usable edge, but it passes the cheapest falsification test and justifies building point-in-time current-season arsenal snapshots.",
+  "next_phase": {
+    "name": "Phase 30B leakage-safe as-of arsenal",
+    "data_rule": "For each monthly model/replay cutoff, use only Statcast pitches/PAs completed before the cutoff. No full-season current-year leaderboard values.",
+    "features": [
+      "pitcher pitch-type usage overall",
+      "pitcher pitch-type usage by batter side",
+      "batter expected-wOBA response by terminal pitch type",
+      "league fallback expected-wOBA by pitch type"
+    ],
+    "fallback": "Blend/fallback to prior-season governed arsenal where current-YTD support is insufficient; shrinkage/support policy must be selected without 2026.",
+    "validation": "Exact full-I2 target. Select policy on development only, freeze before 2025/2026 validation according to a precommitted chronological design."
+  }
+}
