@@ -1,0 +1,94 @@
+{
+  "version": "i2-vnext-phase31a-pa-screen-v1",
+  "generated_at": "2026-10-04",
+  "status": "COMPLETE_FINALISTS_FROZEN",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "screen_only": true,
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "cohort_reconciliation": {
+    "season": 2022,
+    "correct_n": 20125,
+    "note": "Early checkpoint metadata listed 20096 for several cells. All nine 2022 cells were rerun on the same frozen local history cohort; log-loss values reproduced exactly and only n metadata changed."
+  },
+  "pooled_rank": [
+    {
+      "C": 0.05,
+      "half_life_days": 730,
+      "n": 81125,
+      "pooled_logloss": 1.4749318895685601
+    },
+    {
+      "C": 0.05,
+      "half_life_days": 1460,
+      "n": 81125,
+      "pooled_logloss": 1.4749755222726186
+    },
+    {
+      "C": 0.05,
+      "half_life_days": 365,
+      "n": 81125,
+      "pooled_logloss": 1.4751826143913072
+    },
+    {
+      "C": 0.02,
+      "half_life_days": 1460,
+      "n": 81125,
+      "pooled_logloss": 1.4756635247392211
+    },
+    {
+      "C": 0.02,
+      "half_life_days": 730,
+      "n": 81125,
+      "pooled_logloss": 1.4759206250927799
+    },
+    {
+      "C": 0.1,
+      "half_life_days": 365,
+      "n": 81125,
+      "pooled_logloss": 1.4765090914710468
+    },
+    {
+      "C": 0.02,
+      "half_life_days": 365,
+      "n": 81125,
+      "pooled_logloss": 1.4765228051595627
+    },
+    {
+      "C": 0.1,
+      "half_life_days": 730,
+      "n": 81125,
+      "pooled_logloss": 1.4766904268235923
+    },
+    {
+      "C": 0.1,
+      "half_life_days": 1460,
+      "n": 81125,
+      "pooled_logloss": 1.4770564929980825
+    }
+  ],
+  "finalists": [
+    {
+      "role": "baseline",
+      "C": 0.05,
+      "half_life_days": 730
+    },
+    {
+      "role": "challenger",
+      "C": 0.05,
+      "half_life_days": 1460
+    },
+    {
+      "role": "challenger",
+      "C": 0.05,
+      "half_life_days": 365
+    }
+  ],
+  "conclusion": "C=0.05 is the only competitive regularization setting. Current 730-day half-life wins the PA screen, but both non-baseline C=0.05 recency settings advance under the precommitted finalist rule. PA screen cannot promote or reject on full-I2 target.",
+  "next_phase": "Phase31B exact full-I2 walk-forward replay of the three frozen finalists; 2022-2025 selection, 2026 replication only."
+}
