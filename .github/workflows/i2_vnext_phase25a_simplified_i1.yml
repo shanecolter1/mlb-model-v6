@@ -1,0 +1,92 @@
+name: I2 vNext Phase 25A simplified I1 challenger
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  replay:
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Regression test inning engine
+        run: node tests/i2_inning_model.test.mjs
+
+      - name: Download governed Phase 19 inputs and canonical replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p prep canonical out
+          gh run download 36486524206 --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          gh run download 36505646844 --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+          if [ "$YEAR" = "2026" ]; then
+            cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json
+          fi
+
+      - name: Run 10k simplified-I1 challenger
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR=$((YEAR - 1))
+          node src/research/run_i2_vnext_replay.mjs \
+            --input "prep/replay_${YEAR}_inputs.json" \
+            --model "prep/walkforward_${YEAR}/model_preseason.json" \
+            --walkforward-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --arsenal "prep/arsenal_profile_${PRIOR}.json" \
+            --parks "prep/park/savant_venue_profiles_${PRIOR}_3yr.json" \
+            --play-calibration "prep/transition_before_${YEAR}.json" \
+            --output "out/replay_${YEAR}_phase25a_neutral_i1_10000.json" \
+            --trials 10000 \
+            --i2-model vnext \
+            --i1-mode player_asof \
+            --i1-player-rates neutralized \
+            --i1-environment prior_season_park
+
+      - name: Compare against canonical governed baseline
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          y=int(os.environ["YEAR"])
+          c=json.loads(Path(f"canonical/replay_{y}_precision_10000.json").read_text())
+          n=json.loads(Path(f"out/replay_{y}_phase25a_neutral_i1_10000.json").read_text())
+          if c["n"] != n["n"]:
+              raise SystemExit(f"cohort mismatch: canonical={c['n']} challenger={n['n']}")
+          out={
+            "version":"i2-vnext-phase25a-simplified-i1-10k-v1",
+            "season":y,
+            "n":n["n"],
+            "market_inputs_used":False,
+            "challenger_i1_player_rates":n.get("i1_player_rates"),
+            "canonical_logloss":c["raw_logloss"],
+            "challenger_logloss":n["raw_logloss"],
+            "challenger_minus_canonical_logloss":n["raw_logloss"]-c["raw_logloss"],
+            "canonical_brier":c["raw_brier"],
+            "challenger_brier":n["raw_brier"],
+            "challenger_minus_canonical_brier":n["raw_brier"]-c["raw_brier"],
+          }
+          Path(f"out/phase25a_summary_{y}.json").write_text(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase25a-${{ matrix.season }}
+          path: out/
+          retention-days: 30
