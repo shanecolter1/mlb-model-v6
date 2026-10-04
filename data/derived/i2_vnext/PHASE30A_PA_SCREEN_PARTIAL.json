@@ -1,0 +1,66 @@
+{
+  "version": "i2-vnext-phase30a-pa-screen-partial-v1",
+  "generated_at": "2026-10-04",
+  "status": "CHECKPOINT_AFTER_2022_2023",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "screen_only": true,
+  "completed_development_years": [
+    2022,
+    2023
+  ],
+  "remaining_development_years": [
+    2024,
+    2025
+  ],
+  "warning": "No finalist selection or model decision is permitted from this partial checkpoint.",
+  "pooled_2022_2023_rank": [
+    {
+      "C": 0.05,
+      "half_life_days": 1460,
+      "pooled_logloss": 1.4807890456041821
+    },
+    {
+      "C": 0.05,
+      "half_life_days": 730,
+      "pooled_logloss": 1.4807938119921125
+    },
+    {
+      "C": 0.05,
+      "half_life_days": 365,
+      "pooled_logloss": 1.4809381394852599
+    },
+    {
+      "C": 0.02,
+      "half_life_days": 1460,
+      "pooled_logloss": 1.4816084723454745
+    },
+    {
+      "C": 0.02,
+      "half_life_days": 730,
+      "pooled_logloss": 1.4817969862359766
+    },
+    {
+      "C": 0.02,
+      "half_life_days": 365,
+      "pooled_logloss": 1.482191701047276
+    },
+    {
+      "C": 0.1,
+      "half_life_days": 365,
+      "pooled_logloss": 1.4825047851437743
+    },
+    {
+      "C": 0.1,
+      "half_life_days": 730,
+      "pooled_logloss": 1.482738185985791
+    },
+    {
+      "C": 0.1,
+      "half_life_days": 1460,
+      "pooled_logloss": 1.4829963405731315
+    }
+  ],
+  "interim_observation": "C=0.05 is best at every tested half-life in both completed seasons. Recency differences within C=0.05 are much smaller; 1460 and 730 are essentially tied after 2022-2023.",
+  "next_step": "Complete identical precommitted grid for 2024 and 2025, then choose baseline plus up to two PA-screen finalists for exact full-I2 Phase 30B."
+}
