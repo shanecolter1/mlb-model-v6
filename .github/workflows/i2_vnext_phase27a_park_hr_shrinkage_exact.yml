@@ -52,7 +52,7 @@ jobs:
               --play-calibration "prep/transition_before_${YEAR}.json" \
               --baseline-hr-alpha 1 --candidate-hr-alpha "$A" \
               --i1-player-rates active \
-              --output "out/hr_alpha_${A}.json"
+              --output "out/hr_alpha_${YEAR}_${A}.json"
           done
       - name: Verify baseline and summarize
         run: |
@@ -64,7 +64,7 @@ jobs:
           target=audit["baseline_validation"][str(y)]["exact_logloss"]
           rows={}
           for a in ["0","0.25","0.5","0.75","1"]:
-              x=json.loads(Path(f"out/hr_alpha_{a}.json").read_text())
+              x=json.loads(Path(f"out/hr_alpha_{y}_{a}.json").read_text())
               if abs(x["baseline_logloss"]-target)>1e-9:
                   raise SystemExit(f"baseline mismatch season={y} alpha={a}")
               rows[a]={"n":x["n"],"logloss":x["candidate_logloss"],"delta_logloss":x["candidate_minus_baseline_logloss"],"brier":x["candidate_brier"],"delta_brier":x["candidate_minus_baseline_brier"]}
@@ -105,10 +105,10 @@ jobs:
           for a in alphas:
               games=[]
               for y in [2022,2023,2024]:
-                  p=next(Path("data/dev").glob(f"**/hr_alpha_{key(a)}.json"))
+                  p=next(Path("data/dev").glob(f"**/hr_alpha_{y}_{key(a)}.json"))
                   # download-artifact merge layout can collide across seasons,
                   # so prefer files whose payload season matches.
-                  candidates=list(Path("data/dev").glob(f"**/hr_alpha_{key(a)}.json"))
+                  candidates=list(Path("data/dev").glob(f"**/hr_alpha_{y}_{key(a)}.json"))
                   match=None
                   for q in candidates:
                       z=json.loads(q.read_text())
