@@ -1,0 +1,132 @@
+{
+  "version": "i2-vnext-phase27a-park-hr-shrinkage-exact-v2",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "RETAIN_CURRENT_HR_FACTOR",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "execution_note": "Executed off GitHub Actions from the same governed frozen Phase 19B artifacts because obsolete Phase 25A runs were blocking runner capacity. Exact evaluator baseline reproduced Phase 24 to numerical tolerance.",
+  "target": "exact full second-inning Under 0.5 probability",
+  "candidate_parameter": {
+    "name": "park_home_run_alpha",
+    "formula": "1 + alpha * (governed_park_hr_factor - 1)",
+    "grid": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "baseline_alpha": 1
+  },
+  "governance": {
+    "selection_years": [
+      2022,
+      2023,
+      2024
+    ],
+    "validation_year": 2025,
+    "replication_year": 2026,
+    "selected_before_validation": true,
+    "paired_calendar_date_parsimony": true,
+    "exact_state_propagation": true,
+    "monte_carlo_noise": false
+  },
+  "baseline_reproduction": {
+    "season": 2022,
+    "local_alpha_1_logloss": 0.6807730268316311,
+    "phase24_exact_logloss": 0.6807730268316315,
+    "absolute_difference": 4.440892098500626e-16
+  },
+  "per_season_development": {
+    "2022": {
+      "0": 0.680850994583403,
+      "1": 0.6807730268316311,
+      "0.25": 0.680716170419527,
+      "0.5": 0.6806582928461471,
+      "0.75": 0.6806772188985764
+    },
+    "2023": {
+      "0": 0.6911791773206237,
+      "1": 0.6919430235205646,
+      "0.25": 0.6912475776442444,
+      "0.5": 0.6913982043881844,
+      "0.75": 0.6916301949587496
+    },
+    "2024": {
+      "0": 0.6856428852627571,
+      "1": 0.6866567512598765,
+      "0.25": 0.6857981788515167,
+      "0.5": 0.6860188528022696,
+      "0.75": 0.6863049638163057
+    }
+  },
+  "pooled_selection_2022_2024": {
+    "0": {
+      "logloss": 0.6858910530978234,
+      "brier": 0.2463713733784998
+    },
+    "1": {
+      "logloss": 0.6864575732152687,
+      "brier": 0.24665067837868573
+    },
+    "0.25": {
+      "logloss": 0.6859206591062308,
+      "brier": 0.24638714497338987
+    },
+    "0.5": {
+      "logloss": 0.686025117538225,
+      "brier": 0.2464390466621767
+    },
+    "0.75": {
+      "logloss": 0.6862041120569523,
+      "brier": 0.2465269243590276
+    }
+  },
+  "raw_best_alpha": 0,
+  "paired_date_comparison_to_raw_best": {
+    "0": {
+      "mean_delta_logloss": 0,
+      "cluster_se": 0,
+      "within_95pct_indifference_band": true
+    },
+    "1": {
+      "mean_delta_logloss": 0.0004280336891704883,
+      "cluster_se": 0.0004137831431299819,
+      "z": 1.034439648586723,
+      "within_95pct_indifference_band": true
+    },
+    "0.25": {
+      "mean_delta_logloss": -0.0000039839871279399,
+      "cluster_se": 0.00010392095028939867,
+      "z": -0.0383367080155186,
+      "within_95pct_indifference_band": true
+    },
+    "0.5": {
+      "mean_delta_logloss": 0.0000661917425427132,
+      "cluster_se": 0.00020744884793723223,
+      "z": 0.31907500668666444,
+      "within_95pct_indifference_band": true
+    },
+    "0.75": {
+      "mean_delta_logloss": 0.00021021921771059276,
+      "cluster_se": 0.00031069912041955844,
+      "z": 0.6766006206477806,
+      "within_95pct_indifference_band": true
+    }
+  },
+  "selected_alpha": 1,
+  "selection_reason": "All grid values are within the precommitted paired-date 95% indifference band of the raw best. The precommitted parsimony rule therefore selects the value closest to current production, alpha=1.",
+  "validation_2025": {
+    "delta_logloss": 0,
+    "delta_brier": 0,
+    "reason": "Selected alpha equals governed baseline alpha=1; candidate and baseline are identical."
+  },
+  "replication_2026": {
+    "delta_logloss": 0,
+    "delta_brier": 0,
+    "reason": "Selected alpha equals governed baseline alpha=1; candidate and baseline are identical."
+  },
+  "decision": "RETAIN current Savant park HR factor without shrinkage or retuning.",
+  "next_phase": "Resolve Phase 25G home-team nuisance, then build the combined lean research candidate from accepted changes only."
+}
