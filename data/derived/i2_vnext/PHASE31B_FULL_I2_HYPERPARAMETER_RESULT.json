@@ -1,0 +1,94 @@
+{
+  "version": "i2-vnext-phase31b-full-i2-hyperparameter-audit-v1",
+  "generated_at": "2026-10-04",
+  "status": "COMPLETE_RETAIN_CURRENT_HYPERPARAMETERS",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "model_specification": "Phase 28 combined lean vNext; no home_team nuisance; neutralized player-specific I1 rates; C fixed at 0.05 after Phase 31A screen",
+  "target": "exact full second-inning Under 0.5 probability",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "finalists": [
+    365,
+    730,
+    1460
+  ],
+  "seasonal_logloss": {
+    "2022": {
+      "365": 0.6803526220881225,
+      "730": 0.6806610945091732,
+      "1460": 0.6808547690914701
+    },
+    "2023": {
+      "365": 0.6916594002251134,
+      "730": 0.6917032518205019,
+      "1460": 0.6917297219332
+    },
+    "2024": {
+      "365": 0.6865967125496868,
+      "730": 0.6866616413237057,
+      "1460": 0.6867415058119668
+    },
+    "2025": {
+      "365": 0.686967284377465,
+      "730": 0.6863041771927227,
+      "1460": 0.6859819789597464
+    }
+  },
+  "pooled_development": {
+    "365": {
+      "logloss": 0.6863939839532455,
+      "brier": 0.24662560679152018,
+      "delta_logloss_vs_730": 0.00006147660323951865,
+      "delta_brier_vs_730": 0.00003116514897252842,
+      "years_better_than_730": 3,
+      "years_worse_than_730": 1
+    },
+    "730": {
+      "logloss": 0.686332507350006,
+      "brier": 0.24659444164254765,
+      "delta_logloss_vs_730": 0,
+      "delta_brier_vs_730": 0
+    },
+    "1460": {
+      "logloss": 0.6863269512994546,
+      "brier": 0.24659029071770186,
+      "delta_logloss_vs_730": -0.000005556050551303038,
+      "delta_brier_vs_730": -0.000004150924845791604,
+      "years_better_than_730": 1,
+      "years_worse_than_730": 3
+    }
+  },
+  "paired_date_uncertainty": {
+    "365_vs_730": {
+      "mean_date_cluster_delta_logloss": 0.00002257468642881239,
+      "cluster_se": 0.00012690265534608667,
+      "ci95": [
+        -0.00022615451804951749,
+        0.00027130389090714225
+      ]
+    },
+    "1460_vs_730": {
+      "mean_date_cluster_delta_logloss": 0.000010483796679024759,
+      "cluster_se": 0.00008091156675152726,
+      "ci95": [
+        -0.00014810287415396867,
+        0.0001690704675120182
+      ]
+    }
+  },
+  "selection": {
+    "selected_half_life_days": 730,
+    "selected_C": 0.05,
+    "reason": "365 is worse pooled despite winning 3/4 years. 1460 has only a 5.6e-6 pooled log-loss edge, loses 3/4 seasons, and its paired-date mean is slightly worse with a wide interval crossing zero. Under the precommitted stability/parsimony rule this advantage is negligible and unstable, so retain baseline.",
+    "challenger_advanced_to_2026_replication": false,
+    "replication_note": "No non-baseline challenger passed the development selection gate; therefore 2026 is not consulted to choose among rejected challengers."
+  },
+  "decision": "Retain C=0.05 and 730-day half-life. The current direct-I2 regularization and recency hyperparameters survive re-optimization against the actual full-I2 target.",
+  "next_priority": "Resume the separately precommitted Phase 30B leakage-safe as-of arsenal test, which has a materially larger oracle upper bound and remains unresolved."
+}
