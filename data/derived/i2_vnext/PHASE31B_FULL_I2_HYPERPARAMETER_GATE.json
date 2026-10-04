@@ -1,0 +1,69 @@
+{
+  "version": "i2-vnext-phase31b-full-i2-hyperparameter-gate-v1",
+  "generated_at": "2026-10-04",
+  "status": "COMPLETE_RETAIN_BASELINE_HYPERPARAMETERS",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "model_specification": "Phase 28 combined lean vNext; raw identity-calibrated probabilities; neutralized I1 player rates; no home_team nuisance",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "baseline": {
+    "C": 0.05,
+    "half_life_days": 730
+  },
+  "challengers": {
+    "C0.05_HL365": {
+      "seasonal_delta_logloss": {
+        "2022": -0.0003084724210506984,
+        "2023": -0.00004385159538844441,
+        "2024": -0.00006492877401886865,
+        "2025": 0.0006631071847422731
+      },
+      "pooled_delta_logloss": 0.00006147660323950764,
+      "pooled_delta_brier": 0.00003116514897251694,
+      "years_improved": 3,
+      "years_worsened": 1,
+      "paired_date_clusters": 730,
+      "paired_date_mean_delta_logloss": 0.00002257468642881239,
+      "paired_date_cluster_se": 0.00012690265534608667,
+      "paired_date_95pct_interval": [
+        -0.00022615451804951749,
+        0.00027130389090714225
+      ],
+      "decision": "REJECT_DEVELOPMENT_WORSE"
+    },
+    "C0.05_HL1460": {
+      "seasonal_delta_logloss": {
+        "2022": 0.00019367458229690993,
+        "2023": 0.000026470112698184778,
+        "2024": 0.00007986448826113879,
+        "2025": -0.0003221982329763007
+      },
+      "pooled_delta_logloss": -0.000005556050551293797,
+      "pooled_delta_brier": -0.0000041509248458339435,
+      "years_improved": 1,
+      "years_worsened": 3,
+      "paired_date_clusters": 730,
+      "paired_date_mean_delta_logloss": 0.000010483796679024759,
+      "paired_date_cluster_se": 0.00008091156675152726,
+      "paired_date_95pct_interval": [
+        -0.00014810287415396867,
+        0.0001690704675120182
+      ],
+      "decision": "REJECT_NEGLIGIBLE_UNSTABLE_ADVANTAGE"
+    }
+  },
+  "selection": "C=0.05, half_life_days=730",
+  "selection_reason": "365-day challenger is worse pooled after a large 2025 reversal. 1460-day challenger has a ~5.6e-6 pooled game-weighted advantage but worsens 3/4 development seasons and is indistinguishable from baseline by paired-date uncertainty. Precommitted parsimony/stability rule retains baseline.",
+  "replication_2026": {
+    "run": false,
+    "reason": "No non-baseline challenger cleared the development selection gate; 2026 remains untouched rather than being consulted to break a development tie."
+  },
+  "conclusion": "Current direct-I2 regularization and recency hyperparameters survive the audit. No retune.",
+  "next_phase": "Prioritize Phase 30B leakage-safe as-of arsenal freshness, which has a substantially larger and more consistent oracle upper bound than any hyperparameter alternative."
+}
