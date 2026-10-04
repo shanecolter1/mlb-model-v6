@@ -1,51 +1,53 @@
 {
-  "version":"i2-vnext-phase25d-governed-family-decision-v1",
-  "generated_at":"2026-10-03",
-  "market_inputs_used":false,
-  "production_changed":false,
-  "source":"data/derived/i2_vnext/PHASE26A_DIRECT_FEATURE_AUDIT.json",
-  "method":"governed leave-family-out multinomial SAGA refits with fixed C=0.05 and recency half-life=730; full-season chronological holdouts",
-  "development_years":[2022,2023,2024,2025],
-  "replication_year":2026,
-  "decisions":{
-    "batter_identity":{
-      "decision":"RETAIN_STRONG",
-      "development_delta_logloss_if_removed":0.005339905142676604,
-      "positive_development_years":4,
-      "replication_2026_delta_logloss_if_removed":0.006604950047192632
+  "version": "i2-vnext-phase25d-governed-family-decision-v2",
+  "generated_at": "2026-10-03",
+  "market_inputs_used": false,
+  "production_changed": false,
+  "source": "data/derived/i2_vnext/PHASE26A_DIRECT_FEATURE_AUDIT.json",
+  "method": "governed leave-family-out multinomial SAGA refits with fixed C=0.05 and recency half-life=730; full-season chronological holdouts",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "decisions": {
+    "batter_identity": {
+      "decision": "RETAIN_STRONG",
+      "development_delta_logloss_if_removed": 0.005339905142676604,
+      "positive_development_years": 4,
+      "replication_2026_delta_logloss_if_removed": 0.006604950047192632
     },
-    "pitcher_identity":{
-      "decision":"RETAIN_STRONG",
-      "development_delta_logloss_if_removed":0.0016367819800014378,
-      "positive_development_years":4,
-      "replication_2026_delta_logloss_if_removed":0.0022571658948660612
+    "pitcher_identity": {
+      "decision": "RETAIN_STRONG",
+      "development_delta_logloss_if_removed": 0.0016367819800014378,
+      "positive_development_years": 4,
+      "replication_2026_delta_logloss_if_removed": 0.0022571658948660612
     },
-    "platoon":{
-      "decision":"ADVANCE_TO_FULL_I2_REPLAY",
-      "development_delta_logloss_if_removed":-0.00003913654957539662,
-      "positive_development_years":1,
-      "replication_2026_delta_logloss_if_removed":-0.0000752248360178563,
-      "reason":"removal improves pooled development and 2026 replication at PA-event target"
+    "platoon": {
+      "decision": "ADVANCE_TO_FULL_I2_REFIT_REPLAY",
+      "evidence_2025_candidate_minus_full_logloss": -0.000055742277739,
+      "evidence_2026_candidate_minus_full_logloss": -0.0000684782563745,
+      "reason": "Governed SAGA platoon-free refit converged and improves both 2025 and 2026 PA holdouts; requires multiyear full-I2 Under 0.5 replay before any production change."
     },
-    "arsenal_family":{
-      "decision":"RETAIN_PENDING_STRONGER_EVIDENCE",
-      "development_delta_logloss_if_removed":0.00003931800085376217,
-      "positive_development_years":2,
-      "replication_2026_delta_logloss_if_removed":0.000254356525895514,
-      "reason":"effect is small and unstable but 2026 shows positive value; insufficient evidence to remove"
+    "arsenal_family": {
+      "decision": "RETAIN_PENDING_STRONGER_EVIDENCE",
+      "development_delta_logloss_if_removed": 0.00003931800085376217,
+      "positive_development_years": 2,
+      "replication_2026_delta_logloss_if_removed": 0.000254356525895514,
+      "reason": "effect is small and unstable but 2026 shows positive value; insufficient evidence to remove"
     },
-    "home_team_fit_only_nuisance":{
-      "decision":"SEPARATE_REFIT_STABILITY_QUESTION",
-      "development_delta_logloss_if_removed":-0.0006749248869798719,
-      "positive_development_years":1,
-      "replication_2026_delta_logloss_if_removed":-0.0004328838670596046,
-      "reason":"not a live inference feature; removal requires rebuilding historical direct-I2 models rather than coefficient suppression"
+    "home_team_fit_only_nuisance": {
+      "decision": "KEEP_FOR_NOW_PENDING_STABILITY",
+      "reason": "Corrected live-equivalent scoring is small and sign-reversing; home_team is fit-only and there is no consistent evidence that removing the nuisance control helps."
     }
   },
-  "full_i2_gate":{
-    "platoon":"Phase 26B sharded raw full-I2 Under 0.5 replay",
-    "arsenal":"no full-I2 removal replay yet",
-    "home_team_fit_only_nuisance":"requires model-refit challenger before full-I2 replay"
+  "full_i2_gate": {
+    "platoon": "Phase 26B/25E point-in-time SAGA refit no-platoon multiyear full-I2 Under 0.5 replay",
+    "arsenal": "no full-I2 removal replay yet",
+    "home_team_fit_only_nuisance": "No removal replay authorized; keep pending stability evidence"
   },
-  "status":"DECISION_CHECKPOINT_PRODUCTION_UNCHANGED"
+  "status": "DECISION_CHECKPOINT_PRODUCTION_UNCHANGED",
+  "superseded_evidence_note": "Use PHASE25C_DIRECT_FAMILY_REFIT_SCREEN results_live_equivalent and PHASE25D_PLATOON_GOVERNED_REFIT for decisions; earlier coefficient-zero and non-live-equivalent nuisance interpretations are superseded."
 }
