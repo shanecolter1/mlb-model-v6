@@ -1,0 +1,55 @@
+{
+  "version": "i2-vnext-phase32-support-adaptive-recency-precommit-v1",
+  "generated_at": "2026-10-04",
+  "status": "PRECOMMITTED_BEFORE_RESULTS",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "baseline": "Phase 31B preferred universal 365-day half-life, C=0.05",
+  "objective": "Test whether sparse player histories benefit from longer recency support without sacrificing faster adaptation for established players.",
+  "mechanism": {
+    "level": "direct-I2 batter-pitcher event probability vector before park adjustment and inning state propagation",
+    "models_blended": [
+      365,
+      730
+    ],
+    "support_definition": "minimum of batter and pitcher raw I2 PA counts strictly before the active monthly model cutoff",
+    "blend_formula": "w365 = support / (support + k); p_adaptive = w365*p365 + (1-w365)*p730",
+    "unseen_support": "support=0 => use 730 prediction",
+    "high_support": "w365 approaches 1, so established matchups approach the preferred 365 model"
+  },
+  "grid_k": [
+    10,
+    25,
+    50,
+    100
+  ],
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "selection": {
+    "primary": "pooled exact full-I2 Under 0.5 log loss",
+    "secondary": "Brier",
+    "promotion_over_pure_365_requires": {
+      "minimum_pooled_logloss_improvement": 0.00005,
+      "pooled_brier_must_not_worsen": true,
+      "development_seasons_logloss_improved_at_least": 3
+    },
+    "replication_guardrail_vs_pure_365": {
+      "maximum_logloss_worsening": 0.0001,
+      "maximum_brier_worsening": 0.00005
+    },
+    "default_if_not_cleared": "retain universal 365; do not add support-adaptive complexity"
+  },
+  "exclusions": [
+    "market inputs",
+    "calendar month controls",
+    "2026 in k selection",
+    "recalibration during raw comparison",
+    "support counts after prediction cutoff"
+  ],
+  "next_step": "Implement exact evaluator using already-fitted 365 and 730 monthly models; no new model refits required."
+}
