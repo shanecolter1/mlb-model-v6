@@ -36,10 +36,11 @@ jobs:
         run: |
           set -euo pipefail
           B=$(find history -name batter_2024.csv -print -quit)
-          P=$(find history -name pitcher_2024.csv -print -quit)\n          S=$(find history -name pitcher_usage_side_2024.csv -print -quit)
+          P=$(find history -name pitcher_2024.csv -print -quit)
+          S=$(find history -name pitcher_usage_side_2024.csv -print -quit)
           python src/research/build_i2_vnext_asof_arsenal_aggregate.py \
             --start 2024-01-01 --end 2024-12-31 \
-            --archived-batter "$B" --archived-pitcher "$P" \
+            --archived-batter "$B" --archived-pitcher "$P" --archived-side "$S" \\
             --output-dir data/phase30b_v2/reconstruction_2024
       - name: Apply original precommitted equivalence gate
         run: |
@@ -72,6 +73,7 @@ jobs:
           git commit -m "research: pass Phase 30B V2 arsenal reconstruction gate"
           git pull --rebase origin research/i2-vnext-direct-talent
           git push origin HEAD:research/i2-vnext-direct-talent
+
 
 
 
