@@ -1,0 +1,104 @@
+{
+  "version": "i2-vnext-phase31b-full-i2-recency-v1",
+  "generated_at": "2026-10-04",
+  "status": "COMPLETE_RETAIN_730",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "target": "exact full second-inning Under 0.5 probability",
+  "model_specification": "Phase 28 combined lean candidate; C fixed at 0.05; only recency half-life changes",
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "baseline_half_life_days": 730,
+  "candidates": [
+    365,
+    1460
+  ],
+  "seasonal_delta_vs_730": {
+    "365": {
+      "2022": {
+        "delta_logloss": -0.0003084724210506984,
+        "delta_brier": -0.00015227070659762365
+      },
+      "2023": {
+        "delta_logloss": -0.00004385159538844441,
+        "delta_brier": -0.000017125365059766917
+      },
+      "2024": {
+        "delta_logloss": -0.00006492877401886865,
+        "delta_brier": -0.0000303361822634185
+      },
+      "2025": {
+        "delta_logloss": 0.0006631071847422731,
+        "delta_brier": 0.00032436754062106776
+      }
+    },
+    "1460": {
+      "2022": {
+        "delta_logloss": 0.00019367458229690993,
+        "delta_brier": 0.00009548442806461832
+      },
+      "2023": {
+        "delta_logloss": 0.000026470112698184778,
+        "delta_brier": 0.000009740619884623936
+      },
+      "2024": {
+        "delta_logloss": 0.00007986448826113879,
+        "delta_brier": 0.00003705734761291768
+      },
+      "2025": {
+        "delta_logloss": -0.0003221982329763007,
+        "delta_brier": -0.00015886913680868142
+      }
+    }
+  },
+  "pooled_development": {
+    "365": {
+      "n": 9719,
+      "delta_logloss": 0.00006147660323950764,
+      "delta_brier": 0.00003116514897251694,
+      "years_better": 3,
+      "years_worse": 1
+    },
+    "1460": {
+      "n": 9719,
+      "delta_logloss": -0.000005556050551293797,
+      "delta_brier": -0.0000041509248458339435,
+      "years_better": 1,
+      "years_worse": 3
+    }
+  },
+  "paired_date_uncertainty": {
+    "365": {
+      "clusters": 730,
+      "mean_date_delta_logloss": 0.00002257468642881239,
+      "cluster_se": 0.00012690265534608667,
+      "ci95": [
+        -0.00022615451804951749,
+        0.00027130389090714225
+      ],
+      "z": 0.177889787784559
+    },
+    "1460": {
+      "clusters": 730,
+      "mean_date_delta_logloss": 0.000010483796679024759,
+      "cluster_se": 0.00008091156675152726,
+      "ci95": [
+        -0.00014810287415396867,
+        0.0001690704675120182
+      ],
+      "z": 0.12957105022103493
+    }
+  },
+  "decision": "RETAIN_730_UNIVERSAL",
+  "rationale": "Neither challenger has a stable or statistically credible full-I2 advantage. 365 is directionally better in 2022-2024 but materially reverses in 2025 and is worse pooled. 1460 has a negligible pooled edge but is worse in 3/4 seasons. Under the precommitted parsimony rule the current 730-day setting remains.",
+  "replication_2026": "NOT_RUN_FOR_UNSELECTED_CHALLENGERS; no challenger cleared development selection strongly enough to require replication.",
+  "next_phase": {
+    "name": "Phase 32A support-dependent recency falsification",
+    "purpose": "Test the user's hypothesis that shorter recency is specifically useful when player history is sufficiently deep, while 730-day weighting stabilizes sparse-history players.",
+    "action": "Diagnose whether 365-vs-730 game-level loss difference is systematically related to pregame batter/pitcher historical I2 support before building any adaptive weighting rule."
+  }
+}
