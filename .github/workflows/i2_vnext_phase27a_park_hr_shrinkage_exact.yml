@@ -1,0 +1,213 @@
+name: I2 vNext Phase 27A - park HR shrinkage exact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase27a_park_hr_shrinkage_exact.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  PREP_RUN_ID: 36486524206
+  BASELINE_RUN_ID: 36505646844
+
+jobs:
+  development:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        season: [2022, 2023, 2024]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore governed inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p prep canonical out
+          gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+      - name: Exact HR-alpha grid
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR=$((YEAR-1))
+          for A in 0 0.25 0.5 0.75 1; do
+            node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
+              --input "prep/replay_${YEAR}_inputs.json" \
+              --baseline-manifest "prep/walkforward_${YEAR}/manifest.json" \
+              --candidate-manifest "prep/walkforward_${YEAR}/manifest.json" \
+              --arsenal "prep/arsenal_profile_${PRIOR}.json" \
+              --parks "prep/park/savant_venue_profiles_${PRIOR}_3yr.json" \
+              --play-calibration "prep/transition_before_${YEAR}.json" \
+              --baseline-hr-alpha 1 --candidate-hr-alpha "$A" \
+              --i1-player-rates active \
+              --output "out/hr_alpha_${A}.json"
+          done
+      - name: Verify baseline and summarize
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          y=int(os.environ["YEAR"])
+          audit=json.loads(Path("data/derived/i2_vnext/PHASE24_VARIABLE_AUDIT.json").read_text())
+          target=audit["baseline_validation"][str(y)]["exact_logloss"]
+          rows={}
+          for a in ["0","0.25","0.5","0.75","1"]:
+              x=json.loads(Path(f"out/hr_alpha_{a}.json").read_text())
+              if abs(x["baseline_logloss"]-target)>1e-9:
+                  raise SystemExit(f"baseline mismatch season={y} alpha={a}")
+              rows[a]={"n":x["n"],"logloss":x["candidate_logloss"],"delta_logloss":x["candidate_minus_baseline_logloss"],"brier":x["candidate_brier"],"delta_brier":x["candidate_minus_baseline_brier"]}
+          Path(f"out/phase27a_dev_{y}.json").write_text(json.dumps({"season":y,"alphas":rows},indent=2)+"\n")
+          print(json.dumps(rows,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase27a-dev-${{ matrix.season }}
+          path: out/phase27a_dev_${{ matrix.season }}.json
+          retention-days: 30
+
+  select:
+    needs: development
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      alpha: ${{ steps.pick.outputs.alpha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase27a-dev-*
+          path: data/dev
+          merge-multiple: true
+      - id: pick
+        name: Select alpha from 2022-2024 only
+        run: |
+          python - <<'PY'
+          import json, math, os
+          from pathlib import Path
+          alphas=[0.0,0.25,0.5,0.75,1.0]
+          seasons=[json.loads(Path(f"data/dev/phase27a_dev_{y}.json").read_text()) for y in [2022,2023,2024]]
+          pooled={}
+          for a in alphas:
+              key=str(int(a)) if a in (0.0,1.0) else str(a)
+              n=sum(s["alphas"][key]["n"] for s in seasons)
+              ll=sum(s["alphas"][key]["logloss"]*s["alphas"][key]["n"] for s in seasons)/n
+              br=sum(s["alphas"][key]["brier"]*s["alphas"][key]["n"] for s in seasons)/n
+              pooled[a]={"n":n,"logloss":ll,"brier":br}
+          best=min(alphas,key=lambda a:(pooled[a]["logloss"],pooled[a]["brier"],abs(1-a)))
+          # Conservative parsimony: only move away from baseline when raw pooled
+          # log loss actually improves. Statistical uncertainty is assessed in
+          # the frozen validation stages before promotion.
+          if pooled[best]["logloss"] >= pooled[1.0]["logloss"]:
+              best=1.0
+          Path("phase27a_selection.json").write_text(json.dumps({"selection_years":[2022,2023,2024],"pooled":{str(k):v for k,v in pooled.items()},"selected_alpha":best},indent=2)+"\n")
+          with open(os.environ["GITHUB_OUTPUT"],"a") as f: f.write(f"alpha={best}\n")
+          print(json.dumps({"selected_alpha":best,"pooled":pooled},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase27a-selection
+          path: phase27a_selection.json
+          retention-days: 30
+
+  frozen_validation:
+    needs: select
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        season: [2025, 2026]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+      ALPHA: ${{ needs.select.outputs.alpha }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore governed inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p prep canonical out
+          gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+          gh run download "${BASELINE_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19c-season-${YEAR}" -D canonical
+          if [ "${YEAR}" = "2026" ]; then cp canonical/replay_2026_inputs.json prep/replay_2026_inputs.json; fi
+      - name: Score frozen alpha once
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR=$((YEAR-1))
+          node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
+            --input "prep/replay_${YEAR}_inputs.json" \
+            --baseline-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --candidate-manifest "prep/walkforward_${YEAR}/manifest.json" \
+            --arsenal "prep/arsenal_profile_${PRIOR}.json" \
+            --parks "prep/park/savant_venue_profiles_${PRIOR}_3yr.json" \
+            --play-calibration "prep/transition_before_${YEAR}.json" \
+            --baseline-hr-alpha 1 --candidate-hr-alpha "$ALPHA" \
+            --i1-player-rates active \
+            --output "out/phase27a_frozen_${YEAR}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase27a-frozen-${{ matrix.season }}
+          path: out/phase27a_frozen_${{ matrix.season }}.json
+          retention-days: 30
+
+  evaluate:
+    needs: [select, frozen_validation]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      ALPHA: ${{ needs.select.outputs.alpha }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: i2-vnext-phase27a-selection
+          path: data
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase27a-frozen-*
+          path: data
+          merge-multiple: true
+      - name: Build checkpoint
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          sel=json.loads(Path("data/phase27a_selection.json").read_text())
+          v25=json.loads(Path("data/phase27a_frozen_2025.json").read_text())
+          v26=json.loads(Path("data/phase27a_frozen_2026.json").read_text())
+          alpha=float(os.environ["ALPHA"])
+          ck={
+            "version":"i2-vnext-phase27a-park-hr-shrinkage-exact-v1",
+            "market_inputs_used":False,"production_changed":False,
+            "selection_years":[2022,2023,2024],"validation_year":2025,"replication_year":2026,
+            "selected_alpha":alpha,"selection":sel,
+            "validation_2025":{"n":v25["n"],"delta_logloss":v25["candidate_minus_baseline_logloss"],"delta_brier":v25["candidate_minus_baseline_brier"]},
+            "replication_2026":{"n":v26["n"],"delta_logloss":v26["candidate_minus_baseline_logloss"],"delta_brier":v26["candidate_minus_baseline_brier"]},
+            "decision":"PROMOTION_CANDIDATE" if alpha<1 and v25["candidate_minus_baseline_logloss"]<=0 and v26["candidate_minus_baseline_logloss"]<=0 else "RETAIN_CURRENT_HR_FACTOR",
+            "status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"
+          }
+          Path("data/derived/i2_vnext/PHASE27A_PARK_HR_SHRINKAGE_RESULT.json").write_text(json.dumps(ck,indent=2)+"\n")
+          print(json.dumps(ck,indent=2))
+          PY
+      - name: Commit checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE27A_PARK_HR_SHRINKAGE_RESULT.json
+          git commit -m "research: checkpoint Phase 27A park HR shrinkage"
+          git pull --rebase origin research/i2-vnext-direct-talent
+          git push origin HEAD:research/i2-vnext-direct-talent
