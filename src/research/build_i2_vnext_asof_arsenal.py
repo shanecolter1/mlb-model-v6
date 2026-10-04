@@ -23,7 +23,7 @@ STATCAST_URL='https://baseballsavant.mlb.com/statcast_search/csv'
 # event; estimated_woba_using_speedangle is preferred, woba_value is fallback.
 XWOBA_COLS=("estimated_woba_using_speedangle","woba_value")
 
-def safe_date_chunks(start:date,end:date,days:int=3):
+def safe_date_chunks(start:date,end:date,days:int=1):
     """Keep Statcast CSV requests safely below the endpoint row ceiling."""
     cur=start
     while cur<=end:
@@ -139,8 +139,8 @@ def main():
         "raw_rows":int(len(raw)),
         "reconstructed_pitch_rows":int(overall["pitches"].sum()),
         "market_inputs_used":False,
-        "fetch_chunk_days":3,
-        "coverage_note":"Three-day chunks used to stay below Baseball Savant CSV result truncation ceiling."
+        "fetch_chunk_days":1,
+        "coverage_note":"One-day chunks used to stay below Baseball Savant CSV result truncation ceiling; three-day reconstruction was rejected after recovering only ~166k 2024 rows versus ~707k archived pitches."
     }
     if a.archived_pitcher: gate["pitcher_reconstruction"]=compare_annual(overall,a.archived_pitcher,"pitcher")
     if a.archived_batter: gate["batter_reconstruction"]=compare_annual(batter,a.archived_batter,"batter")
