@@ -1,0 +1,38 @@
+{
+  "version": "i2-vnext-phase25b-park-stabilization-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "COMPLETE_NO_PRODUCTION_CHANGE",
+  "production_changed": false,
+  "selection_years": [2022, 2023, 2024, 2025],
+  "replication_year": 2026,
+  "decisions": {
+    "single_factor": {
+      "decision": "RETAIN",
+      "development_delta_logloss_if_removed": 0.000383559309505563,
+      "positive_development_years": 4,
+      "replication_2026_delta_logloss_if_removed": 0.0005867315231816717
+    },
+    "double_factor": {
+      "decision": "RETAIN_NO_RETUNE",
+      "development_delta_logloss_if_removed": 0.00026795543905057227,
+      "positive_development_years": 3,
+      "replication_2026_delta_logloss_if_removed": 0.00018759608122842497,
+      "reason": "lower statistical confidence, but removal worsens pooled development and 2026 replication; insufficient evidence to simplify it away"
+    },
+    "triple_factor": {
+      "decision": "RETAIN",
+      "development_delta_logloss_if_removed": 0.00017313452728255055,
+      "positive_development_years": 4,
+      "replication_2026_delta_logloss_if_removed": 0.0003060386324477138
+    },
+    "home_run_factor": {
+      "decision": "RETAIN_CURRENT_PENDING_NEW_EVIDENCE",
+      "development_delta_logloss_if_removed": -0.0004081949117336502,
+      "positive_development_years": 2,
+      "replication_2026_delta_logloss_if_removed": 0.00015728491023259128,
+      "reason": "historical direction reverses; shrinkage candidates are not independently validated enough to promote without overfitting"
+    }
+  },
+  "next_phase": "25C direct-I2 feature-family full-inning audit"
+}
