@@ -1,0 +1,67 @@
+{
+  "version": "i2-vnext-phase25g-no-home-team-exact-v2",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "ADVANCE_REMOVAL_TO_COMBINED_LEAN_RESEARCH_CANDIDATE",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "execution_note": "Governed point-in-time refits executed off GitHub Actions from frozen Phase 19A/19B artifacts because obsolete Phase 25A jobs blocked runner capacity. SAGA C=0.05, half-life=730d, max_iter=7500, same monthly cutoffs.",
+  "target": "exact full second-inning Under 0.5 probability",
+  "challenger": "remove home_team fit-only nuisance control; retain batter identity, pitcher identity, standalone platoon, arsenal-by-platoon interactions, park factors, and active I1 player rates",
+  "seasonal": {
+    "2022": {
+      "n": 2430,
+      "delta_logloss": -0.00009873894887568735,
+      "delta_brier": -0.000044288908413459005
+    },
+    "2023": {
+      "n": 2430,
+      "delta_logloss": -0.00025156793274805356,
+      "delta_brier": -0.0001199221473437706
+    },
+    "2024": {
+      "n": 2429,
+      "delta_logloss": -0.000004134313881132279,
+      "delta_brier": -7.053377028831687e-7
+    },
+    "2025": {
+      "n": 2430,
+      "delta_logloss": -0.00027690795036061644,
+      "delta_brier": -0.00013757897792582297
+    },
+    "2026": {
+      "n": 2454,
+      "delta_logloss": 0.0000010507907415302498,
+      "delta_brier": 3.694715652591274e-7
+    }
+  },
+  "pooled_development_2022_2025": {
+    "n": 9719,
+    "delta_logloss": -0.0001578531011564213,
+    "delta_brier": -0.00007563155130467342,
+    "years_improved": 4,
+    "years_worsened": 0,
+    "paired_date_clusters": 730,
+    "paired_date_mean_delta_logloss": -0.00008962829857607295,
+    "paired_date_cluster_se": 0.0001302228197450382,
+    "paired_date_95pct_interval": [
+      -0.0003448650252763478,
+      0.00016560842812420192
+    ],
+    "interpretation": "directionally favorable and consistent by season, but not statistically distinguishable from zero at paired-date 95% level"
+  },
+  "replication_2026": {
+    "delta_logloss": 0.0000010507907415302498,
+    "delta_brier": 3.694715652591274e-7,
+    "paired_date_clusters": 184,
+    "paired_date_mean_delta_logloss": 0.00006939113170468339,
+    "paired_date_cluster_se": 0.00024016314489283368,
+    "paired_date_95pct_interval": [
+      -0.00040132863228527064,
+      0.0005401108956946374
+    ],
+    "interpretation": "effectively neutral; no credible adverse reversal"
+  },
+  "decision": "Remove home_team from the combined lean RESEARCH candidate because it has no demonstrated full-I2 target benefit, removal improves all four development seasons, and replication is effectively neutral. Do not claim a statistically significant predictive gain and do not change production yet.",
+  "next_gate": "Build and exact-score the combined lean candidate containing only accepted simplifications: neutralized player-specific I1 event-rate layer plus no-home-team direct-I2 refit. All retained components remain unchanged."
+}
