@@ -1,0 +1,192 @@
+name: I2 vNext Phase 31B - exact recency finalists
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/i2-vnext-direct-talent
+    paths:
+      - '.github/workflows/i2_vnext_phase31b_exact_recency.yml'
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  HISTORY_RUN_ID: 36485385934
+  PREP_RUN_ID: 36486524206
+
+jobs:
+  challenger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+        half_life: [365, 1460]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+      HALF_LIFE: ${{ matrix.half_life }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip numpy pandas scikit-learn
+      - name: Restore governed history and replay inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p history prep challenger out
+          gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history
+          gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+      - name: Refit no-home-team finalist
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATASET=$(find history -name i2_pa_statcast.csv -print -quit)
+          B2020=$(find history -name batter_2020.csv -print -quit)
+          ARSENAL_DIR=$(dirname "$B2020")
+          python src/research/build_i2_vnext_no_home_team_walkforward.py \
+            --input "$DATASET" \
+            --arsenal-dir "$ARSENAL_DIR" \
+            --season "$YEAR" \
+            --half-life "$HALF_LIFE" \
+            --c 0.05 \
+            --max-iter 7500 \
+            --output-dir "challenger/walkforward_$YEAR" \
+            --arsenal-output "challenger/arsenal_profile_$((YEAR-1)).json"
+      - name: Exact full-I2 score with neutralized I1 player rates
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR=$((YEAR-1))
+          node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
+            --input "prep/replay_$YEAR_inputs.json" \
+            --baseline-manifest "prep/walkforward_$YEAR/manifest.json" \
+            --candidate-manifest "challenger/walkforward_$YEAR/manifest.json" \
+            --arsenal "prep/arsenal_profile_$PRIOR.json" \
+            --parks "prep/park/savant_venue_profiles_$PRIOR_3yr.json" \
+            --play-calibration "prep/transition_before_$YEAR.json" \
+            --baseline-hr-alpha 1 --candidate-hr-alpha 1 \
+            --i1-player-rates neutralized \
+            --output "out/phase31b_$YEAR_$HALF_LIFE.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase31b-${{ matrix.season }}-${{ matrix.half_life }}
+          path: out/phase31b_${{ matrix.season }}_${{ matrix.half_life }}.json
+          retention-days: 30
+
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        season: [2022, 2023, 2024, 2025, 2026]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      YEAR: ${{ matrix.season }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --upgrade pip numpy pandas scikit-learn
+      - name: Restore governed history and replay inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p history prep challenger out
+          gh run download "${HISTORY_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n i2-vnext-phase19a-history-optimized -D history
+          gh run download "${PREP_RUN_ID}" --repo "$GITHUB_REPOSITORY" -n "i2-vnext-phase19b-prep-${YEAR}" -D prep
+      - name: Refit lean 730-day baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          DATASET=$(find history -name i2_pa_statcast.csv -print -quit)
+          B2020=$(find history -name batter_2020.csv -print -quit)
+          ARSENAL_DIR=$(dirname "$B2020")
+          python src/research/build_i2_vnext_no_home_team_walkforward.py \
+            --input "$DATASET" \
+            --arsenal-dir "$ARSENAL_DIR" \
+            --season "$YEAR" \
+            --half-life 730 --c 0.05 --max-iter 7500 \
+            --output-dir "challenger/walkforward_$YEAR" \
+            --arsenal-output "challenger/arsenal_profile_$((YEAR-1)).json"
+      - name: Exact full-I2 score
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRIOR=$((YEAR-1))
+          node src/research/run_i2_vnext_exact_walkforward_ab.mjs \
+            --input "prep/replay_$YEAR_inputs.json" \
+            --baseline-manifest "prep/walkforward_$YEAR/manifest.json" \
+            --candidate-manifest "challenger/walkforward_$YEAR/manifest.json" \
+            --arsenal "prep/arsenal_profile_$PRIOR.json" \
+            --parks "prep/park/savant_venue_profiles_$PRIOR_3yr.json" \
+            --play-calibration "prep/transition_before_$YEAR.json" \
+            --baseline-hr-alpha 1 --candidate-hr-alpha 1 \
+            --i1-player-rates neutralized \
+            --output "out/phase31b_$YEAR_730.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: i2-vnext-phase31b-${{ matrix.season }}-730
+          path: out/phase31b_${{ matrix.season }}_730.json
+          retention-days: 30
+
+  evaluate:
+    needs: [challenger, baseline]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: i2-vnext-phase31b-*
+          path: data/phase31b
+          merge-multiple: true
+      - name: Select on 2022-2025, replicate 2026
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          H=[365,730,1460]
+          rows={h:{} for h in H}
+          for h in H:
+            for y in range(2022,2027):
+              x=json.loads(Path(f"data/phase31b/phase31b_{y}_{h}.json").read_text())
+              rows[h][y]={"n":x["n"],"logloss":x["candidate_logloss"],"brier":x["candidate_brier"]}
+          pooled={}
+          for h in H:
+            dev=[rows[h][y] for y in range(2022,2026)]
+            n=sum(r["n"] for r in dev)
+            pooled[h]={"n":n,"logloss":sum(r["logloss"]*r["n"] for r in dev)/n,"brier":sum(r["brier"]*r["n"] for r in dev)/n}
+          best=min(H,key=lambda h:(pooled[h]["logloss"],pooled[h]["brier"]))
+          # Functional-indifference rule: if 365 is within 1e-4 log loss/game
+          # of the raw best and does not worsen Brier by >5e-5, mark it as
+          # adaptive-parsimony eligible; promotion still requires 2026.
+          adaptive_365=(pooled[365]["logloss"]-pooled[best]["logloss"] <= 1e-4 and pooled[365]["brier"]-pooled[best]["brier"] <= 5e-5)
+          preferred=365 if adaptive_365 else best
+          rep_base=rows[730][2026]; rep_pref=rows[preferred][2026]
+          rep_dll=rep_pref["logloss"]-rep_base["logloss"]; rep_db=rep_pref["brier"]-rep_base["brier"]
+          if preferred!=730 and (rep_dll>1e-4 or rep_db>5e-5):
+            final=730; decision="RETAIN_730_REPLICATION_REVERSAL"
+          else:
+            final=preferred; decision="PREFER_365_ADAPTIVE_IF_INDISTINGUISHABLE" if final==365 else ("RETAIN_730" if final==730 else "PREFER_1460")
+          out={"version":"i2-vnext-phase31b-exact-recency-v1","production_changed":False,"market_inputs_used":False,"C":0.05,"development_years":[2022,2023,2024,2025],"replication_year":2026,"seasonal":{str(h):{str(y):rows[h][y] for y in rows[h]} for h in H},"pooled_development":{str(h):pooled[h] for h in H},"raw_best_half_life":best,"adaptive_365_eligible":adaptive_365,"pre_replication_preferred_half_life":preferred,"replication_delta_vs_730":{"logloss":rep_dll,"brier":rep_db},"final_preferred_half_life":final,"decision":decision,"status":"EVIDENCE_READY_PRODUCTION_UNCHANGED"}
+          Path("data/derived/i2_vnext/PHASE31B_EXACT_RECENCY_RESULT.json").write_text(json.dumps(out,indent=2)+"\n")
+          print(json.dumps(out,indent=2))
+          PY
+      - name: Commit checkpoint
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/derived/i2_vnext/PHASE31B_EXACT_RECENCY_RESULT.json
+          git commit -m "research: checkpoint Phase 31B exact recency audit"
+          git pull --rebase origin research/i2-vnext-direct-talent
+          git push origin HEAD:research/i2-vnext-direct-talent
