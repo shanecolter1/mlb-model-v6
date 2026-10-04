@@ -1,0 +1,83 @@
+{
+  "version": "i2-vnext-phase28a-combined-lean-exact-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "PASS_TO_CALIBRATION_CHECK",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "target": "exact full second-inning Under 0.5 probability",
+  "baseline": "current governed vNext",
+  "challenger": {
+    "changes": [
+      "neutralize player-specific I1 hitter/pitcher event-rate layer",
+      "remove home_team fit-only nuisance from direct-I2 refits"
+    ],
+    "retained": [
+      "I1 batting-order/state engine",
+      "direct batter identity",
+      "direct pitcher identity",
+      "standalone platoon",
+      "arsenal-by-platoon interactions",
+      "Savant park 1B/2B/3B/HR factors at current strength",
+      "governed transitions",
+      "point-in-time monthly refits"
+    ],
+    "calibration": "raw probabilities; no recalibration used in this gate"
+  },
+  "seasonal": {
+    "2022": {
+      "n": 2430,
+      "delta_logloss": -0.00011193232245787499,
+      "delta_brier": -0.00005067280795004181
+    },
+    "2023": {
+      "n": 2430,
+      "delta_logloss": -0.00023977170006272974,
+      "delta_brier": -0.00011408863456188745
+    },
+    "2024": {
+      "n": 2429,
+      "delta_logloss": 0.00000489006382919932,
+      "delta_brier": 0.0000037157899859807664
+    },
+    "2025": {
+      "n": 2430,
+      "delta_logloss": -0.0002848991841475357,
+      "delta_brier": -0.00014142599998645533
+    },
+    "2026": {
+      "n": 2454,
+      "delta_logloss": -0.000008495954012643914,
+      "delta_brier": -0.0000040753171310081715
+    }
+  },
+  "pooled_development_2022_2025": {
+    "n": 9719,
+    "delta_logloss": -0.00015794503829225806,
+    "delta_brier": -0.00007562607587150192,
+    "years_improved": 3,
+    "years_worsened": 1,
+    "note": "2024 worsening is ~4.9e-6 log loss, effectively flat",
+    "paired_date_clusters": 730,
+    "paired_date_mean_delta_logloss": -0.00008884452840277888,
+    "paired_date_cluster_se": 0.00013096564875419292,
+    "paired_date_95pct_interval": [
+      -0.000345537199960997,
+      0.00016784814315543928
+    ]
+  },
+  "replication_2026": {
+    "delta_logloss": -0.000008495954012643914,
+    "delta_brier": -0.0000040753171310081715,
+    "paired_date_clusters": 184,
+    "paired_date_mean_delta_logloss": 0.00006238576269446395,
+    "paired_date_cluster_se": 0.00024014851243413745,
+    "paired_date_95pct_interval": [
+      -0.00040830532167644544,
+      0.0005330768470653733
+    ]
+  },
+  "interpretation": "The combined simplifications reduce complexity without measurable target-level accuracy loss and are directionally favorable in pooled development and 2026 replication. The predictive gain itself is not statistically distinguishable from zero.",
+  "decision": "Advance the combined lean challenger to a separate final-calibration check. Do not promote production yet.",
+  "next_gate": "Re-evaluate the single final full-I2 calibration layer on 2022-2025 development predictions with 2026 replication held out; do not use recalibration to mask raw performance."
+}
