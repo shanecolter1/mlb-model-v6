@@ -1,4 +1,5 @@
 name: I2 vNext Phase 30B - arsenal reconstruction gate
+# rerun after fixing Statcast row-truncation via 3-day fetch chunks
 # governed reconstruction trigger v2
 
 on:
