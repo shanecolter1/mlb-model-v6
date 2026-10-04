@@ -23,11 +23,13 @@ STATCAST_URL='https://baseballsavant.mlb.com/statcast_search/csv'
 # event; estimated_woba_using_speedangle is preferred, woba_value is fallback.
 XWOBA_COLS=("estimated_woba_using_speedangle","woba_value")
 
-def month_chunks(start:date,end:date):
+def safe_date_chunks(start:date,end:date,days:int=3):
+    """Keep Statcast CSV requests safely below the endpoint row ceiling."""
     cur=start
     while cur<=end:
-        nxt=date(cur.year+1,1,1) if cur.month==12 else date(cur.year,cur.month+1,1)
-        hi=min(end,nxt-timedelta(days=1)); yield cur,hi; cur=hi+timedelta(days=1)
+        hi=min(end,cur+timedelta(days=days-1))
+        yield cur,hi
+        cur=hi+timedelta(days=1)
 
 def fetch_month(cache:Path,lo:date,hi:date):
     cache.mkdir(parents=True,exist_ok=True)
@@ -48,7 +50,7 @@ def fetch_month(cache:Path,lo:date,hi:date):
 
 def ensure_raw_cache(cache:Path,start:str,cutoff:str):
     lo=date.fromisoformat(start); end=date.fromisoformat(cutoff)-timedelta(days=1)
-    for a,b in month_chunks(lo,end): fetch_month(cache,a,b)
+    for a,b in safe_date_chunks(lo,end): fetch_month(cache,a,b)
 
 def read_raw(cache:Path, start:str, cutoff:str)->pd.DataFrame:
     parts=[]
@@ -131,7 +133,15 @@ def main():
     side.to_csv(a.output_dir/"pitcher_usage_side_i2.csv",index=False)
     batter.to_csv(a.output_dir/"batter_pitch_response.csv",index=False)
     league.to_csv(a.output_dir/"league_pitch_response.csv",index=False)
-    gate={"start":a.start,"cutoff_exclusive":a.cutoff,"raw_rows":int(len(raw)),"market_inputs_used":False}
+    gate={
+        "start":a.start,
+        "cutoff_exclusive":a.cutoff,
+        "raw_rows":int(len(raw)),
+        "reconstructed_pitch_rows":int(overall["pitches"].sum()),
+        "market_inputs_used":False,
+        "fetch_chunk_days":3,
+        "coverage_note":"Three-day chunks used to stay below Baseball Savant CSV result truncation ceiling."
+    }
     if a.archived_pitcher: gate["pitcher_reconstruction"]=compare_annual(overall,a.archived_pitcher,"pitcher")
     if a.archived_batter: gate["batter_reconstruction"]=compare_annual(batter,a.archived_batter,"batter")
     (a.output_dir/"manifest.json").write_text(json.dumps(gate,indent=2)+"\n")
