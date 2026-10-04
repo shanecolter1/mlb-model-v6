@@ -1,0 +1,64 @@
+{
+  "version": "i2-vnext-phase30b-asof-arsenal-precommit-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "PRECOMMITTED_NOT_YET_EXECUTED",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "rationale": "Phase30A intentionally leaky current-season oracle improved exact full-I2 log loss and Brier in every 2022-2026 season, justifying a leakage-safe test.",
+  "data_build": {
+    "cutoffs": [
+      "preseason",
+      "May 1",
+      "June 1",
+      "July 1",
+      "August 1",
+      "September 1"
+    ],
+    "current_ytd_rule": "Only pitches and terminal PAs completed before each cutoff.",
+    "overall_pitcher_usage": "all-inning Statcast pitch counts by pitcher and pitch type",
+    "side_specific_pitcher_usage": "I2 Statcast pitch counts by pitcher, actual batter side, and pitch type to match current live architecture",
+    "batter_pitch_response": "all-inning terminal-PA expected wOBA by batter and terminal pitch type",
+    "league_fallback": "same cutoff-safe aggregation",
+    "preseason_rule": "prior-season governed arsenal only",
+    "no_future_current_season_data": true
+  },
+  "reconstruction_gate": {
+    "rule": "Before outcome scoring, reconstruct at least one completed annual arsenal snapshot from raw Statcast and compare pitcher usage and batter pitch-type expected-wOBA against the archived Savant annual leaderboard.",
+    "failure_action": "Stop Phase30B if reconstruction discrepancies indicate the raw formula is not equivalent enough to the governed arsenal feature."
+  },
+  "candidate_policies": [
+    {
+      "name": "PRIOR_ONLY",
+      "description": "existing governed historical rule"
+    },
+    {
+      "name": "POOLED_PRIOR_PLUS_YTD",
+      "description": "combine prior-season and cutoff-safe current-YTD sufficient statistics using observed support counts; no fitted shrinkage constant"
+    },
+    {
+      "name": "YTD_ONLY_WITH_PRIOR_FALLBACK",
+      "description": "use cutoff-safe current-YTD where available, otherwise prior-season/league fallback"
+    }
+  ],
+  "selection": {
+    "development_years": [
+      2022,
+      2023,
+      2024
+    ],
+    "method": "three-season leave-one-season-out exact full-I2 Under 0.5 log loss; Brier tie-break; parsimony favors PRIOR_ONLY if statistically indistinguishable",
+    "freeze_before": 2025,
+    "validation_year": 2025,
+    "replication_year": 2026,
+    "promotion_rule": "Non-baseline policy must improve both full-I2 log loss and Brier in frozen 2025 validation and must not reverse materially in 2026 replication. No recalibration may mask raw effect."
+  },
+  "exclusions": [
+    "sportsbook prices",
+    "calendar month feature/control",
+    "full-season current-year arsenal in historical prediction",
+    "postgame I2 pitcher identity",
+    "outcome-conditioned tuning"
+  ],
+  "note": "This phase tests point-in-time arsenal freshness, not removal of the arsenal family; the latter was already rejected after 2026 replication reversal."
+}
