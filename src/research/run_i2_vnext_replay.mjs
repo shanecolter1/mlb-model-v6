@@ -6,6 +6,7 @@ import { predictI2EventVector } from '../model/i2_vnext_event_model.js';
 import { applyEnvironmentalEventVector, buildNeutralEventVector } from '../event_probability_engine.js';
 import { createSeededRandom, seedFromGameId } from '../model/seeded_random.js';
 import { venueForReplayGame } from './i2_vnext_replay_venue.mjs';
+import { predictI2EventVectorResearch } from './i2_vnext_feature_ablation_provider.mjs';
 
 function arg(name, fallback=null) {
   const i=process.argv.indexOf(name);
@@ -21,6 +22,8 @@ const OUTPUT=arg('--output','data/derived/i2_vnext/replay_2025_predictions.json'
 const TRIALS=Number(arg('--trials','10000'));
 const I2_MODEL=arg('--i2-model','vnext');
 if (!['vnext','production_formula'].includes(I2_MODEL)) throw new Error('Unknown --i2-model');
+const I2_FEATURE_MODE=arg('--i2-feature-mode','baseline');
+if (!['baseline','no_platoon'].includes(I2_FEATURE_MODE)) throw new Error('Unknown --i2-feature-mode');
 const I1_MODE=arg('--i1-mode','league');
 const I1_PLAYER_RATES=arg('--i1-player-rates','active');
 if (!['active','neutralized'].includes(I1_PLAYER_RATES)) throw new Error('--i1-player-rates must be active or neutralized');
@@ -194,14 +197,24 @@ for (const game of replayGames) {
       }
       return formulaCache.get(key);
     }
-    const neutral=predictI2EventVector({
-      batterId:batter.id,
-      pitcherId:pitcher.id,
-      batterSide,
-      pitcherThrows:pitcher.throws,
-      model:activeModel,
-      arsenalProfile:arsenal,
-    });
+    const neutral=I2_FEATURE_MODE === 'baseline'
+      ? predictI2EventVector({
+          batterId:batter.id,
+          pitcherId:pitcher.id,
+          batterSide,
+          pitcherThrows:pitcher.throws,
+          model:activeModel,
+          arsenalProfile:arsenal,
+        })
+      : predictI2EventVectorResearch({
+          batterId:batter.id,
+          pitcherId:pitcher.id,
+          batterSide,
+          pitcherThrows:pitcher.throws,
+          model:activeModel,
+          arsenalProfile:arsenal,
+          mode:I2_FEATURE_MODE,
+        });
     return applyEnvironmentalEventVector({
       neutralVector:neutral,
       environmentalContext:venue.profile,
@@ -268,6 +281,7 @@ const payload={
   observed_i2_state_used_as_predictor:false,
   point_in_time_player_refits:Boolean(walkforward),
   i2_model:I2_MODEL,
+  i2_feature_mode:I2_FEATURE_MODE,
   comparison_scope:I2_MODEL === 'production_formula' ? 'Controlled production event formula; shared pregame as-of rates, prior-season baseline, I1 state and transitions. Not exact deployed production.' : null,
   i1_state_mode:I1_MODE,
   i1_player_rates:I1_PLAYER_RATES,
@@ -290,6 +304,7 @@ console.log(JSON.stringify({
   park_match_rate:payload.park_match_rate,trials_per_game:TRIALS,
   replay_games_total:payload.replay_games_total,shard_count:SHARD_COUNT,shard_index:SHARD_INDEX,
   point_in_time_player_refits:payload.point_in_time_player_refits,
+  i2_feature_mode:payload.i2_feature_mode,
   i1_state_mode:payload.i1_state_mode,
   i1_player_rates:payload.i1_player_rates,
   i1_environment:payload.i1_environment,
