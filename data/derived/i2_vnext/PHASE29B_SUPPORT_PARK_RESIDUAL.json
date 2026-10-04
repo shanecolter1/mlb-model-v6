@@ -1,0 +1,58 @@
+{
+  "version": "i2-vnext-phase29b-support-park-residual-v1",
+  "generated_at": "2026-10-04",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "BOTTOM_BIAS_NOT_EXPLAINED_BY_SUPPORT; PARK_DIRECTION_ASSOCIATION_FOUND",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "source_model": "Phase 28 combined lean research candidate",
+  "support_diagnostic": {
+    "definition": "I2 PA counts available before the active monthly direct-model cutoff; no hindsight season totals",
+    "dimensions": [
+      "mean lineup batter support",
+      "mean support of three least-supported lineup batters",
+      "starter pitcher support"
+    ],
+    "conclusion": "No stable low-support concentration explains the bottom-half residual. Bias persists across support quartiles; 2026 largest pitcher-support miss occurs in highest-support quartile."
+  },
+  "park_diagnostic": {
+    "definition": "pregame change in predicted half-inning scoring probability caused by governed Savant park layer versus neutral park",
+    "absolute_magnitude_conclusion": "Absolute park-effect magnitude does not monotonically explain bottom-half bias.",
+    "signed_effect_development_quartile_cuts": [
+      -0.00878982,
+      0,
+      0.00662622
+    ],
+    "bottom_residual_by_signed_quartile_dev": [
+      0.03048905148024271,
+      0.021323541131397786,
+      0.00012357143522543094,
+      0.010992911998395794
+    ],
+    "bottom_most_suppressive_quartile_by_year": {
+      "2022": 0.004376622574294162,
+      "2023": 0.0236810018122969,
+      "2024": 0.042985536328529264,
+      "2025": 0.057557013372142356,
+      "2026": 0.032628560150652144
+    },
+    "most_suppressive_dev_clustered_ci95": [
+      0.0126,
+      0.0484
+    ],
+    "interpretation": "Bottom-half underprediction is concentrated when the park layer suppresses scoring, but association is not causal proof and a general bottom-half level bias remains plausible."
+  },
+  "decision": "Do not alter player-support shrinkage and do not directly retune park factors yet.",
+  "next_phase": {
+    "name": "Phase 29C bottom residual mechanism test",
+    "objective": "Distinguish global bottom-half level bias from excessive bottom-half park suppression using precommitted low-dimensional corrections.",
+    "candidates": [
+      "identity",
+      "bottom logit offset only",
+      "bottom park-effect attenuation only",
+      "bottom logit offset plus park-effect attenuation"
+    ],
+    "park_effect_parameterization": "logit(bottom scoring probability with governed park) minus logit(bottom scoring probability with neutral park)",
+    "governance": "Fit/select using 2022-2024 only; freeze candidate and coefficients before 2025 validation; 2026 replication only. Full-year samples, no month controls, no market data. Any candidate must improve full-I2 Under 0.5 log loss and Brier, not merely bottom-half calibration."
+  }
+}
