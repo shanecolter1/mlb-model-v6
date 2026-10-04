@@ -1,10 +1,16 @@
 {
-  "version": "i2-vnext-phase32a-support-recency-precommit-v1",
+  "version": "i2-vnext-phase32a-support-recency-falsification-precommit-v1",
   "generated_at": "2026-10-04",
-  "status": "PRECOMMITTED_BEFORE_RESULTS",
+  "status": "PRECOMMITTED_BEFORE_DIAGNOSTIC_RESULTS",
   "production_changed": false,
   "market_inputs_used": false,
-  "hypothesis": "365-day recency is more useful when player-specific I2 history is deep enough to support adaptive talent estimates; 730-day recency is more useful as a variance stabilizer when player history is sparse.",
+  "source_models": {
+    "short_half_life_days": 365,
+    "incumbent_half_life_days": 730,
+    "C": 0.05,
+    "specification": "Phase 28 combined lean candidate"
+  },
+  "hypothesis": "Shorter recency may help established/high-support players adapt faster, while the incumbent 730-day half-life may better stabilize sparse-history players.",
   "development_years": [
     2022,
     2023,
@@ -12,25 +18,33 @@
     2025
   ],
   "replication_year": 2026,
-  "comparison": "exact Phase31B 365-day predictions versus current 730-day combined-lean predictions",
-  "support_data_rule": "For each game, count only I2 terminal PAs strictly before the game date. Same-date PAs are excluded to avoid doubleheader/postgame leakage.",
-  "pregame_support_dimensions": {
-    "pitcher_min": "minimum prior I2 PA count across the two scheduled starters",
-    "batter_median": "median prior I2 PA count across the 18 projected/confirmed lineup hitters",
-    "batter_q25": "25th percentile prior I2 PA count across the 18 lineup hitters"
+  "unit": "game",
+  "outcome": "exact full-I2 log-loss difference: LL_365 - LL_730; negative favors 365",
+  "support_definition": {
+    "timing": "strictly pregame / model-cutoff-safe",
+    "direct_model_support": "For each monthly direct-I2 model, use its training data only and count exponentially unweighted historical I2 PA observations for the 18 scheduled hitters and both scheduled starting pitchers appearing in the game.",
+    "summaries": [
+      "minimum hitter support across 18 scheduled hitters",
+      "median hitter support across 18 scheduled hitters",
+      "minimum starter-pitcher support across the two starters",
+      "median support across all 20 direct-model identities"
+    ],
+    "reason": "Test the user's sparse-history concern directly rather than using career age or service time as a proxy."
   },
-  "diagnostics": {
-    "continuous": "Within each development season, regress per-game delta log loss (365 minus 730; negative favors 365) on log1p(support) for each precommitted support dimension.",
-    "stratified": "Within each season and support dimension, form support quartiles from pregame support only and compare pooled 365-minus-730 log loss by quartile.",
-    "uncertainty": "Cluster pooled game-level loss differences by calendar date."
-  },
-  "proceed_rule": "Advance to an adaptive-recency model only if at least one support dimension shows (a) a negative support interaction slope in at least 3 of 4 development seasons, (b) pooled 365 performance is better in the highest-support quartile, and (c) the lowest-support quartile is worse or materially less favorable than the highest-support quartile. Otherwise retain universal 730 and stop the adaptive-recency branch.",
-  "exclusions": [
-    "2026 in diagnosis or rule selection",
-    "market inputs",
-    "calendar-month control",
-    "new player features",
-    "threshold tuning before the diagnostic passes"
+  "diagnostics": [
+    "per-season Spearman association between support summaries and LL_365 - LL_730",
+    "precommitted support quartiles derived within each season from pregame support only",
+    "mean and paired-date clustered uncertainty of LL_365 - LL_730 within support quartiles",
+    "pooled 2022-2025 interaction direction with season fixed effects"
   ],
-  "note": "This phase tests whether support-dependent recency is empirically justified; it does not choose a threshold or promote a model."
+  "advance_rule": "Advance to Phase 32B adaptive-rule design only if higher-support strata favor 365 relative to lower-support strata in at least 3 of 4 development seasons and the pooled interaction has the same direction. Otherwise reject support-adaptive recency without using 2026.",
+  "replication_rule": "2026 is consulted only after a specific adaptive rule is frozen in Phase 32B.",
+  "exclusions": [
+    "No threshold optimization in Phase 32A",
+    "No 2026 inspection for rule design",
+    "No age/service-time proxy",
+    "No market inputs",
+    "No calendar-month control",
+    "No production change"
+  ]
 }
