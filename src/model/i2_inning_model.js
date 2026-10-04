@@ -153,10 +153,17 @@ function selectPitcher(mixture, random) {
   return mixture[mixture.length - 1].pitcher;
 }
 
-function batterEventVector({ batter, pitcher, league, environmentalContext, weights }) {
+function batterEventVector({
+  batter,
+  pitcher,
+  league,
+  environmentalContext,
+  weights,
+  neutralizePlayerRates = false,
+}) {
   const neutral = buildNeutralEventVector({
-    batter: batter.eventRates,
-    pitcher: pitcher.eventRatesAllowed,
+    batter: neutralizePlayerRates ? league : batter.eventRates,
+    pitcher: neutralizePlayerRates ? league : pitcher.eventRatesAllowed,
     league,
     weights,
   });
@@ -183,6 +190,7 @@ export function simulateHalfInningWithLineup({
   pitchCountDraw = null,
   playCalibration = null,
   eventVectorProvider = null,
+  neutralizePlayerRates = false,
 }) {
   if (!Array.isArray(lineup) || lineup.length !== 9) {
     throw new RangeError("lineup must contain exactly nine hitters in batting-order sequence");
@@ -209,6 +217,7 @@ export function simulateHalfInningWithLineup({
           league,
           environmentalContext,
           weights,
+          neutralizePlayerRates,
         });
     validateEventVector(vector);
     const event = drawEvent(vector, random);
@@ -241,6 +250,7 @@ export function simulateSideToI2({
   pitchCountDraw = null,
   playCalibration = null,
   i2EventVectorProvider = null,
+  neutralizeI1PlayerRates = false,
 }) {
   const starterMixture = [{ weight: 1, pitcher: starter }];
   const i1 = simulateHalfInningWithLineup({
@@ -254,6 +264,7 @@ export function simulateSideToI2({
     pitchCountDraw,
     playCalibration,
     eventVectorProvider: null,
+    neutralizePlayerRates: neutralizeI1PlayerRates,
   });
 
   // Conventional starter default. Opener/bulk games should supply an explicit
