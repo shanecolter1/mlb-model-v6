@@ -36,7 +36,7 @@ jobs:
         run: |
           set -euo pipefail
           B=$(find history -name batter_2024.csv -print -quit)
-          P=$(find history -name pitcher_2024.csv -print -quit)
+          P=$(find history -name pitcher_2024.csv -print -quit)\n          S=$(find history -name pitcher_usage_side_2024.csv -print -quit)
           python src/research/build_i2_vnext_asof_arsenal_aggregate.py \
             --start 2024-01-01 --end 2024-12-31 \
             --archived-batter "$B" --archived-pitcher "$P" \
@@ -47,9 +47,9 @@ jobs:
           import json
           from pathlib import Path
           x=json.loads(Path("data/phase30b_v2/reconstruction_2024/manifest.json").read_text())
-          p=x["pitcher"]; b=x["batter"]
-          gate={"pitch_share_weighted_mae_max":0.02,"batter_est_woba_weighted_mae_max":0.03,"batter_est_woba_abs_signed_error_max":0.01,"minimum_overlap_rows_each":1000}
-          passed=(p["overlap_rows"]>=1000 and b["overlap_rows"]>=1000 and p["weighted_mae_pitch_share"]<=0.02 and b["weighted_mae_est_woba"]<=0.03 and abs(b["mean_signed_est_woba"])<=0.01)
+          p=x["pitcher"]; b=x["batter"]; s=x["side_usage"]
+          gate={"pitch_share_weighted_mae_max":0.02,"batter_est_woba_weighted_mae_max":0.03,"batter_est_woba_abs_signed_error_max":0.01,"side_usage_weighted_mae_max":0.02,"minimum_overlap_rows_each":1000}
+          passed=(p["overlap_rows"]>=1000 and b["overlap_rows"]>=1000 and s["overlap_rows"]>=1000 and p["weighted_mae_pitch_share"]<=0.02 and b["weighted_mae_est_woba"]<=0.03 and abs(b["mean_signed_est_woba"])<=0.01 and s["weighted_mae_pitch_share"]<=0.02)
           out={"version":"i2-vnext-phase30b-v2-aggregate-reconstruction-gate-v1","market_inputs_used":False,"production_changed":False,"thresholds_unchanged_from_original_gate":gate,"metrics":x,"passed":passed,"failure_action":"Stop before outcome scoring if false."}
           Path("data/derived/i2_vnext/PHASE30B_V2_AGGREGATE_ARSENAL_GATE.json").write_text(json.dumps(out,indent=2)+"\n")
           print(json.dumps(out,indent=2))
@@ -72,6 +72,7 @@ jobs:
           git commit -m "research: pass Phase 30B V2 arsenal reconstruction gate"
           git pull --rebase origin research/i2-vnext-direct-talent
           git push origin HEAD:research/i2-vnext-direct-talent
+
 
 
 
