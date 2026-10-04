@@ -1,0 +1,56 @@
+{
+  "version":"i2-vnext-phase25f-variable-audit-consolidation-v1",
+  "generated_at":"2026-10-03",
+  "branch":"research/i2-vnext-direct-talent",
+  "status":"VARIABLE_AUDIT_CONSOLIDATED_NEXT_CHALLENGE_DEFINED",
+  "production_changed":false,
+  "market_inputs_used":false,
+  "decision_target":"full second-inning Under 0.5 probability",
+  "selection_years":[2022,2023,2024,2025],
+  "replication_year":2026,
+  "settled":{
+    "direct_batter_identity":"RETAIN_STRONG",
+    "direct_pitcher_identity":"RETAIN_STRONG",
+    "standalone_platoon":"RETAIN; exact full-I2 removal replay worsened pooled 2022-2025 and 2026",
+    "park_single_factor":"RETAIN",
+    "park_double_factor":"RETAIN_NO_RETUNE",
+    "park_triple_factor":"RETAIN",
+    "i1_player_specific_hitter_pitcher_rates":"NEUTRALIZE_IN_RESEARCH_CANDIDATE; no measurable full-I2 value",
+    "i1_strikeout_player_rate":"MECHANICALLY_REDUNDANT under current pooled out transition"
+  },
+  "unresolved":{
+    "park_home_run_factor":{
+      "status":"HIGHEST_PRIORITY_SHRINKAGE_TEST",
+      "evidence":"full removal improves pooled 2022-2025 but worsens 2026; prior partial-shrinkage screen suggested an interior shrinkage level may dominate both extremes",
+      "risk":"choosing shrinkage after inspecting 2026 would contaminate replication",
+      "next_test":"select shrinkage strength using development data only, freeze it, then score a later untouched development holdout and 2026 replication"
+    },
+    "arsenal_interaction_family":{
+      "status":"RETAIN_PENDING_STRONGER_EVIDENCE",
+      "reason":"incremental PA value is small and unstable; 2026 supports retention"
+    },
+    "home_team_fit_only_nuisance":{
+      "status":"KEEP_PENDING_STABILITY",
+      "reason":"not a live inference feature and corrected live-equivalent evidence is small/sign-reversing"
+    }
+  },
+  "platoon_full_i2_result":{
+    "source":"PHASE25E_PLATOON_FULL_I2_REPLAY.json",
+    "pooled_2022_2025_delta_logloss_if_removed":0.00001920075140549337,
+    "pooled_2022_2025_delta_brier_if_removed":0.00000976072077539286,
+    "worse_development_years":3,
+    "better_development_years":1,
+    "replication_2026_delta_logloss_if_removed":0.000075377493,
+    "decision":"RETAIN"
+  },
+  "research_candidate_after_audit":{
+    "changes_from_current_vnext":["neutralize player-specific I1 hitter/pitcher event-rate layer"],
+    "explicitly_not_changed":["direct batter identity","direct pitcher identity","standalone platoon","arsenal interactions","park 1B/2B/3B factors","park HR factor pending next test","final identity calibration"],
+    "promotion_status":"NOT_PROMOTED"
+  },
+  "next_phase":{
+    "name":"Phase 27A development-only park-HR shrinkage selection",
+    "design":"Use only pre-2026 development evidence to select/freeze a shrinkage strength. Do not use 2026 to choose alpha. After freezing, score 2026 once as replication. Preserve all other model components.",
+    "reason":"park HR is the largest unresolved variable-level instability and therefore offers more plausible sharpening value than repeatedly retesting already-small direct feature families."
+  }
+}
