@@ -22,6 +22,8 @@ const TRIALS=Number(arg('--trials','10000'));
 const I2_MODEL=arg('--i2-model','vnext');
 if (!['vnext','production_formula'].includes(I2_MODEL)) throw new Error('Unknown --i2-model');
 const I1_MODE=arg('--i1-mode','league');
+const I1_PLAYER_RATES=arg('--i1-player-rates','active');
+if (!['active','neutralized'].includes(I1_PLAYER_RATES)) throw new Error('--i1-player-rates must be active or neutralized');
 const I1_ENVIRONMENT=arg('--i1-environment','neutral');
 if (!['neutral','prior_season_park'].includes(I1_ENVIRONMENT)) throw new Error('Unknown --i1-environment');
 const SHARD_COUNT=Number(arg('--shard-count','1'));
@@ -214,6 +216,7 @@ for (const game of replayGames) {
     weights:{batter:0.5,pitcher:0.5},
     trials:TRIALS,random,playCalibration,
     i2EventVectorProvider:provider,
+    neutralizeI1PlayerRates:I1_PLAYER_RATES === 'neutralized',
   });
   const y=Number(game.observed.under05);
   const p=Number(result.under05);
@@ -267,6 +270,7 @@ const payload={
   i2_model:I2_MODEL,
   comparison_scope:I2_MODEL === 'production_formula' ? 'Controlled production event formula; shared pregame as-of rates, prior-season baseline, I1 state and transitions. Not exact deployed production.' : null,
   i1_state_mode:I1_MODE,
+  i1_player_rates:I1_PLAYER_RATES,
   i1_environment:I1_ENVIRONMENT,
   i1_state_model:replay.i1_state_model,
   i1_player_asof_model:I1_MODE === 'player_asof' ? (replay.i1_player_asof_model || null) : null,
@@ -287,5 +291,6 @@ console.log(JSON.stringify({
   replay_games_total:payload.replay_games_total,shard_count:SHARD_COUNT,shard_index:SHARD_INDEX,
   point_in_time_player_refits:payload.point_in_time_player_refits,
   i1_state_mode:payload.i1_state_mode,
+  i1_player_rates:payload.i1_player_rates,
   i1_environment:payload.i1_environment,
 },null,2));
