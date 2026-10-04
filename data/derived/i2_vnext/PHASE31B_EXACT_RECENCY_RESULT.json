@@ -1,0 +1,68 @@
+{
+  "version": "i2-vnext-phase31b-exact-recency-v1",
+  "generated_at": "2026-10-04",
+  "status": "PREFER_365_RESEARCH_CANDIDATE",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "C": 0.05,
+  "development_years": [
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "replication_year": 2026,
+  "pooled_development": {
+    "365": {
+      "n": 9719,
+      "logloss": 0.6863939839532455,
+      "brier": 0.24662560679152018
+    },
+    "730": {
+      "n": 9719,
+      "logloss": 0.686332507350006,
+      "brier": 0.24659444164254765
+    },
+    "1460": {
+      "n": 9719,
+      "logloss": 0.6863269512994546,
+      "brier": 0.24659029071770186
+    }
+  },
+  "raw_best_development_half_life": 1460,
+  "adaptive_365_comparison_to_raw_best": {
+    "delta_logloss": 0.00006703265379082168,
+    "delta_brier": 0.00003531607381831978,
+    "limits": {
+      "logloss": 0.0001,
+      "brier": 0.00005
+    },
+    "eligible": true
+  },
+  "pre_replication_preferred_half_life": 365,
+  "replication_2026": {
+    "365": {
+      "n": 2454,
+      "logloss": 0.6815290516655039,
+      "brier": 0.24421675766676595
+    },
+    "730": {
+      "n": 2454,
+      "logloss": 0.6814976703990085,
+      "brier": 0.24420322655482388
+    },
+    "delta_365_minus_730": {
+      "logloss": 0.00003138126649537831,
+      "brier": 0.00001353111194207779
+    },
+    "guardrail_limits": {
+      "logloss": 0.0001,
+      "brier": 0.00005
+    },
+    "pass": true
+  },
+  "final_preferred_half_life_days": 365,
+  "interpretation": "365 is functionally indistinguishable under the precommitted tolerance and passes the 2026 replication guardrail. Prefer 365 for faster adaptation. The 2025 reversal motivates a separate support-adaptive recency test.",
+  "decision": "Advance 365-day half-life as the preferred RESEARCH recency setting. Production remains unchanged.",
+  "next_phase": "Phase 32 support-adaptive recency using strictly pre-cutoff player I2 support to blend 365 and 730 direct-I2 predictions."
+}
