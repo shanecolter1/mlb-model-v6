@@ -1,0 +1,37 @@
+{
+  "version":"i2-vnext-phase26a-direct-feature-audit-v1",
+  "generated_at":"2026-10-03",
+  "market_inputs_used":false,
+  "production_changed":false,
+  "target":"I2 terminal PA multiclass event",
+  "development_years":[2022,2023,2024,2025],
+  "replication_year":2026,
+  "selection_role":"screening only; full-I2 replay remains promotion target",
+  "aggregated_development_2022_2025":{
+    "drop_batter_identity":{"candidate_minus_baseline_logloss":0.005339905142676604,"candidate_minus_baseline_brier":0.002653287107130032,"positive_years":4},
+    "drop_pitcher_identity":{"candidate_minus_baseline_logloss":0.0016367819800014378,"candidate_minus_baseline_brier":0.0007321419366523492,"positive_years":4},
+    "drop_batter_pitcher_identity":{"candidate_minus_baseline_logloss":0.006934882544926376,"candidate_minus_baseline_brier":0.0033324287442672326,"positive_years":4},
+    "drop_platoon":{"candidate_minus_baseline_logloss":-0.00003913654957539662,"candidate_minus_baseline_brier":-0.000034058469854855555,"positive_years":1},
+    "drop_home_team_nuisance":{"candidate_minus_baseline_logloss":-0.0006749248869798719,"candidate_minus_baseline_brier":-0.0002563735645726381,"positive_years":1},
+    "drop_arsenal_all":{"candidate_minus_baseline_logloss":0.00003931800085376217,"candidate_minus_baseline_brier":-0.000022718581329536885,"positive_years":2},
+    "drop_arsenal_LvL":{"candidate_minus_baseline_logloss":0.000012870836309932803,"candidate_minus_baseline_brier":-1.5269650154832678e-7,"positive_years":2},
+    "drop_arsenal_LvR":{"candidate_minus_baseline_logloss":0.00001047549197906794,"candidate_minus_baseline_brier":-0.000004322669276079043,"positive_years":2},
+    "drop_arsenal_RvL":{"candidate_minus_baseline_logloss":0.00004956284877035671,"candidate_minus_baseline_brier":0.0000020902638191620622,"positive_years":4},
+    "drop_arsenal_RvR":{"candidate_minus_baseline_logloss":0.000046687502120213784,"candidate_minus_baseline_brier":-0.000015923344931482573,"positive_years":3}
+  },
+  "replication_2026":{
+    "drop_batter_identity":{"candidate_minus_baseline_logloss":0.006604950047192632,"ci95":[0.005323457082885227,0.007846339135600995]},
+    "drop_pitcher_identity":{"candidate_minus_baseline_logloss":0.0022571658948660612,"ci95":[0.0009815056218577972,0.0035290454068307997]},
+    "drop_batter_pitcher_identity":{"candidate_minus_baseline_logloss":0.008785791769944295,"ci95":[0.0071454544242708145,0.010509779751761053]},
+    "drop_platoon":{"candidate_minus_baseline_logloss":-0.0000752248360178563,"ci95":[-0.0001609950089148671,0.000008892389000272197]},
+    "drop_home_team_nuisance":{"candidate_minus_baseline_logloss":-0.0004328838670596046,"ci95":[-0.0011608934019198317,0.0003137263616406366]},
+    "drop_arsenal_all":{"candidate_minus_baseline_logloss":0.000254356525895514,"ci95":[-0.00003891419274955435,0.0005436980696426692]}
+  },
+  "decisions":{
+    "retain":["batter identity","pitcher identity"],
+    "candidate_remove":["standalone platoon categorical term","home_team nuisance term"],
+    "research_only":["arsenal interaction family and individual platoon-specific arsenal terms"],
+    "note":"These are PA-event screening decisions only. Any removal must pass full-I2 Under 0.5 replay before promotion."
+  },
+  "key_conclusion":"Direct batter and pitcher identity are robust, durable contributors. Standalone platoon and home-team nuisance terms show no durable benefit and generally hurt held-out event prediction. Arsenal effects are orders of magnitude smaller than identity and remain unstable."
+}
