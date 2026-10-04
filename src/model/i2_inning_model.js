@@ -328,6 +328,7 @@ export function simulateFullSecondInning({
   pitchCountDraw = null,
   playCalibration = null,
   i2EventVectorProvider = null,
+  neutralizeI1PlayerRates = false,
 }) {
   if (!Number.isInteger(trials) || trials <= 0) {
     throw new RangeError("trials must be a positive integer");
@@ -354,6 +355,7 @@ export function simulateFullSecondInning({
       pitchCountDraw,
       playCalibration,
       i2EventVectorProvider,
+      neutralizeI1PlayerRates,
     });
     const bottom = simulateSideToI2({
       lineup: home.lineup,
@@ -366,6 +368,7 @@ export function simulateFullSecondInning({
       pitchCountDraw,
       playCalibration,
       i2EventVectorProvider,
+      neutralizeI1PlayerRates,
     });
 
     topCounts[bucket(top.i2.runs)] += 1;
@@ -409,6 +412,7 @@ export function simulateFullSecondInning({
       predictionMustBeFrozenBeforeMarketRetrieval: true,
       exactBuckets: EXACT_KEYS,
       cumulativeBuckets: CUM_KEYS,
+      neutralizeI1PlayerRates: Boolean(neutralizeI1PlayerRates),
     },
   };
 }
