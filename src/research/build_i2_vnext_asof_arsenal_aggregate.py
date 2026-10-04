@@ -9,9 +9,9 @@ import requests
 URL="https://baseballsavant.mlb.com/statcast_search/csv"
 PITCH_TYPES=["FF","SI","FC","CH","FS","FO","SC","CU","KC","CS","SL","ST","SV","KN","EP","FA"]
 
-def request_one(role,pt,start,end):
+def request_one(role,pt,start,end,stand=None,inning=None):
     params={"all":"true","player_type":role,"hfGT":"R|","hfSea":f"{start[:4]}|","hfPT":f"{pt}|","game_date_gt":start,"game_date_lt":end,"group_by":"name","sort_col":"pitches","sort_order":"desc","min_pitches":"0","min_results":"0","min_pas":"0","chk_stats_pa":"on","chk_stats_xwoba":"on"}
-    headers={"User-Agent":"MLB-I2-vNext/1.0","Accept":"text/csv,*/*"}
+    if stand in {"L","R"}: params["batter_stands"]=stand\n    if inning is not None: params["hfInn"]=f"{int(inning)}|"\n    headers={"User-Agent":"MLB-I2-vNext/1.0","Accept":"text/csv,*/*"}
     last=None
     for attempt in range(4):
         try:
@@ -49,12 +49,12 @@ def compare(recon,archived):
     return {"overlap_rows":int(len(m)),"xwoba_overlap_rows":int(len(z)),"weighted_mae_pitch_share":float(np.average(abs(m.share_raw-m.share_savant),weights=m.pitches_savant)),"weighted_mae_est_woba":float(np.average(abs(z.est_woba_raw-z.est_woba_savant),weights=w)),"mean_signed_est_woba":float(np.average(z.est_woba_raw-z.est_woba_savant,weights=w))}
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument("--start",required=True);p.add_argument("--end",required=True);p.add_argument("--output-dir",type=Path,required=True);p.add_argument("--archived-batter",type=Path);p.add_argument("--archived-pitcher",type=Path);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument("--start",required=True);p.add_argument("--end",required=True);p.add_argument("--output-dir",type=Path,required=True);p.add_argument("--archived-batter",type=Path);p.add_argument("--archived-pitcher",type=Path);p.add_argument("--archived-side",type=Path);a=p.parse_args()
     a.output_dir.mkdir(parents=True,exist_ok=True)
-    b=build("batter",a.start,a.end); q=build("pitcher",a.start,a.end)
-    b.to_csv(a.output_dir/"batter.csv",index=False);q.to_csv(a.output_dir/"pitcher.csv",index=False)
+    b=build("batter",a.start,a.end); q=build("pitcher",a.start,a.end); side=build_side_usage(a.start,a.end)
+    b.to_csv(a.output_dir/"batter.csv",index=False);q.to_csv(a.output_dir/"pitcher.csv",index=False);side.to_csv(a.output_dir/"pitcher_usage_side_i2.csv",index=False)
     out={"start":a.start,"end_inclusive":a.end,"market_inputs_used":False,"method":"Statcast Search aggregate by player, one pitch type per request"}
     if a.archived_batter:out["batter"]=compare(b,a.archived_batter)
-    if a.archived_pitcher:out["pitcher"]=compare(q,a.archived_pitcher)
+    if a.archived_pitcher:out["pitcher"]=compare(q,a.archived_pitcher)\n    if a.archived_side:out["side_usage"]=compare_side(side,a.archived_side)
     (a.output_dir/"manifest.json").write_text(json.dumps(out,indent=2)+"\n");print(json.dumps(out,indent=2))
 if __name__=="__main__":main()
