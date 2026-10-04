@@ -1,0 +1,34 @@
+{
+  "version": "i2-vnext-phase25e-platoon-full-i2-replay-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "REJECT_PLATOON_REMOVAL",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "challenger": "remove standalone categorical platoon term only; refit every governed point-in-time monthly snapshot with saga while retaining batter identity, pitcher identity, arsenal-by-platoon interactions, home-team fit-only nuisance control, I1 state engine, prior-only transitions, prior-season park environment, and identity final calibration",
+  "evaluation": {
+    "target": "exact full I2 Under 0.5 probability",
+    "development_years": [2022, 2023, 2024, 2025],
+    "replication_year": 2026,
+    "monte_carlo_noise": "none; deterministic state propagation",
+    "2026_venue_rule": "MLB venue_name matched to prior-season Savant profile using governed normalized venue-name matching; corrected evaluator baseline reproduces Phase 24 exact baseline"
+  },
+  "delta_definition": "challenger minus governed baseline; positive is worse",
+  "results": {
+    "2022": {"n":2430,"baseline_logloss":0.680773026832,"challenger_logloss":0.680862697636,"delta_logloss":0.000089670804,"baseline_brier":0.243843454901,"challenger_brier":0.243888687589,"delta_brier":0.000045232688},
+    "2023": {"n":2430,"baseline_logloss":0.691943023521,"challenger_logloss":0.691981301604,"delta_logloss":0.000038278083,"baseline_brier":0.249349869406,"challenger_brier":0.249368324645,"delta_brier":0.000018455239},
+    "2024": {"n":2429,"baseline_logloss":0.686656751260,"challenger_logloss":0.686672793930,"delta_logloss":0.000016042670,"baseline_brier":0.246758755305,"challenger_brier":0.246766885249,"delta_brier":0.000008129944},
+    "2025": {"n":2430,"baseline_logloss":0.686589076377,"challenger_logloss":0.686521886526,"delta_logloss":-0.000067189851,"baseline_brier":0.246728227758,"challenger_brier":0.246695452099,"delta_brier":-0.000032775659},
+    "2026": {"n":2425,"baseline_logloss":0.681450032096,"challenger_logloss":0.681525409589,"delta_logloss":0.000075377493,"baseline_brier":0.244179650531,"challenger_brier":0.244216627308,"delta_brier":0.000036976777}
+  },
+  "pooled_development_2022_2025": {
+    "n": 9719,
+    "delta_logloss": 0.00001920075140549337,
+    "delta_brier": 0.00000976072077539286,
+    "positive_worse_years": 3,
+    "negative_better_years": 1
+  },
+  "decision": "RETAIN standalone platoon term. The family appears slightly harmful at PA event-classification level in 2025 and 2026, but removing it degrades the actual full-I2 Under 0.5 target in three of four development years, pooled development, and 2026 replication.",
+  "interpretation": "Do not rank direct-I2 variables from PA loss alone. Small changes in the event mix can improve multiclass classification while worsening the probability of any run in the second inning after lineup/state/park propagation.",
+  "next_phase": "25F consolidate final variable audit and define the next model-sharpening challenger without changing production"
+}
