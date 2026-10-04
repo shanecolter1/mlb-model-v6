@@ -1,0 +1,38 @@
+{
+  "version": "i2-vnext-phase31c-2026-recency-diagnostic-v1",
+  "generated_at": "2026-10-04",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "purpose": "Explicitly score 365-day recency against incumbent 730 on 2026 after user-requested diagnostic.",
+  "target": "exact full second-inning Under 0.5 probability",
+  "model_specification": "Phase 28 combined lean candidate; C=0.05; only recency half-life differs",
+  "season": 2026,
+  "n": 2454,
+  "results": {
+    "365": {
+      "logloss": 0.6815290516655039,
+      "brier": 0.24421675766676595
+    },
+    "730": {
+      "logloss": 0.6814976703990085,
+      "brier": 0.24420322655482388
+    },
+    "365_minus_730": {
+      "logloss": 0.00003138126649537831,
+      "brier": 0.00001353111194207779
+    }
+  },
+  "comparison_to_2025": {
+    "2025_365_minus_730_logloss": 0.0006631071847422731,
+    "2026_365_minus_730_logloss": 0.00003138126649537831,
+    "2026_adverse_gap_as_fraction_of_2025": 0.04732455288239343
+  },
+  "precommitted_guardrails": {
+    "logloss_max_adverse": 0.0001,
+    "brier_max_adverse": 0.00005,
+    "passed": true
+  },
+  "interpretation": "2026 slightly favors 730, but the difference is functionally negligible and about 21x smaller than the 2025 reversal. 2026 therefore does not replicate the 2025 failure mode.",
+  "decision": "KEEP_365_AS_LIVE_RESEARCH_CHALLENGER",
+  "note": "This diagnostic does not retroactively reselect on 2026; it shows that 365 survives the precommitted replication guardrail and should not be discarded."
+}
