@@ -1,0 +1,38 @@
+{
+  "version": "i2-vnext-phase25f-arsenal-full-i2-audit-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "CHALLENGER_SURVIVES_DEVELOPMENT_NOT_PROMOTED",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "challenger": "remove the four arsenal_x_platoon numeric interaction features; preserve batter identity, pitcher identity, categorical platoon, home-team fit-only nuisance control, I1 state engine, prior-only transitions, prior-season park environment, and identity final calibration",
+  "method": {
+    "fit": "governed saga C=0.05, 730-day half-life, point-in-time monthly walk-forward refits warm-started from governed full models",
+    "target": "exact full I2 Under 0.5 probability",
+    "development_years": [2022, 2023, 2024, 2025],
+    "replication_year": 2026,
+    "uncertainty": "paired loss differences clustered by game date"
+  },
+  "delta_definition": "arsenal-free challenger minus governed baseline; negative is better",
+  "results": {
+    "2022": {"n":2430,"delta_logloss":-0.00012124580142188858,"cluster_se_logloss":0.00016881156331717748,"z_logloss":-0.7182316130446685,"delta_brier":-0.0000590885876499081,"cluster_se_brier":0.00008227362730028376},
+    "2023": {"n":2430,"delta_logloss":-0.00025911173996478364,"cluster_se_logloss":0.00022585570020590588,"z_logloss":-1.1472446333148076,"delta_brier":-0.00012209556098786173,"cluster_se_brier":0.00010979486770714955},
+    "2024": {"n":2429,"delta_logloss":-0.00015873074404933125,"cluster_se_logloss":0.0001835405254078997,"z_logloss":-0.8648266844424071,"delta_brier":-0.00007571445934138775,"cluster_se_brier":0.0000899332666745829},
+    "2025": {"n":2430,"delta_logloss":-0.00008454978716472206,"cluster_se_logloss":0.0002025272904248675,"z_logloss":-0.4174735512796873,"delta_brier":-0.000039977811514801504,"cluster_se_brier":0.00009875005717339372},
+    "2026": {"n":2425,"delta_logloss":0.00016295431735039776,"cluster_se_logloss":0.00022627135700476145,"z_logloss":0.7201720956089405,"delta_brier":0.00008082221196385433,"cluster_se_brier":0.00011021326444073288}
+  },
+  "pooled_development_2022_2025": {
+    "n": 9719,
+    "delta_logloss": -0.00015590922787073915,
+    "cluster_se_logloss": 0.00009802851275112847,
+    "z_logloss": -1.5904477533649453,
+    "delta_brier": -0.00007421895101460841,
+    "cluster_se_brier": 0.0000477962439465745,
+    "z_brier": -1.5528197382532523,
+    "years_improved": 4,
+    "years_worsened": 0
+  },
+  "replication_interpretation": "2026 reverses direction. Per governance, 2026 is replication/sensitivity rather than a variable-selection year, but the reversal prevents promotion from historical evidence alone.",
+  "decision": "Do not remove arsenal from current vNext yet. Carry an arsenal-free challenger into prospective/shadow comparison because it improves all four development seasons and pooled development, but the effect is modest relative to clustered uncertainty and fails 2026 replication.",
+  "next_phase": "25G audit the fit-only home-team nuisance control at the full-I2 target, then consolidate the final variable ranking"
+}
