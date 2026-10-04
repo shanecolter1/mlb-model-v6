@@ -1,0 +1,48 @@
+{
+  "version": "i2-vnext-phase25c-direct-family-refit-screen-v1",
+  "generated_at": "2026-10-03",
+  "branch": "research/i2-vnext-direct-talent",
+  "status": "COMPLETE_SCREEN_ADVANCE_WEAK_FAMILIES",
+  "production_changed": false,
+  "market_inputs_used": false,
+  "purpose": "Proper leave-family-out refit screen after rejecting coefficient-zero ablation as invalid for full one-hot categorical blocks and uncentered arsenal features.",
+  "method": {
+    "target": "I2 terminal PA event class",
+    "penalty_C": 0.05,
+    "recency_half_life_days": 730,
+    "solver_for_screen": "lbfgs",
+    "solver_note": "Converged L2 multinomial refit used as a computational screen; governed saga confirmation is required before model change.",
+    "holdouts": {
+      "2025": "train 2021-2024, test 2025",
+      "2026": "train 2021-2025, test 2026"
+    }
+  },
+  "delta_definition": "drop-family metric minus full-model metric; positive means family helps",
+  "results": {
+    "2025": {
+      "n": 20188,
+      "batter": {"delta_logloss": 0.0066492170566121445, "delta_brier": 0.0032349092318290085},
+      "pitcher": {"delta_logloss": 0.0019226895305994862, "delta_brier": 0.0007704297926692805},
+      "platoon": {"delta_logloss": -0.00005703654758448806, "delta_brier": -0.00003474530196001524},
+      "arsenal": {"delta_logloss": -0.000009502774225067512, "delta_brier": -0.000005912089705240042},
+      "home_team_fit_only_nuisance": {"delta_logloss": 0.0001343621225999847, "delta_brier": 0.00004275327488800773}
+    },
+    "2026": {
+      "n": 20096,
+      "batter": {"delta_logloss": 0.006606458255570047, "delta_brier": 0.003313837562213151},
+      "pitcher": {"delta_logloss": 0.0022572088653367572, "delta_brier": 0.0011189388642032227},
+      "platoon": {"delta_logloss": -0.00007128173894943579, "delta_brier": -0.00001541203672195124},
+      "arsenal": {"delta_logloss": 0.0002610360214301277, "delta_brier": 0.00003486577420719339},
+      "home_team_fit_only_nuisance": {"delta_logloss": -0.0004312271900452913, "delta_brier": -0.0001957572252617723}
+    }
+  },
+  "screen_decisions": {
+    "batter_identity": "RETAIN_STRONG",
+    "pitcher_identity": "RETAIN_STRONG",
+    "platoon": "ADVANCE_TO_GOVERNED_SAGA_REMOVAL_TEST; removal improves both 2025 and 2026 holdouts",
+    "arsenal": "RETAIN_PENDING_GOVERNED_TEST; direction flips and 2026 shows positive value",
+    "home_team_fit_only_nuisance": "ADVANCE_TO_GOVERNED_STABILITY_TEST; direction flips and it is not a live inference feature"
+  },
+  "invalidated_method": "Do not use coefficient-zero family ablation as variable importance for this model. Full one-hot blocks and uncentered numeric interactions make zeroing coefficients change the fitted level/intercept.",
+  "next_phase": "25D governed saga refits for platoon removal, arsenal stability, and home-team nuisance stability; then full-I2 replay only for challengers that survive."
+}
