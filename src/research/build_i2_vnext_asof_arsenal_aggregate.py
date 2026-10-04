@@ -10,7 +10,7 @@ URL="https://baseballsavant.mlb.com/statcast_search/csv"
 PITCH_TYPES=["FF","SI","FC","CH","FS","FO","SC","CU","KC","CS","SL","ST","SV","KN","EP","FA"]
 
 def request_one(role,pt,start,end):
-    params={"all":"true","type":"details","player_type":role,"hfGT":"R|","hfSea":f"{start[:4]}|","hfPT":f"{pt}|","game_date_gt":start,"game_date_lt":end,"group_by":"name","sort_col":"pitches","sort_order":"desc","min_pitches":"0","min_results":"0","min_pas":"0","chk_stats_pa":"on","chk_stats_xwoba":"on"}
+    params={"all":"true","player_type":role,"hfGT":"R|","hfSea":f"{start[:4]}|","hfPT":f"{pt}|","game_date_gt":start,"game_date_lt":end,"group_by":"name","sort_col":"pitches","sort_order":"desc","min_pitches":"0","min_results":"0","min_pas":"0","chk_stats_pa":"on","chk_stats_xwoba":"on"}
     headers={"User-Agent":"MLB-I2-vNext/1.0","Accept":"text/csv,*/*"}
     last=None
     for attempt in range(4):
