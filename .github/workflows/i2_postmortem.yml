@@ -8,15 +8,26 @@ on:
     paths:
       - '.github/workflows/i2_postmortem.yml'
       - 'src/analysis/i2_postmortem_today.mjs'
+      - 'src/analysis/i2_forecast_availability.mjs'
       - 'src/analysis/i2_rotowire_accuracy_season.mjs'
+      - 'tests/i2_postmortem.test.mjs'
   workflow_dispatch:
     inputs:
       date:
-        description: 'YYYY-MM-DD'
+        description: 'YYYY-MM-DD (default: yesterday UTC)'
         required: false
+      require_forecast:
+        description: 'Fail if the requested frozen prediction is missing'
+        type: boolean
+        default: true
 
 permissions:
   contents: write
+  actions: read
+
+concurrency:
+  group: i2-postmortem-main
+  cancel-in-progress: false
 
 jobs:
   postmortem:
@@ -24,50 +35,52 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Regression tests
+        run: node --test tests/i2_postmortem.test.mjs
       - name: Resolve date
         id: params
-        shell: bash
+        env:
+          DATE_INPUT: ${{ inputs.date }}
         run: |
-          DATE_INPUT='${{ inputs.date }}'
-          if [ -z "$DATE_INPUT" ]; then
-            if [ "${{ github.event_name }}" = "schedule" ]; then
-              DATE_INPUT="$(date -u -d 'yesterday' +%F)"
-            else
-              DATE_INPUT="$(date -u +%F)"
-            fi
-          fi
+          if [ -z "$DATE_INPUT" ]; then DATE_INPUT="$(date -u -d 'yesterday' +%F)"; fi
+          [[ "$DATE_INPUT" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || exit 1
           echo "date=$DATE_INPUT" >> "$GITHUB_OUTPUT"
           echo "year=${DATE_INPUT:0:4}" >> "$GITHUB_OUTPUT"
       - name: Run postmortem
+        id: daily
         env:
+          GITHUB_TOKEN: ${{ github.token }}
           I2_DATE: ${{ steps.params.outputs.date }}
-          I2_PREDICTIONS: data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json
-          I2_POSTMORTEM_OUTPUT: data/runtime/i2/${{ steps.params.outputs.date }}_postmortem.json
+          I2_FORECAST_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.require_forecast && 'required' || 'auto' }}
         run: node src/analysis/i2_postmortem_today.mjs
       - name: Roll up RotoWire provisional accuracy
+        id: season
+        if: ${{ !cancelled() && steps.params.outcome == 'success' }}
         env:
           I2_YEAR: ${{ steps.params.outputs.year }}
-          I2_POSTMORTEM_DIR: data/runtime/i2
-          I2_ROTOWIRE_ACCURACY_OUTPUT: data/derived/i2/rotowire_provisional_accuracy_${{ steps.params.outputs.year }}.json
         run: node src/analysis/i2_rotowire_accuracy_season.mjs
-      - name: Commit postmortem and RotoWire accuracy artifacts
+      - name: Commit verified reports
+        if: ${{ !cancelled() && steps.season.outcome == 'success' }}
+        env:
+          DATE: ${{ steps.params.outputs.date }}
+          YEAR: ${{ steps.params.outputs.year }}
+          DAILY_OK: ${{ steps.daily.outcome == 'success' }}
         shell: bash
         run: |
           set -euo pipefail
-          FILE="data/runtime/i2/${{ steps.params.outputs.date }}_postmortem.json"
-          ACC="data/derived/i2/rotowire_provisional_accuracy_${{ steps.params.outputs.year }}.json"
-          git config user.name "github-actions[bot]"
-          git config user.email "4189828+github-actions[bot]@users.noreply.github.com"
-          git fetch origin main
-          git reset --hard origin/main
-          # Re-run after reset so artifacts reflect the current frozen file on main.
-          I2_DATE='${{ steps.params.outputs.date }}' I2_PREDICTIONS="data/runtime/i2/${{ steps.params.outputs.date }}_frozen_predictions.json" I2_POSTMORTEM_OUTPUT="$FILE" node src/analysis/i2_postmortem_today.mjs
-          I2_YEAR='${{ steps.params.outputs.year }}' I2_POSTMORTEM_DIR=data/runtime/i2 I2_ROTOWIRE_ACCURACY_OUTPUT="$ACC" node src/analysis/i2_rotowire_accuracy_season.mjs
-          git add "$FILE" "$ACC"
+          ACC="data/derived/i2/rotowire_provisional_accuracy_${YEAR}.json"
+          FILE="data/runtime/i2/${DATE}_postmortem.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '4189828+github-actions[bot]@users.noreply.github.com'
+          git add "$ACC"
+          if [ "$DAILY_OK" = true ] && [ -f "$FILE" ]; then git add "$FILE"; fi
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Postmortem I2 projections and RotoWire accuracy ${{ steps.params.outputs.date }}"
+          git commit -m "Postmortem I2 reporting ${DATE}"
+          # Never reset/regenerate predictions. A concurrent main update fails visibly;
+          # rerun reporting against the new checkout instead of overwriting reports.
           git push origin HEAD:main

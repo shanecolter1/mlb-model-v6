@@ -1,5 +1,7 @@
 name: I2 v0.4 production daily rerun
 
+run-name: I2 forecast date=${{ inputs.date || '' }}
+
 on:
   workflow_dispatch:
 

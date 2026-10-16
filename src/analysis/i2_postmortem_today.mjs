@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { loadForecast } from './i2_forecast_availability.mjs';
 import { lineupDelta, sameMlbIdentityName, validOrder } from '../inputs/i2_source_governance.mjs';
 
 const DATE = process.env.I2_DATE || new Date().toISOString().slice(0,10);
@@ -7,8 +8,13 @@ const PREDICTIONS = process.env.I2_PREDICTIONS || `data/runtime/i2/${DATE}_froze
 const OUTPUT = process.env.I2_POSTMORTEM_OUTPUT || `data/runtime/i2/${DATE}_postmortem.json`;
 const HIST_BASELINE_UNDER = Number(process.env.I2_HIST_BASELINE_UNDER || 0.564958);
 
-if (!fs.existsSync(PREDICTIONS)) throw new Error(`Missing prediction artifact: ${PREDICTIONS}`);
-const pred = JSON.parse(fs.readFileSync(PREDICTIONS,'utf8'));
+const pred = await loadForecast({date:DATE, file:PREDICTIONS, mode:process.env.I2_FORECAST_MODE});
+if (pred === null) {
+  const message = `NO_FORECAST: ${DATE}; manual-only production, no producer run or persisted forecast evidence. No observations or metrics created.`;
+  console.log(message);
+  if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, message+'\n');
+  process.exit(0);
+}
 
 const audit={mlbStatsApiAttempts:0,mlbStatsApiSuccesses:0};
 async function getFeed(gamePk){
@@ -38,8 +44,8 @@ function actualStarter(feed,side){
 function secondInning(feed){
   const inn=(feed?.liveData?.linescore?.innings||[]).find(x=>Number(x.num)===2);
   if(!inn) return null;
-  const away=Number(inn.away?.runs ?? 0), home=Number(inn.home?.runs ?? 0);
-  const complete=Boolean(inn.away) && Boolean(inn.home);
+  const away=inn.away?.runs, home=inn.home?.runs;
+  const complete=Number.isInteger(away) && away>=0 && Number.isInteger(home) && home>=0 && feed?.gameData?.status?.abstractGameState==='Final';
   return {away,home,total:away+home,complete};
 }
 function i2HalfPlays(feed,halfInning){
@@ -186,6 +192,7 @@ const summary={
   lineupMismatches:graded.filter(r=>r.awayLineupExactMatch===false||r.homeLineupExactMatch===false).map(r=>({gamePk:r.gamePk,matchup:r.matchup,predictionClass:r.predictionClass,awayMatch:r.awayLineupExactMatch,homeMatch:r.homeLineupExactMatch})),
   sourcePriorityAudit:audit,
 };
+if (rows.some(r=>r.error)) throw new Error('Incomplete postmortem: MLB feed retrieval failed; existing report preserved');
 const out={summary,rows};
 fs.mkdirSync(path.dirname(OUTPUT),{recursive:true});
 fs.writeFileSync(OUTPUT,JSON.stringify(out,null,2));

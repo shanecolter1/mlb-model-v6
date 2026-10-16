@@ -1,5 +1,7 @@
 name: Run I2 daily slate
 
+run-name: I2 forecast date=${{ inputs.date || '' }}
+
 on:
   workflow_dispatch:
     inputs:

@@ -31,7 +31,8 @@ const files=fs.existsSync(INPUT_DIR)
 const rows=[];
 for(const file of files){
   let payload;
-  try { payload=JSON.parse(fs.readFileSync(path.join(INPUT_DIR,file),'utf8')); } catch { continue; }
+  payload=JSON.parse(fs.readFileSync(path.join(INPUT_DIR,file),'utf8'));
+  if (!Array.isArray(payload.rows)) throw new Error(`Malformed postmortem: ${file}`);
   const date=file.slice(0,10);
   for(const game of payload.rows || []){
     for(const side of ['away','home']){
