@@ -29,7 +29,10 @@ do {
     headers: { accept: 'application/json', 'x-api-key': key },
     signal: AbortSignal.timeout(120000),
   });
-  if (!response.ok) throw new Error(`SportsGameOdds returned HTTP ${response.status}`);
+  if (!response.ok) {
+    const errorText = (await response.text()).replaceAll(key, '[redacted]').slice(0, 1200);
+    throw new Error(`SportsGameOdds returned HTTP ${response.status}: ${errorText}`);
+  }
   const body = await response.json();
   if (body.success !== true || !Array.isArray(body.data)) throw new Error('Invalid SportsGameOdds response');
   const captured = new Date().toISOString();
