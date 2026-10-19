@@ -18,7 +18,10 @@ const books = ['draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'fanatics
 const params = new URLSearchParams({
   leagueID: 'NCAAF', oddsAvailable: 'true', live: 'false', started: 'false',
   includeAltLines: 'true', includeOpenCloseOdds: 'true',
-  bookmakerID: books.join(','), limit: '100', startsAfter: after, startsBefore: before,
+  // Omitting bookmakerID returns the books authorized for the existing key.
+  // Explicitly requesting an unlicensed book makes the provider reject the
+  // whole request. Apply the intended board scope after the authorized fetch.
+  limit: '100', startsAfter: after, startsBefore: before,
 });
 const events = new Map(), seenCursors = new Set();
 let pageCount = 0, cursor;
@@ -42,7 +45,10 @@ do {
     if (kickoff < start || kickoff >= end) continue;
     if (['started', 'live', 'ended', 'cancelled', 'completed'].some(name => event.status?.[name] === true)) continue;
     if (events.has(event.eventID)) throw new Error('Duplicate event across API pages');
-    events.set(event.eventID, { ...event, _captured_at_utc: captured });
+    const scopedOdds = Object.fromEntries(Object.entries(event.odds || {}).map(([oddID, odd]) => [oddID, {
+      ...odd, byBookmaker: Object.fromEntries(Object.entries(odd.byBookmaker || {}).filter(([book]) => books.includes(book))),
+    }]));
+    events.set(event.eventID, { ...event, odds: scopedOdds, _captured_at_utc: captured });
   }
   cursor = body.nextCursor;
   if (cursor && seenCursors.has(cursor)) throw new Error('Repeated pagination cursor');
@@ -55,6 +61,7 @@ const payload = {
   provenance: {
     provider: 'SportsGameOdds', league_id: 'NCAAF', slate_id: slate,
     starts_after: after, starts_before: before, requested_books: books,
+    bookmaker_filter: 'subscription_authorized_books_then_requested_scope',
     page_count: pageCount, repository: process.env.GITHUB_REPOSITORY || null,
     workflow_run_id: process.env.GITHUB_RUN_ID || null,
     workflow_run_attempt: process.env.GITHUB_RUN_ATTEMPT || null,
