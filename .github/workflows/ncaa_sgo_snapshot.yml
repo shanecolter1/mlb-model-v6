@@ -1,0 +1,61 @@
+name: NCAA odds snapshot using existing MLB credential
+
+on:
+  workflow_dispatch:
+    inputs:
+      slate_id:
+        description: NCAA slate identifier
+        required: true
+        default: '2026-W08'
+      starts_after:
+        description: Inclusive UTC start boundary
+        required: true
+        default: '2026-10-19T00:00:00Z'
+      starts_before:
+        description: Exclusive UTC end boundary
+        required: true
+        default: '2026-10-26T05:00:00Z'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ncaa_sgo_snapshot.yml'
+      - 'src/pipeline/fetch_sgo_ncaa_snapshot.mjs'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ncaa-sgo-snapshot
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: src/pipeline/fetch_sgo_ncaa_snapshot.mjs
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Capture current NCAA odds
+        env:
+          SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
+          NCAA_SLATE_ID: ${{ inputs.slate_id || '2026-W08' }}
+          NCAA_STARTS_AFTER: ${{ inputs.starts_after || '2026-10-19T00:00:00Z' }}
+          NCAA_STARTS_BEFORE: ${{ inputs.starts_before || '2026-10-26T05:00:00Z' }}
+        run: node src/pipeline/fetch_sgo_ncaa_snapshot.mjs
+      - name: Preserve snapshot and provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ncaa-sgo-${{ inputs.slate_id || '2026-W08' }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: data/runtime/ncaa-sgo/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Publish collection summary
+        if: success()
+        run: cat data/runtime/ncaa-sgo/summary.json >> "$GITHUB_STEP_SUMMARY"
