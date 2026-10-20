@@ -16,7 +16,7 @@ if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start || end - st
 }
 const books = ['draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'fanatics', 'hardrockbet', 'thescorebet', 'ballybet', 'circa', 'pinnacle'];
 const params = new URLSearchParams({
-  leagueID: 'NCAAF', live: 'false', started: 'false',
+  leagueID: 'NCAAF', oddsAvailable: 'true', live: 'false', started: 'false',
   includeAltLines: 'true', includeOpenCloseOdds: 'true',
   // Omitting bookmakerID returns the books authorized for the existing key.
   // Explicitly requesting an unlicensed book makes the provider reject the
@@ -74,44 +74,19 @@ if (content.includes(key)) throw new Error('Response failed the credential-discl
 const out = resolve(process.env.NCAA_OUTPUT_DIR || 'data/runtime/ncaa-sgo');
 await mkdir(out, { recursive: true });
 await writeFile(resolve(out, 'sportsgameodds.json'), content + '\n');
-// Bounded read-only comparison: bulk coverage versus exact event/market requests.
-// Retain the responses without replacing or relabeling the production capture.
-const probeIDs = ['Qei4dIXEVw9cgRTLTn5p','RVYwIvsp6zH5nKDDF3MM','nFzfDKix4wETPruMgvpQ','oGNV2JcLukVFFNVLLKEw','yOAAYNc6APv1glLSuUc7'];
-const probeMarkets = ['points-away-game-ml-away','points-home-game-ml-home','points-away-game-sp-away','points-home-game-sp-home','points-all-game-ou-over','points-all-game-ou-under'];
-const probes = [
-  {name:'exact_events_all_authorized_books',params:{eventIDs:probeIDs.join(','),oddID:probeMarkets.join(','),includeOpposingOdds:'true',includeOpenCloseOdds:'true'}},
-  {name:'exact_events_fanduel',params:{eventIDs:probeIDs.join(','),bookmakerID:'fanduel',oddID:probeMarkets.join(','),includeOpposingOdds:'true',includeOpenCloseOdds:'true'}},
-  {name:'weekly_fanduel_main_markets',params:{leagueID:'NCAAF',startsAfter:after,startsBefore:before,bookmakerID:'fanduel',oddID:probeMarkets.join(','),includeOpposingOdds:'true',limit:'100'}},
-];
-for (const probe of probes) {
-  const response = await fetch(`https://api.sportsgameodds.com/v2/events?${new URLSearchParams(probe.params)}`, {
-    headers:{accept:'application/json','x-api-key':key},signal:AbortSignal.timeout(60000),
-  });
-  const raw = await response.text();
-  if(raw.includes(key)) throw new Error('Probe response failed credential-disclosure check');
-  let body; try {body=JSON.parse(raw);} catch {body={error:raw.slice(0,1200)};}
-  await writeFile(resolve(out, `coverage-probe-${probe.name}.json`),JSON.stringify({request:probe.params,http_status:response.status,captured_at_utc:new Date().toISOString(),response:body},null,2)+'\n');
-  console.log(JSON.stringify({probe:probe.name,http_status:response.status,events:body.data?.length,next_page:!!body.nextCursor}));
-}
-
-const counts = {}, allCounts = {};
-const mainIDs = new Set(['points-away-game-ml-away', 'points-home-game-ml-home', 'points-away-game-sp-away', 'points-home-game-sp-home', 'points-all-game-ou-over', 'points-all-game-ou-under']);
+const counts = {};
 for (const event of events.values()) {
-  for (const [oddID, odd] of Object.entries(event.odds || {})) {
+  for (const odd of Object.values(event.odds || {})) {
     for (const [book, quote] of Object.entries(odd.byBookmaker || {})) {
-      if (quote.available === true) {
-        allCounts[book] = (allCounts[book] || 0) + 1;
-        if (mainIDs.has(oddID)) counts[book] = (counts[book] || 0) + 1;
-      }
+      if (quote.available === true) counts[book] = (counts[book] || 0) + 1;
     }
   }
 }
 const summary = {
   ...payload.provenance, captured_at_utc: payload.captured_at_utc,
-  events: events.size, available_main_quotes_by_book: counts, available_all_market_quotes_by_book: allCounts,
+  events: events.size, available_main_quotes_by_book: counts,
   payload_sha256: createHash('sha256').update(content + '\n').digest('hex'),
 };
 await writeFile(resolve(out, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
 console.log(JSON.stringify(summary, null, 2));
-if (!events.size) throw new Error('No upcoming NCAA events were returned for the requested slate');
-
+if (!events.size) throw new Error('No upcoming NCAA events with odds were returned for the requested slate');
