@@ -16,7 +16,7 @@ if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start || end - st
 }
 const books = ['draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'fanatics', 'hardrockbet', 'thescorebet', 'ballybet', 'circa', 'pinnacle'];
 const params = new URLSearchParams({
-  leagueID: 'NCAAF', oddsAvailable: 'true', live: 'false', started: 'false',
+  leagueID: 'NCAAF', live: 'false', started: 'false',
   includeAltLines: 'true', includeOpenCloseOdds: 'true',
   // Omitting bookmakerID returns the books authorized for the existing key.
   // Explicitly requesting an unlicensed book makes the provider reject the
@@ -74,19 +74,24 @@ if (content.includes(key)) throw new Error('Response failed the credential-discl
 const out = resolve(process.env.NCAA_OUTPUT_DIR || 'data/runtime/ncaa-sgo');
 await mkdir(out, { recursive: true });
 await writeFile(resolve(out, 'sportsgameodds.json'), content + '\n');
-const counts = {};
+const counts = {}, allCounts = {};
+const mainIDs = new Set(['points-away-game-ml-away', 'points-home-game-ml-home', 'points-away-game-sp-away', 'points-home-game-sp-home', 'points-all-game-ou-over', 'points-all-game-ou-under']);
 for (const event of events.values()) {
-  for (const odd of Object.values(event.odds || {})) {
+  for (const [oddID, odd] of Object.entries(event.odds || {})) {
     for (const [book, quote] of Object.entries(odd.byBookmaker || {})) {
-      if (quote.available === true) counts[book] = (counts[book] || 0) + 1;
+      if (quote.available === true) {
+        allCounts[book] = (allCounts[book] || 0) + 1;
+        if (mainIDs.has(oddID)) counts[book] = (counts[book] || 0) + 1;
+      }
     }
   }
 }
 const summary = {
   ...payload.provenance, captured_at_utc: payload.captured_at_utc,
-  events: events.size, available_main_quotes_by_book: counts,
+  events: events.size, available_main_quotes_by_book: counts, available_all_market_quotes_by_book: allCounts,
   payload_sha256: createHash('sha256').update(content + '\n').digest('hex'),
 };
 await writeFile(resolve(out, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
 console.log(JSON.stringify(summary, null, 2));
-if (!events.size) throw new Error('No upcoming NCAA events with odds were returned for the requested slate');
+if (!events.size) throw new Error('No upcoming NCAA events were returned for the requested slate');
+
