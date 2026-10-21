@@ -61,6 +61,7 @@ const payload = {
   captured_at_utc: new Date().toISOString(),
   provenance: {
     provider: 'SportsGameOdds', league_id: 'NCAAF', slate_id: slate,
+    slate_discovery: 'all_ncaaf_events_in_window_unfiltered_by_odds_or_status',
     starts_after: after, starts_before: before, requested_books: books,
     bookmaker_filter: 'subscription_authorized_books_then_requested_scope',
     page_count: pageCount, repository: process.env.GITHUB_REPOSITORY || null,
