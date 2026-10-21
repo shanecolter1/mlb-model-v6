@@ -10,7 +10,7 @@ on:
       starts_after:
         description: Inclusive UTC start boundary
         required: true
-        default: '2026-10-19T00:00:00Z'
+        default: '2026-10-19T05:00:00Z'
       starts_before:
         description: Exclusive UTC end boundary
         required: true
@@ -45,7 +45,7 @@ jobs:
         env:
           SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
           NCAA_SLATE_ID: ${{ inputs.slate_id || '2026-W08' }}
-          NCAA_STARTS_AFTER: ${{ inputs.starts_after || '2026-10-19T00:00:00Z' }}
+          NCAA_STARTS_AFTER: ${{ inputs.starts_after || '2026-10-19T05:00:00Z' }}
           NCAA_STARTS_BEFORE: ${{ inputs.starts_before || '2026-10-26T05:00:00Z' }}
         run: node src/pipeline/fetch_sgo_ncaa_snapshot.mjs
       - name: Preserve snapshot and provenance
