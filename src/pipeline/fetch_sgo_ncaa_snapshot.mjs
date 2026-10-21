@@ -15,8 +15,10 @@ if (!Number.isFinite(start) || !Number.isFinite(end) || end <= start || end - st
   throw new Error('Snapshot needs a valid, increasing window of at most fourteen days');
 }
 const books = ['draftkings', 'fanduel', 'betmgm', 'caesars', 'bet365', 'fanatics', 'hardrockbet', 'thescorebet', 'ballybet', 'circa', 'pinnacle'];
+// Slate discovery must not depend on a bookmaker posting odds or on pregame status.
+// Capture every NCAAF event SGO returns in the requested week, including FCS/lower-division games.
 const params = new URLSearchParams({
-  leagueID: 'NCAAF', oddsAvailable: 'true', live: 'false', started: 'false',
+  leagueID: 'NCAAF',
   includeAltLines: 'true', includeOpenCloseOdds: 'true',
   // Omitting bookmakerID returns the books authorized for the existing key.
   // Explicitly requesting an unlicensed book makes the provider reject the
@@ -43,7 +45,6 @@ do {
     const kickoff = Date.parse(event.status?.startsAt || event.startTime || '');
     if (event.leagueID !== 'NCAAF' || !event.eventID || !Number.isFinite(kickoff)) throw new Error('Unexpected event identity in response');
     if (kickoff < start || kickoff >= end) continue;
-    if (['started', 'live', 'ended', 'cancelled', 'completed'].some(name => event.status?.[name] === true)) continue;
     if (events.has(event.eventID)) throw new Error('Duplicate event across API pages');
     const scopedOdds = Object.fromEntries(Object.entries(event.odds || {}).map(([oddID, odd]) => [oddID, {
       ...odd, byBookmaker: Object.fromEntries(Object.entries(odd.byBookmaker || {}).filter(([book]) => books.includes(book))),
@@ -89,4 +90,4 @@ const summary = {
 };
 await writeFile(resolve(out, 'summary.json'), JSON.stringify(summary, null, 2) + '\n');
 console.log(JSON.stringify(summary, null, 2));
-if (!events.size) throw new Error('No upcoming NCAA events with odds were returned for the requested slate');
+if (!events.size) throw new Error('No NCAA events were returned for the requested slate');
