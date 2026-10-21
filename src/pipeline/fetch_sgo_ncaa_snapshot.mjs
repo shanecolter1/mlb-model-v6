@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 const key = String(process.env.SPORTSGAMEODDS_API_KEY || '').trim();
 if (!key) throw new Error('SPORTSGAMEODDS_API_KEY is not configured in the MLB repository');
 const slate = process.env.NCAA_SLATE_ID || '2026-W08';
-const after = process.env.NCAA_STARTS_AFTER || '2026-10-19T00:00:00Z';
+const after = process.env.NCAA_STARTS_AFTER || '2026-10-19T05:00:00Z';
 const before = process.env.NCAA_STARTS_BEFORE || '2026-10-26T05:00:00Z';
 if (!/^[A-Za-z0-9][A-Za-z0-9_.-]{0,60}$/.test(slate)) throw new Error('Invalid slate identifier');
 const start = Date.parse(after), end = Date.parse(before);
