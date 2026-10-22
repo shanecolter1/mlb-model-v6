@@ -1,0 +1,21 @@
+feature,family,direction_hypothesis,required_history,reliability_basis,status,notes
+starter_k_rate,starter_quality,negative,as_of_pregame,starter_bf,candidate,Higher strikeout rate should suppress I2 scoring conditional on game total.
+starter_bb_rate,starter_quality,positive,as_of_pregame,starter_bf,candidate,Higher walk rate should increase I2 scoring conditional on game total.
+starter_hr_rate,starter_quality,positive,as_of_pregame,starter_bf,candidate,Direct scoring/tail mechanism.
+starter_nonhr_hit_rate,starter_quality,positive,as_of_pregame,starter_bf,candidate,Baserunner/contact conversion component; avoid double counting with composites.
+starter_bf_reliability,starter_reliability,none,as_of_pregame,starter_bf,candidate,Used primarily to shrink starter effects rather than as a free directional effect.
+i2_expected_batter_woba,i2_hitter_quality,positive,as_of_pregame,hitter_pa,candidate,PA-weighted quality of hitters expected to appear in I2.
+i2_expected_batter_k_rate,i2_hitter_quality,negative,as_of_pregame,hitter_pa,candidate,Expected I2 contact suppression.
+i2_expected_batter_bb_rate,i2_hitter_quality,positive,as_of_pregame,hitter_pa,candidate,Expected I2 baserunner creation.
+i2_expected_batter_hr_rate,i2_hitter_quality,positive,as_of_pregame,hitter_pa,candidate,Expected I2 power exposure.
+i2_start_slot_4_6_prob,batting_order_path,positive,simulation_pregame,i1_sim_trials,candidate,Probability I2 begins in lineup slots 4 through 6.
+i2_start_slot_7_9_prob,batting_order_path,negative,simulation_pregame,i1_sim_trials,candidate,Probability I2 begins in bottom-third slots.
+platoon_advantage_share,platoon_interaction,positive,as_of_pregame,hitter_split_pa,candidate,Share of expected I2 PA with batter platoon advantage.
+contact_interaction,interaction,positive,as_of_pregame,min_hitter_pitcher_pa,candidate,Low pitcher K paired with high hitter contact; define from standardized component rates.
+power_interaction,interaction,positive,as_of_pregame,min_hitter_pitcher_pa,candidate,HR-prone pitcher paired with power-heavy expected I2 hitters.
+baserunner_interaction,interaction,positive,as_of_pregame,min_hitter_pitcher_pa,candidate,Pitcher BB tendency paired with hitter BB/OBP tendency.
+venue_run_factor,park,positive,pregame_static,park_sample,candidate,Test only for incremental I2 residual value beyond game total; likely strongly redundant.
+venue_hr_factor,park,positive,pregame_static,park_sample,candidate,Test as tail-specific interaction; not additive with venue_run_factor without evidence.
+opener_or_bulk_risk,starter_role,positive,as_of_pregame,role_history,candidate,Flag/mixture only when conventional starter assumption is unreliable.
+weather_run_context,environment,unknown,as_of_pregame,weather_source_quality,holdout_candidate,Must prove incremental value after total; high redundancy risk.
+umpire_run_context,environment,unknown,as_of_pregame,umpire_sample,holdout_candidate,Include only if stable and reconstructable without leakage.
