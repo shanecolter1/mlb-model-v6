@@ -20,6 +20,9 @@ on:
     paths:
       - '.github/workflows/ncaa_sgo_snapshot.yml'
       - 'src/pipeline/fetch_sgo_ncaa_snapshot.mjs'
+  schedule:
+    # Five minutes before the NCAA production board refresh (7/22/37/52).
+    - cron: '2,17,32,47 * * * *'
 
 permissions:
   contents: read
@@ -41,18 +44,49 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Resolve current NCAA weekly window
+        id: window
+        shell: bash
+        env:
+          REQUESTED_SLATE: ${{ inputs.slate_id }}
+          REQUESTED_AFTER: ${{ inputs.starts_after }}
+          REQUESTED_BEFORE: ${{ inputs.starts_before }}
+        run: |
+          python3 - <<'PY'
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+          import os
+
+          requested = all(os.environ.get(name) for name in ('REQUESTED_SLATE','REQUESTED_AFTER','REQUESTED_BEFORE'))
+          if requested:
+              slate = os.environ['REQUESTED_SLATE']
+              after = os.environ['REQUESTED_AFTER']
+              before = os.environ['REQUESTED_BEFORE']
+          else:
+              now = datetime.now(ZoneInfo('America/Chicago'))
+              monday = (now - timedelta(days=now.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+              next_monday = monday + timedelta(days=7)
+              slate = 'ncaaf-' + monday.date().isoformat()
+              after = monday.isoformat()
+              before = next_monday.isoformat()
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f'slate={slate}\n')
+              out.write(f'after={after}\n')
+              out.write(f'before={before}\n')
+          print(slate, after, before)
+          PY
       - name: Capture current NCAA odds
         env:
           SPORTSGAMEODDS_API_KEY: ${{ secrets.SPORTSGAMEODDS_API_KEY }}
-          NCAA_SLATE_ID: ${{ inputs.slate_id || '2026-W08' }}
-          NCAA_STARTS_AFTER: ${{ inputs.starts_after || '2026-10-19T05:00:00Z' }}
-          NCAA_STARTS_BEFORE: ${{ inputs.starts_before || '2026-10-26T05:00:00Z' }}
+          NCAA_SLATE_ID: ${{ steps.window.outputs.slate }}
+          NCAA_STARTS_AFTER: ${{ steps.window.outputs.after }}
+          NCAA_STARTS_BEFORE: ${{ steps.window.outputs.before }}
         run: node src/pipeline/fetch_sgo_ncaa_snapshot.mjs
       - name: Preserve snapshot and provenance
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ncaa-sgo-${{ inputs.slate_id || '2026-W08' }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ncaa-sgo-${{ steps.window.outputs.slate }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: data/runtime/ncaa-sgo/
           if-no-files-found: error
           retention-days: 90
