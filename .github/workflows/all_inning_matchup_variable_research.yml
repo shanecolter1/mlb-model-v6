@@ -1,0 +1,50 @@
+name: All-inning matchup variable research
+
+on:
+  workflow_dispatch:
+    inputs:
+      historical_input:
+        description: "Path to leakage-free joined historical CSV/CSV.GZ"
+        required: true
+        default: "data/external/MLB_Game_Stats_Joined_2021_2025.csv.gz"
+      prior_strength:
+        description: "Empirical total-bucket shrinkage strength"
+        required: true
+        default: "100"
+      ridge_lambda:
+        description: "Ridge penalty for matchup residual model"
+        required: true
+        default: "5"
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Verify historical input exists
+        run: |
+          test -f "${{ inputs.historical_input }}" || {
+            echo "BLOCKED: historical input not present at ${{ inputs.historical_input }}"
+            exit 2
+          }
+      - name: Run all-inning empirical residual research
+        run: |
+          python src/analysis/all_inning_matchup_variable_research.py \
+            --input "${{ inputs.historical_input }}" \
+            --registry config/inning_matchup_feature_registry.csv \
+            --output-dir data/derived/i2/all_inning_matchup_research \
+            --prior-strength "${{ inputs.prior_strength }}" \
+            --ridge-lambda "${{ inputs.ridge_lambda }}"
+      - name: Persist research artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-inning-matchup-variable-research
+          path: data/derived/i2/all_inning_matchup_research/
+          retention-days: 30

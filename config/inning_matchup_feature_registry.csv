@@ -1,0 +1,25 @@
+feature,family,status,inning_scope,reliability_field,notes
+starter_k_rate,starter_quality,candidate,1-5,starter_bf,Starter strikeout ability; must add value within pregame-total and inning baseline.
+starter_bb_rate,starter_quality,candidate,1-5,starter_bf,Starter walk allowance; shrink for limited BF.
+starter_hr_rate,starter_quality,candidate,1-5,starter_bf,Starter HR susceptibility; tail-sensitive.
+starter_hit_rate,starter_quality,candidate,1-5,starter_bf,Starter non-HR hit allowance.
+starter_bf,starter_reliability,candidate,1-5,,Reliability input rather than independent run-environment proxy.
+starter_games_started,starter_reliability,candidate,1-5,,Role/sample reliability.
+starter_expected_bf,starter_role,candidate,1-6,,Controls probability starter remains active in target inning.
+bullpen_k_rate,bullpen_quality,candidate,4-9,bullpen_bf,Relevant as bullpen participation probability rises.
+bullpen_bb_rate,bullpen_quality,candidate,4-9,bullpen_bf,Relevant as bullpen participation probability rises.
+bullpen_hr_rate,bullpen_quality,candidate,4-9,bullpen_bf,Relevant as bullpen participation probability rises.
+bullpen_bf,bullpen_reliability,candidate,4-9,,Reliability/shrinkage field.
+likely_inning_hitter_quality,lineup_quality,candidate,1-9,lineup_pa,PA-weighted quality of hitters most likely to bat in target inning.
+inning_start_slot_expectation,lineup_path,candidate,2-9,,Expected batting-order slot at inning start from prior-inning path model.
+inning_start_slot_entropy,lineup_path,candidate,2-9,,Uncertainty in batting-order path; high entropy should reduce adjustment confidence.
+platoon_advantage_share,platoon,candidate,1-9,lineup_pa,Share of likely inning PAs with platoon advantage.
+contact_interaction,interaction_contact,candidate,1-9,lineup_pa,Lineup contact versus active-pitcher strikeout interaction.
+power_interaction,interaction_power,candidate,1-9,lineup_pa,Lineup power versus active-pitcher HR susceptibility.
+baserunner_interaction,interaction_baserunner,candidate,1-9,lineup_pa,Lineup OBP/BB tendency versus pitcher BB/HBP tendency.
+venue_run_factor,park,candidate,1-9,,Only if incremental beyond total baseline; likely small after total conditioning.
+venue_hr_factor,park,candidate,1-9,,Tail-shape candidate; avoid double counting venue_run_factor.
+weather_score,environment,candidate,1-9,,Must prove residual value beyond pregame total; market-isolated baseball weather only.
+roof_state,environment,candidate,1-9,,Categorical interaction candidate if reconstructable pregame without leakage.
+umpire_run_factor,umpire,candidate,1-9,umpire_sample,Only if archived assignment is verified pregame and stable out of sample.
+active_pitcher_same_as_starter_prob,pitcher_state,candidate,2-9,,Estimated pregame probability starter is still active in target inning; do not use realized pitcher identity.
